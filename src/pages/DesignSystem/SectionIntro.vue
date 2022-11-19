@@ -51,13 +51,9 @@
     prioridades para depois
     1*
 
-
-
     2*
       trocar toggle (fiel ao ds do andrei no figma)
       colocar um badge no select multiplo,  do tipo (item), (item), (+5)
-
-
 
     3*
      tirar elevaçao do select ao selecionar
@@ -67,37 +63,37 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref } from 'vue'
 
-const expanded = ref(["Estrutura do projeto"]);
+const expanded = ref(['Estrutura do projeto'])
 const simple = [
   {
-    label: "Estrutura do projeto",
+    label: 'Estrutura do projeto',
     children: [
       {
-        label: "dist/",
-        explanation: "# Destino",
+        label: 'dist/',
+        explanation: '# Destino',
 
-        children: [{ label: "assets" }],
+        children: [{ label: 'assets' }]
       },
       {
-        label: "src/",
-        explanation: "# Fonte",
-        children: [{ label: "assets" }, { label: "boot" }],
+        label: 'src/',
+        explanation: '# Fonte',
+        children: [{ label: 'assets' }, { label: 'boot' }]
       },
-      { label: ".editorconfig" },
-      { label: ".eslintrc.js" },
-      { label: "package.json" },
-      { label: "postcss.config.js" },
-      { label: "tailwind.config.cjs" },
+      { label: '.editorconfig' },
+      { label: '.eslintrc.js' },
+      { label: 'package.json' },
+      { label: 'postcss.config.js' },
+      { label: 'tailwind.config.cjs' },
 
       {
-        label: "quasar.config.js",
-        explanation: "# Arquivo de configuração do quasar CLI",
-      },
-    ],
-  },
-];
+        label: 'quasar.config.js',
+        explanation: '# Arquivo de configuração do quasar CLI'
+      }
+    ]
+  }
+]
 </script>
 
 <style lang="scss" scoped></style>

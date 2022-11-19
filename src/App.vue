@@ -3,12 +3,12 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
-import "./css/tailwind.css";
+import { defineComponent } from 'vue'
+import './css/tailwind.css'
 
 export default defineComponent({
-  name: "App",
-});
+  name: 'App'
+})
 </script>
 
 <style>

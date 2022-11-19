@@ -93,7 +93,7 @@
 </template>
 
 <script setup>
-import TokenClipboard from "../../components/DesignSystem/TokenClipboard.vue";
+import TokenClipboard from '../../components/DesignSystem/TokenClipboard.vue'
 </script>
 
 <style lang="scss" scoped></style>

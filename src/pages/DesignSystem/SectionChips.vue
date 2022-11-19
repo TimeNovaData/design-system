@@ -86,12 +86,12 @@
 </template>
 
 <script setup>
-import OButton from "../../components/OButton.vue";
-import OBadge from "../../components/OBadge.vue";
-import OCounter from "../../components/OCounter.vue";
-import OChip from "src/components/OChip.vue";
-import SyntaxHighlight from "../../components/DesignSystem/SyntaxHighlight.vue";
-import { ref } from "vue";
+import OButton from '../../components/OButton.vue'
+import OBadge from '../../components/OBadge.vue'
+import OCounter from '../../components/OCounter.vue'
+import OChip from 'src/components/OChip.vue'
+import SyntaxHighlight from '../../components/DesignSystem/SyntaxHighlight.vue'
+import { ref } from 'vue'
 
 const code = `import OBadge from "../../components/OBadge.vue";
 import OCounter from "../../components/OCounter.vue";
@@ -121,16 +121,16 @@ import OChip from "src/components/OChip.vue";
 //[square] borda flat
 //Chip é um q-chip por traz, portanto tem todas as props do mesmo
 //[v-model:selected] https://quasar.dev/vue-components/chip#example--selected
-`;
+`
 
-const count = ref(1);
+const count = ref(1)
 
 const desert = ref({
   Icecream: false,
   Eclair: false,
   Cupcake: false,
-  Gingerbread: false,
-});
+  Gingerbread: false
+})
 </script>
 
 <style lang="sass" scoped>

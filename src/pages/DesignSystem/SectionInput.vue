@@ -144,16 +144,16 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import oButton from "../../components/OButton.vue";
-import OInput from "../../components/OInput.vue";
-import SyntaxHighlight from "../../components/DesignSystem/SyntaxHighlight.vue";
+import { ref } from 'vue'
+import oButton from '../../components/OButton.vue'
+import OInput from '../../components/OInput.vue'
+import SyntaxHighlight from '../../components/DesignSystem/SyntaxHighlight.vue'
 
-const inputValue = ref("");
-const telValue = ref("");
-const dateValue = ref("");
-const valueEx = ref("");
-const form = ref(null);
+const inputValue = ref('')
+const telValue = ref('')
+const dateValue = ref('')
+const valueEx = ref('')
+const form = ref(null)
 const code = `import OInput from "../../components/OInput.vue";
 
 // Input -------------------
@@ -173,7 +173,7 @@ const code = `import OInput from "../../components/OInput.vue";
 
 // Patterns ja existentes para validação, 2* parametro
 //https://github.com/quasarframework/quasar/blob/dev/ui/src/utils/patterns.js
-`;
+`
 </script>
 
 <style lang="sass"></style>

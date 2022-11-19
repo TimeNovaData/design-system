@@ -8,14 +8,14 @@
 
 <script>
 export default {
-  inheritAttrs: false,
-};
+  inheritAttrs: false
+}
 </script>
 <script setup>
-import { useSlots, useAttrs } from "vue";
+import { useSlots, useAttrs } from 'vue'
 
-const slots = useSlots();
-const attrs = useAttrs();
+const slots = useSlots()
+const attrs = useAttrs()
 </script>
 
 <style lang="sass">

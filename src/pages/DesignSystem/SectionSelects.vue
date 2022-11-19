@@ -128,82 +128,82 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, onUpdated, ref } from "vue";
-import oButton from "../../components/OButton.vue";
-import SyntaxHighlight from "../../components/DesignSystem/SyntaxHighlight.vue";
-import OSelect from "src/components/OSelect.vue";
-import OChip from "src/components/OChip.vue";
-import OCheck from "src/components/OCheck.vue";
+import { onMounted, onUnmounted, onUpdated, ref } from 'vue'
+import oButton from '../../components/OButton.vue'
+import SyntaxHighlight from '../../components/DesignSystem/SyntaxHighlight.vue'
+import OSelect from 'src/components/OSelect.vue'
+import OChip from 'src/components/OChip.vue'
+import OCheck from 'src/components/OCheck.vue'
 
 const soltaConsole = (...props) => {
-  console.log(...props);
-  return "oi";
-};
-const model = ref("");
-const options = ref(["Google", "Facebook", "Twitter", "Apple", "Oracle"]);
+  console.log(...props)
+  return 'oi'
+}
+const model = ref('')
+const options = ref(['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'])
 
-const select = ref(null);
-const interval = ref(null);
+const select = ref(null)
+const interval = ref(null)
 const starti = () => {
-  console.log("starti");
+  console.log('starti')
   interval.value = setInterval(() => {
-    console.log("rodou");
-    select.value.selectRef.showPopup();
-  }, 100);
-};
+    console.log('rodou')
+    select.value.selectRef.showPopup()
+  }, 100)
+}
 
-const model2 = ref([]);
+const model2 = ref([])
 const options2 = [
   {
-    label: "Google",
-    value: 1,
+    label: 'Google',
+    value: 1
   },
   {
-    label: "Facebook",
-    value: 2,
+    label: 'Facebook',
+    value: 2
   },
   {
-    label: "Twitter",
-    value: 3,
+    label: 'Twitter',
+    value: 3
   },
   {
-    label: "Apple",
-    value: 4,
+    label: 'Apple',
+    value: 4
   },
   {
-    label: "Oracle",
-    value: 5,
-  },
-];
-const model3 = ref([]);
+    label: 'Oracle',
+    value: 5
+  }
+]
+const model3 = ref([])
 
 const options3 = [
   {
-    label: "Google",
-    img: "https://files.tecnoblog.net/wp-content/uploads/2021/09/logotipo_da_empresa_google.jpg",
-    value: 1,
+    label: 'Google',
+    img: 'https://files.tecnoblog.net/wp-content/uploads/2021/09/logotipo_da_empresa_google.jpg',
+    value: 1
   },
   {
-    label: "Facebook",
-    img: "https://www.facebook.com/images/fb_icon_325x325.png",
-    value: 2,
+    label: 'Facebook',
+    img: 'https://www.facebook.com/images/fb_icon_325x325.png',
+    value: 2
   },
   {
-    label: "Twitter",
-    img: "https://help.twitter.com/content/dam/help-twitter/brand/logo.png",
-    value: 3,
+    label: 'Twitter',
+    img: 'https://help.twitter.com/content/dam/help-twitter/brand/logo.png',
+    value: 3
   },
   {
-    label: "Apple",
-    img: "https://files.tecnoblog.net/wp-content/uploads/2020/11/apple-logo.jpg",
-    value: 4,
+    label: 'Apple',
+    img: 'https://files.tecnoblog.net/wp-content/uploads/2020/11/apple-logo.jpg',
+    value: 4
   },
   {
-    label: "Oracle",
-    img: "https://yt3.ggpht.com/bf3tO-EefcSglyKMZUBp_o-GuBfd0PGm_U6f7L_64CyKd3iMPiAfRkHeLfrCwLfMmCc3IMlk=s900-c-k-c0x00ffffff-no-rj",
-    value: 5,
-  },
-];
+    label: 'Oracle',
+    img: 'https://yt3.ggpht.com/bf3tO-EefcSglyKMZUBp_o-GuBfd0PGm_U6f7L_64CyKd3iMPiAfRkHeLfrCwLfMmCc3IMlk=s900-c-k-c0x00ffffff-no-rj',
+    value: 5
+  }
+]
 // onMounted(() => {
 //   starti();
 // });
@@ -211,7 +211,7 @@ const options3 = [
 //   clearInterval(interval.value);
 // });
 
-const code = ``;
+const code = ''
 </script>
 
 <style lang="sass"></style>

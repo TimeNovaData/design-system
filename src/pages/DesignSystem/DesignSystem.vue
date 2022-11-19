@@ -77,7 +77,7 @@
       ref="drawer"
     >
       <q-scroll-area class="fit">
-        <q-list separator v-for="item in list">
+        <q-list separator v-for="item in list" :key="item.id">
           <q-item clickable v-ripple @click="sectionActive = item.id">
             <q-item-section class="text-neutral-70 dark:text-white/80">{{
               item.name
@@ -118,138 +118,138 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch } from 'vue'
 
-import oButton from "../../components/OButton.vue";
+import oButton from '../../components/OButton.vue'
 
-import SectionButton from "./SectionButton.vue";
-import SectionTipographie from "./SectionTipographie.vue";
-import SectionRadio from "./SectionRadio.vue";
-import SectionChips from "./SectionChips.vue";
-import SectionIntro from "./SectionIntro.vue";
-import SectionBreadcrumb from "./SectionBreadcrumb.vue";
-import SectionInput from "./SectionInput.vue";
-import { useDarkMode } from "../../stores/darkMode";
-import { storeToRefs } from "pinia";
-import MenuMultiLevel from "src/components/MenuMultiLevel/MenuMultiLevel2.vue";
-import SectionSelects from "./SectionSelects.vue";
+import SectionButton from './SectionButton.vue'
+import SectionTipographie from './SectionTipographie.vue'
+import SectionRadio from './SectionRadio.vue'
+import SectionChips from './SectionChips.vue'
+import SectionIntro from './SectionIntro.vue'
+import SectionBreadcrumb from './SectionBreadcrumb.vue'
+import SectionInput from './SectionInput.vue'
+import { useDarkMode } from '../../stores/darkMode'
+import { storeToRefs } from 'pinia'
+import MenuMultiLevel from 'src/components/MenuMultiLevel/MenuMultiLevel2.vue'
+import SectionSelects from './SectionSelects.vue'
 
-const sectionActive = ref("menuMultiLevel");
-const leftDrawerOpen = ref(true);
+const sectionActive = ref('menuMultiLevel')
+const leftDrawerOpen = ref(true)
 // const drawerLeft = ref(0)
 
-const dark = useDarkMode();
-const { darkMode } = storeToRefs(dark);
-const header = ref(null);
-const drawer = ref(null);
+const dark = useDarkMode()
+const { darkMode } = storeToRefs(dark)
+const header = ref(null)
+const drawer = ref(null)
 
 watch(sectionActive, (val) => {
-  if (val === "menuMultiLevel") drawer.value.hide();
-});
+  if (val === 'menuMultiLevel') drawer.value.hide()
+})
 onMounted(() => {
-  if (sectionActive.value === "menuMultiLevel") drawer.value.hide();
-});
+  if (sectionActive.value === 'menuMultiLevel') drawer.value.hide()
+})
 const menuList = [
   {
-    name: "Colors & Avatars",
-    icon: "icon_config",
-    class: "activeEffect",
+    name: 'Colors & Avatars',
+    icon: 'icon_config',
+    class: 'activeEffect',
     nivel: 0,
     submenu: [
       {
-        title: "Calendário de Produção",
-        nivel: 1,
+        title: 'Calendário de Produção',
+        nivel: 1
       },
       {
-        title: "Produtos",
-        nivel: 1,
-        submenu: [
-          {
-            title: "Produtos",
-            nivel: 2,
-          },
-          {
-            title: "Sub Produtos",
-            nivel: 2,
-          },
-          {
-            title: "Insumo",
-            nivel: 2,
-          },
-        ],
-      },
-      {
-        title: "Previsão de Consumo",
+        title: 'Produtos',
         nivel: 1,
         submenu: [
           {
-            title: "Previsão de Consumo",
-            nivel: 2,
+            title: 'Produtos',
+            nivel: 2
           },
-        ],
+          {
+            title: 'Sub Produtos',
+            nivel: 2
+          },
+          {
+            title: 'Insumo',
+            nivel: 2
+          }
+        ]
       },
       {
-        title: "NF de entrada",
+        title: 'Previsão de Consumo',
+        nivel: 1,
+        submenu: [
+          {
+            title: 'Previsão de Consumo',
+            nivel: 2
+          }
+        ]
+      },
+      {
+        title: 'NF de entrada',
         // link: 'https://www.google.com',
         nivel: 1,
         submenu: [
           {
-            title: "NF de entrada",
+            title: 'NF de entrada',
             // link: 'https://www.google.com',
-            nivel: 2,
-          },
-        ],
-      },
-    ],
-  },
-];
+            nivel: 2
+          }
+        ]
+      }
+    ]
+  }
+]
 
 const list = [
   {
-    name: "@ Inicio",
-    id: "intro",
+    name: '@ Inicio',
+    id: 'intro'
   },
   {
-    name: "Button",
-    id: "button",
+    name: 'Button',
+    id: 'button'
   },
   {
-    name: "Typographies",
-    id: "typographie",
+    name: 'Typographies',
+    id: 'typographie'
   },
   {
-    name: "Checkbox & RadioButton",
-    id: "checkbox",
+    name: 'Checkbox & RadioButton',
+    id: 'checkbox'
   },
   {
-    name: "Badge, Status, Tags",
-    id: "chips",
+    name: 'Badge, Status, Tags',
+    id: 'chips'
   },
   {
-    name: "Menu Multi Level",
-    id: "menuMultiLevel",
+    name: 'Menu Multi Level',
+    id: 'menuMultiLevel'
   },
   {
-    name: "Breadcrumb",
-    id: "breadcrumb",
+    name: 'Breadcrumb',
+    id: 'breadcrumb'
   },
   {
-    name: "Inputs",
-    id: "inputs",
+    name: 'Inputs',
+    id: 'inputs'
   },
   {
-    name: "Selects",
-    id: "selects",
+    name: 'Selects',
+    id: 'selects'
   },
   {
-    name: "Tabs",
-    id: "tabs",
-  },
+    name: 'Tabs',
+    id: 'tabs'
+  }
 ].sort((a, b) => {
-  if (a.name > b.name) return 1;
-  if (a.name < b.name) return -1;
-  return 0;
-});
+  if (a.name > b.name) return 1
+  if (a.name < b.name) return -1
+  return 0
+})
 </script>
 
 <style lang="sass"></style>

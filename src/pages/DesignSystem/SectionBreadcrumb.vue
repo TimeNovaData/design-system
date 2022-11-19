@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import oButton from "../../components/OButton.vue";
+import oButton from '../../components/OButton.vue'
 // import { ref } from "vue";
 // import SyntaxHighlight from "../../components/DesignSystem/SyntaxHighlight.vue";
 

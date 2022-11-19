@@ -8,24 +8,24 @@
 </template>
 
 <script setup>
-import { Notify, copyToClipboard } from "quasar";
-async function copy({ currentTarget }) {
-  const text = currentTarget.textContent.trim();
+import { Notify, copyToClipboard } from 'quasar'
+async function copy ({ currentTarget }) {
+  const text = currentTarget.textContent.trim()
 
   try {
-    copyToClipboard(text);
+    copyToClipboard(text)
     Notify.create({
       message: `Token copiado  <strong>${text}</strong>`,
-      position: "top-right",
+      position: 'top-right',
       timeout: 1000,
-      html: true,
-    });
+      html: true
+    })
   } catch (e) {
     Notify.create({
-      message: "Ocorreu um erro ao copiar",
-      position: "top-right",
-      timeout: 1000,
-    });
+      message: 'Ocorreu um erro ao copiar',
+      position: 'top-right',
+      timeout: 1000
+    })
   }
 }
 </script>

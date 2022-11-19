@@ -13,32 +13,32 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
-import MenuLogo from "./MenuLogo.vue";
-import GLOBAL from "../../utils/GLOBAL";
+import { onMounted, ref } from 'vue'
+import MenuLogo from './MenuLogo.vue'
+import GLOBAL from '../../utils/GLOBAL'
 
 const props = defineProps({
-  menu: Array,
-});
+  menu: Array
+})
 
-const sidebar = ref(null);
-let $ = {};
+const sidebar = ref(null)
+let $ = {}
 
 onMounted(() => {
-  console.log(sidebar);
+  console.log(sidebar)
   $ = {
-    nv0: sidebar.value,
-  };
-});
+    nv0: sidebar.value
+  }
+})
 
-function handleMouseEnter() {
-  console.log("Enter");
-  $.nv0.classList.add("active");
+function handleMouseEnter () {
+  console.log('Enter')
+  $.nv0.classList.add('active')
 }
 
-function handleMouseLeave() {
-  console.log("leave");
-  $.nv0.classList.remove("active");
+function handleMouseLeave () {
+  console.log('leave')
+  $.nv0.classList.remove('active')
 }
 </script>
 
@@ -58,7 +58,6 @@ function handleMouseLeave() {
   --z-index-sidebar-nv0: 9000
   --z-index-sidebar-nv1: 9001
   --width-sidebar-nv-1: 80px
-
 
 .OSidebar
   position: fixed

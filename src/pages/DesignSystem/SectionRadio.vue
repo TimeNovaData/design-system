@@ -46,15 +46,16 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import ORadio from "../../components/ORadio.vue";
-import OCheck from "../../components/OCheck.vue";
-import SyntaxHighlight from "../../components/DesignSystem/SyntaxHighlight.vue";
-import OButton from "src/components/OButton.vue";
+import { ref } from 'vue'
+import ORadio from '../../components/ORadio.vue'
+import OCheck from '../../components/OCheck.vue'
+import SyntaxHighlight from '../../components/DesignSystem/SyntaxHighlight.vue'
+import OButton from 'src/components/OButton.vue'
+
 const code = `<script>
 import ORadio from "../../components/ORadio.vue";
 //size: sm, md, lg
-<${"/"}script>
+<${'/'}script>
 
 <template>
   <o-radio
@@ -72,11 +73,11 @@ import ORadio from "../../components/ORadio.vue";
 
 </template>
 
-`;
+`
 
-const value = ref("radio");
-const check = ref(false);
-const checkTrue = ref(true);
+const value = ref('radio')
+const check = ref(false)
+const checkTrue = ref(true)
 </script>
 
 <style lang="scss" scoped></style>

@@ -12,17 +12,17 @@
 </template>
 
 <script>
-export default { inheritAttrs: false };
+export default { inheritAttrs: false }
 </script>
 
 <script setup>
-import { useSlots, useAttrs } from "vue";
+import { useSlots, useAttrs } from 'vue'
 
-const slots = useSlots();
-const attrs = useAttrs();
+const slots = useSlots()
+const attrs = useAttrs()
 
-const sizes = { sm: "1rem ", md: "1.25rem", lg: "1.5rem" };
-const setSize = sizes[attrs.size];
+const sizes = { sm: '1rem ', md: '1.25rem', lg: '1.5rem' }
+const setSize = sizes[attrs.size]
 </script>
 
 <style lang="scss" scoped></style>

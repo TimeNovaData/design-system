@@ -12,17 +12,17 @@
 </template>
 
 <script>
-export default { inheritAttrs: false };
+export default { inheritAttrs: false }
 </script>
 
 <script setup>
-import { useSlots, useAttrs } from "vue";
+import { useSlots, useAttrs } from 'vue'
 
-const slots = useSlots();
-const attrs = useAttrs();
-const appendSize = attrs["append-size"];
-const appendsize = attrs["append-size"] ? attrs["append-size"] : "35px";
-const prependsize = attrs["prepend-size"] ? attrs["prepend-size"] : "20px";
+const slots = useSlots()
+const attrs = useAttrs()
+const appendSize = attrs['append-size']
+const appendsize = attrs['append-size'] ? attrs['append-size'] : '35px'
+const prependsize = attrs['prepend-size'] ? attrs['prepend-size'] : '20px'
 </script>
 
 <style lang="sass">
@@ -31,7 +31,6 @@ const prependsize = attrs["prepend-size"] ? attrs["prepend-size"] : "20px";
   --append-size: v-bind(appendsize)
   .q-field__append
     width: v-bind(appendSize) !important
-
 
 //remove browser autocomplete background
 .body--dark
@@ -53,8 +52,6 @@ const prependsize = attrs["prepend-size"] ? attrs["prepend-size"] : "20px";
     input:-webkit-autofill:focus
       -webkit-box-shadow: 0 0 0 50px rgb(var(--white)) inset
       -webkit-text-fill-color: rgba(var(--neutral-70), 1) !important
-
-
 
 .q-field__prepend
   width: v-bind(prependsize) !important

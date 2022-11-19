@@ -5,13 +5,13 @@
 <script setup>
 const props = defineProps({
   bg: String,
-  color: String,
-});
+  color: String
+})
 
 const styleObj = {
   background: `rgba(var(${props.bg}), 1)`,
-  color: `rgba(var(${props.color}), 1)`,
-};
+  color: `rgba(var(${props.color}), 1)`
+}
 </script>
 
 <style lang="sass" scoped>

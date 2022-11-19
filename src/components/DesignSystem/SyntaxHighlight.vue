@@ -16,20 +16,19 @@
 </template>
 
 <script setup>
-import hljsVuePlugin from "@highlightjs/vue-plugin";
-import hljs from "highlight.js/lib/common";
+import hljsVuePlugin from '@highlightjs/vue-plugin'
+import hljs from 'highlight.js/lib/common'
 
-const highlightjs = hljsVuePlugin.component;
+const highlightjs = hljsVuePlugin.component
 
 defineProps({
-  code: String,
-});
+  code: String
+})
 </script>
 
 <style lang="sass">
 .code_high
   height: max-content !important
-
 
   pre code.hljs
     display: block

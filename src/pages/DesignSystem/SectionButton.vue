@@ -56,15 +56,15 @@
 </template>
 
 <script setup>
-import oButton from "../../components/OButton.vue";
-import { ref } from "vue";
-import SyntaxHighlight from "../../components/DesignSystem/SyntaxHighlight.vue";
+import oButton from '../../components/OButton.vue'
+import { ref } from 'vue'
+import SyntaxHighlight from '../../components/DesignSystem/SyntaxHighlight.vue'
 
 const code = `<script>
 import oButton from "../../components/OButton.vue";
 //size: sm, md, lg
 //variation: [primary] [secondary] [tertiary]
-<${"/"}script>
+<${'/'}script>
 
 <template>
   <o-button
@@ -74,19 +74,19 @@ import oButton from "../../components/OButton.vue";
   </o-button>
 </template>
 
-`;
-const progress = ref({ loading: false, percentage: 0 });
+`
+const progress = ref({ loading: false, percentage: 0 })
 
-function startComputing(a, b) {
-  progress.value.loading = true;
-  progress.value.percentage = 0;
+function startComputing (a, b) {
+  progress.value.loading = true
+  progress.value.percentage = 0
 
   setInterval(() => {
-    progress.value.percentage += Math.floor(Math.random() * 8 + 10);
+    progress.value.percentage += Math.floor(Math.random() * 8 + 10)
     if (progress.value.percentage >= 100) {
-      progress.value.loading = false;
+      progress.value.loading = false
     }
-  }, 1200);
+  }, 1200)
 }
 </script>
 

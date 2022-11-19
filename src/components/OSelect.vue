@@ -13,20 +13,20 @@
 </template>
 
 <script>
-export default { inheritAttrs: false };
+export default { inheritAttrs: false }
 </script>
 
 <script setup>
-import { useSlots, useAttrs, ref, onMounted } from "vue";
+import { useSlots, useAttrs, ref, onMounted } from 'vue'
 
-const slots = useSlots();
-const attrs = useAttrs();
-const selectRef = ref(null);
+const slots = useSlots()
+const attrs = useAttrs()
+const selectRef = ref(null)
 
 onMounted(() => {
-  console.log(slots);
-});
-defineExpose({ selectRef });
+  console.log(slots)
+})
+defineExpose({ selectRef })
 </script>
 
 <style lang="sass"></style>
