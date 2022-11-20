@@ -1,218 +1,259 @@
 <template>
   <aside
-    class="sidebar-container"
-    :class="props.effects"
-    :level="menu[0].nivel"
-    @mouseenter="() => debounce(50, handleMouseEnter, 'menuOpen')()"
-    @mouseleave="() => debounce(50, handleMouseLeave, 'menuOpen')()"
+    class="OSidebar"
+    ref="sidebar"
+    level="0"
+    @mouseenter="GLOBAL.debounce(100, handleMouseEnter, 'sideTime')()"
+    @mouseleave="GLOBAL.debounce(50, handleMouseLeave, 'sideTime')()"
   >
-    <header
-      class="header-menu-one"
-      :level="menu[0].nivel"
-      :class="`${
-        props.menu[0].nivel == 1
-          ? 'border-b-[#cccccc3d] !border-b-[1px] py-6 '
-          : ''
-      }`"
-    >
-      <span v-if="props.menu[0].nivel != 1" class="line-horizontal"></span>
-      <q-icon
-        class="icon-title"
-        v-if="props.menu[0].nivel == 2"
-        :name="`svguse:/icons.svg#${props.menu[0].icon}`"
-        size="24px"
-        style="--icon: #06f784"
-      ></q-icon>
-      <div class="self-center" v-if="props.menu[0]?.nivel == 1">
-        <!--   <img :src="logoIMG" class="logo-close" />
-        <img :src="logoIMG" class="logo-open" /> -->
-      </div>
-
-      <div class="flex justify-center box-title" v-else>
-        <span
-          class="hidden sm:!block"
-          @click="(e) => debounce(100, back, 'menuOpen')(e)"
-        >
-          Voltar
-        </span>
-        <h1 class="text-lg font-medium title">{{ title }}</h1>
-
-        <span
-          @click="(e) => debounce(100, closeSidemenu, 'menuOpen')(e)"
-          class="hidden sm:!block"
-        >
-          Close
-        </span>
-      </div>
+    <header class="OSidebar-header" v-if="showHeader">
+      <MenuLogo />
     </header>
-    <ul>
-      <MenuList
-        v-for="item in props.menu"
-        :key="item"
-        :item="item"
-        :nivel="menu[0].nivel"
-      />
-    </ul>
+
+    <section>
+      <q-list class="Nv0-ul" tag="ul">
+        <MenuLi
+          v-for="(Nv0, index) in props.menu"
+          :key="Nv0.title + index"
+          :data="Nv0"
+          :sidebar="sidebar"
+          :to="Nv0.href"
+          @Nv0Click="() => handleClick(true)"
+          @click="(e) => Nv0HandleClick(e, Nv0)"
+          :showHeader="showHeader"
+        >
+          <q-item-section
+            v-if="Nv0.icon"
+            avatar
+            class="min-w-32 pl-10"
+          >
+            <q-icon size="24px" :name="Nv0.icon"></q-icon>
+          </q-item-section>
+
+          <q-item-section class="Nv0-text">
+            <p class="one-line">{{ Nv0.title }}</p>
+          </q-item-section>
+
+          <q-item-section
+            v-if="Nv0.submenu"
+            avatar
+            class="opacity-50"
+          >
+            <q-icon size="1rem" name="sym_r_navigate_next"></q-icon>
+          </q-item-section>
+        </MenuLi>
+      </q-list>
+    </section>
+
   </aside>
+  <Teleport to="body">
+    <span
+      v-if="state.open"
+      class="OSidebar-deep"
+      @click="() => handleClick(false)"
+    ></span>
+  </Teleport>
+  <Teleport to="body">
+    <q-page-sticky :offset="[32, 500]" class="z-[9999999]">
+      <o-button primary size="md" @click="showHeader = !showHeader">
+        Remover Header
+      </o-button>
+    </q-page-sticky>
+  </Teleport>
 </template>
 
 <script setup>
-import { onMounted } from "vue";
-import MenuList from "./MenuList.vue";
+import { onMounted, ref, watch } from 'vue'
+import { useRoute } from 'vue-router'
+import OButton from '../OButton.vue'
+import MenuLogo from './MenuLogo.vue'
+import MenuLi from './MenuLi.vue'
+
+import GLOBAL from '../../utils/GLOBAL'
+import logoAnimation from 'src/utils/animation/logo'
+import { dom } from 'quasar'
+
+const route = useRoute()
 
 const props = defineProps({
   menu: Array,
-  title: String,
-  effects: String,
-});
+})
 
-const debounce = (time, fn, name) => {
-  return (...args) => {
-    clearTimeout(window[name]);
-    window[name] = setTimeout(() => {
-      fn(...args);
-    }, time);
-  };
-};
+const state = ref({
+  open: false,
+  hover: false,
+})
+const showHeader = ref(true)
 
-let $els = {};
+const sidebar = ref(null)
+let $ = {}
+let animate
+
 onMounted(() => {
-  $els = {
-    firstMenu: document.querySelector('.sidebar-container[level="1"]'),
-  };
-});
-
-const clickInside = (e) => {
-  const firstMenu = document.querySelector('.sidebar-container[level="1"]');
-  let lisLevel1 = [
-    ...firstMenu.closest("aside").querySelectorAll("li[level='1']"),
-  ];
-
-  if (!firstMenu.contains(e.target)) {
-    firstMenu.classList.remove("active");
-    firstMenu.classList.remove("open-menu-fixed");
-
-    lisLevel1.map((li) => li.classList.remove("active"));
-  } else {
-    firstMenu.classList.add("open-menu-fixed");
+  $ = {
+    Nv0: sidebar.value,
   }
-};
+  animate = logoAnimation('.OSidebar')
+  animate.logoAnimationToNDT.play().progress(1)
+})
 
-const handleMouseEnter = (e) => {
-  // if (!props.menu[0].nivel === 1) return;
+watch(showHeader, () => {
+  if (!showHeader.value) document.body.classList.add("showHeader")
+  else document.body.classList.remove("showHeader")
+})
 
-  $els.firstMenu.classList.add("active");
-
-  document.addEventListener("click", clickInside);
-  console.log("entrou");
-};
-
-const handleMouseLeave = () => {
-  const lv1itens = $els.firstMenu.querySelectorAll("ul li[level='1'].active");
-  const existActive = lv1itens.length;
-
-  if (!existActive && !$els.firstMenu.classList.contains("open-menu-fixed")) {
-    document.removeEventListener("click", clickInside);
-    $els.firstMenu.classList.remove("active");
+watch(
+  () => state.value.open,
+  (open) => {
+    console.log('watch open', open)
+    if (open) {
+      $.Nv0.classList.add('sidebar-open')
+    } else {
+      $.Nv0.classList.remove('sidebar-open')
+      state.value.hover = false
+      toggleActiveOnLis()
+    }
   }
-};
+)
 
-const handleEnterOverflow = () => {
-  const firstMenu = document.querySelector(".sidebar-container");
-  if (!firstMenu.classList.contains("open-menu-fixed")) {
-    handleMouseLeave();
+watch(
+  () => state.value.hover,
+  (hover) => {
+    console.log('watch hover', hover)
+    if (hover) {
+      $.Nv0.classList.add('active')
+      animate.logoAnimationToNovadata.play().timeScale(1.1)
+    } else {
+      $.Nv0.classList.remove('active')
+      animate.logoAnimationToNovadata.reverse()
+    }
   }
-};
+)
+// Fecha menu ao mudar a rota
+watch(
+  () => route.path,
+  () => {
+    state.value.open = false
+  }
+)
 
-const back = (e) => {
-  const nivel = e.target.closest("aside").attributes.level.value;
-  const previousLiSelected = document.querySelector(
-    `li.active[level="${nivel - 1}"]`
-  );
-  previousLiSelected.classList.remove("active");
-};
+function handleMouseEnter() {
+  state.value.hover = true
+}
 
-const closeSidemenu = () => {
+function handleMouseLeave() {
+  if (state.value.open) return
+  state.value.hover = false
+}
+
+function handleClick(val) {
+  state.value.open = val
+}
+
+function Nv0HandleClick({ currentTarget }, Nv0) {
+  if (Nv0.href) {
+    GLOBAL.debounce(0, handleClick, 'sideTime')(false)
+  }
+  toggleActiveOnLis(currentTarget)
+}
+
+function toggleActiveOnLis(current) {
   document
-    .querySelector(".sidebar-container")
-    .classList.remove("active", "open-menu-fixed");
-  document
-    .querySelector(".sidebar-container li.active")
-    .classList.remove("active");
-
-  handleMouseLeave();
-};
+    .querySelectorAll('.Nv0-ul > li')
+    .forEach((i) => i.classList.remove('active'))
+  if (current) current.classList.add('active')
+}
 </script>
 
 <style lang="sass">
-.sidebar-container
-  --sidebar-width-nv0: 5rem
-  --z-index-sidebar-nv0: 9000
-  --z-index-sidebar-nv1: 9001
-  --width-sidebar-nv-1: 80px
-  --width-sidebar-nv-1-open: 21.25rem
+:root
+  --Nv0-sidebar-width: 5rem
+  --Nv0-sidebar-width-open: 21.25rem
+  --Nv0-sidebar-transition: cubic-bezier(.4,0,.2,1)
+  --Nv0-sidebar-border:1px solid rgba(var(--neutral-100),0.1)
+  --Nv0-sidebar-z-index: 9010
+  --Nv1-sidebar-width: 21.25rem
+  --Nv1-sidebar-z-index: 9019
+  --Nv2-sidebar-z-index: 9018
+  --z-index-deep: 9000
+  --sidebar-top:0
 
-.sidebar-container
+.body--light
+  --logo-color: #000
+  --sidebar-bg: var(--white)
+  --Nv1-sidebar-bg: var(--white)
+  --Nv2-sidebar-bg: var(--white)
+
+.body--dark
+  --logo-color: white
+  --sidebar-bg: var(--d-neutral-10)
+  --Nv1-sidebar-bg: var(--d-neutral-20)
+  --Nv2-sidebar-bg: var(--d-neutral-30)
+  --Nv0-sidebar-border:1px solid rgba(var(--white),0.05)
+
+.OSidebar
   position: fixed
-  width: var(--sidebar-width-nv0)
-  z-index: var(--z-index-sidebar-nv0)
   height: 100vh
-  color: inherit
   left: 0
-  top: 0
-
-  >ul > li
-    cursor: pointer
-    white-space: nowrap
-    flex-wrap: nowrap
-
-  //LEVEL 1 --------------------------------------
-  &[level="1"]
-    background: rgb(var(--d-neutral-10))
-    z-index:  var(--z-index-sidebar-nv1)
-    width: var(--width-sidebar-nv-1)
-    transition: all .3s
-    overflow: hidden
-
-    &.active
-      width: var(--width-sidebar-nv-1-open)
-      overflow: initial
-
-    >ul li
-      margin: 0 16px
-      border-radius: 6px
-      display: flex
-
-      >a
-        flex: 1 1 auto
-        padding: 8px
-        cursor: pointer
-
-      &.active
-        background: rgba(var(--white), 0.1)
-
-        .sidebar-container[level="2"]
-          width: var(--width-sidebar-nv-1-open)
-          transition: .3s all
-          pointer-events: auto
-
-      &:has(ul > li)
-        cursor: default
-
-      &:hover
-        background: rgba(var(--white), 0.1)
+  top: var(--sidebar-top)
+  width: var(--Nv0-sidebar-width)
+  z-index: var(--Nv0-sidebar-z-index)
+  background: rgb(var(--sidebar-bg))
+  transition:.2s  var(--Nv0-sidebar-transition)
+  border-right: var(--Nv0-sidebar-border)
+  transition-property: width
+  overflow: hidden
+  display: flex
+  flex-direction: column
+  .showHeader &
+    --sidebar-top:51px
 
 
-  //LEVEL 2 --------------------------------------
-  &[level="2"]
-    position: absolute
-    left: 100%
-    top:0
-    width: 0px
-    opacity: 0
-    pointer-events: none
+  &.active
+    width: var(--Nv0-sidebar-width-open)
 
+  &.sidebar-open
+    width: var(--Nv0-sidebar-width-open)
 
-  //LEVEL 3 --------------------------------------
-  // &[level="3"]
+// Header
+.OSidebar-header
+  padding: 1.5rem .5rem 1.5rem
+  border-bottom: var(--Nv0-sidebar-border)
+  height: 92px
+
+// Logo Estilos
+.OSidebar
+  .logo-ndt
+    width: 168px
+    transform: translateX(-48px)
+    transition: .2s ease
+    margin: 0 auto
+
+  &.active,
+  &.sidebar-open
+    .logo-ndt
+      width: 250px
+      transform: translateX(-10px)
+
+//itens
+.Nv0-ul
+  margin-top: 2rem
+.Nv0-li
+  white-space: nowrap
+.Nv0-text
+  opacity: 0
+  transition: opacity .2s ease
+  .active &
+    opacity: 1
+// Fundo
+.OSidebar-deep
+  width: 100vw
+  height: 100vh
+  background: rgba(0,0,0,0.1)
+  z-index: var(--z-index-deep)
+  position: fixed
+  cursor: pointer
+  top: var(--sidebar-top)
+  left: 0
+  backdrop-filter: blur(10px)
 </style>

@@ -97,7 +97,7 @@
             name="name"
           >
             <template v-slot:prepend>
-              <q-icon name="sym_r_person"></q-icon>
+              <q-icon size="1.5rem" name="sym_r_person"></q-icon>
             </template>
           </o-input>
 

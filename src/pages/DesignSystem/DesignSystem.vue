@@ -2,7 +2,7 @@
   <q-layout view="hHh lpR fFf" style="height: 100vh">
     <q-header
       ref="header"
-      class="bg-d-neutral-30 border-b dark:border-d-neutral-40 border-white dark:bg-d-neutral-10"
+      class="bg-d-neutral-30 border-b border-white dark:bg-d-neutral-10 header-top"
     >
       <q-toolbar>
         <q-btn
@@ -12,7 +12,10 @@
           round
           @click="leftDrawerOpen = !leftDrawerOpen"
         >
-          <q-icon size="28px" name="svguse:icons.svg#icon_menu"></q-icon>
+          <q-icon
+            size="28px"
+            name="svguse:icons.svg#icon_menu"
+          ></q-icon>
         </q-btn>
 
         <q-toolbar-title>
@@ -34,7 +37,10 @@
               </q-item>
 
               <q-item tag="label">
-                <q-item-section avatar class="flex items-center flex-row">
+                <q-item-section
+                  avatar
+                  class="flex items-center flex-row"
+                >
                   <q-toggle v-model="darkMode"></q-toggle>
                   <p class="text-paragraph-2">Dark Mode</p>
                 </q-item-section>
@@ -77,11 +83,25 @@
       ref="drawer"
     >
       <q-scroll-area class="fit">
-        <q-list separator v-for="item in list" :key="item.id">
-          <q-item clickable v-ripple @click="sectionActive = item.id">
-            <q-item-section class="text-neutral-70 dark:text-white/80">{{
-              item.name
-            }}</q-item-section>
+        <q-list class="mt-24 flex flex-col">
+          <q-item
+            dense
+            class="text-neutral-100/50 dark:text-white/80 text-caps-3 !py-4 !min-h-24 flex items-end order-1"
+          >
+            Components
+          </q-item>
+          <q-item
+            v-for="(item, index) in list"
+            :key="item.id"
+            clickable
+            v-ripple
+            @click="sectionActive = item.id"
+            :style="{ 'order': index }"
+          >
+            <q-item-section
+              class="text-neutral-70 dark:text-white/80"
+              >{{ item.name }}</q-item-section
+            >
           </q-item>
         </q-list>
       </q-scroll-area>
@@ -91,26 +111,32 @@
     <q-page-container class="overflow-x-hidden">
       <q-scroll-area style="height: calc(100vh - 51px)">
         <div class="p-24 flex gap-16 overflow-hidden w-full">
-          <!-- <TransitionGroup name="list" tag="div" class="w-full"> -->
-          <section-tipographie v-if="sectionActive == 'typographie'" />
+          <!--         <transition-group name="list" tag="section"> -->
+
+          <section-tipographie
+            v-if="sectionActive == 'typographie'"
+          />
           <section-button v-else-if="sectionActive == 'button'" />
           <section-radio v-else-if="sectionActive == 'checkbox'" />
           <section-chips v-else-if="sectionActive == 'chips'" />
           <section-intro v-else-if="sectionActive == 'intro'" />
-          <section-breadcrumb v-else-if="sectionActive == 'breadcrumb'" />
+          <section-breadcrumb
+            v-else-if="sectionActive == 'breadcrumb'"
+          />
           <section-input v-else-if="sectionActive == 'inputs'" />
           <section-selects v-else-if="sectionActive == 'selects'" />
+          <section-tabs v-else-if="sectionActive == 'tabs'" />
 
-          <!-- </TransitionGroup> -->
+          <!--      </transition-group> -->
         </div>
       </q-scroll-area>
     </q-page-container>
-    <q-page-sticky position="top-right" :offset="[18, 18]" class="z-[9999999]">
+    <q-page-sticky :offset="[32, 32]" class="z-[9999999]">
       <o-button
+        primary
         fab
         icon="sym_r_close"
-        secondary
-        @click="(sectionActive = 'intro') && drawer.show()"
+        @click=";(sectionActive = 'intro') && drawer.show()"
         v-if="sectionActive == 'menuMultiLevel'"
       />
     </q-page-sticky>
@@ -130,11 +156,14 @@ import SectionIntro from './SectionIntro.vue'
 import SectionBreadcrumb from './SectionBreadcrumb.vue'
 import SectionInput from './SectionInput.vue'
 import { useDarkMode } from '../../stores/darkMode'
-import { storeToRefs } from 'pinia'
-import MenuMultiLevel from 'src/components/MenuMultiLevel/MenuMultiLevel2.vue'
-import SectionSelects from './SectionSelects.vue'
 
-const sectionActive = ref('menuMultiLevel')
+import { storeToRefs } from 'pinia'
+import MenuMultiLevel from '../../components/MenuMultiLevel/MenuMultiLevel.vue'
+import SectionSelects from './SectionSelects.vue'
+import menuList from 'src/utils/menuList'
+import SectionTabs from './SectionTabs.vue'
+
+const sectionActive = ref('intro')
 const leftDrawerOpen = ref(true)
 // const drawerLeft = ref(0)
 
@@ -149,102 +178,48 @@ watch(sectionActive, (val) => {
 onMounted(() => {
   if (sectionActive.value === 'menuMultiLevel') drawer.value.hide()
 })
-const menuList = [
-  {
-    name: 'Colors & Avatars',
-    icon: 'icon_config',
-    class: 'activeEffect',
-    nivel: 0,
-    submenu: [
-      {
-        title: 'Calendário de Produção',
-        nivel: 1
-      },
-      {
-        title: 'Produtos',
-        nivel: 1,
-        submenu: [
-          {
-            title: 'Produtos',
-            nivel: 2
-          },
-          {
-            title: 'Sub Produtos',
-            nivel: 2
-          },
-          {
-            title: 'Insumo',
-            nivel: 2
-          }
-        ]
-      },
-      {
-        title: 'Previsão de Consumo',
-        nivel: 1,
-        submenu: [
-          {
-            title: 'Previsão de Consumo',
-            nivel: 2
-          }
-        ]
-      },
-      {
-        title: 'NF de entrada',
-        // link: 'https://www.google.com',
-        nivel: 1,
-        submenu: [
-          {
-            title: 'NF de entrada',
-            // link: 'https://www.google.com',
-            nivel: 2
-          }
-        ]
-      }
-    ]
-  }
-]
 
 const list = [
   {
     name: '@ Inicio',
-    id: 'intro'
+    id: 'intro',
   },
   {
     name: 'Button',
-    id: 'button'
+    id: 'button',
   },
   {
     name: 'Typographies',
-    id: 'typographie'
+    id: 'typographie',
   },
   {
     name: 'Checkbox & RadioButton',
-    id: 'checkbox'
+    id: 'checkbox',
   },
   {
     name: 'Badge, Status, Tags',
-    id: 'chips'
+    id: 'chips',
   },
   {
     name: 'Menu Multi Level',
-    id: 'menuMultiLevel'
+    id: 'menuMultiLevel',
   },
   {
     name: 'Breadcrumb',
-    id: 'breadcrumb'
+    id: 'breadcrumb',
   },
   {
     name: 'Inputs',
-    id: 'inputs'
+    id: 'inputs',
   },
   {
     name: 'Selects',
-    id: 'selects'
+    id: 'selects',
   },
   {
     name: 'Tabs',
-    id: 'tabs'
-  }
+    id: 'tabs',
+  },
 ].sort((a, b) => {
   if (a.name > b.name) return 1
   if (a.name < b.name) return -1
@@ -252,4 +227,8 @@ const list = [
 })
 </script>
 
-<style lang="sass"></style>
+<style lang="sass">
+.showHeader
+  .header-top
+    z-index: 9999999999999999999
+</style>

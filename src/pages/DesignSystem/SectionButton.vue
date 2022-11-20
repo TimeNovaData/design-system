@@ -77,7 +77,7 @@ import oButton from "../../components/OButton.vue";
 `
 const progress = ref({ loading: false, percentage: 0 })
 
-function startComputing (a, b) {
+function startComputing(a, b) {
   progress.value.loading = true
   progress.value.percentage = 0
 
