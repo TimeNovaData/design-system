@@ -50,7 +50,8 @@
             size="sm"
             tertiary
           >
-            <q-tooltip v-bind="tooltipProps">Adicionar</q-tooltip>
+            <q-tooltip v-bind="tooltipProps">Lista</q-tooltip>
+
             <q-icon
               size="1.25rem"
               name="svguse:icons.svg#icon_list"
@@ -64,7 +65,8 @@
             size="sm"
             tertiary
           >
-            <q-tooltip v-bind="tooltipProps">Lista</q-tooltip>
+            <q-tooltip v-bind="tooltipProps">Adicionar</q-tooltip>
+
             <q-icon
               size="1.25rem"
               name="svguse:icons.svg#icon_add"
@@ -214,6 +216,7 @@ const tooltipProps = {
     height: 92px
     justify-content: space-between
     position: relative
+
     //ornamento verde Nv1
     &::after
       content:''
@@ -239,7 +242,6 @@ const tooltipProps = {
     height: 92px
     justify-content: space-between
     position: relative
-    // margin-bottom: 2rem
 
   //Button Add and List
   .action-button
@@ -249,15 +251,12 @@ const tooltipProps = {
     // background: rgba(var(--neutral-100), 0.1)
 
 //Dark
-.body--dark
-    .action-button
+.body--dark .action-button
       background: rgba(var(--white), 0.05) !important
-    // .Nv1-header,
-    // .Nv2-header
-    //   background: rgba(var(--white), 0.10) !important
+
 
 //ativa os submenu no hover e active
-.OSidebar.sidebar-open
+.sidebar-open .OSidebar
   li:not(.Nv0-li):hover,
   li.active
     >.q-focus-helper

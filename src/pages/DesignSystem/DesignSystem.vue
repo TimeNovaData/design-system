@@ -19,11 +19,8 @@
         </q-btn>
 
         <q-toolbar-title>
-          <div class="relative w-[220px] h-48">
-            <q-icon
-              name="svguse:icons.svg#logo"
-              class="absolute left-0 w-[151px] h-[auto] top-[-54px]"
-            ></q-icon>
+          <div class="relative w-[220px] h-48 flex items-center">
+            <MenuLogo class="w-[151px] h-max my-auto"></MenuLogo>
           </div>
         </q-toolbar-title>
 
@@ -96,7 +93,7 @@
             clickable
             v-ripple
             @click="sectionActive = item.id"
-            :style="{ 'order': index }"
+            :style="{ order: index }"
           >
             <q-item-section
               class="text-neutral-70 dark:text-white/80"
@@ -111,23 +108,32 @@
     <q-page-container class="overflow-x-hidden">
       <q-scroll-area style="height: calc(100vh - 51px)">
         <div class="p-24 flex gap-16 overflow-hidden w-full">
-          <!--         <transition-group name="list" tag="section"> -->
-
-          <section-tipographie
-            v-if="sectionActive == 'typographie'"
-          />
-          <section-button v-else-if="sectionActive == 'button'" />
-          <section-radio v-else-if="sectionActive == 'checkbox'" />
-          <section-chips v-else-if="sectionActive == 'chips'" />
-          <section-intro v-else-if="sectionActive == 'intro'" />
-          <section-breadcrumb
-            v-else-if="sectionActive == 'breadcrumb'"
-          />
-          <section-input v-else-if="sectionActive == 'inputs'" />
-          <section-selects v-else-if="sectionActive == 'selects'" />
-          <section-tabs v-else-if="sectionActive == 'tabs'" />
-
-          <!--      </transition-group> -->
+          <transition name="list" tag="section">
+            <section-tipographie
+              v-if="sectionActive == 'typographie'"
+            />
+            <section-button v-else-if="sectionActive == 'button'" />
+            <section-radio v-else-if="sectionActive == 'checkbox'" />
+            <section-chips v-else-if="sectionActive == 'chips'" />
+            <section-intro v-else-if="sectionActive == 'intro'" />
+            <section-breadcrumb
+              v-else-if="sectionActive == 'breadcrumb'"
+            />
+            <section-input v-else-if="sectionActive == 'inputs'" />
+            <section-selects v-else-if="sectionActive == 'selects'" />
+            <section-tabs v-else-if="sectionActive == 'tabs'" />
+            <section-table v-else-if="sectionActive == 'table'" />
+            <section-popup-proxy
+              v-else-if="sectionActive == 'popupProxy'"
+            />
+            <section-accordion
+              v-else-if="sectionActive == 'accordion'"
+            />
+            <section-paginacao
+              v-else-if="sectionActive == 'paginacao'"
+            />
+            <section-modal v-else-if="sectionActive == 'modal'" />
+          </transition>
         </div>
       </q-scroll-area>
     </q-page-container>
@@ -155,14 +161,21 @@ import SectionChips from './SectionChips.vue'
 import SectionIntro from './SectionIntro.vue'
 import SectionBreadcrumb from './SectionBreadcrumb.vue'
 import SectionInput from './SectionInput.vue'
+import SectionTable from './SectionTable.vue'
+import SectionPopupProxy from './SectionPopUpProxy.vue'
+import SectionAccordion from './SectionAccordion.vue'
+import SectionPaginacao from './SectionPaginacao.vue'
+import SectionModal from './SectionModal.vue'
+
 import { useDarkMode } from '../../stores/darkMode'
 
 import { storeToRefs } from 'pinia'
 import MenuMultiLevel from '../../components/MenuMultiLevel/MenuMultiLevel.vue'
+import MenuLogo from 'src/components/MenuMultiLevel/MenuLogo.vue'
 import SectionSelects from './SectionSelects.vue'
-import menuList from 'src/utils/menuList'
 import SectionTabs from './SectionTabs.vue'
-
+import menuList from 'src/utils/menuList'
+import logoAnimation from 'src/utils/animation/logo'
 const sectionActive = ref('intro')
 const leftDrawerOpen = ref(true)
 // const drawerLeft = ref(0)
@@ -177,6 +190,8 @@ watch(sectionActive, (val) => {
 })
 onMounted(() => {
   if (sectionActive.value === 'menuMultiLevel') drawer.value.hide()
+  const animation = logoAnimation('.header-top')
+  animation.logoAnimationToNDT.play().progress(1)
 })
 
 const list = [
@@ -220,6 +235,26 @@ const list = [
     name: 'Tabs',
     id: 'tabs',
   },
+  {
+    name: 'Table',
+    id: 'table',
+  },
+  {
+    name: 'Popup Proxy',
+    id: 'popupProxy',
+  },
+  {
+    name: 'Accordion',
+    id: 'accordion',
+  },
+  {
+    name: 'Paginaçao',
+    id: 'paginacao',
+  },
+  {
+    name: 'Modal',
+    id: 'modal',
+  },
 ].sort((a, b) => {
   if (a.name > b.name) return 1
   if (a.name < b.name) return -1
@@ -228,6 +263,7 @@ const list = [
 </script>
 
 <style lang="sass">
+
 .showHeader
   .header-top
     z-index: 9999999999999999999

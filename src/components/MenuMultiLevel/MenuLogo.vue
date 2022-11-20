@@ -72,4 +72,26 @@
 
 <script setup></script>
 
-<style lang="sass" scoped></style>
+<style lang="sass">
+
+// Logo Estilos ====================
+.OSidebar-header .logo-ndt
+  transform: translateX(-47px)
+
+.header-top .logo-ndt
+    transform: translateX(-70px)
+    --logo-color: white
+.logo-ndt
+    width: 168px
+    transition: .2s ease
+    margin: 0 auto
+
+.sidebar-active,
+.sidebar-open
+  .logo-ndt
+    transform: translateX(0px)
+    width: 250px
+
+
+//=================== pode ser removido depois
+</style>

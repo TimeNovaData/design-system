@@ -7,10 +7,13 @@
         <o-button
           secondary
           type="a"
-          href="https://quasar.dev/vue-components/input#introduction"
+          href="https://quasar.dev/vue-components/select#introduction"
           target="_blank"
           >QDocs
-          <q-icon class="!text-20" name="sym_r_arrow_outward"></q-icon>
+          <q-icon
+            class="!text-20"
+            name="sym_r_arrow_outward"
+          ></q-icon>
         </o-button>
       </div>
 
@@ -53,7 +56,9 @@
           size="lg"
           multiple
         >
-          <template #option="{ itemProps, opt, selected, toggleOption }">
+          <template
+            #option="{ itemProps, opt, selected, toggleOption }"
+          >
             <q-item v-bind="itemProps">
               <q-item-section>
                 <q-item-label>{{ opt.label }}</q-item-label>
@@ -75,7 +80,9 @@
           size="lg"
           multiple
         >
-          <template #option="{ itemProps, opt, selected, toggleOption }">
+          <template
+            #option="{ itemProps, opt, selected, toggleOption }"
+          >
             <q-item v-bind="itemProps" class="pl-8 items-center">
               <q-item-section side class="pr-8">
                 <o-check
@@ -128,7 +135,7 @@
 </template>
 
 <script setup>
-import { onMounted, onUnmounted, onUpdated, ref } from 'vue'
+import { ref } from 'vue'
 import oButton from '../../components/OButton.vue'
 import SyntaxHighlight from '../../components/DesignSystem/SyntaxHighlight.vue'
 import OSelect from 'src/components/OSelect.vue'
@@ -140,40 +147,38 @@ const soltaConsole = (...props) => {
   return 'oi'
 }
 const model = ref('')
-const options = ref(['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'])
+const options = ref([
+  'Google',
+  'Facebook',
+  'Twitter',
+  'Apple',
+  'Oracle',
+])
 
 const select = ref(null)
-const interval = ref(null)
-const starti = () => {
-  console.log('starti')
-  interval.value = setInterval(() => {
-    console.log('rodou')
-    select.value.selectRef.showPopup()
-  }, 100)
-}
 
 const model2 = ref([])
 const options2 = [
   {
     label: 'Google',
-    value: 1
+    value: 1,
   },
   {
     label: 'Facebook',
-    value: 2
+    value: 2,
   },
   {
     label: 'Twitter',
-    value: 3
+    value: 3,
   },
   {
     label: 'Apple',
-    value: 4
+    value: 4,
   },
   {
     label: 'Oracle',
-    value: 5
-  }
+    value: 5,
+  },
 ]
 const model3 = ref([])
 
@@ -181,28 +186,28 @@ const options3 = [
   {
     label: 'Google',
     img: 'https://files.tecnoblog.net/wp-content/uploads/2021/09/logotipo_da_empresa_google.jpg',
-    value: 1
+    value: 1,
   },
   {
     label: 'Facebook',
     img: 'https://www.facebook.com/images/fb_icon_325x325.png',
-    value: 2
+    value: 2,
   },
   {
     label: 'Twitter',
     img: 'https://help.twitter.com/content/dam/help-twitter/brand/logo.png',
-    value: 3
+    value: 3,
   },
   {
     label: 'Apple',
     img: 'https://files.tecnoblog.net/wp-content/uploads/2020/11/apple-logo.jpg',
-    value: 4
+    value: 4,
   },
   {
     label: 'Oracle',
     img: 'https://yt3.ggpht.com/bf3tO-EefcSglyKMZUBp_o-GuBfd0PGm_U6f7L_64CyKd3iMPiAfRkHeLfrCwLfMmCc3IMlk=s900-c-k-c0x00ffffff-no-rj',
-    value: 5
-  }
+    value: 5,
+  },
 ]
 // onMounted(() => {
 //   starti();
@@ -211,7 +216,23 @@ const options3 = [
 //   clearInterval(interval.value);
 // });
 
-const code = ''
+const code = `
+<script>
+import OSelect from "src/components/OSelect.vue"
+<${'/'}script>
+
+<o-select
+  v-model="model"
+  :options="options"
+  size="sm"
+  behavior="menu"
+  label="Select SM"
+  :clearable="true"
+></o-select>
+
+//size: sm, md, lg
+// para mais infos consulte a documentaçao do Qselect
+`
 </script>
 
 <style lang="sass"></style>

@@ -1,9 +1,10 @@
+// @import '../core/typography'
 .q-tab
   padding: 0 16px
   min-height: 48px
   transition: color .3s, background-color .3s
-
-  text-transform: uppercase
+  @include text(paragraph-1)
+  // text-transform: uppercase
   white-space: nowrap
 
   // for route tabs
@@ -35,9 +36,11 @@
     font-size: 24px
 
   &__label
+    
     font-size: $button-font-size
     line-height: $button-line-height
     font-weight: $button-font-weight
+    @include text(paragraph-1)
 
   .q-badge
     top: 3px

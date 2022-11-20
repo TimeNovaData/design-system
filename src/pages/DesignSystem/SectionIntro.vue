@@ -54,7 +54,7 @@
     2*
       trocar toggle (fiel ao ds do andrei no figma)
       colocar um badge no select multiplo,  do tipo (item), (item), (+5)
-
+      criar no DS outras variçoes de tabs
     3*
      tirar elevaçao do select ao selecionar
      trocar todos os icones default do pacote

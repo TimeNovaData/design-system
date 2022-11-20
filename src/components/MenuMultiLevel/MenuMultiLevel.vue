@@ -44,7 +44,6 @@
         </MenuLi>
       </q-list>
     </section>
-
   </aside>
   <Teleport to="body">
     <span
@@ -92,24 +91,29 @@ let animate
 onMounted(() => {
   $ = {
     Nv0: sidebar.value,
+    body: document.body,
   }
   animate = logoAnimation('.OSidebar')
   animate.logoAnimationToNDT.play().progress(1)
 })
 
 watch(showHeader, () => {
-  if (!showHeader.value) document.body.classList.add("showHeader")
-  else document.body.classList.remove("showHeader")
+  if (!showHeader.value) {
+    $.body.classList.add('showHeader')
+    animate = logoAnimation('.header-top')
+    animate.logoAnimationToNDT.play().progress(1)
+  } else {
+    $.body.classList.remove('showHeader')
+  }
 })
 
 watch(
   () => state.value.open,
   (open) => {
-    console.log('watch open', open)
     if (open) {
-      $.Nv0.classList.add('sidebar-open')
+      $.body.classList.add('sidebar-open')
     } else {
-      $.Nv0.classList.remove('sidebar-open')
+      $.body.classList.remove('sidebar-open')
       state.value.hover = false
       toggleActiveOnLis()
     }
@@ -119,12 +123,11 @@ watch(
 watch(
   () => state.value.hover,
   (hover) => {
-    console.log('watch hover', hover)
     if (hover) {
-      $.Nv0.classList.add('active')
+      $.body.classList.add('sidebar-active')
       animate.logoAnimationToNovadata.play().timeScale(1.1)
     } else {
-      $.Nv0.classList.remove('active')
+      $.body.classList.remove('sidebar-active')
       animate.logoAnimationToNovadata.reverse()
     }
   }
@@ -208,11 +211,10 @@ function toggleActiveOnLis(current) {
   .showHeader &
     --sidebar-top:51px
 
-
-  &.active
+  .sidebar-active &
     width: var(--Nv0-sidebar-width-open)
 
-  &.sidebar-open
+  .sidebar-open &
     width: var(--Nv0-sidebar-width-open)
 
 // Header
@@ -220,20 +222,6 @@ function toggleActiveOnLis(current) {
   padding: 1.5rem .5rem 1.5rem
   border-bottom: var(--Nv0-sidebar-border)
   height: 92px
-
-// Logo Estilos
-.OSidebar
-  .logo-ndt
-    width: 168px
-    transform: translateX(-48px)
-    transition: .2s ease
-    margin: 0 auto
-
-  &.active,
-  &.sidebar-open
-    .logo-ndt
-      width: 250px
-      transform: translateX(-10px)
 
 //itens
 .Nv0-ul
@@ -243,8 +231,11 @@ function toggleActiveOnLis(current) {
 .Nv0-text
   opacity: 0
   transition: opacity .2s ease
-  .active &
+
+.sidebar-active .OSidebar
+  .Nv0-text
     opacity: 1
+
 // Fundo
 .OSidebar-deep
   width: 100vw

@@ -1,12 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './*.html',
-    './src/**/*.{vue,js,ts,jsx,tsx}'
-  ],
+  content: ['./*.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
   darkMode: ['class', '.body--dark'],
 
-  safelist: [],
+  safelist: ['text-primary-pure'],
 
   theme: {
     colors: {
@@ -52,8 +49,7 @@ module.exports = {
       'd-alert-warning': withOpacity('--d-warning'),
 
       'd-alert-success-10': withOpacity('--d-success-10'),
-      'd-alert-success': withOpacity('--d-success')
-
+      'd-alert-success': withOpacity('--d-success'),
     },
 
     spacing: {
@@ -84,19 +80,19 @@ module.exports = {
       80: '5rem',
       96: '6rem',
       120: '7.5rem',
-      160: '10rem'
+      160: '10rem',
     },
 
     boxShadow: {
       sm: '0px 1px 1px 0px rgba(0, 0, 0, 0.06)',
       md: ' 0px -1px 2px rgba(0, 0, 0, 0.06), 0px 1px 1px rgba(1, 7, 27, 0.08), 0px 2px 1px rgba(1, 7, 27, 0.06), 0px 1px 3px rgba(1, 7, 27, 0.1)',
       lg: ' 0px 6px 10px rgba(1, 7, 27, 0.08), 0px 1px 18px rgba(1, 7, 27, 0.06), 0px 3px 5px rgba(1, 7, 27, 0.1)',
-      xl: '0px 24px 38px rgba(0, 0, 0, 0.04), 0px 9px 46px rgba(0, 0, 0, 0.06), 0px 11px 15px rgba(1, 7, 27, 0.1)'
+      xl: '0px 24px 38px rgba(0, 0, 0, 0.04), 0px 9px 46px rgba(0, 0, 0, 0.06), 0px 11px 15px rgba(1, 7, 27, 0.1)',
     },
 
     fontFamily: {
       sans: ['Inter', 'sans-serif'],
-      'dm-sans': ['DM Sans', 'sans-serif']
+      'dm-sans': ['DM Sans', 'sans-serif'],
     },
 
     fontSize: {
@@ -109,27 +105,27 @@ module.exports = {
       16: '1rem',
       14: '0.88rem',
       12: '0.75rem',
-      10: '0.63rem'
+      10: '0.63rem',
     },
 
     extend: {
       screens: {
-        sm: { max: '48rem' }
+        sm: { max: '48rem' },
       },
 
       backgroundImage: {
         'background-app':
-          'linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 15.56%)'
+          'linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 15.56%)',
       },
 
       lineHeight: {
         100: '100%',
         140: '140%',
-        150: '150%'
-      }
-    }
+        150: '150%',
+      },
+    },
   },
-  plugins: []
+  plugins: [],
 }
 
 function withOpacity(variableName) {

@@ -1,6 +1,6 @@
 <template>
   <q-select
-    ref="selectRef"
+    ref="componentRef"
     :class="'size-' + attrs.size"
     :size="null"
     v-bind="attrs"
@@ -21,12 +21,10 @@ import { useSlots, useAttrs, ref, onMounted } from 'vue'
 
 const slots = useSlots()
 const attrs = useAttrs()
-const selectRef = ref(null)
+const componentRef = ref(null)
 
-onMounted(() => {
-  console.log(slots)
-})
-defineExpose({ selectRef })
+defineExpose({ componentRef })
+
 </script>
 
 <style lang="sass"></style>
