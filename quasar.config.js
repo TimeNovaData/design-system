@@ -188,7 +188,10 @@ module.exports = configure(function (/* ctx */) {
 
     // Full list of options: https://v2.quasar.dev/quasar-cli/developing-capacitor-apps/configuring-capacitor
     capacitor: {
-      hideSplashscreen: true,
+      hideSplashscreen: false,
+      appName: 'design.system',
+      version: '0.1',
+      description: 'o design system da novadata',
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli/developing-electron-apps/configuring-electron
@@ -226,10 +229,13 @@ module.exports = configure(function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'design-system',
-        // win: {
-        //   target: 'nsis'
-        // }
+        appId: 'design.system.novadata',
+        win: {
+          target: 'nsis',
+        },
+        linux: {
+          target: 'AppImage ',
+        },
       },
     },
 

@@ -1,7 +1,7 @@
 <template>
   <small
     @click="copy"
-    class="grow-0 h-max p-2 px-4 bg-neutral-100/10 text-neutral-100/90 rounded dark:text-white/80 hover:brightness-150 cursor-pointer"
+    class="grow-0 h-max p-2 px-4 bg-neutral-100/10 text-neutral-100/90 rounded-md dark:bg-d-neutral-30 dark:text-white/80 hover:brightness-150 cursor-pointer border border-transparent dark:border-white/10"
   >
     <slot></slot>
   </small>

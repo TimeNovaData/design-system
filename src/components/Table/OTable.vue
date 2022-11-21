@@ -17,9 +17,7 @@ const slots = useSlots()
 const attrs = useAttrs()
 const componentRef = ref(null)
 
-onMounted(() => {
-  console.log(slots)
-})
+
 defineExpose({ componentRef })
 </script>
 

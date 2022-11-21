@@ -83,7 +83,7 @@
         <q-list class="mt-24 flex flex-col">
           <q-item
             dense
-            class="text-neutral-100/50 dark:text-white/80 text-caps-3 !py-4 !min-h-24 flex items-end order-1"
+            class="text-neutral-100/40 dark:text-white/40 text-caps-3 !py-4 !min-h-24 flex items-end order-1"
           >
             Components
           </q-item>
@@ -93,7 +93,7 @@
             clickable
             v-ripple
             @click="sectionActive = item.id"
-            :style="{ order: index }"
+            :style="{ order: item.order ? item.order : index }"
           >
             <q-item-section
               class="text-neutral-70 dark:text-white/80"
@@ -108,7 +108,7 @@
     <q-page-container class="overflow-x-hidden">
       <q-scroll-area style="height: calc(100vh - 51px)">
         <div class="p-24 flex gap-16 overflow-hidden w-full">
-          <transition name="list" tag="section">
+          <transition name="list" tag="section" class="w-full">
             <section-tipographie
               v-if="sectionActive == 'typographie'"
             />
@@ -133,6 +133,7 @@
               v-else-if="sectionActive == 'paginacao'"
             />
             <section-modal v-else-if="sectionActive == 'modal'" />
+            <section-colors v-else-if="sectionActive == 'cores'" />
           </transition>
         </div>
       </q-scroll-area>
@@ -166,6 +167,7 @@ import SectionPopupProxy from './SectionPopUpProxy.vue'
 import SectionAccordion from './SectionAccordion.vue'
 import SectionPaginacao from './SectionPaginacao.vue'
 import SectionModal from './SectionModal.vue'
+import SectionColors from './SectionColors.vue'
 
 import { useDarkMode } from '../../stores/darkMode'
 
@@ -176,9 +178,9 @@ import SectionSelects from './SectionSelects.vue'
 import SectionTabs from './SectionTabs.vue'
 import menuList from 'src/utils/menuList'
 import logoAnimation from 'src/utils/animation/logo'
+
 const sectionActive = ref('intro')
 const leftDrawerOpen = ref(true)
-// const drawerLeft = ref(0)
 
 const dark = useDarkMode()
 const { darkMode } = storeToRefs(dark)
@@ -198,6 +200,12 @@ const list = [
   {
     name: '@ Inicio',
     id: 'intro',
+    order: -3,
+  },
+  {
+    name: 'Cores',
+    id: 'cores',
+    order: -2,
   },
   {
     name: 'Button',
@@ -206,6 +214,7 @@ const list = [
   {
     name: 'Typographies',
     id: 'typographie',
+    order: -1,
   },
   {
     name: 'Checkbox & RadioButton',

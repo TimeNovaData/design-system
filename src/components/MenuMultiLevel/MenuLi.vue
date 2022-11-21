@@ -64,7 +64,7 @@
             :to="Nv1.add"
             size="sm"
             tertiary
-          >
+        >
             <q-tooltip v-bind="tooltipProps">Adicionar</q-tooltip>
 
             <q-icon
