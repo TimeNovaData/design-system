@@ -169,11 +169,25 @@
         href="https://discord.gg/cXrcex9q"
         >Discord comunidade Quasar</a
       >
+      <a
+        target="_blank"
+        class="text-medium text-[#00b4ff] dark:text-opacity-80 border-b border-dashed w-max text-paragraph-2"
+        href="https://github.com/quasarframework/quasar/discussions/"
+        >Github comunidade Quasar</a
+      >
+      
     </div>
 
     <p class="font-semibold text-neutral-100 dark:text-white mt-24 mb-8">
       Links uteis
     </p>
+    <a
+        target="_blank"
+        class="text-medium text-[#00b4ff] dark:text-opacity-80 border-b border-dashed w-max text-paragraph-2"
+        href="https://vuecomponents.com/"
+        >Vuecomponents</a
+      >
+    
     <p>Em breve...</p>
 
   </q-card>

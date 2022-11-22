@@ -26,10 +26,10 @@
         <q-breadcrumbs-el label="Breadcrumbs" />
       </q-breadcrumbs>
 
-      <!--
-      <syntax-highlight :code="code"></syntax-highlight> -->
-
+      <!-- <syntax-highlight :code="code"></syntax-highlight> -->
       <!--  <pre class="mt-32" v-highlightjs="codeBTN"><code class="vue"></code></pre> -->
+
+
     </section>
   </q-card>
 </template>

@@ -58,6 +58,8 @@
 
 <script setup>
 import TokenClipboard from 'src/components/DesignSystem/TokenClipboard.vue'
+
+
 const colorsWhite = {
   white: [255, 255, 255],
   black: [0, 0, 0],
@@ -67,8 +69,8 @@ const colorsWhite = {
   'neutral-30': [239, 239, 239],
   'neutral-20': [245, 245, 245],
   'neutral-10': [250, 250, 250],
-  'primary-light': [55, 217, 140],
   'primary-pure-10': [232, 251, 242],
+  'primary-light': [55, 217, 140],
   'primary-pure': [17, 210, 118],
   'primary-pure-dark': [14, 176, 99],
   'alert-error-10': [253, 234, 234],
@@ -84,9 +86,9 @@ const colorsDark = {
   'd-neutral-20': [23, 23, 23],
   'd-neutral-30': [31, 31, 31],
   'd-neutral-40': [36, 36, 36],
+  'd-primary-pure-10': [17, 41, 29],
   'd-primary-light': [46, 248, 152],
   'd-primary-pure': [6, 247, 132],
-  'd-primary-pure-10': [17, 41, 29],
   'd-primary-pure-dark': [5, 207, 111],
   'd-error': [247, 65, 65],
   'd-error-10': [255, 236, 236],
