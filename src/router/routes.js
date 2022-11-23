@@ -18,7 +18,6 @@ const routes = [
     
     children: [
       {
-        name:'kanban',
         path: 'board',
         component: PageKanban,
       },
