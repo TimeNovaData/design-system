@@ -7,6 +7,11 @@ const routes = [
     path: '/design-system',
     component: DesignSystem,
   },
+  
+  {
+    path: '/',
+    redirect: '/kanban/1/board'
+  },
   {
     path: '/kanban/:id',
     component: LayoutKanban,

@@ -17,7 +17,7 @@
       </OButton>
     </header>
 
-    <div class="cards-wrapper">
+    <div class="cards-wrapper swiper-no-swiping" >
       <q-scroll-area>
         <slot></slot>
       </q-scroll-area>

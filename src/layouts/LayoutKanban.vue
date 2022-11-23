@@ -3,7 +3,10 @@
     <BaseHeader></BaseHeader>
     <KanbanHeader></KanbanHeader>
 
-    <q-page-container class="kanban-page-container" style="padding-top:var(--top-size)">
+    <q-page-container
+      class="kanban-page-container"
+      style="padding-top: var(--top-size)"
+    >
       <router-view />
     </q-page-container>
 
@@ -16,8 +19,7 @@ import { ref } from 'vue'
 import BaseHeader from '../components/BaseHeader.vue'
 import MenuMultiLevel from 'src/components/MenuMultiLevel/MenuMultiLevel.vue'
 import menuList from '../utils/menuList.js'
-import KanbanHeader from 'src/components/KanbanHeader.vue';
-
+import KanbanHeader from 'src/components/KanbanHeader.vue'
 </script>
 
 <style lang="sass">

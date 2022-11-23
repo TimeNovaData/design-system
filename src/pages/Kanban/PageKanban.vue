@@ -5,55 +5,72 @@
     alt=""
   />
 
-  <div class="kanban-container p-16">
+  <div class="kanban-container">
     <!--   <q-scroll-area class="fit"> -->
-    <div
-      id="kanban-wrapper"
-      ref="wrapper"
-      class="kanban-col--wrapper"
-      v-touch-pan.prevent.horizontal.mouse="handlePan"
-    >
-      <KanbanCol v-for="(list, index) in lists" :key="index">
-        <draggable
-          :component-data="{
-            tag: 'div',
-            type: 'transition-group',
-            name: !drag ? 'flip-list' : null,
-            class: 'transition-div',
-          }"
-          :list="list.value"
-          group="a"
-          @start="drag = true"
-          @end="drag = false"
-          itemKey="name"
-          v-bind="dragOptions"
-        >
-          <template #item="{ element }">
-            <KanbanCard>
-              {{ element.name }}
-            </KanbanCard>
-          </template>
-        </draggable>
-      </KanbanCol>
 
-      <div
-        class="teste absolute bottom-0 left-0 h-8 bg-neutral-pure"
-      ></div>
-    </div>
-    <!--     </q-scroll-area> -->
+    <div id="kanban-wrapper" class="kanban-col--wrapper"></div>
+    <Swiper
+      slides-per-view="auto"
+      :space-between="6"
+      :modules="modules"
+      :free-mode="{
+        momentumBounceRatio: 0.1,
+        momentumRatio: 0.1,
+        momentumVelocityRatio: 1,
+      }"
+      :scrollbar="{
+        el: '.swiper-scrollbar',
+        draggable: true,
+      }"
+      :touch-release-on-edges="true"
+      :resize-observer="true"
+      :keyboard="{
+        enabled: true,
+      }"
+    >
+      <SwiperSlide v-for="(list, index) in lists" :key="index">
+        <KanbanCol>
+          <draggable
+            :component-data="{
+              tag: 'div',
+              type: 'transition-group',
+              name: !drag ? 'flip-list' : null,
+              class: 'transition-div',
+            }"
+            :list="list.value"
+            group="a"
+            @start="drag = true"
+            @end="drag = false"
+            itemKey="name"
+            v-bind="dragOptions"
+          >
+            <template #item="{ element }">
+              <KanbanCard>
+                {{ element.name }}
+              </KanbanCard>
+            </template>
+          </draggable>
+        </KanbanCol>
+      </SwiperSlide>
+      <div class="swiper-scrollbar"></div>
+    </Swiper>
   </div>
 </template>
 
 <script setup>
 import { computed, defineComponent, onMounted, ref, watch } from 'vue'
-
+import { Swiper, SwiperSlide } from 'swiper/vue'
+import { FreeMode, Scrollbar, Keyboard, Mousewheel } from 'swiper'
 import KanbanCol from 'src/components/KanbanCol.vue'
 import KanbanCard from 'src/components/KanbanCard.vue'
 import gsap from 'gsap/dist/gsap'
 import draggable from 'vuedraggable'
+import 'swiper/css'
+import 'swiper/css/scrollbar'
 
 const drag = ref(false)
-const teste = ref([])
+const modules = ref([FreeMode, Scrollbar, Keyboard, Mousewheel])
+console.log(Swiper)
 
 const list1 = ref([
   { name: 'John', id: 1 },
@@ -92,7 +109,7 @@ const dragOptions = computed(() => ({
   ghostClass: 'ghost',
 }))
 
-const lists = [list1, list2, list3, list3, list1,list3, list1]
+const lists = [list1, list2, list3, list3, list1, list3, list1]
 
 watch(drag, () => {
   setHeightInCol()
@@ -109,55 +126,24 @@ function setHeightInCol() {
 
     const heightWithGap = (height + gap + 16).toFixed(0)
     gsap.to(i, { height: heightWithGap, duration: 0.2 })
-
   })
 }
 // Scroll
-const wrapper = ref(null)
-const valueTransform = ref(0)
-let xTo
 
 onMounted(() => {
-  xTo = gsap.quickTo('#kanban-wrapper', 'x', {
-    duration: 0.3,
-    ease: 'power1.out',
-    overwrite: true,
-  })
+  // xTo = gsap.quickTo('#kanban-wrapper', 'x', {
+  //   duration: 0.3,
+  //   ease: 'power1.out',
+  //   overwrite: true,
+  // })
   setHeightInCol()
 })
-
-const handlePan = ({ evt, ...newInfo }) => {
-  watch(valueTransform, () => xTo(valueTransform.value.toFixed()))
-  if (draggable.value) return
-
-  const right = newInfo.direction === 'right'
-  const x = newInfo.offset.x
-  const modificador = 20
-
-  const colunasWidth = [
-    ...document.querySelectorAll('.kanban-col'),
-  ].reduce(
-    (acc, i) => (acc += i.getBoundingClientRect().width + 16) && acc,
-    0
-  )
-
-  // let gap = right ? valueTransform.value + x : valueTransform.value + x
-  let gap = valueTransform.value + x / modificador
-
-  if (gap <= colunasWidth * -1 + 900) return
-
-  // se scroll for voltando reseto
-  if (gap > 1) {
-    gap = 0
-  }
-
-  valueTransform.value = gap
-}
 </script>
 
 <style lang="sass">
 :root
   --kanban-col-bg: rgba(var(--neutral-10), 1)
+  --kanban-col-width:18rem
 
 .image-bg
   position: fixed
@@ -175,7 +161,7 @@ const handlePan = ({ evt, ...newInfo }) => {
     user-select: none
   &-col
     background: var(--kanban-col-bg)
-    width: 18rem
+    width: var(--kanban-col-width)
     max-height: 100%
     min-height: 330px
     height: max-content
@@ -221,6 +207,9 @@ const handlePan = ({ evt, ...newInfo }) => {
     top: 0
     display: block
     background: rgb(var(--neutral-30))
+    .body--dark &
+      background: rgba(var(--white), 0.1)
+
 
 
 .flip-list-move
@@ -247,4 +236,59 @@ const handlePan = ({ evt, ...newInfo }) => {
   flex-direction: column
   height: 100%
   flex: 1
+
+.swiper
+  height: inherit
+  padding: 1rem
+.swiper-wrapper
+  height: inherit
+.swiper-slide
+  width: var(--kanban-col-width) !important
+  height: calc(100% - 2rem)
+.kanban-col--wrapper
+  display: none
+.swiper-horizontal>.swiper-scrollbar, .swiper-scrollbar.swiper-scrollbar-horizontal
+  bottom: 2px
+  height: 10px
+  .swiper-scrollbar-drag
+    background: rgb(var(--d-neutral-10))
+.q-scrollarea__bar--v, .q-scrollarea__thumb--v
+  right: 0
+  width: 6px
 </style>
+<!-- 
+
+
+        const swiperProps = {
+		slidesPerView: 'auto',
+		spaceBetween: 15,
+		centeredSlides: false,
+		freeMode: true,
+		resizeObserver: true,
+		freeModeMinimumVelocity: "2",
+		slidesOffsetAfter: 100,
+		slidesOffsetBefore: 0,
+		touchReleaseOnEdges: true,
+		mousewheel: {
+			invert: true,
+			forceToAxis: true
+		},
+
+		scrollbar: {
+			el: ".swiper-scrollbar",
+			hide: false,
+			clickable: true,
+			draggable: true,
+			snapOnRelease: true,
+		},
+		navigation: {
+			nextEl: ".swiper-button-next",
+			prevEl: ".swiper-button-prev",
+		},
+		keyboard: {
+			enabled: true,
+		},
+
+
+	}
+       -->

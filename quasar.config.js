@@ -231,7 +231,7 @@ module.exports = configure(function (/* ctx */) {
 
         appId: 'design.system.novadata',
         win: {
-          target: 'nsis',
+          target: 'portable',
         },
         linux: {
           target: 'AppImage ',
