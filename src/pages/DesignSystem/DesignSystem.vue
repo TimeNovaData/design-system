@@ -14,7 +14,7 @@
         >
           <q-icon
             size="28px"
-            name="svguse:icons.svg#icon_menu"
+            name="svguse:/icons.svg#icon_menu"
           ></q-icon>
         </q-btn>
 
@@ -24,45 +24,7 @@
           </div>
         </q-toolbar-title>
 
-        <o-button class="text-neutral-10" round secondary size="md">
-          <q-icon name="svguse:icons.svg#icon_config"></q-icon>
-
-          <q-menu class="overflow-x-hidden">
-            <q-list padding class="select-none min-w-[200px]">
-              <q-item dense class="items-center">
-                <p class="text-headline-3">Settings</p>
-              </q-item>
-
-              <q-item tag="label">
-                <q-item-section
-                  avatar
-                  class="flex items-center flex-row"
-                >
-                  <q-toggle v-model="darkMode"></q-toggle>
-                  <p class="text-paragraph-2">Dark Mode</p>
-                </q-item-section>
-              </q-item>
-
-              <q-separator></q-separator>
-
-              <q-item dense>
-                <q-item-section>
-                  <p class="text-headline-3">Links</p>
-                </q-item-section>
-              </q-item>
-
-              <q-item
-                clickable
-                tag="a"
-                href="https://quasar.dev/"
-                target="_blank"
-                class="flex-row items-center"
-              >
-                <p class="text-paragraph-2">Quasar Docs</p>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </o-button>
+        <BaseMenuTop></BaseMenuTop>
       </q-toolbar>
     </q-header>
 
@@ -169,21 +131,19 @@ import SectionPaginacao from './SectionPaginacao.vue'
 import SectionModal from './SectionModal.vue'
 import SectionColors from './SectionColors.vue'
 
-import { useDarkMode } from '../../stores/darkMode'
 
-import { storeToRefs } from 'pinia'
 import MenuMultiLevel from '../../components/MenuMultiLevel/MenuMultiLevel.vue'
 import MenuLogo from 'src/components/MenuMultiLevel/MenuLogo.vue'
 import SectionSelects from './SectionSelects.vue'
 import SectionTabs from './SectionTabs.vue'
 import menuList from 'src/utils/menuList'
 import logoAnimation from 'src/utils/animation/logo'
+import BaseMenuTop from 'src/components/BaseMenuHeader.vue'
 
 const sectionActive = ref('intro')
 const leftDrawerOpen = ref(true)
 
-const dark = useDarkMode()
-const { darkMode } = storeToRefs(dark)
+
 const header = ref(null)
 const drawer = ref(null)
 

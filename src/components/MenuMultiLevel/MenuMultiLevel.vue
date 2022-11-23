@@ -52,25 +52,17 @@
       @click="() => handleClick(false)"
     ></span>
   </Teleport>
-  <Teleport to="body">
-    <q-page-sticky :offset="[32, 500]" class="z-[9999999]">
-      <o-button primary size="md" @click="showHeader = !showHeader">
-        Remover Header
-      </o-button>
-    </q-page-sticky>
-  </Teleport>
+  
 </template>
 
 <script setup>
 import { onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import OButton from '../OButton.vue'
 import MenuLogo from './MenuLogo.vue'
 import MenuLi from './MenuLi.vue'
 
 import GLOBAL from '../../utils/GLOBAL'
 import logoAnimation from 'src/utils/animation/logo'
-import { dom } from 'quasar'
 
 const route = useRoute()
 

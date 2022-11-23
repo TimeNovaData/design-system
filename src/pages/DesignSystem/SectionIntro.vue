@@ -71,7 +71,7 @@
         >
         da seguinte forma
       </p>
-      <p>name="svguse:icons.svg#icon-1"</p>
+      <p>name="svguse:/icons.svg#icon-1"</p>
       <br />
 
       <a

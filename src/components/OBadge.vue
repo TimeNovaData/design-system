@@ -34,6 +34,7 @@ const styleChip = () => ({
       : `rgba(var(${attrs.bg}), 1)`
   }`,
   background: `rgba(var(${attrs.bg}), 0.1)`
+  
 })
 
 const styleBadge = {

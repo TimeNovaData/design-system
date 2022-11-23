@@ -32,9 +32,10 @@ module.exports = {
       'alert-success': withOpacity('--alert-success'),
 
       // DARK MODE -----------------------------------------------
-      'd-neutral-30': withOpacity('--d-neutral-40'),
-      'd-neutral-20': withOpacity('--d-neutral-30'),
-      'd-neutral-10': withOpacity('--d-neutral-20'),
+      'd-neutral-40': withOpacity('--d-neutral-40'),
+      'd-neutral-30': withOpacity('--d-neutral-30'),
+      'd-neutral-20': withOpacity('--d-neutral-20'),
+      'd-neutral-10': withOpacity('--d-neutral-10'),
       // "white": withOpacity("--d-neutral-10"),
 
       'd-primary-light': withOpacity('--d-primary-light'),

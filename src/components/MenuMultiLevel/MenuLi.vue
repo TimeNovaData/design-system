@@ -54,7 +54,7 @@
 
             <q-icon
               size="1.25rem"
-              name="svguse:icons.svg#icon_list"
+              name="svguse:/icons.svg#icon_list"
             ></q-icon
           ></o-button>
 
@@ -69,7 +69,7 @@
 
             <q-icon
               size="1.25rem"
-              name="svguse:icons.svg#icon_add"
+              name="svguse:/icons.svg#icon_add"
             ></q-icon
           ></o-button>
         </q-item-section>
@@ -118,7 +118,7 @@
                 <q-tooltip v-bind="tooltipProps">Lista</q-tooltip>
                 <q-icon
                   size="1.25rem"
-                  name="svguse:icons.svg#icon_list"
+                  name="svguse:/icons.svg#icon_list"
                 ></q-icon
               ></o-button>
 
@@ -133,7 +133,7 @@
 
                 <q-icon
                   size="1.25rem"
-                  name="svguse:icons.svg#icon_add"
+                  name="svguse:/icons.svg#icon_add"
                 ></q-icon
               ></o-button>
             </q-item-section>

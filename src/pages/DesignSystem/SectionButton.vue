@@ -9,7 +9,7 @@
           type="a"
           href="https://quasar.dev/vue-components/button#introduction"
           target="_blank"
-          icon-right="svguse:icons.svg#arrow_rounded_up"
+          icon-right="svguse:/icons.svg#arrow_rounded_up"
           >QDocs
         </o-button>
       </div>
@@ -20,7 +20,7 @@
           <o-button size="sm" primary>Button SM</o-button>
           <o-button size="md" primary>Button MD</o-button>
           <o-button size="lg" primary disable>Button LG</o-button>
-          <o-button size="lg" primary icon-right="svguse:icons.svg#arrow_rounded_up"
+          <o-button size="lg" primary icon-right="svguse:/icons.svg#arrow_rounded_up"
             >With Icon</o-button
           >
         </div>

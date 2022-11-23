@@ -1,24 +1,23 @@
 import DesignSystem from '../pages/DesignSystem/DesignSystem.vue'
+import LayoutKanban from '../layouts/LayoutKanban.vue'
+import PageKanban from '../pages/Kanban/PageKanban.vue'
 
 const routes = [
   {
-    path: '/',
-    component: DesignSystem,
-    // children: [
-    //   { path: '', component: () => import('../pages/DesignSystem/SectionButton.vue') }
-    // ]
-  },
-  {
-    path: '/home',
+    path: '/design-system',
     component: DesignSystem,
   },
   {
-    path: '/list',
-    component: DesignSystem,
-  },
-  {
-    path: '/add',
-    component: DesignSystem,
+    path: '/kanban/:id',
+    component: LayoutKanban,
+    
+    children: [
+      {
+        name:'kanban',
+        path: 'board',
+        component: PageKanban,
+      },
+    ],
   },
 ]
 

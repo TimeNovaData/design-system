@@ -63,7 +63,7 @@ module.exports = configure(function (/* ctx */) {
       },
       showProgress: true,
 
-      vueRouterMode: 'hash', // available values: 'hash', 'history'
+      vueRouterMode: 'history', // available values: 'hash', 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,

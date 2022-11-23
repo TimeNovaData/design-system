@@ -55,4 +55,5 @@ const prependsize = attrs['prepend-size'] ? attrs['prepend-size'] : '20px'
 
 .q-field__prepend
   width: v-bind(prependsize) !important
+  
 </style>

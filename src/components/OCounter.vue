@@ -1,8 +1,13 @@
 <template>
-  <span class="o-counter" :style="styleObj"><slot></slot> </span>
+  <span v-bind="attrs" class="o-counter" :style="styleObj">
+    <slot></slot>
+  </span>
 </template>
 
 <script setup>
+import { useAttrs } from 'vue'
+
+
 const props = defineProps({
   bg: String,
   color: String
@@ -12,6 +17,9 @@ const styleObj = {
   background: `rgba(var(${props.bg}), 1)`,
   color: `rgba(var(${props.color}), 1)`
 }
+
+
+const attrs = useAttrs()
 </script>
 
 <style lang="sass" scoped>
