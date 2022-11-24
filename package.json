@@ -12,13 +12,11 @@
   "dependencies": {
     "@quasar/extras": "^1.15.5",
     "axios": "^0.21.1",
-    "global": "^4.4.0",
     "gsap": "^3.11.3",
     "pinia": "^2.0.23",
     "quasar": "^2.10.2",
-    "swiper": "^8.4.5",
     "tailwindcss": "^3.2.4",
-    "vue": "^3.0.0",
+    "vue": "3.2.45",
     "vue-i18n": "^9.0.0",
     "vue-router": "^4.1.6",
     "vuedraggable": "^4.1.0"
