@@ -1,0 +1,41 @@
+.blur--mode
+  &.body--light
+    #q-app
+      --sidebar-bg: rgba(var(--white),0.6)
+      --Nv1-sidebar-bg: rgba(var(--white),0.6)
+      --Nv2-sidebar-bg: rgba(var(--white),0.6)
+      --kanban-col-bg: rgba(var(--neutral-10), 0.5)
+  .OSidebar,
+  .submenu,
+  .q-header,
+  .q-menu
+    backdrop-filter: blur(16px)
+  .q-menu
+    background: rgba(var(--white), 0.6) !important
+
+  &.body--dark
+    #q-app
+      --sidebar-bg: rgb(var(--d-neutral-10),0.4)
+      --Nv1-sidebar-bg: rgb(var(--d-neutral-20),0.8)
+      --Nv2-sidebar-bg: rgb(var(--d-neutral-30),0.8)
+      --Nv0-sidebar-border: 1px solid rgba(var(--white),0.05)
+      --kanban-col-bg: rgba(var(--d-neutral-10), 0.5)
+
+  .q-header
+    backdrop-filter: blur(16px)
+  .OSidebar,
+  .submenu
+    backdrop-filter: blur(20px)
+  .kanban-col
+    backdrop-filter: blur(40px)
+
+  .q-menu.q-dark
+    background: rgba(var(--d-neutral-30), 0.3) !important
+    backdrop-filter: blur(16px) !important
+  .q-field.q-field--dark .q-field__control .q-field__label
+    background: rgba(var(--d-neutral-30), 0.1)
+  .q-header
+    background: rgba(0,0,0, .3)
+  .base-header,
+  .kanban-header
+    border-bottom: 1px solid rgba(var(--white), 0.04) !important

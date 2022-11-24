@@ -140,6 +140,7 @@ import menuList from 'src/utils/menuList'
 import logoAnimation from 'src/utils/animation/logo'
 import BaseMenuTop from 'src/components/BaseMenuHeader.vue'
 
+
 const sectionActive = ref('intro')
 const leftDrawerOpen = ref(true)
 

@@ -68,6 +68,7 @@
       style="transform-origin: 0px 0px"
     ></path>
   </svg>
+
 </template>
 
 <script setup></script>

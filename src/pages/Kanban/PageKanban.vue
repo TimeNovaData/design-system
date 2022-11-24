@@ -1,21 +1,16 @@
 <template>
-  <img
-    class="image-bg"
-    src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1964&q=80"
-    alt=""
-  />
-
-  <div class="kanban-container">
-    <!--   <q-scroll-area class="fit"> -->
-
-    <div id="kanban-wrapper" class="kanban-col--wrapper"></div>
-    <Swiper
+  <section class="kanban-container">
+    <!-- <Swiper
+      @swiper="getRef"
       slides-per-view="auto"
       :space-between="6"
       :modules="modules"
+      
+      :prevent-clicks-propagation="false"
+      :touch-move-stop-propagation="false"
       :free-mode="{
-        momentumBounceRatio: 0.1,
-        momentumRatio: 0.1,
+        momentumBounceRatio: 0.3,
+        momentumRatio: 0.3,
         momentumVelocityRatio: 1,
       }"
       :scrollbar="{
@@ -28,122 +23,125 @@
         enabled: true,
       }"
     >
-      <SwiperSlide v-for="(list, index) in lists" :key="index">
-        <KanbanCol>
-          <draggable
-            :component-data="{
-              tag: 'div',
-              type: 'transition-group',
-              name: !drag ? 'flip-list' : null,
-              class: 'transition-div',
-            }"
-            :list="list.value"
-            group="a"
-            @start="drag = true"
-            @end="drag = false"
-            itemKey="name"
-            v-bind="dragOptions"
-          >
-            <template #item="{ element }">
-              <KanbanCard>
-                {{ element.name }}
-              </KanbanCard>
-            </template>
-          </draggable>
-        </KanbanCol>
-      </SwiperSlide>
-      <div class="swiper-scrollbar"></div>
-    </Swiper>
-  </div>
+      <SwiperSlide v-for="(list, index) in lists" :key="index"> -->
+    <div
+      class="kanban-col--wrapper p-16"
+      @mousedown="(e) => enableDragScroll(e)"
+    >
+      <KanbanCol
+        :data="list"
+        v-for="(list, index) in lists"
+        :key="index"
+        @mouseup="handleColClick"
+        @mousedown="handleColClick"
+      >
+        <draggable
+          :component-data="{
+            tag: 'div',
+            type: 'transition-group',
+            name: !drag ? 'flip-list' : null,
+            class: 'transition-div',
+          }"
+          :list="list"
+          group="a"
+          @start="handleStart"
+          @end="handleEnd"
+          itemKey="name"
+          v-bind="dragOptions"
+        >
+          <template #item="{ element }">
+            <KanbanCard
+              :item="element"
+              @cardClick="handleCardClick"
+            ></KanbanCard>
+          </template>
+        </draggable>
+      </KanbanCol>
+    </div>
+    <!-- </SwiperSlide> -->
+    <!-- <div class="swiper-scrollbar"></div> -->
+    <!-- </Swiper> -->
+  </section>
+  <img class="image-bg" :src="kanbanBG" aria-hidden="true" />
 </template>
 
 <script setup>
-import { computed, defineComponent, onMounted, ref, watch } from 'vue'
-import { Swiper, SwiperSlide } from 'swiper/vue'
-import { FreeMode, Scrollbar, Keyboard, Mousewheel } from 'swiper'
+// import gsap from 'gsap/dist/gsap'
 import KanbanCol from 'src/components/KanbanCol.vue'
 import KanbanCard from 'src/components/KanbanCard.vue'
-import gsap from 'gsap/dist/gsap'
+import GLOBAL from 'src/utils/GLOBAL'
 import draggable from 'vuedraggable'
-import 'swiper/css'
-import 'swiper/css/scrollbar'
+import { useKanbanBG } from 'src/stores/kanbanBG'
+import { storeToRefs } from 'pinia'
+import { computed,  onMounted, ref, watch } from 'vue'
 
+const {generateRange, modelo1, setHeightInCol} = GLOBAL
+
+let removeEvents
+const bg = useKanbanBG()
+const enableDragScroll = GLOBAL.enableDragScroll(removeEvents)
+const { kanbanBG } = storeToRefs(bg)
+
+function handleColClick(e) {
+  e.stopImmediatePropagation()
+  removeEvents = true
+}
+
+const lists = ref([
+  generateRange(1, modelo1),
+  generateRange(2, modelo1),
+  generateRange(3, modelo1),
+  generateRange(4, modelo1),
+  generateRange(5, modelo1),
+  generateRange(6, modelo1),
+  generateRange(7, modelo1),
+])
+
+// Drag 
 const drag = ref(false)
-const modules = ref([FreeMode, Scrollbar, Keyboard, Mousewheel])
-console.log(Swiper)
+watch(drag, () =>  setHeightInCol())
 
-const list1 = ref([
-  { name: 'John', id: 1 },
-  { name: 'Joao', id: 2 },
-  { name: 'Jean', id: 3 },
-  { name: 'Gerard', id: 4 },
-])
-
-const list2 = ref([
-  { name: 'Juan', id: 5 },
-  { name: 'Edgard', id: 6 },
-  { name: 'Johnson', id: 7 },
-  { name: 'Juan', id: 11 },
-  { name: 'Edgard', id: 26 },
-  { name: 'Johnson', id: 27 },
-  { name: 'Johnson', id: 57 },
-  { name: 'Johnson', id: 67 },
-  { name: 'Johnson', id: 97 },
-  { name: 'Johnson', id: 107 },
-  { name: 'Johnson', id: 207 },
-  { name: 'Johnson', id: 307 },
-  { name: 'Johnson', id: 407 },
-  { name: 'Johnson', id: 507 },
-])
-
-const list3 = ref([
-  { name: 'Alberto', id: 8 },
-  { name: 'Fernando', id: 9 },
-  { name: 'Michael', id: 10 },
-])
+const handleEnd = (e) => {
+  e.stopImmediatePropagation()
+  e.stopPropagation()
+  drag.value = false
+}
+const handleStart = (e) => {
+  e.stopPropagation()
+  e.stopImmediatePropagation()
+  drag.value = true
+}
 
 const dragOptions = computed(() => ({
-  animation: 200,
+  animation: 400,
   group: 'description',
   disabled: false,
   ghostClass: 'ghost',
 }))
 
-const lists = [list1, list2, list3, list3, list1, list3, list1]
 
-watch(drag, () => {
-  setHeightInCol()
-})
-
-function setHeightInCol() {
-  document.querySelectorAll('.cards-wrapper').forEach((i) => {
-    const filhos = [...i.querySelectorAll('.kanban-card')]
-    const gap = filhos.length * 7
-    const height = filhos.reduce((acc, children) => {
-      acc += children.getBoundingClientRect().height
-      return acc
-    }, 0)
-
-    const heightWithGap = (height + gap + 16).toFixed(0)
-    gsap.to(i, { height: heightWithGap, duration: 0.2 })
-  })
+function handleCardClick(v) {
+  alert(v)
 }
-// Scroll
 
 onMounted(() => {
-  // xTo = gsap.quickTo('#kanban-wrapper', 'x', {
-  //   duration: 0.3,
-  //   ease: 'power1.out',
-  //   overwrite: true,
-  // })
   setHeightInCol()
+  document.querySelector('.kanban-col--wrapper')
+    .dispatchEvent(new Event('mousedown'))
 })
+
+
+
 </script>
 
 <style lang="sass">
 :root
   --kanban-col-bg: rgba(var(--neutral-10), 1)
   --kanban-col-width:18rem
+
+.body--dark
+  --kanban-col-bg: rgb(var(--d-neutral-10))
+
 
 .image-bg
   position: fixed
@@ -153,6 +151,8 @@ onMounted(() => {
   z-index: -1
   width: 100vw
   height: 100vh
+  pointer-events: none
+  user-select: none
 
 .kanban
   &-container
@@ -176,6 +176,36 @@ onMounted(() => {
     height: 100%
     display: flex
     gap: 1rem
+    width:100%
+    overflow-x: auto
+
+
+      /* width */
+    &::-webkit-scrollbar
+      width: 10px
+
+    /* Track */
+    &::-webkit-scrollbar-track
+      background: rgba(0,0,0,0)
+      border-radius:3px
+
+    /* Handle */
+    &::-webkit-scrollbar-thumb
+      background: rgba(255,255,255,0.2)
+      border-radius:3px
+
+
+    /* Handle on hover */
+    &::-webkit-scrollbar-thumb:hover
+      background: rgba(255,255,255,0.4)
+
+.body--light
+  .kanban-col--wrapper
+    &::-webkit-scrollbar-thumb
+     background: rgba(255,255,255,0.5)
+    &::-webkit-scrollbar-thumb:hover
+      background: rgba(255,255,255,0.65)
+
 
 .cards-wrapper
     display: flex
@@ -207,8 +237,10 @@ onMounted(() => {
     top: 0
     display: block
     background: rgb(var(--neutral-30))
+    border-radius: 3px
+    overflow: hidden
     .body--dark &
-      background: rgba(var(--white), 0.1)
+      background: rgb(var(--d-neutral-40))
 
 
 
@@ -240,21 +272,34 @@ onMounted(() => {
 .swiper
   height: inherit
   padding: 1rem
+  -webkit-transform: translateZ(0)
+  -webkit-backface-visibility: hidden
 .swiper-wrapper
   height: inherit
+  -webkit-transform: translateZ(0)
+  -webkit-backface-visibility: hidden
 .swiper-slide
   width: var(--kanban-col-width) !important
   height: calc(100% - 2rem)
-.kanban-col--wrapper
-  display: none
+  opacity: 1 !important
+  -webkit-transform: translateZ(0)
+  -webkit-backface-visibility: hidden
+
+
+
+
 .swiper-horizontal>.swiper-scrollbar, .swiper-scrollbar.swiper-scrollbar-horizontal
   bottom: 2px
   height: 10px
   .swiper-scrollbar-drag
-    background: rgb(var(--d-neutral-10))
+    background: rgba(var(--neutral-100),0.3)
 .q-scrollarea__bar--v, .q-scrollarea__thumb--v
   right: 0
   width: 6px
+
+.body--dark
+  .swiper-scrollbar-drag
+      background: rgba(var(--white),0.3)
 </style>
 <!-- 
 

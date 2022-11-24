@@ -1,14 +1,11 @@
 <template>
-  <div class="kanban-col dark:bg-d-neutral-10">
+  <div class="kanban-col ">
     <header class="px-6 pb-14 pt-6 w-full flex items-center">
       <div class="inline-flex items-center gap-6">
         <p class="text-headline-3">Novo</p>
-        <OCounter
-          bg="--neutral-30"
-          color="--neutral-70"
-          class="!text-14 !rounded !p-0 !w-20 !h-20 dark:!bg-white/10 dark:!text-white/70"
-        >
-          1
+        <OCounter bg="--neutral-30" color="--neutral-70"
+          class="!text-14 !rounded !p-0 !w-20 !h-20 dark:!bg-white/10 dark:!text-white/70">
+          {{ data.length }}
         </OCounter>
       </div>
 
@@ -28,6 +25,10 @@
 <script setup>
 import OButton from 'src/components/OButton.vue'
 import OCounter from 'src/components/OCounter.vue'
+defineProps({
+  data: Array
+})
+
 </script>
 
 <style lang="sass"></style>

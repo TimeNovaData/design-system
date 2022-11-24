@@ -11,7 +11,7 @@ export default { inheritAttrs: false }
 
 </script>
 
-<script setup>
+<script setup> 
 import { useSlots, useAttrs } from 'vue'
 
 const slots = useSlots()

@@ -1,58 +1,33 @@
 <template>
-  <aside
-    class="OSidebar"
-    ref="sidebar"
-    level="0"
-    @mouseenter="GLOBAL.debounce(100, handleMouseEnter, 'sideTime')()"
-    @mouseleave="GLOBAL.debounce(50, handleMouseLeave, 'sideTime')()"
-  >
+  <aside class="OSidebar" ref="sidebar" level="0" @mouseenter="GLOBAL.debounce(100, handleMouseEnter, 'sideTime')()"
+    @mouseleave="GLOBAL.debounce(50, handleMouseLeave, 'sideTime')()">
     <header class="OSidebar-header" v-if="showHeader">
       <MenuLogo />
     </header>
 
     <section>
       <q-list class="Nv0-ul" tag="ul">
-        <MenuLi
-          v-for="(Nv0, index) in props.menu"
-          :key="Nv0.title + index"
-          :data="Nv0"
-          :sidebar="sidebar"
-          :to="Nv0.href"
-          @Nv0Click="() => handleClick(true)"
-          @click="(e) => Nv0HandleClick(e, Nv0)"
-          :showHeader="showHeader"
-        >
-          <q-item-section
-            v-if="Nv0.icon"
-            avatar
-            class="min-w-32 pl-10"
-          >
+        <MenuLi v-for="(Nv0, index) in props.menu" :key="Nv0.title + index" :data="Nv0" :sidebar="sidebar" :to="Nv0.href"
+          @Nv0Click="() => handleClick(true)" @click="(e) => Nv0HandleClick(e, Nv0)" :showHeader="showHeader">
+          <q-item-section v-if="Nv0.icon" avatar class="min-w-32 pl-10">
             <q-icon size="24px" :name="Nv0.icon"></q-icon>
           </q-item-section>
-
+        
           <q-item-section class="Nv0-text">
             <p class="one-line">{{ Nv0.title }}</p>
           </q-item-section>
-
-          <q-item-section
-            v-if="Nv0.submenu"
-            avatar
-            class="opacity-50"
-          >
+        
+          <q-item-section v-if="Nv0.submenu" avatar class="opacity-50">
             <q-icon size="1rem" name="sym_r_navigate_next"></q-icon>
           </q-item-section>
         </MenuLi>
-      </q-list>
-    </section>
-  </aside>
-  <Teleport to="body">
-    <span
-      v-if="state.open"
-      class="OSidebar-deep"
-      @click="() => handleClick(false)"
-    ></span>
-  </Teleport>
-  
+        </q-list>
+        </section>
+        </aside>
+        <Teleport to="body">
+          <span v-if="state.open" class="OSidebar-deep" @click="() => handleClick(false)"></span>
+        </Teleport>
+
 </template>
 
 <script setup>
@@ -167,23 +142,25 @@ function toggleActiveOnLis(current) {
   --Nv0-sidebar-transition: cubic-bezier(.4,0,.2,1)
   --Nv0-sidebar-border:1px solid rgba(var(--neutral-100),0.1)
   --Nv0-sidebar-z-index: 9010
+  --Nv0-sidebar-overflow: hidden
   --Nv1-sidebar-width: 21.25rem
   --Nv1-sidebar-z-index: 9019
   --Nv2-sidebar-z-index: 9018
   --z-index-deep: 9000
   --sidebar-top:0
+  --sidebar-header-height: 5.4375rem
 
 .body--light
   --logo-color: #000
-  --sidebar-bg: var(--white)
-  --Nv1-sidebar-bg: var(--white)
-  --Nv2-sidebar-bg: var(--white)
+  --sidebar-bg: rgb(var(--white))
+  --Nv1-sidebar-bg: rgb(var(--white))
+  --Nv2-sidebar-bg: rgb(var(--white))
 
 .body--dark
   --logo-color: white
-  --sidebar-bg: var(--d-neutral-10)
-  --Nv1-sidebar-bg: var(--d-neutral-20)
-  --Nv2-sidebar-bg: var(--d-neutral-30)
+  --sidebar-bg: rgb(var(--d-neutral-10))
+  --Nv1-sidebar-bg: rgb(var(--d-neutral-20))
+  --Nv2-sidebar-bg: rgb(var(--d-neutral-30))
   --Nv0-sidebar-border:1px solid rgba(var(--white),0.05)
 
 .OSidebar
@@ -193,11 +170,11 @@ function toggleActiveOnLis(current) {
   top: var(--sidebar-top)
   width: var(--Nv0-sidebar-width)
   z-index: var(--Nv0-sidebar-z-index)
-  background: rgb(var(--sidebar-bg))
+  background: var(--sidebar-bg)
   transition:.2s  var(--Nv0-sidebar-transition)
   border-right: var(--Nv0-sidebar-border)
   transition-property: width
-  overflow: hidden
+  overflow: var(--Nv0-sidebar-overflow)
   display: flex
   flex-direction: column
   .showHeader &
@@ -205,6 +182,7 @@ function toggleActiveOnLis(current) {
 
   .sidebar-active &
     width: var(--Nv0-sidebar-width-open)
+    --Nv0-sidebar-overflow: initial
 
   .sidebar-open &
     width: var(--Nv0-sidebar-width-open)
@@ -213,7 +191,7 @@ function toggleActiveOnLis(current) {
 .OSidebar-header
   padding: 1.5rem .5rem 1.5rem
   border-bottom: var(--Nv0-sidebar-border)
-  height: 92px
+  height: var(--sidebar-header-height)
 
 //itens
 .Nv0-ul

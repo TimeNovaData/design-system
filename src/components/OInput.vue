@@ -9,7 +9,11 @@
       <slot :name="slot"></slot>
     </template>
   </q-input>
+
+   
 </template>
+
+
 
 <script>
 export default { inheritAttrs: false }
@@ -17,6 +21,8 @@ export default { inheritAttrs: false }
 
 <script setup>
 import { useSlots, useAttrs } from 'vue'
+import OBadge from './OBadge.vue';
+
 
 const slots = useSlots()
 const attrs = useAttrs()
@@ -30,8 +36,10 @@ const prependsize = attrs['prepend-size'] ? attrs['prepend-size'] : '20px'
   --prepend-size: v-bind(prependsize)
   --append-size: v-bind(appendsize)
   .q-field__append
-    width: v-bind(appendSize) !important
+      width: v-bind(appendSize) !important
 
+  .q-field__prepend
+    width: v-bind(prependsize) !important
 //remove browser autocomplete background
 .body--dark
   .o-input
@@ -53,7 +61,6 @@ const prependsize = attrs['prepend-size'] ? attrs['prepend-size'] : '20px'
       -webkit-box-shadow: 0 0 0 50px rgb(var(--white)) inset
       -webkit-text-fill-color: rgba(var(--neutral-70), 1) !important
 
-.q-field__prepend
-  width: v-bind(prependsize) !important
+
   
 </style>

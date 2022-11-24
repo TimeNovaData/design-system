@@ -10,6 +10,8 @@ import './css/body.sass'
 import './css/pages/DesignSystem.sass'
 import './css/tailwind.css'
 
+import './css/stores/blurMode.sass'
+
 export default defineComponent({
   name: 'App'
 })
