@@ -94,34 +94,34 @@
         class="p-6 dark:bg-white/10 bg-neutral-100/5 col-span-4 rounded-generic"
       >
         <p class="text-paragraph-4 dark:text-white/70">Solicitado</p>
-        <p class="text-headline-5 dark:text-white/90">16/09/2022</p>
+        <p class="text-headline-5 dark:text-white/90 !tracking-wide">16/09/2022</p>
       </div>
       <div
         class="p-6 dark:bg-white/10 bg-neutral-100/5 col-span-4 rounded-generic"
       >
         <p class="text-paragraph-4 dark:text-white/70">Desejado</p>
-        <p class="text-headline-5 dark:text-white/90">16/09/2022</p>
+        <p class="text-headline-5 dark:text-white/90 !tracking-wide">16/09/2022</p>
       </div>
 
       <div
         class="p-6 dark:bg-white/10 bg-neutral-100/5 col-span-4 rounded-generic"
       >
         <p class="text-paragraph-4 dark:text-white/70">Previsto</p>
-        <p class="text-headline-5 dark:text-white/90">16/09/2022</p>
+        <p class="text-headline-5 dark:text-white/90 !tracking-wide">16/09/2022</p>
       </div>
 
       <div
         class="p-6 dark:bg-white/10 bg-neutral-100/5 col-span-6 rounded-generic flex items-center justify-between"
       >
         <p class="text-paragraph-4 dark:text-white/70">Orçado:</p>
-        <p class="text-headline-5 dark:text-white/90">1h 45m</p>
+        <p class="text-headline-5 dark:text-white/90 !tracking-wider">1h 45m</p>
       </div>
 
       <div
         class="p-6 dark:bg-white/10 bg-neutral-100/5 col-span-6 rounded-generic flex items-center justify-between"
       >
         <p class="text-paragraph-4 dark:text-white/70">Decorrido:</p>
-        <p class="text-headline-5 dark:text-white/90">1h 45m</p>
+        <p class="text-headline-5 dark:text-white/90 !tracking-wider">1h 45m</p>
       </div>
     </section>
   </q-card>

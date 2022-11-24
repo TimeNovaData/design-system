@@ -184,3 +184,18 @@
       min-height: 2.25rem
       &--full
         min-height: 3.25rem
+
+.q-tabs
+  .q-tab
+    border: 1px solid rgba(var(--neutral-100), 0)
+    border-bottom: initial
+  &[secondary]
+    .q-tab--active
+      background: white
+      color: rgb(var(--neutral-100))
+      border-radius: 3px 3px 0 0 
+      border-color: rgba(var(--neutral-100), 0.1)
+  .q-tab__indicator 
+    display: none
+  // .q-focus-helper
+  //   display: none

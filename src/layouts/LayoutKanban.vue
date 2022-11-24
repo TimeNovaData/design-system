@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh Lpr fFf">
+  <q-layout view="hHh Lpr fFf" class="layout-kanban">
     <BaseHeader></BaseHeader>
     <KanbanHeader></KanbanHeader>
 
@@ -22,12 +22,12 @@ import menuList from '../utils/menuList.js'
 import KanbanHeader from 'src/components/KanbanHeader.vue'
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass" >
 body
   --header-bg: rgba(0,0,0, .5)
   --breadcrumb-color: rgba(var(--white),0.7)
 
-.q-layout
+.q-layout.layout-kanban
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 15.56%)
   .body--dark &
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))

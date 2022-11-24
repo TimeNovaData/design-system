@@ -5,7 +5,7 @@
     :data-size="attrs.size"
     :size="null"
   >
-    <q-badge v-if="attrs.badge" rounded :style="styleBadge"></q-badge>
+    <q-badge class="shrink-0 w-8 h-8" v-if="attrs.badge" rounded :style="styleBadge"></q-badge>
 
     <slot name="content"></slot>
   </q-chip>

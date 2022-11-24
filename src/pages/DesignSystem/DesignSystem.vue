@@ -131,7 +131,6 @@ import SectionPaginacao from './SectionPaginacao.vue'
 import SectionModal from './SectionModal.vue'
 import SectionColors from './SectionColors.vue'
 
-
 import MenuMultiLevel from '../../components/MenuMultiLevel/MenuMultiLevel.vue'
 import MenuLogo from 'src/components/MenuMultiLevel/MenuLogo.vue'
 import SectionSelects from './SectionSelects.vue'
@@ -140,10 +139,8 @@ import menuList from 'src/utils/menuList'
 import logoAnimation from 'src/utils/animation/logo'
 import BaseMenuTop from 'src/components/BaseMenuHeader.vue'
 
-
 const sectionActive = ref('intro')
 const leftDrawerOpen = ref(true)
-
 
 const header = ref(null)
 const drawer = ref(null)

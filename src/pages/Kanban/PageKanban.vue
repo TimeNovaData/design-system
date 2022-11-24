@@ -1,29 +1,5 @@
 <template>
   <section class="kanban-container">
-    <!-- <Swiper
-      @swiper="getRef"
-      slides-per-view="auto"
-      :space-between="6"
-      :modules="modules"
-      
-      :prevent-clicks-propagation="false"
-      :touch-move-stop-propagation="false"
-      :free-mode="{
-        momentumBounceRatio: 0.3,
-        momentumRatio: 0.3,
-        momentumVelocityRatio: 1,
-      }"
-      :scrollbar="{
-        el: '.swiper-scrollbar',
-        draggable: true,
-      }"
-      :touch-release-on-edges="true"
-      :resize-observer="true"
-      :keyboard="{
-        enabled: true,
-      }"
-    >
-      <SwiperSlide v-for="(list, index) in lists" :key="index"> -->
     <div
       class="kanban-col--wrapper p-16"
       @mousedown="(e) => enableDragScroll(e)"
@@ -44,8 +20,8 @@
           }"
           :list="list"
           group="a"
-          @start="handleStart"
-          @end="handleEnd"
+          @start="(e) => handleStartEnd(e, true)"
+          @end="(e) => handleStartEnd(e, false)"
           itemKey="name"
           v-bind="dragOptions"
         >
@@ -59,16 +35,12 @@
         </draggable>
       </KanbanCol>
     </div>
-    <!-- </SwiperSlide> -->
-    <!-- <div class="swiper-scrollbar"></div> -->
-    <!-- </Swiper> -->
   </section>
   <KanbanModal ref="modal"></KanbanModal>
   <img class="image-bg" :src="kanbanBG" aria-hidden="true" />
 </template>
 
 <script setup>
-// import gsap from 'gsap/dist/gsap'
 import KanbanCol from 'src/components/KanbanCol.vue'
 import KanbanCard from 'src/components/KanbanCard.vue'
 import GLOBAL from 'src/utils/GLOBAL'
@@ -108,15 +80,11 @@ const lists = ref([
 const drag = ref(false)
 watch(drag, () => setHeightInCol())
 watch(visaoExpandida, () => setTimeout(() => setHeightInCol(), 300))
-const handleEnd = (e) => {
+
+const handleStartEnd = (e, value) => {
   e.stopImmediatePropagation()
   e.stopPropagation()
-  drag.value = false
-}
-const handleStart = (e) => {
-  e.stopPropagation()
-  e.stopImmediatePropagation()
-  drag.value = true
+  drag.value = value
 }
 
 const dragOptions = computed(() => ({
@@ -137,6 +105,7 @@ onMounted(() => {
     .querySelector('.kanban-col--wrapper')
     .dispatchEvent(new Event('mousedown'))
 })
+
 </script>
 
 <style lang="sass">
@@ -185,6 +154,7 @@ onMounted(() => {
       /* width */
     &::-webkit-scrollbar
       width: 10px
+
 
     /* Track */
     &::-webkit-scrollbar-track
