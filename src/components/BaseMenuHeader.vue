@@ -11,6 +11,7 @@
           <p class="text-paragraph-2">Dark Mode</p>
         </q-item-section>
       </q-item>
+      
       <q-item tag="label">
         <q-item-section avatar class="flex items-center flex-row">
           <q-toggle v-model="blurMode"></q-toggle>

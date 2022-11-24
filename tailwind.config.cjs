@@ -124,6 +124,9 @@ module.exports = {
         140: '140%',
         150: '150%',
       },
+      borderRadius: {
+        'generic': "3px"
+      }
     },
   },
   plugins: [],

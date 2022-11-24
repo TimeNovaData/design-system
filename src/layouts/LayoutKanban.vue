@@ -22,7 +22,7 @@ import menuList from '../utils/menuList.js'
 import KanbanHeader from 'src/components/KanbanHeader.vue'
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 body
   --header-bg: rgba(0,0,0, .5)
   --breadcrumb-color: rgba(var(--white),0.7)

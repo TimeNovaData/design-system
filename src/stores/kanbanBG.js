@@ -7,8 +7,7 @@ export const useKanbanBG = defineStore('kanbanBg', () => {
 
   onMounted(() => {
     if (LocalStorage.has('kanbanBg')) {
-      const url = LocalStorage.getItem('kanbanBg')
-      kanbanBG.value = url
+      kanbanBG.value = LocalStorage.getItem('kanbanBg') 
     } else {
       LocalStorage.set('kanbanBg',kanbanBG.value)
     }

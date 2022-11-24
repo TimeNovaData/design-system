@@ -17,7 +17,7 @@ export default {
 
     const onMouseMove = (e) => {
       // console.log('onMouseMove')
-      if (removeEvents) {
+      if (removeEvents.value) {
         document.removeEventListener('mousemove', onMouseMove)
         document.removeEventListener('mouseup', onMouseUp)
       }
@@ -29,7 +29,6 @@ export default {
 
     const onMouseUp = (e) => {
       // console.log('onMouseUp')
-
       document.removeEventListener('mousemove', onMouseMove)
       document.removeEventListener('mouseup', onMouseUp)
 
@@ -38,7 +37,7 @@ export default {
 
     const onMouseDown = (e) => {
       // console.log('onMouseDown')
-      removeEvents = false
+      removeEvents.value = false
       if (e.button !== 0 || options?.fxIgnore(e)) return
 
       startPos.x = e.clientX
@@ -54,9 +53,13 @@ export default {
 
     domElement.addEventListener('mousedown', onMouseDown)
   },
+  
   generateRange: (totalElementos, modelo) => {
     return Array.from({ length: totalElementos }, (_, i) => modelo(i, totalElementos))
   },
+
+
+  
   modelo1: (i, totalElementos) => ({
     id: totalElementos + i,
     nome: 'usuario' + i,
@@ -71,6 +74,8 @@ export default {
       },
     ],
 }),
+
+  // Atualiza o height de acordo com a quantidade de filhos + gap 
 setHeightInCol: () => {
   document.querySelectorAll('.cards-wrapper').forEach((i) => {
     const filhos = [...i.querySelectorAll('.kanban-card')]

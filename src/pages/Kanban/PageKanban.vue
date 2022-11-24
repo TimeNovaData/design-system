@@ -51,6 +51,7 @@
         >
           <template #item="{ element }">
             <KanbanCard
+              :visaoExpandida="visaoExpandida"
               :item="element"
               @cardClick="handleCardClick"
             ></KanbanCard>
@@ -62,6 +63,7 @@
     <!-- <div class="swiper-scrollbar"></div> -->
     <!-- </Swiper> -->
   </section>
+  <KanbanModal ref="modal"></KanbanModal>
   <img class="image-bg" :src="kanbanBG" aria-hidden="true" />
 </template>
 
@@ -72,19 +74,24 @@ import KanbanCard from 'src/components/KanbanCard.vue'
 import GLOBAL from 'src/utils/GLOBAL'
 import draggable from 'vuedraggable'
 import { useKanbanBG } from 'src/stores/kanbanBG'
+import { useVisaoExpandida } from 'src/stores/visaoExpandida'
 import { storeToRefs } from 'pinia'
-import { computed,  onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import KanbanModal from '../../components/KanbanModal.vue'
 
-const {generateRange, modelo1, setHeightInCol} = GLOBAL
+const { generateRange, modelo1, setHeightInCol } = GLOBAL
 
-let removeEvents
-const bg = useKanbanBG()
+const removeEvents = ref(false)
 const enableDragScroll = GLOBAL.enableDragScroll(removeEvents)
-const { kanbanBG } = storeToRefs(bg)
 
+const bg = useKanbanBG()
+const visao = useVisaoExpandida()
+const { kanbanBG } = storeToRefs(bg)
+const { visaoExpandida } = storeToRefs(visao)
+const modal = ref(null)
 function handleColClick(e) {
   e.stopImmediatePropagation()
-  removeEvents = true
+  removeEvents.value = true
 }
 
 const lists = ref([
@@ -97,10 +104,10 @@ const lists = ref([
   generateRange(7, modelo1),
 ])
 
-// Drag 
+// Drag
 const drag = ref(false)
-watch(drag, () =>  setHeightInCol())
-
+watch(drag, () => setHeightInCol())
+watch(visaoExpandida, () => setTimeout(() => setHeightInCol(), 300))
 const handleEnd = (e) => {
   e.stopImmediatePropagation()
   e.stopPropagation()
@@ -119,28 +126,23 @@ const dragOptions = computed(() => ({
   ghostClass: 'ghost',
 }))
 
-
 function handleCardClick(v) {
-  alert(v)
+  console.log(modal.value.dialogRef)
+  modal.value.dialogRef.show()
 }
 
 onMounted(() => {
   setHeightInCol()
-  document.querySelector('.kanban-col--wrapper')
+  document
+    .querySelector('.kanban-col--wrapper')
     .dispatchEvent(new Event('mousedown'))
 })
-
-
-
 </script>
 
 <style lang="sass">
 :root
   --kanban-col-bg: rgba(var(--neutral-10), 1)
   --kanban-col-width:18rem
-
-.body--dark
-  --kanban-col-bg: rgb(var(--d-neutral-10))
 
 
 .image-bg
@@ -199,13 +201,6 @@ onMounted(() => {
     &::-webkit-scrollbar-thumb:hover
       background: rgba(255,255,255,0.4)
 
-.body--light
-  .kanban-col--wrapper
-    &::-webkit-scrollbar-thumb
-     background: rgba(255,255,255,0.5)
-    &::-webkit-scrollbar-thumb:hover
-      background: rgba(255,255,255,0.65)
-
 
 .cards-wrapper
     display: flex
@@ -222,41 +217,12 @@ onMounted(() => {
       height: 100%
       padding: 8px
       padding-bottom: 0
-      min-height: 270px
+      min-height: 260px
       margin-bottom: .5rem
 
 
 
-.ghost
-  &::after
-    content: ""
-    position: absolute
-    width: 100%
-    height: 100%
-    left: 0
-    top: 0
-    display: block
-    background: rgb(var(--neutral-30))
-    border-radius: 3px
-    overflow: hidden
-    .body--dark &
-      background: rgb(var(--d-neutral-40))
-
-
-
-.flip-list-move
-  transition: transform 0.5s
-
-.no-move
-  transition: transform 0s
-
-.list-group
-  min-height: 20px
-  &-item
-    cursor: move
-  &-item i
-    cursor: pointer
-
+//qscrollbar dentro da coluna
 .q-scrollarea
   display: flex
   flex-direction: column
@@ -269,71 +235,19 @@ onMounted(() => {
   height: 100%
   flex: 1
 
-.swiper
-  height: inherit
-  padding: 1rem
-  -webkit-transform: translateZ(0)
-  -webkit-backface-visibility: hidden
-.swiper-wrapper
-  height: inherit
-  -webkit-transform: translateZ(0)
-  -webkit-backface-visibility: hidden
-.swiper-slide
-  width: var(--kanban-col-width) !important
-  height: calc(100% - 2rem)
-  opacity: 1 !important
-  -webkit-transform: translateZ(0)
-  -webkit-backface-visibility: hidden
-
-
-
-
-.swiper-horizontal>.swiper-scrollbar, .swiper-scrollbar.swiper-scrollbar-horizontal
-  bottom: 2px
-  height: 10px
-  .swiper-scrollbar-drag
-    background: rgba(var(--neutral-100),0.3)
 .q-scrollarea__bar--v, .q-scrollarea__thumb--v
   right: 0
   width: 6px
 
+
+//Dark & Light Mode
+.body--light
+  .kanban-col--wrapper
+    &::-webkit-scrollbar-thumb
+     background: rgba(255,255,255,0.5)
+    &::-webkit-scrollbar-thumb:hover
+      background: rgba(255,255,255,0.65)
+
 .body--dark
-  .swiper-scrollbar-drag
-      background: rgba(var(--white),0.3)
+  --kanban-col-bg: rgb(var(--d-neutral-10))
 </style>
-<!-- 
-
-
-        const swiperProps = {
-		slidesPerView: 'auto',
-		spaceBetween: 15,
-		centeredSlides: false,
-		freeMode: true,
-		resizeObserver: true,
-		freeModeMinimumVelocity: "2",
-		slidesOffsetAfter: 100,
-		slidesOffsetBefore: 0,
-		touchReleaseOnEdges: true,
-		mousewheel: {
-			invert: true,
-			forceToAxis: true
-		},
-
-		scrollbar: {
-			el: ".swiper-scrollbar",
-			hide: false,
-			clickable: true,
-			draggable: true,
-			snapOnRelease: true,
-		},
-		navigation: {
-			nextEl: ".swiper-button-next",
-			prevEl: ".swiper-button-prev",
-		},
-		keyboard: {
-			enabled: true,
-		},
-
-
-	}
-       -->

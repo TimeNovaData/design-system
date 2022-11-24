@@ -1,5 +1,5 @@
 <svg aria-hidden="true" style="position: absolute; width: 0; height: 0; overflow: hidden" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <symbol id="icon_menu" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="_kanban" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M2.99609 5.99777H21.0036" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
     <path d="M17.0019 12.0002H2.99609" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
     <path d="M2.99609 18.0026H13.0003" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
@@ -74,6 +74,17 @@
     <path d="M14.1685 2.49707C16.0102 2.49707 17.5032 3.99008 17.5032 5.83179" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
     <path d="M2.49683 5.83179C2.49683 3.99008 3.98983 2.49707 5.83155 2.49707" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
     <path d="M17.5032 14.1689C17.5032 16.0107 16.0102 17.5037 14.1685 17.5037" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+  </symbol>
+
+  <symbol id="icon_menu_kanban" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M3 3.375H15" stroke="currentColor" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M3 7.125H12" stroke="currentColor" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M3 10.875H15" stroke="currentColor" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M3 14.625H9" stroke="currentColor" stroke-opacity="0.5" stroke-linecap="round" stroke-linejoin="round" />
+  </symbol>
+
+  <symbol id="icon_attach" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path opacity="0.5" d="M10.4092 6.28121L6.2947 10.3957C5.6752 11.0152 5.6752 12.0202 6.2947 12.6397V12.6397C6.9142 13.2592 7.9192 13.2592 8.5387 12.6397L13.9627 7.21571C15.0989 6.07946 15.0989 4.23746 13.9627 3.10121V3.10121C12.8264 1.96496 10.9844 1.96496 9.8482 3.10121L4.4242 8.52521C2.7712 10.1782 2.7712 12.8572 4.4242 14.5102V14.5102C6.0772 16.1632 8.7562 16.1632 10.4092 14.5102L13.7009 11.2185" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
   </symbol>
 
 </svg>

@@ -20,19 +20,19 @@
         >Open
       </o-button>
 
-      <q-dialog ref="dialogRef" @hide="onDialogHide">
-        <q-card class="q-dialog-plugin p-32">
-          <p>Modalzin</p>
-          <q-card-actions align="right">
-            <q-btn color="primary" label="OK" @click="onOKClick" />
-            <q-btn
-              color="primary"
-              label="Cancel"
-              @click="onDialogCancel"
-            />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
+    <q-dialog ref="dialogRef" @hide="onDialogHide">
+      <q-card class="q-dialog-plugin p-32">
+        <p>Modalzin</p>
+        <q-card-actions align="right">
+          <q-btn color="primary" label="OK" @click="onOKClick" />
+          <q-btn
+            color="primary"
+            label="Cancel"
+            @click="onDialogCancel"
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
       <syntax-highlight :code="code"></syntax-highlight>
     </section>
