@@ -4,6 +4,8 @@
     @hide="onDialogHide"
     transition-hide="slide-down"
     v-model="dialogState"
+    @before-show="beforeshow"
+    @before-hide="beforehide"
   >
     <q-card class="kanban-modal q-dialog-plugin remove-styles">
       <header class="bg-neutral-30 dark:bg-d-neutral-20">
@@ -42,6 +44,7 @@
         appear
         enter-active-class="animated fadeIn"
         leave-active-class="animated fadeOut"
+        :duration="200"
       >
         <q-tab-panels
           v-if="showTabs"
@@ -207,8 +210,62 @@
           </q-tab-panel>
 
           <q-tab-panel name="tarefas">
-            <div class="text-h6">Alarms</div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            <div class="flex-flex-col gap-16">
+              <div class="flex justify-between p-24">
+                <div class="flex items-center gap-8">
+                  <OBadge
+                    size="lg"
+                    :badge="false"
+                    square
+                    :clickable="true"
+                    class="h-32 cursor-pointer bg-white border border-neutral-100/10 badge-change text-neutral-70 dark:!bg-white/5 dark:text-white/90"
+                    :class="{ active: taskActive === 'andamento' }"
+                    @click="changeTask"
+                  >
+                    <template #content>
+                      <q-icon
+                        size="20px"
+                        name="svguse:/icons.svg#icon_andamento"
+                      ></q-icon>
+                      <p class="font-normal">Tarefas em andamento</p>
+                    </template>
+                  </OBadge>
+                  <OBadge
+                    size="lg"
+                    :badge="false"
+                    square
+                    :clickable="true"
+                    class="h-32 cursor-pointer bg-white border border-neutral-100/10 badge-change text-neutral-70 dark:!bg-white/5 dark:text-white/90"
+                    :class="{ active: taskActive === 'concluidas' }"
+                    @click="changeTask"
+                  >
+                    <template #content>
+                      <q-icon
+                        size="20px"
+                        name="svguse:/icons.svg#icon_concluido"
+                      ></q-icon>
+                      <p class="font-normal">Tarefas Concluidas</p>
+                    </template>
+                  </OBadge>
+                </div>
+              </div>
+              <Transition
+                :duration="200"
+                mode="out-in"
+                enter-active-class="animated fadeIn"
+                leave-active-class="animated fadeOut"
+              >
+                <section v-if="taskActive === 'andamento'" key="andamento">
+                  andamento
+                </section>
+                <section
+                  v-else-if="taskActive === 'concluidas'"
+                  key="concluidas"
+                >
+                  concluidas
+                </section>
+              </Transition>
+            </div>
           </q-tab-panel>
 
           <q-tab-panel name="anexos">
@@ -240,6 +297,17 @@ const dialogState = ref(false)
 const props = defineProps({
   // ...your custom props
 })
+const taskActive = ref('andamento')
+
+const beforeshow = (e) =>
+  setTimeout(() => document.body.classList.add('kanban-modal-show'), 300)
+const beforehide = (e) => document.body.classList.remove('kanban-modal-show')
+
+const changeTask = () => {
+  console.log(taskActive.value)
+  taskActive.value =
+    taskActive.value === 'andamento' ? 'concluidas' : 'andamento'
+}
 
 defineEmits([
   // REQUIRED; need to specify some events that your
@@ -265,6 +333,7 @@ function onOKClick() {
   // ...and it will also hide the dialog automatically
 }
 const showTabs = ref(false)
+
 watch(dialogState, () => {
   let time
   if (dialogState.value) {
@@ -272,6 +341,7 @@ watch(dialogState, () => {
   } else {
     clearTimeout(time)
     showTabs.value = false
+    tab.value = 'info'
   }
 })
 
@@ -289,6 +359,9 @@ defineExpose({ dialogRef })
     background: rgb(var(--d-neutral-30)) !important
     color: white !important
     border-color: rgba(var(--white),0.05)
+
+.q-dialog__backdrop
+  backdrop-filter: blur(5px)
 </style>
 
 <style lang="sass" scoped>

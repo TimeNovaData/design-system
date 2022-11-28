@@ -1,7 +1,9 @@
 <template>
   <q-card
-    class="kanban-card shadow-md p-6 dark:bg-d-neutral-40"
+    class="kanban-card shadow-md p-6 dark:bg-d-neutral-40 hover:cursor-pointer overflow-hidden"
     @click="(e) => handleEmit(e, item)"
+    @keyup.enter="(e) => handleEmit(e, item)"
+    tabindex="0"
   >
     <div class="flex flex-wrap gap-4 mb-6">
       <OBadge
@@ -30,6 +32,7 @@
       bg="--d-success"
       square
       class="w-full text-center justify-center my-6"
+      :ripple="false"
     >
       <template #content>
         <p class="text-center mx-auto">Assessment coolers</p>
@@ -78,7 +81,7 @@
           class="overlapping w-32 h-32 absolute border-white border-2 dark:border-d-neutral-10 overflow-hidden"
           :style="`right: ${n * 25}px`"
         >
-        <img :src="`https://cdn.quasar.dev/img/avatar${n + 1}.jpg`" />
+          <img :src="`https://cdn.quasar.dev/img/avatar${n + 1}.jpg`" />
         </q-avatar>
       </div>
     </section>
@@ -126,9 +129,6 @@
         <p class="text-headline-5 dark:text-white/90 !tracking-wider">1h 45m</p>
       </div>
     </section>
-
-
-
   </q-card>
 </template>
 

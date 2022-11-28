@@ -4,7 +4,7 @@
     :style="styleChip()"
     :data-size="attrs.size"
     :size="null"
-    :clickable="false"
+    :ripple="false"
   >
     <q-badge
       class="shrink-0 w-8 h-8"

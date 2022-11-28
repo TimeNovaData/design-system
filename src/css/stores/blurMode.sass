@@ -21,6 +21,20 @@
       --Nv0-sidebar-border: 1px solid rgba(var(--white),0.05)
       --kanban-col-bg: rgba(var(--d-neutral-10), 0.5)
 
+    .kanban-modal
+      transition: background .1s ease-out 0s
+
+      header
+        transition: background .3s ease-in 0.1s
+
+    &.kanban-modal-show
+      .kanban-modal
+        background: linear-gradient(254deg, #d9d9d917 -40.48%, rgb(0 0 0 / 52%) 100%) !important
+        // background: linear-gradient(336deg, #d9d9d917 -40.48%, rgb(0 0 0 / 69%) 100%) !important
+        > header
+          background: rgba(var(--white),0.1) !important
+          backdrop-filter: blur(16px)
+
   .q-header
     backdrop-filter: blur(16px)
   .OSidebar,

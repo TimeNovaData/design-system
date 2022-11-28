@@ -17,6 +17,11 @@
   padding: .5em .9em
   font-weight: 500
 
+  &.active
+    background: rgba(var(--primary-pure), 0.1) !important
+    color: rgba(var(--primary-pure), 1) !important
+    border-color: rgba(var(--primary-pure), 1) !important
+
   &[data-size="sm"]
     font-size: 0.75rem
     padding: 2px 6px
@@ -103,4 +108,4 @@
       border-radius: ($generic-border-radius - 1px) 0 0 ($generic-border-radius - 1px)
 
 body.desktop .q-chip--clickable:focus
-  box-shadow: $shadow-1
+  // box-shadow: $shadow-1

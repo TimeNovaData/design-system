@@ -38,6 +38,7 @@
       </KanbanCol>
     </div>
   </section>
+
   <KanbanModal ref="modal"></KanbanModal>
 
   <img class="image-bg" :src="kanbanBG" aria-hidden="true" />

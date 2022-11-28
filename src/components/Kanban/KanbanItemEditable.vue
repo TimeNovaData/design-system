@@ -2,13 +2,12 @@
   <div
     class="relative text-headline-3 px-12 py-6 bg-neutral-20 rounded-generic dark:bg-white/5"
     :class="classObj"
-    v-ripple="editable"
+    :tabindex="`${editable ? 0 : null}`"
   >
-    <p>
-      {{ value }}
-    </p>
+    {{ value }}
+
     <q-popup-edit
-      v-show="editable"
+      v-if="editable"
       v-model="popupValue"
       v-slot="scope"
       anchor="top start"
@@ -119,6 +118,6 @@ const inputMask = () => {
 .body--dark
   .editavel
     &:hover
-      border-color: rgba(var(--d-neutral-10), 0.3)
+      border-color: rgba(var(--white), 0.1)
       background: rgba(var(--white), 0.2) !important
 </style>
