@@ -10,10 +10,7 @@
           href="https://quasar.dev/vue-components/input#introduction"
           target="_blank"
           >QDocs
-          <q-icon
-            class="!text-20"
-            name="sym_r_arrow_outward"
-          ></q-icon>
+          <q-icon class="!text-20" name="sym_r_arrow_outward"></q-icon>
         </o-button>
       </div>
 
@@ -24,15 +21,9 @@
         >
           <q-tab name="mails">
             <template class="inline-flex flex-row items-center gap-4">
-              <q-icon
-                size="1.25rem"
-                name="sym_r_add_circle_outline"
-              ></q-icon>
+              <q-icon size="1.25rem" name="sym_r_add_circle_outline"></q-icon>
               <p>Mails</p>
-              <q-icon
-                size="1.25rem"
-                name="sym_r_add_circle_outline"
-              ></q-icon>
+              <q-icon size="1.25rem" name="sym_r_add_circle_outline"></q-icon>
             </template>
           </q-tab>
           <q-tab name="alarms" label="Alarms"></q-tab>
@@ -47,15 +38,9 @@
         >
           <q-tab name="mails">
             <template class="inline-flex flex-row items-center gap-4">
-              <q-icon
-                size="1.25rem"
-                name="sym_r_add_circle_outline"
-              ></q-icon>
+              <q-icon size="1.25rem" name="sym_r_add_circle_outline"></q-icon>
               <p>Dense</p>
-              <q-icon
-                size="1.25rem"
-                name="sym_r_add_circle_outline"
-              ></q-icon>
+              <q-icon size="1.25rem" name="sym_r_add_circle_outline"></q-icon>
             </template>
           </q-tab>
           <q-tab name="alarms" label="Alarms"></q-tab>
@@ -88,8 +73,8 @@
 
 <script setup>
 import { ref } from 'vue'
-import oButton from '../../components/OButton.vue'
-import SyntaxHighlight from '../../components/DesignSystem/SyntaxHighlight.vue'
+import oButton from 'src/components/Button/OButton.vue'
+import SyntaxHighlight from 'src/components/DesignSystem/SyntaxHighlight.vue'
 
 const code = `<script><${'/'}script>
 <div>

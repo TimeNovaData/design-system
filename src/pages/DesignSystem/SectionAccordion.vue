@@ -46,9 +46,9 @@
 
 <script setup>
 import { ref } from 'vue'
-import oButton from '../../components/OButton.vue'
-import SyntaxHighlight from '../../components/DesignSystem/SyntaxHighlight.vue'
-import OAccordion from 'src/components/OAccordion.vue'
+import oButton from 'src/components/Button/OButton.vue'
+import SyntaxHighlight from 'src/components/DesignSystem/SyntaxHighlight.vue'
+import OAccordion from 'src/components/Accordion/OAccordion.vue'
 
 const code = `<script>
 import OAccordion from 'src/components/OAccordion.vue'

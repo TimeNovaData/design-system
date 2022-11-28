@@ -1,5 +1,5 @@
 <template>
-  <q-table  ref="componentRef" v-bind="attrs">
+  <q-table ref="componentRef" v-bind="attrs">
     <template v-for="slot in Object.keys(slots)" #[slot]="slotProps">
       <slot :name="slot" v-bind="slotProps"></slot>
     </template>
@@ -16,7 +16,6 @@ import { useSlots, useAttrs, ref, onMounted } from 'vue'
 const slots = useSlots()
 const attrs = useAttrs()
 const componentRef = ref(null)
-
 
 defineExpose({ componentRef })
 </script>

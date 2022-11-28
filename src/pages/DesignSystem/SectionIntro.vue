@@ -4,23 +4,18 @@
     <div
       class="text-neutral-70 mt-32 text-paragraph-2 gap-2 flex flex-col dark:text-white/80"
     >
-      <p class="font-semibold text-neutral-100 dark:text-white">
-        Sobre
-      </p>
-      <p>
-        Bem vindo ao design system da nova data, aqui esta um guia
-        basico
-      </p>
+      <p class="font-semibold text-neutral-100 dark:text-white">Sobre</p>
+      <p>Bem vindo ao design system da nova data, aqui esta um guia basico</p>
       <p>Este design usa Vue e Quasar framework como base</p>
       <p>
-        O Quasar é um (framework vue) cinto de ferramentas que tem uma
-        game de utilidades
+        O Quasar é um (framework vue) cinto de ferramentas que tem uma game de
+        utilidades
       </p>
       <p>
-        é por padrao podemos usar todas elas ao inves de instalar
-        varias bibliotecas de terceiros
+        é por padrao podemos usar todas elas ao inves de instalar varias
+        bibliotecas de terceiros
       </p>
-      
+
       <a
         target="_blank"
         class="text-medium text-[#00b4ff] dark:text-opacity-80 border-b border-dashed w-max text-paragraph-2"
@@ -40,12 +35,10 @@
         >Configurando quasar.config.js</a
       >
 
-      <p class="font-semibold text-neutral-100 dark:text-white mt-24">
-        Icones
-      </p>
+      <p class="font-semibold text-neutral-100 dark:text-white mt-24">Icones</p>
       <p>
-        Aqui é usado os icones svg do figma e o pacote de fontes
-        Material Symbols
+        Aqui é usado os icones svg do figma e o pacote de fontes Material
+        Symbols
       </p>
       <p>
         Para usar um icone material é só usar o component
@@ -57,8 +50,8 @@
       </p>
       <p>que é a abreviaçao de symbol rounded</p>
       <p>
-        por exemplo para o icone de `close` voce utilizaria dessa
-        forma no q-icon `name='sym_r_close'`
+        por exemplo para o icone de `close` voce utilizaria dessa forma no
+        q-icon `name='sym_r_close'`
       </p>
       <br />
       <p>Ja para icones do figma, voce ira copiar o svg do icone</p>
@@ -87,8 +80,8 @@
         >Q-icon</a
       >
       <p class="mt-8">
-        Para icones de favicon e icones para pwa, electron etc quasar
-        tem um cli que automatiza tudo isto
+        Para icones de favicon e icones para pwa, electron etc quasar tem um cli
+        que automatiza tudo isto
       </p>
       <a
         target="_blank"
@@ -102,8 +95,8 @@
         Estrutura
       </p>
       <p>
-        Para duvidas sobre a estrutura do projeto consulte sobre a
-        estrutura do quasar
+        Para duvidas sobre a estrutura do projeto consulte sobre a estrutura do
+        quasar
       </p>
       <a
         target="_blank"
@@ -116,20 +109,19 @@
         Extensões
       </p>
       <p>
-        Algumas extensões são extremamente importantes para um
-        workflow mais produtivos
+        Algumas extensões são extremamente importantes para um workflow mais
+        produtivos
       </p>
       <p>
-        Para isso irei deixar estas sugestoes dentro do
-        .vscode/extensions.json/
+        Para isso irei deixar estas sugestoes dentro do .vscode/extensions.json/
       </p>
       <br />
       <p class="font-semibold text-neutral-100 dark:text-white mt-24">
         Boas Praticas
       </p>
       <p>
-        Recomendado dar uma olhada no style guide do vue para seguir
-        os padroes corretos
+        Recomendado dar uma olhada no style guide do vue para seguir os padroes
+        corretos
       </p>
       <a
         target="_blank"
@@ -138,8 +130,8 @@
         >Vue3 Style Guide</a
       >
       <p class="mt-8">
-        Este projeto usa Eslint, portanto é muito importante a
-        padronizaçao do codigo
+        Este projeto usa Eslint, portanto é muito importante a padronizaçao do
+        codigo
       </p>
       <p>É uma má pratica desativar o Eslint</p>
       <p class="font-semibold text-neutral-100 dark:text-white mt-24">
@@ -150,8 +142,8 @@
         <strong class="font-semibold">wrappers</strong>
       </p>
       <p>
-        que é basicamente uma camada de logica em volta de um
-        componente do quasar
+        que é basicamente uma camada de logica em volta de um componente do
+        quasar
       </p>
       <p>então ao visualizar um component como o OButton, OCheck</p>
       <p>
@@ -175,21 +167,19 @@
         href="https://github.com/quasarframework/quasar/discussions/"
         >Github comunidade Quasar</a
       >
-      
     </div>
 
     <p class="font-semibold text-neutral-100 dark:text-white mt-24 mb-8">
       Links uteis
     </p>
     <a
-        target="_blank"
-        class="text-medium text-[#00b4ff] dark:text-opacity-80 border-b border-dashed w-max text-paragraph-2"
-        href="https://vuecomponents.com/"
-        >Vuecomponents</a
-      >
-    
-    <p>Em breve...</p>
+      target="_blank"
+      class="text-medium text-[#00b4ff] dark:text-opacity-80 border-b border-dashed w-max text-paragraph-2"
+      href="https://vuecomponents.com/"
+      >Vuecomponents</a
+    >
 
+    <p>Em breve...</p>
   </q-card>
 
   <!--

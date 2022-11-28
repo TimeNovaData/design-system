@@ -100,3 +100,4 @@ const colorsDark = {
 </script>
 
 <style lang="sass"></style>
+import SyntaxHighlight              from 'src/components/DesignSystem/SyntaxHighlight.vue'import oButton                      from 'src/components/Button/OButton.vue'import { ref }                      from 'vue'import OInput                       from 'src/components/Input/OInput.vue'

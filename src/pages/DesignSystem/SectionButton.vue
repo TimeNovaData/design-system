@@ -4,24 +4,27 @@
       <div class="flex items-center justify-between">
         <h1 class="text-title-2 mb-18">Buttons</h1>
 
-        <o-button
+        <OButton
           secondary
           type="a"
           href="https://quasar.dev/vue-components/button#introduction"
           target="_blank"
           icon-right="svguse:/icons.svg#arrow_rounded_up"
           >QDocs
-        </o-button>
+        </OButton>
       </div>
 
       <div>
         <p>Primary</p>
         <div class="flex gap-8">
-          <o-button size="sm" primary>Button SM</o-button>
-          <o-button size="md" primary>Button MD</o-button>
-          <o-button size="lg" primary disable>Button LG</o-button>
-          <o-button size="lg" primary icon-right="svguse:/icons.svg#arrow_rounded_up"
-            >With Icon</o-button
+          <OButton size="sm" primary>Button SM</OButton>
+          <OButton size="md" primary>Button MD</OButton>
+          <OButton size="lg" primary disable>Button LG</OButton>
+          <OButton
+            size="lg"
+            primary
+            icon-right="svguse:/icons.svg#arrow_rounded_up"
+            >With Icon</OButton
           >
         </div>
       </div>
@@ -29,23 +32,23 @@
       <div>
         <p>Secondary</p>
         <div class="flex gap-8">
-          <o-button size="sm" secondary>Secondary SM</o-button>
-          <o-button size="sm" secondary loading>Button SM</o-button>
+          <OButton size="sm" secondary>Secondary SM</OButton>
+          <OButton size="sm" secondary loading>Button SM</OButton>
         </div>
       </div>
 
       <div>
         <p>Tertiary</p>
         <div class="flex gap-8">
-          <o-button size="sm" tertiary>Tertiary SM</o-button>
-          <o-button
+          <OButton size="sm" tertiary>Tertiary SM</OButton>
+          <OButton
             size="sm"
             tertiary
             :loading="progress.loading"
             @click="startComputing"
             :percentage="progress.percentage"
             >Click to Loading
-          </o-button>
+          </OButton>
         </div>
       </div>
       <syntax-highlight :code="code"></syntax-highlight>
@@ -56,22 +59,22 @@
 </template>
 
 <script setup>
-import oButton from '../../components/OButton.vue'
 import { ref } from 'vue'
-import SyntaxHighlight from '../../components/DesignSystem/SyntaxHighlight.vue'
+import SyntaxHighlight from 'src/components/DesignSystem/SyntaxHighlight.vue'
+import OButton from 'src/components/Button/OButton.vue'
 
 const code = `<script>
-import oButton from "../../components/OButton.vue";
+import oButton from "src/components/OButton.vue";
 //size: sm, md, lg
 //variation: [primary] [secondary] [tertiary]
 <${'/'}script>
 
 <template>
-  <o-button
+  <OButton
     size="sm"
     primary
     >Button SM
-  </o-button>
+  </OButton>
 </template>
 
 `

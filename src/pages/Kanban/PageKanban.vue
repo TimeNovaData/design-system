@@ -5,65 +5,70 @@
       @mousedown="(e) => enableDragScroll(e)"
     >
       <KanbanCol
-        :data="list"
         v-for="(list, index) in lists"
-        :key="index"
+        :data="list"
         @mouseup="handleColClick"
         @mousedown="handleColClick"
+        :key="index"
       >
         <draggable
+          v-bind="dragOptions"
+          :list="list"
           :component-data="{
             tag: 'div',
             type: 'transition-group',
             name: !drag ? 'flip-list' : null,
             class: 'transition-div',
           }"
-          :list="list"
           group="a"
-          @start="(e) => handleStartEnd(e, true)"
-          @end="(e) => handleStartEnd(e, false)"
           itemKey="name"
-          v-bind="dragOptions"
+          @end="(e) => handleStartEndDrag(e, false)"
+          @start="(e) => handleStartEndDrag(e, true)"
         >
           <template #item="{ element }">
             <KanbanCard
-              :visaoExpandida="visaoExpandida"
               :item="element"
+              :visaoExpandida="visaoExpandida"
               @cardClick="handleCardClick"
             ></KanbanCard>
           </template>
+
+          <!--  -->
         </draggable>
       </KanbanCol>
     </div>
   </section>
   <KanbanModal ref="modal"></KanbanModal>
+
   <img class="image-bg" :src="kanbanBG" aria-hidden="true" />
 </template>
 
 <script setup>
-import KanbanCol from 'src/components/KanbanCol.vue'
-import KanbanCard from 'src/components/KanbanCard.vue'
-import GLOBAL from 'src/utils/GLOBAL'
-import draggable from 'vuedraggable'
+import { computed, onMounted, ref, watch } from 'vue'
+import { storeToRefs } from 'pinia'
 import { useKanbanBG } from 'src/stores/kanbanBG'
 import { useVisaoExpandida } from 'src/stores/visaoExpandida'
-import { storeToRefs } from 'pinia'
-import { computed, onMounted, ref, watch } from 'vue'
-import KanbanModal from '../../components/KanbanModal.vue'
+import draggable from 'vuedraggable'
+import GLOBAL from 'src/utils/GLOBAL'
+import KanbanCol from 'src/components/Kanban/KanbanCol.vue'
+import KanbanCard from 'src/components/Kanban/KanbanCard.vue'
+import KanbanModal from 'src/components/Kanban/KanbanModal.vue'
 
 const { generateRange, modelo1, setHeightInCol } = GLOBAL
 
-const removeEvents = ref(false)
-const enableDragScroll = GLOBAL.enableDragScroll(removeEvents)
-
-const bg = useKanbanBG()
 const visao = useVisaoExpandida()
+const bg = useKanbanBG()
+
 const { kanbanBG } = storeToRefs(bg)
 const { visaoExpandida } = storeToRefs(visao)
+
+const removeEventsWrapper = ref(false)
+
 const modal = ref(null)
+
 function handleColClick(e) {
   e.stopImmediatePropagation()
-  removeEvents.value = true
+  removeEventsWrapper.value = true
 }
 
 const lists = ref([
@@ -78,10 +83,12 @@ const lists = ref([
 
 // Drag
 const drag = ref(false)
+const enableDragScroll = GLOBAL.enableDragScroll(removeEventsWrapper)
+
 watch(drag, () => setHeightInCol())
 watch(visaoExpandida, () => setTimeout(() => setHeightInCol(), 300))
 
-const handleStartEnd = (e, value) => {
+const handleStartEndDrag = (e, value) => {
   e.stopImmediatePropagation()
   e.stopPropagation()
   drag.value = value
@@ -95,7 +102,6 @@ const dragOptions = computed(() => ({
 }))
 
 function handleCardClick(v) {
-  console.log(modal.value.dialogRef)
   modal.value.dialogRef.show()
 }
 
@@ -105,7 +111,6 @@ onMounted(() => {
     .querySelector('.kanban-col--wrapper')
     .dispatchEvent(new Event('mousedown'))
 })
-
 </script>
 
 <style lang="sass">

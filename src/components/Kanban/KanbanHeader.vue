@@ -85,9 +85,7 @@
 <script setup>
 import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
-import BaseMenuTop from './BaseMenuHeader.vue'
-import OButton from './OButton.vue'
-import OInput from './OInput.vue'
+import OButton from 'src/components/Button/OButton.vue'
 import { useVisaoExpandida } from 'src/stores/visaoExpandida'
 
 const visao = useVisaoExpandida()

@@ -4,16 +4,15 @@
 
 <script>
 import { defineComponent } from 'vue'
-import './css/cores.sass'
-import './css/quasar/@index.sass'
-import './css/body.sass'
-import './css/pages/DesignSystem.sass'
-import './css/tailwind.css'
-
-import './css/stores/blurMode.sass'
+import 'src/css/cores.sass'
+import 'src/css/quasar/@index.sass'
+import 'src/css/body.sass'
+import 'src/css/pages/DesignSystem.sass'
+import 'src/css/tailwind.css'
+import 'src/css/stores/blurMode.sass'
 
 export default defineComponent({
-  name: 'App'
+  name: 'App',
 })
 </script>
 

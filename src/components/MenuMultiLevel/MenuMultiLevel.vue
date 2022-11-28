@@ -36,7 +36,7 @@ import { useRoute } from 'vue-router'
 import MenuLogo from './MenuLogo.vue'
 import MenuLi from './MenuLi.vue'
 
-import GLOBAL from '../../utils/GLOBAL'
+import GLOBAL from 'src/utils/GLOBAL'
 import logoAnimation from 'src/utils/animation/logo'
 
 const route = useRoute()

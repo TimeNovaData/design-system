@@ -4,8 +4,14 @@
     :style="styleChip()"
     :data-size="attrs.size"
     :size="null"
+    :clickable="false"
   >
-    <q-badge class="shrink-0 w-8 h-8" v-if="attrs.badge" rounded :style="styleBadge"></q-badge>
+    <q-badge
+      class="shrink-0 w-8 h-8"
+      v-if="attrs.badge"
+      rounded
+      :style="styleBadge"
+    ></q-badge>
 
     <slot name="content"></slot>
   </q-chip>
@@ -33,12 +39,11 @@ const styleChip = () => ({
         }`
       : `rgba(var(${attrs.bg}), 1)`
   }`,
-  background: `rgba(var(${attrs.bg}), 0.1)`
-  
+  background: `rgba(var(${attrs.bg}), 0.1)`,
 })
 
 const styleBadge = {
-  background: `rgba(var(${attrs.bg}), 1)`
+  background: `rgba(var(${attrs.bg}), 1)`,
 }
 </script>
 

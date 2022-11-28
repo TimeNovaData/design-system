@@ -21,7 +21,6 @@ export default { inheritAttrs: false }
 
 <script setup>
 import { useSlots, useAttrs } from 'vue'
-import OBadge from './OBadge.vue';
 
 
 const slots = useSlots()

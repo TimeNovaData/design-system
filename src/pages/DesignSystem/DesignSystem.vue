@@ -14,7 +14,7 @@
         >
           <q-icon
             size="28px"
-            name="svguse:/icons.svg#icon_menu"
+            name="svguse:/icons.svg#icon_menu_kanban"
           ></q-icon>
         </q-btn>
 
@@ -24,7 +24,10 @@
           </div>
         </q-toolbar-title>
 
-        <BaseMenuTop></BaseMenuTop>
+        <q-btn class="text-neutral-10" dense flat round>
+          <q-icon size="28px" name="sym_r_tune"></q-icon>
+          <BaseHeaderMenu> </BaseHeaderMenu>
+        </q-btn>
       </q-toolbar>
     </q-header>
 
@@ -57,10 +60,9 @@
             @click="sectionActive = item.id"
             :style="{ order: item.order ? item.order : index }"
           >
-            <q-item-section
-              class="text-neutral-70 dark:text-white/80"
-              >{{ item.name }}</q-item-section
-            >
+            <q-item-section class="text-neutral-70 dark:text-white/80">{{
+              item.name
+            }}</q-item-section>
           </q-item>
         </q-list>
       </q-scroll-area>
@@ -70,30 +72,20 @@
     <q-page-container class="overflow-x-hidden">
       <q-scroll-area style="height: calc(100vh - 51px)">
         <div class="p-24 flex gap-16 overflow-hidden w-full">
-          <transition name="list" tag="section" class="w-full">
-            <section-tipographie
-              v-if="sectionActive == 'typographie'"
-            />
+          <transition name="list" tag="section">
+            <section-tipographie v-if="sectionActive == 'typographie'" />
             <section-button v-else-if="sectionActive == 'button'" />
             <section-radio v-else-if="sectionActive == 'checkbox'" />
             <section-chips v-else-if="sectionActive == 'chips'" />
             <section-intro v-else-if="sectionActive == 'intro'" />
-            <section-breadcrumb
-              v-else-if="sectionActive == 'breadcrumb'"
-            />
+            <section-breadcrumb v-else-if="sectionActive == 'breadcrumb'" />
             <section-input v-else-if="sectionActive == 'inputs'" />
             <section-selects v-else-if="sectionActive == 'selects'" />
             <section-tabs v-else-if="sectionActive == 'tabs'" />
             <section-table v-else-if="sectionActive == 'table'" />
-            <section-popup-proxy
-              v-else-if="sectionActive == 'popupProxy'"
-            />
-            <section-accordion
-              v-else-if="sectionActive == 'accordion'"
-            />
-            <section-paginacao
-              v-else-if="sectionActive == 'paginacao'"
-            />
+            <section-popup-proxy v-else-if="sectionActive == 'popupProxy'" />
+            <section-accordion v-else-if="sectionActive == 'accordion'" />
+            <section-paginacao v-else-if="sectionActive == 'paginacao'" />
             <section-modal v-else-if="sectionActive == 'modal'" />
             <section-colors v-else-if="sectionActive == 'cores'" />
           </transition>
@@ -115,29 +107,29 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue'
 
-import oButton from '../../components/OButton.vue'
+import oButton                   from 'src/components/Button/OButton.vue'
 
-import SectionButton from './SectionButton.vue'
-import SectionTipographie from './SectionTipographie.vue'
-import SectionRadio from './SectionRadio.vue'
-import SectionChips from './SectionChips.vue'
-import SectionIntro from './SectionIntro.vue'
-import SectionBreadcrumb from './SectionBreadcrumb.vue'
-import SectionInput from './SectionInput.vue'
-import SectionTable from './SectionTable.vue'
-import SectionPopupProxy from './SectionPopUpProxy.vue'
-import SectionAccordion from './SectionAccordion.vue'
-import SectionPaginacao from './SectionPaginacao.vue'
-import SectionModal from './SectionModal.vue'
-import SectionColors from './SectionColors.vue'
+import SectionAccordion          from './SectionAccordion.vue'
+import SectionBreadcrumb         from './SectionBreadcrumb.vue'
+import SectionButton             from './SectionButton.vue'
+import SectionChips              from './SectionChips.vue'
+import SectionColors             from './SectionColors.vue'
+import SectionInput              from './SectionInput.vue'
+import SectionIntro              from './SectionIntro.vue'
+import SectionModal              from './SectionModal.vue'
+import SectionPaginacao          from './SectionPaginacao.vue'
+import SectionPopupProxy         from './SectionPopUpProxy.vue'
+import SectionRadio              from './SectionRadio.vue'
+import SectionTable              from './SectionTable.vue'
+import SectionTipographie        from './SectionTipographie.vue'
+import SectionTabs               from './SectionTabs.vue'
+import SectionSelects            from './SectionSelects.vue'
 
-import MenuMultiLevel from '../../components/MenuMultiLevel/MenuMultiLevel.vue'
-import MenuLogo from 'src/components/MenuMultiLevel/MenuLogo.vue'
-import SectionSelects from './SectionSelects.vue'
-import SectionTabs from './SectionTabs.vue'
-import menuList from 'src/utils/menuList'
-import logoAnimation from 'src/utils/animation/logo'
-import BaseMenuTop from 'src/components/BaseMenuHeader.vue'
+import BaseHeaderMenu            from 'src/components/Header/BaseHeaderMenu.vue'
+import MenuLogo                  from 'src/components/MenuMultiLevel/MenuLogo.vue'
+import MenuMultiLevel            from 'src/components/MenuMultiLevel/MenuMultiLevel.vue'
+import logoAnimation             from 'src/utils/animation/logo'
+import menuList                  from 'src/utils/menuList'
 
 const sectionActive = ref('intro')
 const leftDrawerOpen = ref(true)

@@ -86,15 +86,15 @@
 </template>
 
 <script setup>
-import OButton from '../../components/OButton.vue'
-import OBadge from '../../components/OBadge.vue'
-import OCounter from '../../components/OCounter.vue'
-import OChip from 'src/components/OChip.vue'
-import SyntaxHighlight from '../../components/DesignSystem/SyntaxHighlight.vue'
+import OButton from 'src/components/Button/OButton.vue'
+import OChip from 'src/components/Chip/OChip.vue'
+import OCounter from 'src/components/Counter/OCounter.vue'
+import SyntaxHighlight from 'src/components/DesignSystem/SyntaxHighlight.vue'
+import OBadge from 'src/components/Badge/OBadge.vue'
 import { ref } from 'vue'
 
-const code = `import OBadge from "../../components/OBadge.vue";
-import OCounter from "../../components/OCounter.vue";
+const code = `import OBadge from "src/components/OBadge.vue";
+import OCounter from "src/components/OCounter.vue";
 import OChip from "src/components/OChip.vue";
 // Badge -------------------
 <o-badge
@@ -129,7 +129,7 @@ const desert = ref({
   Icecream: false,
   Eclair: false,
   Cupcake: false,
-  Gingerbread: false
+  Gingerbread: false,
 })
 </script>
 

@@ -10,10 +10,7 @@
           href="https://quasar.dev/vue-components/breadcrumbs#introduction"
           target="_blank"
           >QDocs
-          <q-icon
-            class="!text-20"
-            name="sym_r_arrow_outward"
-          ></q-icon>
+          <q-icon class="!text-20" name="sym_r_arrow_outward"></q-icon>
         </o-button>
       </div>
 
@@ -23,13 +20,15 @@
         <q-breadcrumbs-el label="Breadcrumbs" />
       </q-breadcrumbs>
 
-     
+
     </section>
   </q-card>
 </template>
 
 <script setup>
-import oButton from '../../components/OButton.vue'
+import oButton from 'src/components/Button/OButton.vue'
+import OCheck from 'src/components/Checkbox/OCheck.vue';
+import SectionAccordion from './SectionAccordion.vue';
 </script>
 
 <style lang="sass"></style>

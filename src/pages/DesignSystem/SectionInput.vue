@@ -1,4 +1,3 @@
-
 <template>
   <q-card class="p-16 w-full">
     <section class="flex flex-col gap-8 w-full">
@@ -11,10 +10,7 @@
           href="https://quasar.dev/vue-components/input#introduction"
           target="_blank"
           >QDocs
-          <q-icon
-            class="!text-20"
-            name="sym_r_arrow_outward"
-          ></q-icon>
+          <q-icon class="!text-20" name="sym_r_arrow_outward"></q-icon>
         </o-button>
       </div>
 
@@ -31,11 +27,9 @@
             name="email"
             :lazy-rules="true"
             :rules="[
-              (val, rules) =>
-                rules.email(val) || 'Preencha um email valido',
+              (val, rules) => rules.email(val) || 'Preencha um email valido',
               (val) =>
-                val.length >= 25 ||
-                'Por favor digite mais de 25 caracteres',
+                val.length >= 25 || 'Por favor digite mais de 25 caracteres',
             ]"
           >
             <template #prepend>
@@ -54,9 +48,8 @@
             :lazy-rules="true"
             :rules="[
               (val) =>
-                /^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$/.test(
-                  val
-                ) || 'Telefone Celular invalido',
+                /^\([1-9]{2}\) (?:[2-8]|9[1-9])[0-9]{3}\-[0-9]{4}$/.test(val) ||
+                'Telefone Celular invalido',
             ]"
           >
           </o-input>
@@ -73,10 +66,7 @@
           >
             <template v-slot:append>
               <o-button rounded>
-                <q-icon
-                  name="sym_r_calendar_today"
-                  class="cursor-pointer"
-                >
+                <q-icon name="sym_r_calendar_today" class="cursor-pointer">
                   <q-popup-proxy
                     cover
                     transition-show="scale"
@@ -154,10 +144,10 @@
 </template>
 
 <script setup>
-import OInput from "../../components/OInput.vue";
-import SyntaxHighlight from "../../components/DesignSystem/SyntaxHighlight.vue";
-import oButton from "../../components/OButton.vue";
-import { ref } from "vue";
+import SyntaxHighlight from 'src/components/DesignSystem/SyntaxHighlight.vue'
+import oButton from 'src/components/Button/OButton.vue'
+import { ref } from 'vue'
+import OInput from 'src/components/Input/OInput.vue'
 
 const inputValue = ref('')
 const telValue = ref('')
@@ -187,3 +177,4 @@ const code = `import OInput from "../../components/OInput.vue";
 </script>
 
 <style lang="sass"></style>
+import { ref }                      from 'vue'

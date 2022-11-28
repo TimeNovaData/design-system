@@ -21,8 +21,8 @@
 
 <script setup>
 import { ref } from "vue";
-import oButton from "../../components/OButton.vue";
-import SyntaxHighlight from "../../components/DesignSystem/SyntaxHighlight.vue";
+import oButton from "src/components/Button/OButton.vue";
+import SyntaxHighlight from "src/components/DesignSystem/SyntaxHighlight.vue";
 
 const code = ``;
 </script>

@@ -46,14 +46,14 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import ORadio from "../../components/ORadio.vue";
-import OCheck from "../../components/OCheck.vue";
-import SyntaxHighlight from "../../components/DesignSystem/SyntaxHighlight.vue";
-import OButton from "src/components/OButton.vue";
+import { ref }         from "vue";
+import ORadio          from "src/components/Radio/ORadio.vue";
+import OCheck          from "src/components/Checkbox/OCheck.vue";
+import SyntaxHighlight from "src/components/DesignSystem/SyntaxHighlight.vue";
+import OButton         from "src/components/Button/OButton.vue";
 
 const code = `<script>
-import ORadio from "../../components/ORadio.vue";
+import ORadio          from "../../components/ORadio.vue";
 //size: sm, md, lg
 <${"/"}script>
 

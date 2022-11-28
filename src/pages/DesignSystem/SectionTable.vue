@@ -10,22 +10,14 @@
           href="https://quasar.dev/vue-components/table"
           target="_blank"
           >QDocs
-          <q-icon
-            class="!text-20"
-            name="sym_r_arrow_outward"
-          ></q-icon>
+          <q-icon class="!text-20" name="sym_r_arrow_outward"></q-icon>
         </o-button>
       </div>
 
       <div class="flex flex-col gap-32">
         <div>
           <p class="text-caps1">Primary</p>
-          <o-table
-            :rows="rows"
-            :columns="columns"
-            row-key="name"
-            primary
-          >
+          <o-table :rows="rows" :columns="columns" row-key="name" primary>
             <template v-slot:body="props">
               <q-tr :props="props">
                 <q-td key="name" :props="props">
@@ -40,7 +32,9 @@
                       <p class="text-paragraph-2">
                         {{ props.row.name }}
                       </p>
-                      <p class="text-paragraph-3 text-neutral-70 dark:text-white/50">
+                      <p
+                        class="text-paragraph-3 text-neutral-70 dark:text-white/50"
+                      >
                         Colaborador
                       </p>
                     </div>
@@ -104,9 +98,7 @@
               no-caps
               @click="exportTable"
             >
-              <q-tooltip
-                >Exportação ingenua, necessita de um parser</q-tooltip
-              >
+              <q-tooltip>Exportação ingenua, necessita de um parser</q-tooltip>
             </q-btn>
           </div>
           <o-table
@@ -145,7 +137,6 @@
               </div>
 
               <q-space />
-
 
               <o-select
                 size="md"
@@ -214,11 +205,7 @@
           <template v-slot:header="props">
             <q-tr :props="props">
               <q-th auto-width />
-              <q-th
-                v-for="col in props.cols"
-                :key="col.name"
-                :props="props"
-              >
+              <q-th v-for="col in props.cols" :key="col.name" :props="props">
                 {{ col.label }}
               </q-th>
             </q-tr>
@@ -236,20 +223,14 @@
                   :icon="props.expand ? 'sym_r_remove' : 'sym_r_add'"
                 />
               </q-td>
-              <q-td
-                v-for="col in props.cols"
-                :key="col.name"
-                :props="props"
-              >
+              <q-td v-for="col in props.cols" :key="col.name" :props="props">
                 {{ col.value }}
               </q-td>
             </q-tr>
             <q-tr v-show="props.expand" :props="props">
               <q-td colspan="100%">
                 <div class="text-left">
-                  Oi amiguinho 🤔😁🍃 nome da linha:{{
-                    props.row.name
-                  }}.
+                  Oi amiguinho 🤔😁🍃 nome da linha:{{ props.row.name }}.
                 </div>
               </q-td>
             </q-tr>
@@ -264,15 +245,15 @@
 
 <script setup>
 import { ref } from 'vue'
-import oButton from '../../components/OButton.vue'
-import SyntaxHighlight from '../../components/DesignSystem/SyntaxHighlight.vue'
+import oButton from 'src/components/Button/OButton.vue'
+import SyntaxHighlight from 'src/components/DesignSystem/SyntaxHighlight.vue'
 import OTable from 'src/components/Table/OTable.vue'
-import OInput from 'src/components/OInput.vue'
+import OInput from 'src/components/Input/OInput.vue'
 import { exportFile, useQuasar } from 'quasar'
-import OBadge from 'src/components/OBadge.vue'
-import OSelect from 'src/components/OSelect.vue'
-const $q = useQuasar()
+import OBadge from 'src/components/Badge/OBadge.vue'
+import OSelect from 'src/components/Select/OSelect.vue'
 
+const $q = useQuasar()
 const visibleColumns = ref([
   'calories',
   'desc',
@@ -450,9 +431,7 @@ function wrapCsvValue(val, formatFn, row) {
   let formatted = formatFn !== void 0 ? formatFn(val, row) : val
 
   formatted =
-    formatted === void 0 || formatted === null
-      ? ''
-      : String(formatted)
+    formatted === void 0 || formatted === null ? '' : String(formatted)
 
   formatted = formatted.split('"').join('""')
   /**

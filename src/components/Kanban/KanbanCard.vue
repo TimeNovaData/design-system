@@ -18,8 +18,8 @@
       </OBadge>
     </div>
     <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-      Mollitia modi soluta obcaecati
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia modi
+      soluta obcaecati
       {{ item.nome }}
     </p>
     <slot></slot>
@@ -41,9 +41,7 @@
         <span class="text-primary-pure">6</span>
         <span class="text-opacity-70">de</span> <span>10</span>
       </p>
-      <p class="text-paragraph-3 text-opacity-70">
-        Tarefas Concluídas
-      </p>
+      <p class="text-paragraph-3 text-opacity-70">Tarefas Concluídas</p>
     </section>
     <section
       class="h-4 w-full rounded-xl bg-neutral-100/10 dark:bg-white/10 overflow-hidden relative"
@@ -57,7 +55,7 @@
 
     <span class="kanban-card-separator" v-if="visaoExpandida"></span>
 
-    <section class="flex gap-6 justify-between items-center w-full" >
+    <section class="flex gap-6 justify-between items-center w-full">
       <div class="flex items-center gap-6">
         <q-icon
           class="w-18 h-18"
@@ -80,9 +78,7 @@
           class="overlapping w-32 h-32 absolute border-white border-2 dark:border-d-neutral-10 overflow-hidden"
           :style="`right: ${n * 25}px`"
         >
-          <img
-            :src="`https://cdn.quasar.dev/img/avatar${n + 1}.jpg`"
-          />
+        <img :src="`https://cdn.quasar.dev/img/avatar${n + 1}.jpg`" />
         </q-avatar>
       </div>
     </section>
@@ -94,20 +90,26 @@
         class="p-6 dark:bg-white/10 bg-neutral-100/5 col-span-4 rounded-generic"
       >
         <p class="text-paragraph-4 dark:text-white/70">Solicitado</p>
-        <p class="text-headline-5 dark:text-white/90 !tracking-wide">16/09/2022</p>
+        <p class="text-headline-5 dark:text-white/90 !tracking-wide">
+          16/09/2022
+        </p>
       </div>
       <div
         class="p-6 dark:bg-white/10 bg-neutral-100/5 col-span-4 rounded-generic"
       >
         <p class="text-paragraph-4 dark:text-white/70">Desejado</p>
-        <p class="text-headline-5 dark:text-white/90 !tracking-wide">16/09/2022</p>
+        <p class="text-headline-5 dark:text-white/90 !tracking-wide">
+          16/09/2022
+        </p>
       </div>
 
       <div
         class="p-6 dark:bg-white/10 bg-neutral-100/5 col-span-4 rounded-generic"
       >
         <p class="text-paragraph-4 dark:text-white/70">Previsto</p>
-        <p class="text-headline-5 dark:text-white/90 !tracking-wide">16/09/2022</p>
+        <p class="text-headline-5 dark:text-white/90 !tracking-wide">
+          16/09/2022
+        </p>
       </div>
 
       <div
@@ -124,15 +126,18 @@
         <p class="text-headline-5 dark:text-white/90 !tracking-wider">1h 45m</p>
       </div>
     </section>
+
+
+
   </q-card>
 </template>
 
 <script setup>
-import OBadge from 'src/components/OBadge.vue'
+import OBadge from 'src/components/Badge/OBadge.vue'
 
 defineProps({
   item: Object,
-  visaoExpandida: Boolean
+  visaoExpandida: Boolean,
 })
 const emit = defineEmits(['cardClick'])
 
@@ -159,6 +164,7 @@ function handleEmit(e, item) {
     overflow: hidden
     .body--dark &
       background: rgb(var(--d-neutral-40))
+
 .kanban-card-separator
   height: .0625rem
   width: calc(100% - 0.75rem)

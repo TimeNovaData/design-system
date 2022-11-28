@@ -1,5 +1,5 @@
 {
-  "name": "design-system-novadata",
+  "name": "hub-novadata",
   "version": "0.0.1",
   "description": ".novadata design system",
   "productName": "HUB .novadata",
@@ -12,6 +12,7 @@
   "dependencies": {
     "@quasar/extras": "^1.15.5",
     "axios": "^0.21.1",
+    "eslint-plugin-no-relative-import-paths": "^1.5.0",
     "gsap": "^3.11.3",
     "pinia": "^2.0.23",
     "quasar": "^2.10.2",
@@ -40,6 +41,8 @@
     "eslint-plugin-vue": "^9.0.0",
     "highlight.js": "^11.6.0",
     "postcss": "^8.4.14",
+    "prettier": "^2.8.0",
+    "vue-eslint-parser": "^9.1.0",
     "workbox-build": "^6.5.0",
     "workbox-cacheable-response": "^6.5.0",
     "workbox-core": "^6.5.0",

@@ -19,7 +19,7 @@ const attrs = useAttrs()
 </script>
 
 <style lang="sass">
-@import "../css/quasar/variables"
+@import "src/css/quasar/variables"
 .o-chip
     border: .0625rem inset rgba(var(--neutral-100), 0.1)
     box-shadow: initial !important

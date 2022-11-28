@@ -6,7 +6,7 @@
 </template>
 
 <script setup>
-import OButtonVue from '../OButton.vue'
+import OButtonVue from 'src/components/Button/OButton.vue'
 </script>
 
 <style lang="sass" scoped></style>

@@ -1,13 +1,13 @@
-import DesignSystem from '../pages/DesignSystem/DesignSystem.vue'
-import LayoutKanban from '../layouts/LayoutKanban.vue'
-import PageKanban from '../pages/Kanban/PageKanban.vue'
+import DesignSystem from 'src/pages/DesignSystem/DesignSystem.vue'
+import LayoutKanban from 'src/layouts/LayoutKanban.vue'
+import PageKanban from 'src/pages/Kanban/PageKanban.vue'
 
 const routes = [
   {
     path: '/design-system',
     component: DesignSystem,
   },
-  
+
   {
     path: '/',
     redirect: '/kanban/1/board'
@@ -15,7 +15,7 @@ const routes = [
   {
     path: '/kanban/:id',
     component: LayoutKanban,
-    
+
     children: [
       {
         path: 'board',

@@ -6,7 +6,12 @@
     </slot>
 
     <!-- Submenus  ------------------------------>
-    <q-list tag="ul" class="submenu" v-if="haveSubmenu" :level="haveSubmenu[0].nivel">
+    <q-list
+      tag="ul"
+      class="submenu"
+      v-if="haveSubmenu"
+      :level="haveSubmenu[0].nivel"
+    >
       <li class="Nv1-li">
         <!-- Nv1 Header  -->
         <header class="Nv1-header" v-if="showHeader">
@@ -15,56 +20,111 @@
         </header>
       </li>
       <!-- Nv1 item  -->
-      <q-item clickable tag="li" class="submenu-li" v-for="Nv1 in haveSubmenu" :key="Nv1.title">
+      <q-item
+        clickable
+        tag="li"
+        class="submenu-li"
+        v-for="Nv1 in haveSubmenu"
+        :key="Nv1.title"
+      >
         <!-- Nv1 Content  -->
         <q-item-section>
           <p class="one-line">{{ Nv1.title }}</p>
         </q-item-section>
 
         <!-- Button ADD && List -->
-        <q-item-section v-if="Nv1.add || Nv1.list" avatar class="flex gap-4 flex-nowrap flex-row items-center">
-          <o-button v-if="Nv1.list" class="action-button" :to="Nv1.list" size="sm" tertiary>
+        <q-item-section
+          v-if="Nv1.add || Nv1.list"
+          avatar
+          class="flex gap-4 flex-nowrap flex-row items-center"
+        >
+          <o-button
+            v-if="Nv1.list"
+            class="action-button"
+            :to="Nv1.list"
+            size="sm"
+            tertiary
+          >
             <q-tooltip v-bind="tooltipProps">Lista</q-tooltip>
 
             <q-icon size="1.25rem" name="svguse:/icons.svg#icon_list"></q-icon>
-            </o-button>
-            
-            <o-button v-if="Nv1.add" class="action-button" :to="Nv1.add" size="sm" tertiary>
-              <q-tooltip v-bind="tooltipProps">Adicionar</q-tooltip>
-            
-              <q-icon size="1.25rem" name="svguse:/icons.svg#icon_add"></q-icon>
-            </o-button>
+          </o-button>
+
+          <o-button
+            v-if="Nv1.add"
+            class="action-button"
+            :to="Nv1.add"
+            size="sm"
+            tertiary
+          >
+            <q-tooltip v-bind="tooltipProps">Adicionar</q-tooltip>
+
+            <q-icon size="1.25rem" name="svguse:/icons.svg#icon_add"></q-icon>
+          </o-button>
+        </q-item-section>
+
+        <!-- Arrow  -->
+        <q-item-section v-if="Nv1.submenu" avatar class="opacity-50">
+          <q-icon size="1rem" name="sym_r_navigate_next"></q-icon>
+        </q-item-section>
+
+        <!-- Submenu Nv2 -->
+        <q-list
+          tag="ul"
+          class="submenu"
+          v-if="Nv1.submenu"
+          :level="Nv1.submenu[0].nivel"
+        >
+          <li class="Nv2-li">
+            <!-- Header Nv2 -->
+            <header class="Nv2-header" v-if="showHeader">
+              <p class="text-title-4 one-line">{{ Nv1.title }}</p>
+            </header>
+          </li>
+          <q-item
+            clickable
+            tag="li"
+            class="submenu-li"
+            v-for="Nv2 in Nv1.submenu"
+            :key="Nv2.title"
+          >
+            <q-item-section>
+              <p class="one-line">{{ Nv2.title }}</p>
             </q-item-section>
-            
-            <!-- Arrow  -->
-            <q-item-section v-if="Nv1.submenu" avatar class="opacity-50">
-              <q-icon size="1rem" name="sym_r_navigate_next"></q-icon>
-            </q-item-section>
-            
-            <!-- Submenu Nv2 -->
-            <q-list tag="ul" class="submenu" v-if="Nv1.submenu" :level="Nv1.submenu[0].nivel">
-              <li class="Nv2-li">
-                <!-- Header Nv2 -->
-                <header class="Nv2-header" v-if="showHeader">
-                  <p class="text-title-4 one-line">{{ Nv1.title }}</p>
-                </header>
-              </li>
-              <q-item clickable tag="li" class="submenu-li" v-for="Nv2 in Nv1.submenu" :key="Nv2.title">
-                <q-item-section>
-                  <p class="one-line">{{ Nv2.title }}</p>
-                </q-item-section>
-                <!-- Button ADD && List -->
-                <q-item-section v-if="Nv2.add || Nv2.list" avatar class="flex gap-4 flex-nowrap flex-row items-center">
-                  <o-button v-if="Nv2.list" class="action-button" :to="Nv2.list" size="sm" tertiary>
-                    <q-tooltip v-bind="tooltipProps">Lista</q-tooltip>
-                    <q-icon size="1.25rem" name="svguse:/icons.svg#icon_list"></q-icon>
-                  </o-button>
-            
-                  <o-button v-if="Nv2.add" class="action-button" :to="Nv2.add" size="sm" tertiary>
-                    <q-tooltip v-bind="tooltipProps">Adicionar</q-tooltip>
-            
-                    <q-icon size="1.25rem" name="svguse:/icons.svg#icon_add"></q-icon>
-                  </o-button>
+            <!-- Button ADD && List -->
+            <q-item-section
+              v-if="Nv2.add || Nv2.list"
+              avatar
+              class="flex gap-4 flex-nowrap flex-row items-center"
+            >
+              <o-button
+                v-if="Nv2.list"
+                class="action-button"
+                :to="Nv2.list"
+                size="sm"
+                tertiary
+              >
+                <q-tooltip v-bind="tooltipProps">Lista</q-tooltip>
+                <q-icon
+                  size="1.25rem"
+                  name="svguse:/icons.svg#icon_list"
+                ></q-icon>
+              </o-button>
+
+              <o-button
+                v-if="Nv2.add"
+                class="action-button"
+                :to="Nv2.add"
+                size="sm"
+                tertiary
+              >
+                <q-tooltip v-bind="tooltipProps">Adicionar</q-tooltip>
+
+                <q-icon
+                  size="1.25rem"
+                  name="svguse:/icons.svg#icon_add"
+                ></q-icon>
+              </o-button>
             </q-item-section>
           </q-item>
         </q-list>
@@ -79,7 +139,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import OButton from '../OButton.vue'
+import OButton from 'src/components/Button/OButton.vue'
 
 const props = defineProps({
   data: Object,

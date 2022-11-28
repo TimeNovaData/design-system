@@ -10,10 +10,7 @@
           href="https://quasar.dev/vue-components/select#introduction"
           target="_blank"
           >QDocs
-          <q-icon
-            class="!text-20"
-            name="sym_r_arrow_outward"
-          ></q-icon>
+          <q-icon class="!text-20" name="sym_r_arrow_outward"></q-icon>
         </o-button>
       </div>
 
@@ -56,9 +53,7 @@
           size="lg"
           multiple
         >
-          <template
-            #option="{ itemProps, opt, selected, toggleOption }"
-          >
+          <template #option="{ itemProps, opt, selected, toggleOption }">
             <q-item v-bind="itemProps">
               <q-item-section>
                 <q-item-label>{{ opt.label }}</q-item-label>
@@ -80,9 +75,7 @@
           size="lg"
           multiple
         >
-          <template
-            #option="{ itemProps, opt, selected, toggleOption }"
-          >
+          <template #option="{ itemProps, opt, selected, toggleOption }">
             <q-item v-bind="itemProps" class="pl-8 items-center">
               <q-item-section side class="pr-8">
                 <o-check
@@ -136,24 +129,18 @@
 
 <script setup>
 import { ref } from 'vue'
-import oButton from '../../components/OButton.vue'
-import SyntaxHighlight from '../../components/DesignSystem/SyntaxHighlight.vue'
-import OSelect from 'src/components/OSelect.vue'
-import OChip from 'src/components/OChip.vue'
-import OCheck from 'src/components/OCheck.vue'
+import oButton from 'src/components/Button/OButton.vue'
+import SyntaxHighlight from 'src/components/DesignSystem/SyntaxHighlight.vue'
+import OSelect from 'src/components/Select/OSelect.vue'
+import OChip from 'src/components/Chip/OChip.vue'
+import OCheck from 'src/components/Checkbox/OCheck.vue'
 
 const soltaConsole = (...props) => {
   console.log(...props)
   return 'oi'
 }
 const model = ref('')
-const options = ref([
-  'Google',
-  'Facebook',
-  'Twitter',
-  'Apple',
-  'Oracle',
-])
+const options = ref(['Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'])
 
 const select = ref(null)
 
@@ -218,7 +205,7 @@ const options3 = [
 
 const code = `
 <script>
-import OSelect from "src/components/OSelect.vue"
+import OSelect         from "src/components/OSelect.vue"
 <${'/'}script>
 
 <o-select

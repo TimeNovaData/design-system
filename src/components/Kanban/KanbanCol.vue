@@ -23,8 +23,8 @@
 </template>
 
 <script setup>
-import OButton from 'src/components/OButton.vue'
-import OCounter from 'src/components/OCounter.vue'
+import OButton from 'src/components/Button/OButton.vue'
+import OCounter from 'src/components/Counter/OCounter.vue'
 defineProps({
   data: Array
 })

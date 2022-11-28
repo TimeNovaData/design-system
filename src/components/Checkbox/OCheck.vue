@@ -26,3 +26,4 @@ const setSize = sizes[attrs.size]
 </script>
 
 <style lang="scss" scoped></style>
+ 
