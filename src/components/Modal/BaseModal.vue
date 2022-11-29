@@ -1,12 +1,9 @@
 <template>
   <div>
     <p>Exemplo de modal</p>
-    <o-button primary size="md">teste</o-button>
   </div>
 </template>
 
-<script setup>
-import OButtonVue from 'src/components/Button/OButton.vue'
-</script>
+<script setup></script>
 
 <style lang="sass" scoped></style>

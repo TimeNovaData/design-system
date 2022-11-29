@@ -8,7 +8,7 @@
     @before-hide="beforehide"
   >
     <q-card class="kanban-modal q-dialog-plugin remove-styles">
-      <header class="bg-neutral-30 dark:bg-d-neutral-20">
+      <header class="bg-neutral-30 dark:bg-d-neutral-10">
         <div>
           <div class="text-title-2 px-24 pt-24 pb-6 flex items-center gap-12">
             <q-icon
@@ -19,7 +19,7 @@
           </div>
           <div class="flex items-center ml-[2.25rem] gap-12 px-24">
             <p>Squad Logbit</p>
-            <OBadge size="sm" :badge="false" bg="--d-success" square class="">
+            <OBadge size="sm" :badge="false" bg="--d-success" square>
               <template #content>
                 <p class="text-center mx-auto">Assessment coolers</p>
               </template>
@@ -35,8 +35,8 @@
         >
           <q-tab :ripple="false" name="info" label="Informações gerais"></q-tab>
           <q-tab :ripple="false" name="tarefas" label="Tarefas"></q-tab>
-          <q-tab :ripple="false" name="anexos" label="Anexos"></q-tab>
-          <q-tab :ripple="false" name="chat" label="Chat"></q-tab>
+          <q-tab :ripple="false" name="anexos" label="Anexos" disable></q-tab>
+          <q-tab :ripple="false" name="chat" label="Chat" disable></q-tab>
         </q-tabs>
       </header>
 
@@ -69,7 +69,7 @@
                       :badge="true"
                       :key="item"
                       bg="--alert-warning"
-                      class="rounded-generic h-32"
+                      class="rounded-generic h-32 dark:!text-white/90"
                     >
                       <template #content>
                         <p class="text-center mx-auto" square>Tag</p>
@@ -80,23 +80,25 @@
                 <div class="grid grid-cols-2">
                   <div class="flex flex-col">
                     <!--  -->
-                    <div class="relative">
+                    <div class="relative flex-1">
                       <KanbanSectionHeader
                         text="Solicitante"
                         icon="svguse:/icons.svg#icon_user"
                       />
-                      <div>
+                      <div class="mt-4">
                         <AvatarMultiple :items="1" />
                       </div>
                     </div>
                   </div>
 
-                  <div class="relative">
+                  <div class="relative flex-1">
                     <KanbanSectionHeader
                       text="Responsaveis"
                       icon="svguse:/icons.svg#icon_user"
                     />
-                    <AvatarMultiple :items="3" />
+                    <div class="mt-4">
+                      <AvatarMultiple :items="3" />
+                    </div>
                   </div>
                 </div>
               </article>
@@ -140,7 +142,7 @@
                   </div>
                 </div>
                 <div class="flex gap-16 items-start">
-                  <div>
+                  <div class="flex-1">
                     <KanbanSectionHeader
                       text="Orçado"
                       icon="svguse:/icons.svg#icon_hours"
@@ -154,7 +156,7 @@
                       />
                     </div>
                   </div>
-                  <div>
+                  <div class="flex-1">
                     <KanbanSectionHeader
                       text="Decorrido"
                       icon="svguse:/icons.svg#icon_hours"

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { onMounted, watch, ref } from 'vue'
-import { LocalStorage} from 'quasar'
+import { LocalStorage } from 'quasar'
 
 export const useBlurMode = defineStore('blurMode', () => {
   const blurMode = ref(false)
@@ -17,8 +17,8 @@ export const useBlurMode = defineStore('blurMode', () => {
   watch(blurMode, (newX) => {
     LocalStorage.set('blurMode', blurMode.value)
     blurMode.value
-        ? document.body.classList.add("blur--mode")
-        : document.body.classList.remove("blur--mode")
+      ? document.body.classList.add("blur--mode")
+      : document.body.classList.remove("blur--mode")
   })
 
   return { blurMode }

@@ -12,10 +12,7 @@
       >
         <q-tab name="quadro">
           <template class="inline-flex flex-row items-center gap-4">
-            <q-icon
-              size="1.5rem"
-              name="svguse:/icons.svg#icon_quadro"
-            ></q-icon>
+            <q-icon size="1.5rem" name="svguse:/icons.svg#icon_quadro"></q-icon>
             <p class="text-paragraph-1">Quadro</p>
           </template>
         </q-tab>
@@ -27,53 +24,22 @@
           secondary
           class="bg-white/10 !py-0 !h-32 !border-transparent"
         >
-          <q-icon
-            size="1.5rem"
-            name="svguse:/icons.svg#icon_filter"
-          ></q-icon>
+          <q-icon size="1.5rem" name="svguse:/icons.svg#icon_filter"></q-icon>
           Filtro
         </OButton>
+
         <OButton
           size="sm"
           secondary
-          class="bg-white/10 !py-0 !h-32 !border-transparent"
-        >
-          <q-icon
-            size="1.5rem"
-            name="svguse:/icons.svg#icon_visualizacao"
-          ></q-icon>
-
-          Visualização
-          <q-badge rounded class="bg-primary-pure w-8 h-8" floating></q-badge>
-          <q-menu class="overflow-x-hidden ">
-            <q-list padding class="select-none min-w-[250px]">
-              <q-item dense class="items-center">
-                <p class="text-headline-3">
-                  Mudar Visualizaçao</p>
-              </q-item>
-
-              <q-item tag="label">
-                <q-item-section
-                  avatar
-                  class="flex items-center flex-row no-wrap"
-                >
-                  <q-toggle v-model="visaoExpandida"></q-toggle>
-                  <p class="text-paragraph-2">Visão Expandida</p>
-                </q-item-section>
-              </q-item>
-
-            </q-list>
-          </q-menu>
-        </OButton>
-        <OButton
-          size="sm"
-          secondary
-          class="bg-white/10 !p-0 !h-32 !border-transparent !w-32"
+          class="bg-white/10 !p-0 !px-8 !h-32 !border-transparent"
+          @click="$emit('tree-points-click')"
         >
           <q-icon
             size="1.5rem"
             name="svguse:/icons.svg#icon_tree_points"
           ></q-icon>
+          Opções
+          <q-badge rounded class="bg-primary-pure w-8 h-8" floating></q-badge>
         </OButton>
       </div>
 
@@ -84,12 +50,9 @@
 
 <script setup>
 import { ref } from 'vue'
-import { storeToRefs } from 'pinia'
 import OButton from 'src/components/Button/OButton.vue'
-import { useVisaoExpandida } from 'src/stores/visaoExpandida'
+const emit = defineEmits(['tree-points-click'])
 
-const visao = useVisaoExpandida()
-const { visaoExpandida } = storeToRefs(visao)
 const tab = ref('quadro')
 </script>
 
