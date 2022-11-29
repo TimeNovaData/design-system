@@ -1,33 +1,49 @@
 <template>
-  <aside class="OSidebar" ref="sidebar" level="0" @mouseenter="GLOBAL.debounce(100, handleMouseEnter, 'sideTime')()"
-    @mouseleave="GLOBAL.debounce(50, handleMouseLeave, 'sideTime')()">
+  <aside
+    class="OSidebar"
+    ref="sidebar"
+    level="0"
+    @mouseenter="GLOBAL.debounce(100, handleMouseEnter, 'sideTime')()"
+    @mouseleave="GLOBAL.debounce(50, handleMouseLeave, 'sideTime')()"
+  >
     <header class="OSidebar-header" v-if="showHeader">
       <MenuLogo />
     </header>
 
     <section>
       <q-list class="Nv0-ul" tag="ul">
-        <MenuLi v-for="(Nv0, index) in props.menu" :key="Nv0.title + index" :data="Nv0" :sidebar="sidebar" :to="Nv0.href"
-          @Nv0Click="() => handleClick(true)" @click="(e) => Nv0HandleClick(e, Nv0)" :showHeader="showHeader">
+        <MenuLi
+          v-for="(Nv0, index) in props.menu"
+          :key="Nv0.title + index"
+          :data="Nv0"
+          :sidebar="sidebar"
+          :to="Nv0.href"
+          @Nv0Click="() => handleClick(true)"
+          @click="(e) => Nv0HandleClick(e, Nv0)"
+          :showHeader="showHeader"
+        >
           <q-item-section v-if="Nv0.icon" avatar class="min-w-32 pl-10">
             <q-icon size="24px" :name="Nv0.icon"></q-icon>
           </q-item-section>
-        
+
           <q-item-section class="Nv0-text">
             <p class="one-line">{{ Nv0.title }}</p>
           </q-item-section>
-        
+
           <q-item-section v-if="Nv0.submenu" avatar class="opacity-50">
-            <q-icon size="1rem" name="sym_r_navigate_next"></q-icon>
+            <q-icon size="1rem" name="navigate_next"></q-icon>
           </q-item-section>
         </MenuLi>
-        </q-list>
-        </section>
-        </aside>
-        <Teleport to="body">
-          <span v-if="state.open" class="OSidebar-deep" @click="() => handleClick(false)"></span>
-        </Teleport>
-
+      </q-list>
+    </section>
+  </aside>
+  <Teleport to="body">
+    <span
+      v-if="state.open"
+      class="OSidebar-deep"
+      @click="() => handleClick(false)"
+    ></span>
+  </Teleport>
 </template>
 
 <script setup>

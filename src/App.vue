@@ -10,6 +10,7 @@ import 'src/css/body.sass'
 import 'src/css/pages/DesignSystem.sass'
 import 'src/css/tailwind.css'
 import 'src/css/stores/blurMode.sass'
+import 'src/css/vendor/materialSymbolsRounded.sass'
 
 export default defineComponent({
   name: 'App',

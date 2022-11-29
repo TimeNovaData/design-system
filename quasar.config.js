@@ -14,7 +14,7 @@ const path = require('path')
 module.exports = configure(function (/* ctx */) {
   return {
     eslint: {
-      // fix: true,
+      fix: true,
       // include = [],
       // exclude = [],
       // rawOptions = {},
@@ -43,7 +43,6 @@ module.exports = configure(function (/* ctx */) {
       // 'themify',
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
-
       //  'roboto-font', // optional, you are not bound to it
       // 'material-icons-round' // optional, you are not bound to it
       // 'svg-mdi-v6'
@@ -64,11 +63,10 @@ module.exports = configure(function (/* ctx */) {
       showProgress: true,
 
       vueRouterMode: 'history', // available values: 'hash', 'history'
+      rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
-
-      // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
 
       // publicPath: 'dist/spa',
       // analyze: true,
@@ -79,7 +77,7 @@ module.exports = configure(function (/* ctx */) {
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf (viteConf) {},dev
+
       extendViteConf(viteConf) {
         console.log('.novadata 🟢 ')
         viteConf.resolve.alias['quasar/dist/quasar.sass'] =
@@ -106,6 +104,7 @@ module.exports = configure(function (/* ctx */) {
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
       // https: true
+      vueDevtools: true,
       open: false, // opens browser window automatically,
       // options: {
       //   usePolling: true
