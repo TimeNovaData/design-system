@@ -4,6 +4,8 @@
     <BaseHeader></BaseHeader>
     <KanbanHeader @tree-points-click="openModalRight"></KanbanHeader>
     <KanbanModalRight ref="modalRight"></KanbanModalRight>
+    <div class="flex items-center"></div>
+
     <q-page-container
       class="kanban-page-container"
       style="padding-top: var(--top-size)"

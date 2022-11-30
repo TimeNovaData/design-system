@@ -2,7 +2,7 @@ const menuList = [
   {
     title: 'Home',
     nivel: 0,
-    icon: 'sym_r_home',
+    icon: 'svguse:/icons.svg#icon-home-house-price-chart-analytics',
     href: '/home',
   },
   {
@@ -62,7 +62,7 @@ const menuList = [
     title: 'Kanban',
     nivel: 0,
     icon: 'sym_r_space_dashboard',
-    href:'/kanban/1/board',
+    href: '/kanban/1/board',
     // submenu: [
     //   {
     //     title: 'Calendário de Produção',

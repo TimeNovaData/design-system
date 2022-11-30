@@ -4,9 +4,39 @@
       <!-- breadcrumbs -->
       <q-breadcrumbs separator=">">
         <q-breadcrumbs-el label="Home" to="/" />
+        <q-breadcrumbs-el
+          label="Kanban"
+          :exact="true"
+          :to="{ name: 'kanban' }"
+        />
       </q-breadcrumbs>
 
       <div class="flex gap-8 items-center" style="--neutral-100: var(--white)">
+        <OInput
+          size="sm"
+          placeholder="Busque por chamado, projeto.."
+          class="no-label text-white/70"
+          type="search"
+          style="--neutral-70: rgba(var(--white), 0.7)"
+        >
+          <template #prepend>
+            <q-icon name="sym_r_search"></q-icon>
+          </template>
+        </OInput>
+
+        <!-- settings -->
+        <OButton
+          class="text-neutral-10 w-32 h-32 !p-0 bg-white/10 !border-transparent"
+          secondary
+          size="sm"
+        >
+          <q-icon size="1.25rem" name="sym_r_notifications"></q-icon>
+          <q-menu class="w-[200px]">
+            <q-item>
+              <q-item-section>Em Breve</q-item-section>
+            </q-item>
+          </q-menu>
+        </OButton>
         <OButton
           class="text-neutral-10 w-32 h-32 !p-0"
           tertiary
@@ -38,9 +68,9 @@ import BaseHeaderMenu from './BaseHeaderMenu.vue'
 
 <style lang="sass">
 :root
-  --header-bg-base: rgb(var(--white))
+  --header-bg: rgb(var(--white))
   --header-color: rgb(var(--neutral-60))
-  --breadcrumb-color: red
+  --breadcrumb-color: rgb(var(--primary-pure))
   --header-base-height: 2.5rem
 
 .base-header
@@ -48,11 +78,11 @@ import BaseHeaderMenu from './BaseHeaderMenu.vue'
   display: flex
   align-items: center
   padding: .5625rem 1rem
-  background: var(--header-bg-base)
+  background: var(--header-bg)
   width: calc(100% - var(--Nv0-sidebar-width))
   margin-left: auto
   color: var(--header-color)
-  // border-bottom: 1px solid rgba(var(--white),0.1) !important
+  border-bottom: 1px solid rgba(var(--white),0.1) !important
 
 
 
