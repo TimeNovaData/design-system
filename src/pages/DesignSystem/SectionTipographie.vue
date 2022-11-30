@@ -25,10 +25,6 @@
       <h6 class="text-title-5">Title 5</h6>
       <token-clipboard>text-title-5</token-clipboard>
     </div>
-    <div class="flex items-end gap-8">
-      <h6 class="text-title-6">Title 6</h6>
-      <token-clipboard>text-title-6</token-clipboard>
-    </div>
 
     <div class="flex mt-32 gap-64 justify-evelyn">
       <div class="flex flex-col gap-4">

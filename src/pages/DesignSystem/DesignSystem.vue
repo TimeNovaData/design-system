@@ -88,7 +88,6 @@
             <section-paginacao v-else-if="sectionActive == 'paginacao'" />
             <section-modal v-else-if="sectionActive == 'modal'" />
             <section-colors v-else-if="sectionActive == 'cores'" />
-            <section-card v-else-if="sectionActive == 'card'" />
           </transition>
         </div>
       </q-scroll-area>
@@ -108,29 +107,29 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue'
 
-import oButton from 'src/components/Button/OButton.vue'
+import oButton                   from 'src/components/Button/OButton.vue'
 
-import SectionAccordion from './SectionAccordion.vue'
-import SectionBreadcrumb from './SectionBreadcrumb.vue'
-import SectionButton from './SectionButton.vue'
-import SectionChips from './SectionChips.vue'
-import SectionColors from './SectionColors.vue'
-import SectionInput from './SectionInput.vue'
-import SectionIntro from './SectionIntro.vue'
-import SectionModal from './SectionModal.vue'
-import SectionPaginacao from './SectionPaginacao.vue'
-import SectionPopupProxy from './SectionPopUpProxy.vue'
-import SectionRadio from './SectionRadio.vue'
-import SectionTable from './SectionTable.vue'
-import SectionTipographie from './SectionTipographie.vue'
-import SectionTabs from './SectionTabs.vue'
-import SectionSelects from './SectionSelects.vue'
-import SectionCard from './SectionCard.vue'
-import BaseHeaderMenu from 'src/components/Header/BaseHeaderMenu.vue'
-import MenuLogo from 'src/components/MenuMultiLevel/MenuLogo.vue'
-import MenuMultiLevel from 'src/components/MenuMultiLevel/MenuMultiLevel.vue'
-import logoAnimation from 'src/utils/animation/logo'
-import menuList from 'src/utils/menuList'
+import SectionAccordion          from './SectionAccordion.vue'
+import SectionBreadcrumb         from './SectionBreadcrumb.vue'
+import SectionButton             from './SectionButton.vue'
+import SectionChips              from './SectionChips.vue'
+import SectionColors             from './SectionColors.vue'
+import SectionInput              from './SectionInput.vue'
+import SectionIntro              from './SectionIntro.vue'
+import SectionModal              from './SectionModal.vue'
+import SectionPaginacao          from './SectionPaginacao.vue'
+import SectionPopupProxy         from './SectionPopUpProxy.vue'
+import SectionRadio              from './SectionRadio.vue'
+import SectionTable              from './SectionTable.vue'
+import SectionTipographie        from './SectionTipographie.vue'
+import SectionTabs               from './SectionTabs.vue'
+import SectionSelects            from './SectionSelects.vue'
+
+import BaseHeaderMenu            from 'src/components/Header/BaseHeaderMenu.vue'
+import MenuLogo                  from 'src/components/MenuMultiLevel/MenuLogo.vue'
+import MenuMultiLevel            from 'src/components/MenuMultiLevel/MenuMultiLevel.vue'
+import logoAnimation             from 'src/utils/animation/logo'
+import menuList                  from 'src/utils/menuList'
 
 const sectionActive = ref('intro')
 const leftDrawerOpen = ref(true)
@@ -214,10 +213,6 @@ const list = [
   {
     name: 'Modal',
     id: 'modal',
-  },
-  {
-    name: 'Card',
-    id: 'card',
   },
 ].sort((a, b) => {
   if (a.name > b.name) return 1

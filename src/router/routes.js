@@ -1,6 +1,5 @@
 import DesignSystem from 'src/pages/DesignSystem/DesignSystem.vue'
 import LayoutKanban from 'src/layouts/LayoutKanban.vue'
-import PageHome from 'src/pages/Home/PageHome.vue'
 import PageKanban from 'src/pages/Kanban/PageKanban.vue'
 
 const routes = [
@@ -11,12 +10,6 @@ const routes = [
 
   {
     path: '/',
-    component: PageHome,
-
-  },
-
-  {
-    path: '/kanban',
     redirect: '/kanban/1/board'
   },
   {

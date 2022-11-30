@@ -60,7 +60,7 @@ const tab = ref('quadro')
 :root
   --header-bg: rgb(var(--white))
   --header-color: rgb(var(--neutral-60))
-  --breadcrumb-color: rgb(var(--primary-pure))
+  --breadcrumb-color: rgb(var(--neutral-60))
   --header-kanban-height: 3rem
 
 .kanban-header
