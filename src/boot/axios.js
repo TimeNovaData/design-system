@@ -3,6 +3,7 @@ import axios from 'axios'
 import { useAuthStore } from 'src/stores/auth.store'
 import emitter from 'src/boot/emitter'
 import { Cookies } from 'quasar'
+
 const API_URL = process.env.API_URL
 const TOKEN = Cookies.get('NDT_TOKEN')
 
@@ -12,32 +13,36 @@ const api = axios.create({
     Authorization: `Bearer ${TOKEN}`,
   },
 })
-api.interceptors.request.use(
-  function (request) {
-    emitter.emit('loader', 'start')
-    return request
-  },
-  function () {
-    emitter.emit('loader', 'stop')
-  }
-)
+
+// api.interceptors.request.use(
+//   function (request) {
+//     emitter.emit('loader', 'start')
+//     return request
+//   },
+//   function () {
+//     emitter.emit('loader', 'stop')
+//   }
+// )
 api.interceptors.response.use(
-  function (response) {
-    emitter.emit('loader', 'stop')
-    return response
-  },
+  // function (response) {
+  //   emitter.emit('loader', 'stop')
+  //   return response
+  // },
+  undefined,
   async function (error) {
     const authStore = useAuthStore()
-    emitter.emit('loader', 'stop')
+
     async function getToken() {
       if (error.response.status === 403) {
         console.warn(`TOKEN INVALIDO ou VAZIO ${error}`)
-        emitter.emit('loader', 'start')
+        // emitter.emit('loader', 'start')
+
         const refresh = await authStore.refreshToken()
+
         error.config.headers.Authorization = `Bearer ${authStore.user.access}`
-        console.log(authStore.user)
+
         const request = await axios.request(error.config)
-        emitter.emit('loader', 'stop')
+        // emitter.emit('loader', 'stop')
 
         return request
       }

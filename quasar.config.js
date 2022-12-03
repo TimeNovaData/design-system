@@ -113,7 +113,11 @@ module.exports = configure(function (ctx) {
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
     framework: {
-      config: {},
+      config: {
+        loadingBar: {
+          size: '4px',
+        },
+      },
 
       // iconSet: 'material-icons', // Quasar icon set
       lang: 'pt-BR', // Quasar language pack
@@ -128,7 +132,7 @@ module.exports = configure(function (ctx) {
       // directives: [],
       iconSet: 'svg-mdi-v6',
       // Quasar plugins
-      plugins: ['Notify', 'Dialog'],
+      plugins: ['Notify', 'Dialog', 'LoadingBar'],
     },
 
     // animations: 'all', // --- includes all animations

@@ -1,8 +1,10 @@
 .q-loading-bar
   position: fixed
-  z-index: $z-max
-  transition: transform .5s cubic-bezier(0,0,.2,1), opacity .5s
-  background: $red
+  z-index: 999999999999999999999999
+  transition: transform 0.3s ease, opacity 0.3s
+  background: rgba(var(--d-primary-pure))
+  opacity: 0.8
+  box-shadow: initial !important
 
   &--top
     left: 0 #{"/* rtl:ignore */"}
@@ -25,3 +27,6 @@
     bottom: 0
     left: 0
     height: 100%
+
+#q-loading-bar
+  box-shadow: initial !important

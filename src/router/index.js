@@ -8,6 +8,7 @@ import {
 import routes from './routes'
 import { useAuthStore } from 'src/stores/auth.store'
 import { useBlurMode } from 'src/stores/blurMode'
+import emitter from 'src/boot/emitter'
 /*
  * If not building with SSR mode, you can
  * directly export the Router instantiation;
@@ -36,6 +37,7 @@ export default route(function (/* { store, ssrContext } */) {
   })
 
   Router.beforeEach(async (to, from, next) => {
+    emitter.emit('loader', 'stop')
     // redirect to login page if not logged in and trying to access a restricted page
     const publicPages = ['/login']
     const paginasObrigatorias = !publicPages.includes(to.path)

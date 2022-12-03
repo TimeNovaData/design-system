@@ -47,15 +47,16 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
 import MenuLogo from './MenuLogo.vue'
 import MenuLi from './MenuLi.vue'
+
+import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { useRoute, onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
 
 import GLOBAL from 'src/utils/GLOBAL'
 import logoAnimation from 'src/utils/animation/logo'
 
-const route = useRoute()
+const router = useRoute()
 
 const props = defineProps({
   menu: Array,
@@ -64,7 +65,9 @@ const props = defineProps({
 const state = ref({
   open: false,
   hover: false,
+  passive: true,
 })
+
 const showHeader = ref(true)
 
 const sidebar = ref(null)
@@ -72,12 +75,16 @@ let $ = {}
 let animate
 
 onMounted(() => {
+  console.log('montou')
   $ = {
     Nv0: sidebar.value,
     body: document.body,
   }
   animate = logoAnimation('.OSidebar')
   animate.logoAnimationToNDT.play().progress(1)
+  setTimeout(() => {
+    state.value.passive = false
+  }, 300)
 })
 
 watch(showHeader, () => {
@@ -115,24 +122,57 @@ watch(
     }
   }
 )
-// Fecha menu ao mudar a rota
+
 watch(
-  () => route.path,
-  () => {
-    state.value.open = false
-  }
+  () => state,
+  (v) => {
+    console.log('passive', v.value.passive)
+  },
+  { deep: true }
 )
 
+onBeforeRouteLeave(() => {
+  state.value = {
+    hover: false,
+    open: false,
+    passive: true,
+  }
+})
+
+onUnmounted(() => {
+  state.value = {
+    hover: false,
+    open: false,
+    passive: true,
+  }
+})
+
+// onBeforeRouteLeave((to, from) => {
+//   state.value = {
+//     hover: false,
+//     open: false,
+//     passive: true,
+//   }
+
+//   // const setFalse = () => (state.value.passive = false)
+//   // setTimeout(() => setFalse, 5000)
+//   return true
+//   // cancel the navigation and stay on the same page
+//   // if (!answer) return false
+// })
 function handleMouseEnter() {
+  if (state.value.passive) return
   state.value.hover = true
 }
 
 function handleMouseLeave() {
-  if (state.value.open) return
+  if (state.value.open || state.value.passive) return
   state.value.hover = false
 }
 
 function handleClick(val) {
+  if (state.value.passive) return
+
   state.value.open = val
 }
 
@@ -155,7 +195,8 @@ function toggleActiveOnLis(current) {
 :root
   --Nv0-sidebar-width: 5rem
   --Nv0-sidebar-width-open: 21.25rem
-  --Nv0-sidebar-transition: cubic-bezier(.4,0,.2,1)
+  --Nv0-sidebar-transition: ease-out
+  // cubic-bezier(.4,0,.2,1)
   --Nv0-sidebar-border:1px solid rgba(var(--neutral-100),0.1)
   --Nv0-sidebar-z-index: 9010
   --Nv0-sidebar-overflow: hidden
@@ -218,9 +259,11 @@ function toggleActiveOnLis(current) {
   opacity: 0
   transition: opacity .2s ease
 
-.sidebar-active .OSidebar
-  .Nv0-text
-    opacity: 1
+.sidebar-active,
+.sidebar-open
+  .OSidebar
+    .Nv0-text
+      opacity: 1
 
 // Fundo
 .OSidebar-deep

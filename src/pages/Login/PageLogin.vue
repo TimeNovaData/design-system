@@ -27,18 +27,17 @@ import OInput from 'src/components/Input/OInput.vue'
 import { useAuthStore } from 'src/stores/auth.store'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-
+const router = useRouter()
 const data = ref({
   login: 'edsondelimajunior',
   senha: 'Analiaedson10.',
 })
 
 async function onSubmit() {
-  const router = useRouter()
   const authStore = useAuthStore()
 
   const logged = await authStore.login(data.value.login, data.value.senha)
-  if (logged) router.push('/')
+  if (logged) router.push({ path: '/' })
 }
 </script>
 

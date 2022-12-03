@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { api, API_URL } from 'src/boot/axios'
-import router from 'src/router'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { Cookies, Notify } from 'quasar'
 
 const tokenOpt = {
@@ -53,6 +52,7 @@ export const useAuthStore = defineStore('auth', () => {
         timeout: 1000,
         html: true,
       })
+
       return false
     }
   }
@@ -74,14 +74,16 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
-    user.value = {}
     Cookies.remove('NDT_REFRESH_TOKEN')
     Cookies.remove('NDT_TOKEN')
-    setTimeout(() => window.location.reload(), 200)
+    await nextTick()
+    user.value = {}
+    window.location.reload()
   }
 
   return { user, returnUrl, login, logout, refreshToken }
 })
+
 // api.interceptors.response.use(response => {
 //     return response;
 // }, (err: AxiosError) => {

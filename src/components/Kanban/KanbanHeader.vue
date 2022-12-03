@@ -57,27 +57,33 @@ const tab = ref('quadro')
 </script>
 
 <style lang="sass">
-:root
-  --header-bg: rgb(var(--white))
+.layout-kanban
   --header-color: rgb(var(--neutral-60))
-  --breadcrumb-color: rgb(var(--neutral-60))
   --header-kanban-height: 3rem
 
+  .base-header
+    --header-bg: rgba(0,0,0, .5)
+    --header-border-b: 1px solid rgba(var(--white),0.05)
+
+
+
 .kanban-header
+  --header-bg: rgba(0,0,0, .5)
   height: var(--header-kanban-height)
   top: 2.5rem
   display: flex
   align-items: center
   padding: .5625rem 1rem
-  background: var(--header-bg)
+  background: var(--header-bg) !important
   width: calc(100% - var(--Nv0-sidebar-width))
   margin-left: auto
   color: var(--header-color)
   border-bottom: 1px solid rgba(var(--white),0.1) !important
 
   .q-breadcrumbs
+    --breadcrumb-color: rgb(var(--neutral-60))
     .q-breadcrumbs__separator
-      color: var(--breadcrumb-color)
+      color: var(--breadcrumb-color) !important
     .q-breadcrumbs__el
-      color: var(--breadcrumb-color)
+      color: var(--breadcrumb-color) !important
 </style>

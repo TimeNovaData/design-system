@@ -19,9 +19,9 @@
         </q-btn>
 
         <q-toolbar-title>
-          <div class="relative w-[220px] h-48 flex items-center">
+          <RouterLink to="/" class="relative w-[220px] h-48 flex items-center">
             <MenuLogo class="w-[151px] h-max my-auto"></MenuLogo>
-          </div>
+          </RouterLink>
         </q-toolbar-title>
 
         <q-btn class="text-neutral-10" dense flat round>
