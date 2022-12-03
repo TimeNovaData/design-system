@@ -27,10 +27,10 @@ import OInput from 'src/components/Input/OInput.vue'
 import { useAuthStore } from 'src/stores/auth.store'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import emitter from 'src/boot/emitter'
-const router = useRouter()
 
 async function onSubmit() {
+  const router = useRouter()
+
   const authStore = useAuthStore()
 
   const logged = await authStore.login(data.value.login, data.value.senha)
