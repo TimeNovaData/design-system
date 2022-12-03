@@ -3,7 +3,7 @@ import axios from 'axios'
 import { useAuthStore } from 'src/stores/auth.store'
 import emitter from 'src/boot/emitter'
 import { Cookies } from 'quasar'
-const { API_URL } = process.env
+const API_URL = process.env.API_URL
 const TOKEN = Cookies.get('NDT_TOKEN')
 
 const api = axios.create({

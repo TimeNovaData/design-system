@@ -79,7 +79,7 @@ module.exports = configure(function (ctx) {
       // distDir
 
       extendViteConf(viteConf) {
-        console.log('.novadata 🟢 ')
+        console.log('.novadata 🟢', viteConf)
         viteConf.resolve.alias['quasar/dist/quasar.sass'] =
           '../src/assets/empty.js'
         viteConf.resolve.alias['quasar/dist/quasar.css'] =
