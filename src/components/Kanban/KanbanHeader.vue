@@ -75,8 +75,6 @@ const tab = ref('quadro')
   color: var(--header-color)
   border-bottom: 1px solid rgba(var(--white),0.1) !important
 
-
-
   .q-breadcrumbs
     .q-breadcrumbs__separator
       color: var(--breadcrumb-color)

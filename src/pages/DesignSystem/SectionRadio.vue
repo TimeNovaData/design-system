@@ -8,7 +8,7 @@
         href=" https://quasar.dev/vue-components/checkbox"
         target="_blank"
         >QDocs
-        <q-icon class="!text-20" name="sym_r_arrow_outward"></q-icon>
+        <q-icon class="!text-20" name="arrow_outward"></q-icon>
       </o-button>
     </div>
     <div class="flex gap-4 flex-col">
@@ -46,16 +46,16 @@
 </template>
 
 <script setup>
-import { ref }         from "vue";
-import ORadio          from "src/components/Radio/ORadio.vue";
-import OCheck          from "src/components/Checkbox/OCheck.vue";
-import SyntaxHighlight from "src/components/DesignSystem/SyntaxHighlight.vue";
-import OButton         from "src/components/Button/OButton.vue";
+import { ref } from 'vue'
+import ORadio from 'src/components/Radio/ORadio.vue'
+import OCheck from 'src/components/Checkbox/OCheck.vue'
+import SyntaxHighlight from 'src/components/DesignSystem/SyntaxHighlight.vue'
+import OButton from 'src/components/Button/OButton.vue'
 
 const code = `<script>
 import ORadio          from "../../components/ORadio.vue";
 //size: sm, md, lg
-<${"/"}script>
+<${'/'}script>
 
 <template>
   <o-radio
@@ -73,11 +73,11 @@ import ORadio          from "../../components/ORadio.vue";
 
 </template>
 
-`;
+`
 
-const value = ref("radio");
-const check = ref(false);
-const checkTrue = ref(true);
+const value = ref('radio')
+const check = ref(false)
+const checkTrue = ref(true)
 </script>
 
 <style lang="scss" scoped></style>

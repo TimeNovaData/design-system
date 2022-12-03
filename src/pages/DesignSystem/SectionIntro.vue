@@ -46,16 +46,14 @@
           class="bg-neutral-30 px-4 rounded dark:!bg-d-neutral-10 dark:border dark:border-white/10"
           >q-icon</code
         >
-        prefixado com <strong class="font-semibold"> sym_r</strong>
       </p>
-      <p>que é a abreviaçao de symbol rounded</p>
       <p>
         por exemplo para o icone de `close` voce utilizaria dessa forma no
-        q-icon `name='sym_r_close'`
+        q-icon `name='close'`
       </p>
       <br />
       <p>Ja para icones do figma, voce ira copiar o svg do icone</p>
-      <p>transformar em symbol com um id dentro /public/icons.svg</p>
+      <p>transformar em symbol com um id dentro /publicicons.svg</p>
       <p>
         e vai referenciar no
         <code

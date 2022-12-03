@@ -10,7 +10,7 @@
           href="https://quasar.dev/vue-components/input#introduction"
           target="_blank"
           >QDocs
-          <q-icon class="!text-20" name="sym_r_arrow_outward"></q-icon>
+          <q-icon class="!text-20" name="arrow_outward"></q-icon>
         </o-button>
       </div>
 
@@ -20,11 +20,11 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import oButton from "src/components/Button/OButton.vue";
-import SyntaxHighlight from "src/components/DesignSystem/SyntaxHighlight.vue";
+import { ref } from 'vue'
+import oButton from 'src/components/Button/OButton.vue'
+import SyntaxHighlight from 'src/components/DesignSystem/SyntaxHighlight.vue'
 
-const code = ``;
+const code = ``
 </script>
 
 <style lang="sass"></style>

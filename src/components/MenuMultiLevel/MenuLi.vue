@@ -65,7 +65,7 @@
 
         <!-- Arrow  -->
         <q-item-section v-if="Nv1.submenu" avatar class="opacity-50">
-          <q-icon size="1rem" name="sym_r_navigate_next"></q-icon>
+          <q-icon size="1rem" name="navigate_next"></q-icon>
         </q-item-section>
 
         <!-- Submenu Nv2 -->

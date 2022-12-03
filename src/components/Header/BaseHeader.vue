@@ -20,7 +20,7 @@
           style="--neutral-70: rgba(var(--white), 0.7)"
         >
           <template #prepend>
-            <q-icon name="sym_r_search"></q-icon>
+            <q-icon name="search"></q-icon>
           </template>
         </OInput>
 
@@ -30,7 +30,7 @@
           secondary
           size="sm"
         >
-          <q-icon size="1.25rem" name="sym_r_notifications"></q-icon>
+          <q-icon size="1.25rem" name="notifications"></q-icon>
           <q-menu class="w-[200px]">
             <q-item>
               <q-item-section>Em Breve</q-item-section>
@@ -43,7 +43,7 @@
           rounded
           size="sm"
         >
-          <!-- <q-icon name="sym_r_person"> </q-icon> -->
+          <!-- <q-icon name="person"> </q-icon> -->
           <q-avatar size="2rem" class="border border-d-neutral-10">
             <q-badge rounded class="bg-primary-pure w-8 h-8" floating></q-badge>
             <img

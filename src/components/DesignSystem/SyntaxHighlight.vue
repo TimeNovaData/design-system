@@ -1,9 +1,10 @@
 <template>
   <q-list
     class="w-full !rounded-[1rem] overflow-hidden mt-24 text-neutral-60 code_high"
+    v-if="dev"
   >
     <q-expansion-item
-      icon="sym_r_code"
+      icon="code"
       label="Code"
       class="highlited dark:!text-neutral-80"
     >
@@ -19,10 +20,11 @@
 import hljsVuePlugin from '@highlightjs/vue-plugin'
 import hljs from 'highlight.js/lib/common'
 
+const dev = process.env.development
 const highlightjs = hljsVuePlugin.component
 
 defineProps({
-  code: String
+  code: String,
 })
 </script>
 

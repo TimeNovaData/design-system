@@ -10,18 +10,17 @@
           href="https://quasar.dev/vue-components/expansion-item#introduction"
           target="_blank"
           >QDocs
-          <q-icon
-            class="!text-20"
-            name="sym_r_arrow_outward"
-          ></q-icon>
+          <q-icon class="!text-20" name="arrow_outward"></q-icon>
         </o-button>
       </div>
 
       <section>
-        <o-accordion class="border border-neutral-100/10 rounded-[3px] dark:border-white/10 overflow-hidden">
+        <o-accordion
+          class="border border-neutral-100/10 rounded-[3px] dark:border-white/10 overflow-hidden"
+        >
           <template v-slot:header>
             <q-item-section avatar class="w-32">
-              <q-icon name="sym_r_tips_and_updates" />
+              <q-icon name="tips_and_updates" />
             </q-item-section>
 
             <q-item-section> Titulo do accordion </q-item-section>
@@ -29,11 +28,10 @@
 
           <q-card>
             <q-card-section>
-              Lorem ipsum dolor sit amet, consectetur adipisicing
-              elit. Quidem, eius reprehenderit eos corrupti commodi
-              magni quaerat ex numquam, dolorum officiis modi facere
-              maiores architecto suscipit iste eveniet doloribus ullam
-              aliquid.
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem,
+              eius reprehenderit eos corrupti commodi magni quaerat ex numquam,
+              dolorum officiis modi facere maiores architecto suscipit iste
+              eveniet doloribus ullam aliquid.
             </q-card-section>
           </q-card>
         </o-accordion>
@@ -62,7 +60,7 @@ import OAccordion from 'src/components/OAccordion.vue'
 <o-accordion class="border border-neutral-100/10 rounded-[3px] dark:border-white/10 overflow-hidden">
   <template v-slot:header>
     <q-item-section avatar class="w-32">
-      <q-icon name="sym_r_tips_and_updates" />
+      <q-icon name="tips_and_updates" />
     </q-item-section>
 
     <q-item-section> Titulo do accordion </q-item-section>

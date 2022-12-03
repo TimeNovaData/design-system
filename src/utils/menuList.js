@@ -2,13 +2,13 @@ const menuList = [
   {
     title: 'Home',
     nivel: 0,
-    icon: 'sym_r_home',
+    icon: 'home',
     href: '/home',
   },
   {
     title: 'Financeiro',
     nivel: 0,
-    icon: 'sym_r_credit_score',
+    icon: 'credit_score',
     submenu: [
       {
         title: 'Calendário de Produção',
@@ -61,8 +61,8 @@ const menuList = [
   {
     title: 'Kanban',
     nivel: 0,
-    icon: 'sym_r_space_dashboard',
-    href:'/kanban/1/board',
+    icon: 'space_dashboard',
+    href: '/kanban/1/board',
     // submenu: [
     //   {
     //     title: 'Calendário de Produção',

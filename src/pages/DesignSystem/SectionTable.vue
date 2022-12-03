@@ -10,7 +10,7 @@
           href="https://quasar.dev/vue-components/table"
           target="_blank"
           >QDocs
-          <q-icon class="!text-20" name="sym_r_arrow_outward"></q-icon>
+          <q-icon class="!text-20" name="arrow_outward"></q-icon>
         </o-button>
       </div>
 
@@ -68,7 +68,7 @@
                   <o-button
                     size="sm"
                     secondary
-                    icon="sym_r_search"
+                    icon="search"
                     class="shadow-sm !p-0 w-32 h-32"
                   >
                   </o-button>
@@ -93,7 +93,7 @@
             <p class="text-caps1">Secondary Sticky</p>
             <q-btn
               secondary
-              icon-right="sym_r_archive"
+              icon-right="archive"
               label="Exportar para Excel"
               no-caps
               @click="exportTable"
@@ -155,11 +155,7 @@
                 flat
                 round
                 dense
-                :icon="
-                  props.inFullscreen
-                    ? 'sym_r_fullscreen_exit'
-                    : 'sym_r_fullscreen'
-                "
+                :icon="props.inFullscreen ? 'fullscreen_exit' : 'fullscreen'"
                 @click="props.toggleFullscreen"
                 class="q-ml-md"
               />
@@ -186,7 +182,7 @@
               >
                 <template v-slot:append>
                   <o-button size="md" tertiary>
-                    <q-icon name="sym_r_search"
+                    <q-icon name="search"
                   /></o-button>
                 </template>
               </o-input>
@@ -220,7 +216,7 @@
                   round
                   dense
                   @click="props.expand = !props.expand"
-                  :icon="props.expand ? 'sym_r_remove' : 'sym_r_add'"
+                  :icon="props.expand ? 'remove' : 'add'"
                 />
               </q-td>
               <q-td v-for="col in props.cols" :key="col.name" :props="props">

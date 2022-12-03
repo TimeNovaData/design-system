@@ -29,6 +29,7 @@ const padding = {
 }
 const sizes = { sm: '.75rem ', md: '.875rem', lg: '1rem' }
 const height = { sm: '2rem ', md: '2.5rem', lg: '3rem' }
+
 const setPadding = padding[attrs.size]
 const setSize = sizes[attrs.size]
 

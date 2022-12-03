@@ -25,7 +25,7 @@
         </q-toolbar-title>
 
         <q-btn class="text-neutral-10" dense flat round>
-          <q-icon size="28px" name="sym_r_tune"></q-icon>
+          <q-icon size="28px" name="tune"></q-icon>
           <BaseHeaderMenu> </BaseHeaderMenu>
         </q-btn>
       </q-toolbar>
@@ -96,7 +96,7 @@
       <o-button
         primary
         fab
-        icon="sym_r_close"
+        icon="close"
         @click=";(sectionActive = 'intro') && drawer.show()"
         v-if="sectionActive == 'menuMultiLevel'"
       />
@@ -107,29 +107,29 @@
 <script setup>
 import { onMounted, ref, watch } from 'vue'
 
-import oButton                   from 'src/components/Button/OButton.vue'
+import oButton from 'src/components/Button/OButton.vue'
 
-import SectionAccordion          from './SectionAccordion.vue'
-import SectionBreadcrumb         from './SectionBreadcrumb.vue'
-import SectionButton             from './SectionButton.vue'
-import SectionChips              from './SectionChips.vue'
-import SectionColors             from './SectionColors.vue'
-import SectionInput              from './SectionInput.vue'
-import SectionIntro              from './SectionIntro.vue'
-import SectionModal              from './SectionModal.vue'
-import SectionPaginacao          from './SectionPaginacao.vue'
-import SectionPopupProxy         from './SectionPopUpProxy.vue'
-import SectionRadio              from './SectionRadio.vue'
-import SectionTable              from './SectionTable.vue'
-import SectionTipographie        from './SectionTipographie.vue'
-import SectionTabs               from './SectionTabs.vue'
-import SectionSelects            from './SectionSelects.vue'
+import SectionAccordion from './SectionAccordion.vue'
+import SectionBreadcrumb from './SectionBreadcrumb.vue'
+import SectionButton from './SectionButton.vue'
+import SectionChips from './SectionChips.vue'
+import SectionColors from './SectionColors.vue'
+import SectionInput from './SectionInput.vue'
+import SectionIntro from './SectionIntro.vue'
+import SectionModal from './SectionModal.vue'
+import SectionPaginacao from './SectionPaginacao.vue'
+import SectionPopupProxy from './SectionPopUpProxy.vue'
+import SectionRadio from './SectionRadio.vue'
+import SectionTable from './SectionTable.vue'
+import SectionTipographie from './SectionTipographie.vue'
+import SectionTabs from './SectionTabs.vue'
+import SectionSelects from './SectionSelects.vue'
 
-import BaseHeaderMenu            from 'src/components/Header/BaseHeaderMenu.vue'
-import MenuLogo                  from 'src/components/MenuMultiLevel/MenuLogo.vue'
-import MenuMultiLevel            from 'src/components/MenuMultiLevel/MenuMultiLevel.vue'
-import logoAnimation             from 'src/utils/animation/logo'
-import menuList                  from 'src/utils/menuList'
+import BaseHeaderMenu from 'src/components/Header/BaseHeaderMenu.vue'
+import MenuLogo from 'src/components/MenuMultiLevel/MenuLogo.vue'
+import MenuMultiLevel from 'src/components/MenuMultiLevel/MenuMultiLevel.vue'
+import logoAnimation from 'src/utils/animation/logo'
+import menuList from 'src/utils/menuList'
 
 const sectionActive = ref('intro')
 const leftDrawerOpen = ref(true)

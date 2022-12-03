@@ -10,7 +10,7 @@
           href="https://quasar.dev/vue-components/input#introduction"
           target="_blank"
           >QDocs
-          <q-icon class="!text-20" name="sym_r_arrow_outward"></q-icon>
+          <q-icon class="!text-20" name="arrow_outward"></q-icon>
         </o-button>
       </div>
 
@@ -33,7 +33,7 @@
             ]"
           >
             <template #prepend>
-              <q-icon name="sym_r_mail_outline"></q-icon>
+              <q-icon name="mail_outline"></q-icon>
             </template>
           </o-input>
 
@@ -66,7 +66,7 @@
           >
             <template v-slot:append>
               <o-button rounded>
-                <q-icon name="sym_r_calendar_today" class="cursor-pointer">
+                <q-icon name="calendar_today" class="cursor-pointer">
                   <q-popup-proxy
                     cover
                     transition-show="scale"
@@ -97,7 +97,7 @@
             name="name"
           >
             <template v-slot:prepend>
-              <q-icon size="1.5rem" name="sym_r_person"></q-icon>
+              <q-icon size="1.5rem" name="person"></q-icon>
             </template>
           </o-input>
 
@@ -127,7 +127,7 @@
               quarternary
               class="text-neutral-60"
               size="sm"
-              icon-right="sym_r_close"
+              icon-right="close"
               @click="form.resetValidation()"
               >Limpar validação</o-button
             >
@@ -177,4 +177,4 @@ const code = `import OInput from "../../components/OInput.vue";
 </script>
 
 <style lang="sass"></style>
-import { ref }                      from 'vue'
+import { ref } from 'vue'

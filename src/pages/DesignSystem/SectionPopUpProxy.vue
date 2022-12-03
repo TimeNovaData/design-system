@@ -10,10 +10,7 @@
           href="https://quasar.dev/vue-components/popup-proxy#introduction"
           target="_blank"
           >QDocs
-          <q-icon
-            class="!text-20"
-            name="sym_r_arrow_outward"
-          ></q-icon>
+          <q-icon class="!text-20" name="arrow_outward"></q-icon>
         </o-button>
       </div>
 
@@ -23,9 +20,7 @@
           <q-popup-proxy default class="popup-proxy">
             <div class="mb-16">
               <div class="flex items-center">
-                <p class="text-headline-3 mb-4">
-                  Deseja realmente escluir ?
-                </p>
+                <p class="text-headline-3 mb-4">Deseja realmente escluir ?</p>
               </div>
               <span class="text-paragraph-2 dark:text-opacity-70"
                 >Essa ação não terá reversão.</span

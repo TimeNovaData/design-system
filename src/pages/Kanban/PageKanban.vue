@@ -54,7 +54,7 @@ import GLOBAL from 'src/utils/GLOBAL'
 import KanbanCol from 'src/components/Kanban/KanbanCol.vue'
 import KanbanCard from 'src/components/Kanban/KanbanCard.vue'
 import KanbanModal from 'src/components/Kanban/KanbanModal.vue'
-
+import { api } from 'src/boot/axios'
 const { generateRange, modelo1, setHeightInCol } = GLOBAL
 
 const visao = useVisaoExpandida()
@@ -72,15 +72,12 @@ function handleColClick(e) {
   removeEventsWrapper.value = true
 }
 
-const lists = ref([
-  generateRange(1, modelo1),
-  generateRange(2, modelo1),
-  generateRange(3, modelo1),
-  generateRange(4, modelo1),
-  generateRange(5, modelo1),
-  generateRange(6, modelo1),
-  generateRange(7, modelo1),
-])
+const lists = ref([])
+
+onMounted(async () => {
+  const oi = await api.get('colunakanban/')
+  console.log(oi)
+})
 
 // Drag
 const drag = ref(false)

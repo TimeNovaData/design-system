@@ -1,25 +1,24 @@
 import { defineStore } from 'pinia'
-import { onMounted, watch, ref } from 'vue'
+import { onMounted, watch, ref, onUpdated } from 'vue'
 import { LocalStorage } from 'quasar'
+import router from 'src/router'
 
 export const useBlurMode = defineStore('blurMode', () => {
-  const blurMode = ref(false)
+  const blurMode = ref(LocalStorage.getItem('blurMode'))
+  const isKanban = ref(false)
 
-  onMounted(() => {
-    if (LocalStorage.has('blurMode')) {
-      const mode = LocalStorage.getItem('blurMode')
-      blurMode.value = mode
-    } else {
-      LocalStorage.set('blurMode', blurMode.value)
-    }
-  })
-
-  watch(blurMode, (newX) => {
+  watch(blurMode, () => {
     LocalStorage.set('blurMode', blurMode.value)
-    blurMode.value
-      ? document.body.classList.add("blur--mode")
-      : document.body.classList.remove("blur--mode")
+    toggleClassBody()
   })
 
-  return { blurMode }
+  watch(isKanban, () => toggleClassBody())
+
+  function toggleClassBody() {
+    blurMode.value && isKanban.value
+      ? document.body.classList.add('blur--mode')
+      : document.body.classList.remove('blur--mode')
+  }
+
+  return { blurMode, isKanban }
 })

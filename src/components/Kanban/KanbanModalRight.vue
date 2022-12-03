@@ -21,7 +21,7 @@
           class="flex-row items-center !h-40 rounded-generic user-select-none px-8"
         >
           <div class="flex items-center gap-4">
-            <q-icon size="1.5rem" name="sym_r_visibility"></q-icon>
+            <q-icon size="1.5rem" name="visibility"></q-icon>
             <p class="text-paragraph-2">Visao Expandida</p>
           </div>
           <q-space></q-space>
@@ -34,7 +34,7 @@
           class="flex-row items-center !h-40 rounded-generic user-select-none px-8"
         >
           <div class="flex items-center gap-4">
-            <q-icon size="1.5rem" name="sym_r_blur_on"></q-icon>
+            <q-icon size="1.5rem" name="blur_on"></q-icon>
             <div>
               <p class="text-paragraph-2">Blur Mode</p>
             </div>
@@ -85,6 +85,7 @@ watch(dialogState, () => {
 })
 
 defineExpose({ dialogRef })
+
 </script>
 
 <style lang="sass">

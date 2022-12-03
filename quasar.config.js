@@ -11,7 +11,7 @@
 const { configure } = require('quasar/wrappers')
 const path = require('path')
 
-module.exports = configure(function (/* ctx */) {
+module.exports = configure(function (ctx) {
   return {
     eslint: {
       fix: true,
@@ -28,7 +28,7 @@ module.exports = configure(function (/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli/boot-files
-    boot: ['i18n', 'axios'],
+    boot: ['i18n', 'axios', 'emitter'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
     css: ['app.sass'],
@@ -51,13 +51,7 @@ module.exports = configure(function (/* ctx */) {
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
     build: {
       target: {
-        browser: [
-          'es2019',
-          'edge88',
-          'firefox78',
-          'chrome87',
-          'safari13.1',
-        ],
+        browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
         node: 'node16',
       },
       showProgress: true,
@@ -70,13 +64,19 @@ module.exports = configure(function (/* ctx */) {
 
       // publicPath: 'dist/spa',
       // analyze: true,
-      // env: {},
+      env: {
+        API_URL: ctx.dev
+          ? 'http://localhost:8000/api/'
+          : 'https://hub.novadata.com.br/api/',
+
+        HTTPS_MODE: !ctx.dev,
+        development: ctx.dev,
+      },
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
       // polyfillModulePreload: true,
       // distDir
-
 
       extendViteConf(viteConf) {
         console.log('.novadata 🟢 ')
@@ -106,9 +106,9 @@ module.exports = configure(function (/* ctx */) {
       // https: true
       vueDevtools: true,
       open: false, // opens browser window automatically,
-      // options: {
-      //   usePolling: true
-      // }
+      options: {
+        usePolling: true,
+      },
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
@@ -117,7 +117,9 @@ module.exports = configure(function (/* ctx */) {
 
       // iconSet: 'material-icons', // Quasar icon set
       lang: 'pt-BR', // Quasar language pack
-
+      ripple: {
+        early: true,
+      },
       // For special cases outside of where the auto-import strategy can have an impact
       // (like functional components as one of the examples),
       // you can manually specify Quasar components/directives to be available everywhere:
@@ -131,10 +133,7 @@ module.exports = configure(function (/* ctx */) {
 
     // animations: 'all', // --- includes all animations
     // https://v2.quasar.dev/options/animations
-    animations: [
-      'fadeIn',
-      'fadeOut',
-    ],
+    animations: ['fadeIn', 'fadeOut'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#property-sourcefiles
     // sourceFiles: {
@@ -234,7 +233,6 @@ module.exports = configure(function (/* ctx */) {
         appId: 'design.system.novadata',
         win: {
           target: 'portable',
-
         },
 
         linux: {
