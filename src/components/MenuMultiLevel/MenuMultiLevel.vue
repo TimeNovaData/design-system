@@ -71,6 +71,7 @@ const state = ref({
 const showHeader = ref(true)
 
 const sidebar = ref(null)
+
 let $ = {}
 let animate
 
@@ -147,19 +148,6 @@ onUnmounted(() => {
   }
 })
 
-// onBeforeRouteLeave((to, from) => {
-//   state.value = {
-//     hover: false,
-//     open: false,
-//     passive: true,
-//   }
-
-//   // const setFalse = () => (state.value.passive = false)
-//   // setTimeout(() => setFalse, 5000)
-//   return true
-//   // cancel the navigation and stay on the same page
-//   // if (!answer) return false
-// })
 function handleMouseEnter() {
   if (state.value.passive) return
   state.value.hover = true

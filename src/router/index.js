@@ -39,12 +39,13 @@ export default route(function (/* { store, ssrContext } */) {
   Router.beforeEach(async (to, from, next) => {
     emitter.emit('loader', 'stop')
     // redirect to login page if not logged in and trying to access a restricted page
+    const auth = useAuthStore()
+    const blur = useBlurMode()
     const publicPages = ['/login']
     const paginasObrigatorias = !publicPages.includes(to.path)
-    const auth = useAuthStore()
     const haveRefresh = auth.user.refresh
     const haveToken = auth.user.access
-    const blur = useBlurMode()
+
     blur.isKanban = to.name === 'kanban.board'
 
     if (paginasObrigatorias && !haveRefresh && !haveToken) {
@@ -52,7 +53,6 @@ export default route(function (/* { store, ssrContext } */) {
     } else if (to.fullPath === '/login' && haveRefresh) {
       next({ path: '/' })
     } else {
-      console.log('bora pra proxima')
       next()
     }
   })

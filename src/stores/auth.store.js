@@ -5,12 +5,13 @@ import { Cookies, Notify } from 'quasar'
 
 const tokenOpt = {
   secure: process.env.HTTPS_MODE,
-  expires: '0m 30s',
+  expires: '30m 0',
   // path: '/',
 }
 
 const refreshTokenOpt = {
   secure: process.env.HTTPS_MODE,
+  // expires: '30m 0',
 }
 
 export const useAuthStore = defineStore('auth', () => {
@@ -26,8 +27,8 @@ export const useAuthStore = defineStore('auth', () => {
   watch(
     () => user.value.access,
     () => {
-      api.defaults.headers.Authorization = `Bearer ${user.value.access}`
       const TOKEN = user.value.access
+      api.defaults.headers.Authorization = `Bearer ${TOKEN}`
       TOKEN && Cookies.set('NDT_TOKEN', TOKEN, tokenOpt)
     }
   )
@@ -42,10 +43,10 @@ export const useAuthStore = defineStore('auth', () => {
       REFRESH_TOKEN &&
         Cookies.set('NDT_REFRESH_TOKEN', REFRESH_TOKEN, refreshTokenOpt)
       TOKEN && Cookies.set('NDT_TOKEN', TOKEN, tokenOpt)
-      // router().push('/design-system')
 
       return true
     } catch (e) {
+      console.log(e)
       Notify.create({
         message: `Usuario ou senha invalidos`,
         position: 'top-right',
@@ -74,11 +75,11 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
+    user.value = {}
     Cookies.remove('NDT_REFRESH_TOKEN')
     Cookies.remove('NDT_TOKEN')
     await nextTick()
-    user.value = {}
-    window.location.reload()
+    return new Promise((resolve) => setTimeout(() => resolve(), 300))
   }
 
   return { user, returnUrl, login, logout, refreshToken }

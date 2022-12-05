@@ -6,12 +6,12 @@ export const useDarkMode = defineStore('darkMode', () => {
   const darkMode = ref(false)
 
   onMounted(() => {
-    if (LocalStorage.has('darkMode')) {
-      const mode = LocalStorage.getItem('darkMode')
-      darkMode.value = mode
-    } else {
-      LocalStorage.set('darkMode', darkMode.value)
-    }
+    const auto = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const storage = LocalStorage.getItem('darkMode')
+    console.log(storage, 'storage')
+    const mode = storage === null ? auto : storage // for auto darkmode
+    // const mode = storage  // for manual
+    darkMode.value = mode
   })
 
   watch(darkMode, (newX) => {

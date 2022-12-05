@@ -9,8 +9,10 @@
         <q-item-section>
           <p class="text-paragraph-2">Dark Mode</p>
         </q-item-section>
-        <q-item-section avatar>
-          <q-toggle v-model="darkMode"></q-toggle>
+
+        <q-item-section>
+          <q-space></q-space>
+          <q-toggle size="sm" class="ml-auto" v-model="darkMode"></q-toggle>
         </q-item-section>
       </q-item>
 
@@ -34,7 +36,7 @@
         tag="label"
         class="flex items-center flex-row"
         ripple
-        @click="auth.logout()"
+        @click="logout"
       >
         <q-item-section>
           <p class="text-paragraph-2">Logout</p>
@@ -52,11 +54,18 @@ import { storeToRefs } from 'pinia'
 import { useDarkMode } from 'src/stores/darkMode'
 import { useAuthStore } from 'src/stores/auth.store'
 import OInput from 'src/components/Input/OInput.vue'
+import router from 'src/router'
 const dev = process.env.development
 const auth = useAuthStore()
 const dark = useDarkMode()
 
 const { darkMode } = storeToRefs(dark)
+
+async function logout() {
+  await auth.logout()
+  router().push({ name: 'login' })
+  window.location.reload()
+}
 </script>
 
 <style lang="sass" scoped></style>

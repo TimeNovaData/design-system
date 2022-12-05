@@ -1,4 +1,6 @@
-import gsap from "gsap/dist/gsap"
+import gsap from 'gsap/dist/gsap'
+import { date } from 'quasar'
+
 export default {
   debounce: (time, fn, name) => {
     return (...args) => {
@@ -53,13 +55,13 @@ export default {
 
     domElement.addEventListener('mousedown', onMouseDown)
   },
-  
+
   generateRange: (totalElementos, modelo) => {
-    return Array.from({ length: totalElementos }, (_, i) => modelo(i, totalElementos))
+    return Array.from({ length: totalElementos }, (_, i) =>
+      modelo(i, totalElementos)
+    )
   },
 
-
-  
   modelo1: (i, totalElementos) => ({
     id: totalElementos + i,
     nome: 'usuario' + i,
@@ -73,25 +75,43 @@ export default {
         cor: '--alert-error',
       },
     ],
-}),
+  }),
 
-  // Atualiza o height de acordo com a quantidade de filhos + gap 
-setHeightInCol: () => {
-  document.querySelectorAll('.cards-wrapper').forEach((i) => {
-    const filhos = [...i.querySelectorAll('.kanban-card')]
-    const gap = filhos.length * 7
-    const height = filhos.reduce((acc, children) => {
-      acc += children.getBoundingClientRect().height
-      return acc
-    }, 0)
+  // Atualiza o height de acordo com a quantidade de filhos + gap
+  setHeightInCol: () => {
+    document.querySelectorAll('.cards-wrapper').forEach((i) => {
+      const filhos = [...i.querySelectorAll('.kanban-card')]
+      const gap = filhos.length * 7
+      const height = filhos.reduce((acc, children) => {
+        acc += children.getBoundingClientRect().height
+        return acc
+      }, 0)
 
-    const heightWithGap = (height + gap + 16).toFixed(0)
-    gsap.to(i, {
-      height: heightWithGap,
-      duration: 0.5,
-      ease: 'power1',
+      const heightWithGap = (height + gap + 16).toFixed(0)
+      gsap.to(i, {
+        height: heightWithGap,
+        duration: 0.5,
+        ease: 'power1',
+      })
     })
-  })
-}
+  },
 
+  FData(value) {
+    if (date.isValid(value)) {
+      return date.formatDate(value, 'DD/MM/YYYY')
+    } else {
+      return '-'
+    }
+  },
+  FTime(value) {
+    const hora = value?.slice(0, 2)
+    const minutos = value?.slice(3, 5)
+    const data = date.buildDate({ year: 2022, hours: hora, minutes: minutos })
+
+    if (date.isValid(data)) {
+      return date.formatDate(data, 'HH[h] mm[m]')
+    } else {
+      return '-'
+    }
+  },
 }

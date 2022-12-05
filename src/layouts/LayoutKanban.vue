@@ -61,10 +61,11 @@ function openModalRight() {
 
 body
   --breadcrumb-color: rgba(var(--white),0.7)
-  --top-size: calc(var(--header-kanban-height) + var(--header-base-height))
+
 
 .q-layout.layout-kanban
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 15.56%)
+  --top-size: calc(var(--header-kanban-height) + var(--header-base-height))
   .body--dark &
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))
 

@@ -1,14 +1,14 @@
 <template>
-  <div class="kanban-col">
+  <div class="kanban-col" :style="{ order: colData.ordem }">
     <header class="px-6 pb-14 pt-6 w-full flex items-center">
       <div class="inline-flex items-center gap-6">
-        <p class="text-headline-3">Novo</p>
+        <p class="text-headline-3">{{ colData.nome }}</p>
         <OCounter
           bg="--neutral-30"
           color="--neutral-70"
           class="!text-14 !rounded !p-0 !w-20 !h-20 dark:!bg-white/10 dark:!text-white/70"
         >
-          {{ data.length }}
+          {{ cards.length }}
         </OCounter>
       </div>
 
@@ -28,8 +28,9 @@
 <script setup>
 import OButton from 'src/components/Button/OButton.vue'
 import OCounter from 'src/components/Counter/OCounter.vue'
-defineProps({
-  data: Array,
+const props = defineProps({
+  cards: Array,
+  colData: Object,
 })
 </script>
 

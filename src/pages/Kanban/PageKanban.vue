@@ -5,15 +5,16 @@
       @mousedown="(e) => enableDragScroll(e)"
     >
       <KanbanCol
-        v-for="(list, index) in lists"
-        :data="list"
+        v-for="(coluna, index) in colunasWithCards"
+        :cards="coluna.cards"
+        :colData="coluna.coluna"
         @mouseup="handleColClick"
         @mousedown="handleColClick"
         :key="index"
       >
         <draggable
           v-bind="dragOptions"
-          :list="list"
+          :list="coluna.cards"
           :component-data="{
             tag: 'div',
             type: 'transition-group',
@@ -54,7 +55,7 @@ import GLOBAL from 'src/utils/GLOBAL'
 import KanbanCol from 'src/components/Kanban/KanbanCol.vue'
 import KanbanCard from 'src/components/Kanban/KanbanCard.vue'
 import KanbanModal from 'src/components/Kanban/KanbanModal.vue'
-import { api } from 'src/boot/axios'
+import useKanban from 'src/composables/UseKanban'
 const { generateRange, modelo1, setHeightInCol } = GLOBAL
 
 const visao = useVisaoExpandida()
@@ -67,17 +68,28 @@ const removeEventsWrapper = ref(false)
 
 const modal = ref(null)
 
+const { colunas, cards, colunasWithCards } = useKanban()
+
+// watch(cards, () => {
+//   console.log('cards page', cards.value)
+// })
+
 function handleColClick(e) {
   e.stopImmediatePropagation()
   removeEventsWrapper.value = true
 }
 
-const lists = ref([])
+const lists = ref([
+  generateRange(1, modelo1),
+  generateRange(2, modelo1),
+  generateRange(3, modelo1),
+  generateRange(4, modelo1),
+  generateRange(5, modelo1),
+  generateRange(6, modelo1),
+  generateRange(7, modelo1),
+])
 
-onMounted(async () => {
-  const oi = await api.get('colunakanban/')
-  console.log(oi)
-})
+// const lists = ref([])
 
 // Drag
 const drag = ref(false)
@@ -85,6 +97,7 @@ const enableDragScroll = GLOBAL.enableDragScroll(removeEventsWrapper)
 
 watch(drag, () => setHeightInCol())
 watch(visaoExpandida, () => setTimeout(() => setHeightInCol(), 300))
+watch(colunasWithCards, () => setTimeout(() => setHeightInCol(), 300))
 
 const handleStartEndDrag = (e, value) => {
   e.stopImmediatePropagation()

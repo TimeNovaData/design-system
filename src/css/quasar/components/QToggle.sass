@@ -130,3 +130,50 @@ body.desktop
       .q-toggle__thumb:before
         transform: scale3d(1.5, 1.5, 1)
 
+/* 
+ 
+ .q-toggle 
+ --inner-width:28px;  
+ --inner-height:16px;
+ --thumb-size:12px;
+ --gap:3px;
+
+    .q-toggle__inner
+      font-size: initial
+      min-width: initial
+      width: var(--inner-width)
+      height: var(--inner-height)
+      padding: 0
+
+    .q-toggle__track
+      height: 100%
+      border-radius: 0
+      opacity: 0.1
+      background: currentColor
+      border-radius: 32px
+
+    .q-toggle__thumb
+      top: 0
+      bottom: 0
+      margin: auto 0
+      left: 0
+      width: var(--thumb-size)
+      height: var(--thumb-size)
+      -webkit-user-select: none
+      user-select: none
+      z-index: 0
+      transition: transform .3s ease !important
+      transform: translatex(var(--gap))
+      &:after
+        background-color: white
+
+    &[aria-checked="true"]
+      .q-toggle__track
+        opacity: 0.9 !important
+
+      .q-toggle__thumb
+        // left: initial;
+        // right: 0.1em !important;
+        transform: translateX(calc(var(--inner-width) - var(--thumb-size) - var(--gap)))
+
+  */

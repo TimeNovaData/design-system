@@ -7,11 +7,10 @@
   >
     <div class="flex flex-wrap gap-4 mb-6">
       <OBadge
-        v-for="tag in item.tags"
-        :key="tag.nome"
+        v-for="tag in item.tag"
         size="sm"
+        :key="tag.nome"
         :badge="true"
-        :bg="tag.cor"
         square
       >
         <template #content>
@@ -20,9 +19,7 @@
       </OBadge>
     </div>
     <p>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia modi
-      soluta obcaecati
-      {{ item.nome }}
+      {{ item.titulo }}
     </p>
     <slot></slot>
 
@@ -94,7 +91,7 @@
       >
         <p class="text-paragraph-4 dark:text-white/70">Solicitado</p>
         <p class="text-headline-5 dark:text-white/90 !tracking-wide">
-          16/09/2022
+          {{ FData(item.data_criacao) }}
         </p>
       </div>
       <div
@@ -102,7 +99,7 @@
       >
         <p class="text-paragraph-4 dark:text-white/70">Desejado</p>
         <p class="text-headline-5 dark:text-white/90 !tracking-wide">
-          16/09/2022
+          {{ FData(item.data_desejada) }}
         </p>
       </div>
 
@@ -111,7 +108,7 @@
       >
         <p class="text-paragraph-4 dark:text-white/70">Previsto</p>
         <p class="text-headline-5 dark:text-white/90 !tracking-wide">
-          16/09/2022
+          {{ FData(item.data_prevista) }}
         </p>
       </div>
 
@@ -119,14 +116,18 @@
         class="p-6 dark:bg-white/10 bg-neutral-100/5 col-span-6 rounded-generic flex items-center justify-between"
       >
         <p class="text-paragraph-4 dark:text-white/70">Orçado:</p>
-        <p class="text-headline-5 dark:text-white/90 !tracking-wider">1h 45m</p>
+        <p class="text-headline-5 dark:text-white/90 !tracking-wider">
+          {{ FTime(item.tempo_estimado) }}
+        </p>
       </div>
 
       <div
         class="p-6 dark:bg-white/10 bg-neutral-100/5 col-span-6 rounded-generic flex items-center justify-between"
       >
         <p class="text-paragraph-4 dark:text-white/70">Decorrido:</p>
-        <p class="text-headline-5 dark:text-white/90 !tracking-wider">1h 45m</p>
+        <p class="text-headline-5 dark:text-white/90 !tracking-wider">
+          {{ FTime(item.tempo_decorrido) }}
+        </p>
       </div>
     </section>
   </q-card>
@@ -134,11 +135,22 @@
 
 <script setup>
 import OBadge from 'src/components/Badge/OBadge.vue'
+import GLOBAL from 'src/utils/GLOBAL'
+import { colors } from 'quasar'
+import { onMounted } from 'vue'
+const { FData, FTime } = GLOBAL
 
 defineProps({
   item: Object,
   visaoExpandida: Boolean,
 })
+
+/* 
+
+        :bg="`var(--bg, rgb(${colors.hexToRgb(tag.cor_letra)}))`"
+        :color="`var(--color, rgb(${colors.hexToRgb(tag.cor_fundo)}))`"
+*/
+
 const emit = defineEmits(['cardClick'])
 
 function handleEmit(e, item) {
@@ -146,6 +158,10 @@ function handleEmit(e, item) {
   e.stopImmediatePropagation()
   emit('cardClick', item.nome)
 }
+
+onMounted(() => {
+  colors.hexToRgb('#000')
+})
 </script>
 
 <style lang="sass">
@@ -174,5 +190,4 @@ function handleEmit(e, item) {
   left: -0.375rem
   border: 0
   display: block
-
 </style>

@@ -79,11 +79,10 @@ module.exports = configure(function (ctx) {
       // distDir
 
       extendViteConf(viteConf) {
-        console.log('.novadata 🟢', viteConf)
-        viteConf.resolve.alias['quasar/dist/quasar.sass'] =
-          '../src/assets/empty.js'
-        viteConf.resolve.alias['quasar/dist/quasar.css'] =
-          '../src/assets/empty.js'
+        console.log('⚡ Vamo q vamo')
+        const empty = '../src/assets/empty.js'
+        viteConf.resolve.alias['quasar/dist/quasar.sass'] = empty
+        viteConf.resolve.alias['quasar/dist/quasar.css'] = empty
       },
       // viteVuePluginOptions: {},
 
@@ -117,6 +116,7 @@ module.exports = configure(function (ctx) {
         loadingBar: {
           size: '4px',
         },
+        // dark: 'auto' // or Boolean true/false
       },
 
       // iconSet: 'material-icons', // Quasar icon set
@@ -184,6 +184,10 @@ module.exports = configure(function (ctx) {
       // extendInjectManifestOptions (cfg) {},
       // extendManifestJson (json) {}
       // extendPWACustomSWConf (esbuildConf) {}
+      workboxOptions: {
+        skipWaiting: true,
+        clientsClaim: true,
+      },
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
