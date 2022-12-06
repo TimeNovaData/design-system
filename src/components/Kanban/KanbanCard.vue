@@ -12,6 +12,7 @@
         :key="tag.nome"
         :badge="true"
         square
+        :color="returnRGB(tag.cor_letra)"
       >
         <template #content>
           <p>{{ tag.nome }}</p>
@@ -19,6 +20,7 @@
       </OBadge>
     </div>
     <p>
+      {{ item.id }}
       {{ item.titulo }}
     </p>
     <slot></slot>
@@ -145,11 +147,7 @@ defineProps({
   visaoExpandida: Boolean,
 })
 
-/* 
-
-        :bg="`var(--bg, rgb(${colors.hexToRgb(tag.cor_letra)}))`"
-        :color="`var(--color, rgb(${colors.hexToRgb(tag.cor_fundo)}))`"
-*/
+const returnRGB = (v) => `${Object.values(colors.hexToRgb(v))}`
 
 const emit = defineEmits(['cardClick'])
 

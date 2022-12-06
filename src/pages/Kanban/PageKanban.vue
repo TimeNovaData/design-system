@@ -5,12 +5,13 @@
       @mousedown="(e) => enableDragScroll(e)"
     >
       <KanbanCol
-        v-for="(coluna, index) in colunasWithCards"
+        v-for="coluna in colunasWithCardsOrdenate"
         :cards="coluna.cards"
         :colData="coluna.coluna"
         @mouseup="handleColClick"
         @mousedown="handleColClick"
-        :key="index"
+        :key="coluna.coluna.id"
+        :data-id="coluna.coluna.id"
       >
         <draggable
           v-bind="dragOptions"
@@ -31,7 +32,9 @@
               :item="element"
               :visaoExpandida="visaoExpandida"
               @cardClick="handleCardClick"
-            ></KanbanCard>
+              :data-card-id="element.id"
+            >
+            </KanbanCard>
           </template>
 
           <!--  -->
@@ -56,64 +59,81 @@ import KanbanCol from 'src/components/Kanban/KanbanCol.vue'
 import KanbanCard from 'src/components/Kanban/KanbanCard.vue'
 import KanbanModal from 'src/components/Kanban/KanbanModal.vue'
 import useKanban from 'src/composables/UseKanban'
-const { generateRange, modelo1, setHeightInCol } = GLOBAL
+import { nextTick } from 'process'
 
-const visao = useVisaoExpandida()
-const bg = useKanbanBG()
+const { /*  generateRange, modelo1, */ setHeightInCol } = GLOBAL
 
-const { kanbanBG } = storeToRefs(bg)
-const { visaoExpandida } = storeToRefs(visao)
-
-const removeEventsWrapper = ref(false)
+const { kanbanBG } = storeToRefs(useKanbanBG())
+const { visaoExpandida } = storeToRefs(useVisaoExpandida())
 
 const modal = ref(null)
 
-const { colunas, cards, colunasWithCards } = useKanban()
-
-// watch(cards, () => {
-//   console.log('cards page', cards.value)
-// })
-
-function handleColClick(e) {
-  e.stopImmediatePropagation()
-  removeEventsWrapper.value = true
-}
-
-const lists = ref([
-  generateRange(1, modelo1),
-  generateRange(2, modelo1),
-  generateRange(3, modelo1),
-  generateRange(4, modelo1),
-  generateRange(5, modelo1),
-  generateRange(6, modelo1),
-  generateRange(7, modelo1),
-])
-
-// const lists = ref([])
+const {
+  colunasWithCardsOrdenate,
+  colunasWithCards,
+  cardAlterado,
+  sendCardChange,
+} = useKanban()
 
 // Drag
 const drag = ref(false)
+const removeEventsWrapper = ref(false)
 const enableDragScroll = GLOBAL.enableDragScroll(removeEventsWrapper)
 
 watch(drag, () => setHeightInCol())
 watch(visaoExpandida, () => setTimeout(() => setHeightInCol(), 300))
-watch(colunasWithCards, () => setTimeout(() => setHeightInCol(), 300))
+watch(colunasWithCardsOrdenate, () => setTimeout(() => setHeightInCol(), 300))
 
-const handleStartEndDrag = (e, value) => {
+const mudaAFase =
+  ({ toID, id }) =>
+  (chamado) => {
+    if (chamado.coluna.id === Number(toID)) {
+      const index = chamado.cards.findIndex((card) => card.id === Number(id))
+      chamado.cards[index].fase = chamado.coluna
+    }
+    return chamado
+  }
+
+const handleStartEndDrag = async (e, start) => {
   e.stopImmediatePropagation()
   e.stopPropagation()
-  drag.value = value
-}
 
-const dragOptions = computed(() => ({
-  animation: 400,
-  group: 'description',
-  disabled: false,
-  ghostClass: 'ghost',
-}))
+  drag.value = start
+
+  const { oldIndex, newIndex, to, from, item } = e
+  const id = item._underlying_vm_.id
+  const fromID = from.closest('.kanban-col').getAttribute('data-id')
+  const toID = to.closest('.kanban-col').getAttribute('data-id')
+
+  const data = {
+    id,
+    oldIndex,
+    newIndex,
+    to,
+    from,
+    toID,
+    fromID,
+  }
+
+  cardAlterado.value = {
+    id,
+    // obj:colunasWithCards.value.filter(i => i.card)
+  }
+
+  if (!start) {
+    colunasWithCards.value = colunasWithCards.value.map(mudaAFase(data))
+    console.log(item._underlying_vm_.fase)
+    sendCardChange()
+  }
+}
 
 function handleCardClick(v) {
   modal.value.dialogRef.show()
+}
+
+function handleColClick(e) {
+  e.stopImmediatePropagation()
+  removeEventsWrapper.value = true
 }
 
 onMounted(() => {
@@ -122,6 +142,13 @@ onMounted(() => {
     .querySelector('.kanban-col--wrapper')
     .dispatchEvent(new Event('mousedown'))
 })
+
+const dragOptions = computed(() => ({
+  animation: 400,
+  group: 'description',
+  disabled: false,
+  ghostClass: 'ghost',
+}))
 </script>
 
 <style lang="sass">

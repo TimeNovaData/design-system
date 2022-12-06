@@ -36,8 +36,8 @@ const dark = useDarkMode()
 const router = useRouter()
 
 const data = ref({
-  login: 'edsondelimajunior',
-  senha: 'Analiaedson10.',
+  login: 'emanuel2',
+  senha: 'papa1539',
 })
 
 onMounted(() => {

@@ -18,7 +18,6 @@ const routes = [
       breadcrumbs: [{ label: 'Home', name: 'home' }],
     },
   },
-
   {
     path: '/login',
     name: 'login',

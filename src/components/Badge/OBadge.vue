@@ -35,15 +35,17 @@ const styleChip = () => ({
       ? `${
           $q.dark.isActive
             ? 'rgba(var(--white), 0.9)'
-            : `rgba(var(${attrs.color}), 1)`
+            : `rgba(${attrs.color}, 1)`
         }`
-      : `rgba(var(${attrs.bg}), 1)`
+      : `rgba(${attrs.bg}, 1)`
   }`,
-  background: `rgba(var(${attrs.bg}), 0.1)`,
+  background: $q.dark.isActive
+    ? `rgba(${attrs.color}, 0.2)`
+    : `rgba(${attrs.color}, 0.09)`,
 })
 
 const styleBadge = {
-  background: `rgba(var(${attrs.bg}), 1)`,
+  background: `rgba(${attrs.color}, 1)`,
 }
 </script>
 
