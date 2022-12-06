@@ -7,6 +7,7 @@ const { URLS } = api.defaults
 export default function useKanban() {
   let colunas
   let cards
+  let cardsCached
 
   const colunasWithCards = ref([])
   const colunasWithCardsOrdenate = computed(() => ordenateCards())
@@ -25,20 +26,36 @@ export default function useKanban() {
 
   async function sendCardChange() {
     const value = cards.reduce(getCardPerID, {})
-    // const oldValue =
+    const valueCached = cardsCached.reduce(getCardPerID, {})
 
-    Object.keys(value).forEach((key) => {
-      // for delete empty fields
-      if (value[key] === null) {
-        delete value[key]
-      }
-    })
+    const pegaMudancas = () => {
+      const modificado = {}
+      Object.entries(value).forEach(([key, value]) => {
+        if (value[key] !== valueCached[key]) {
+          modificado[key] = value
+        }
+      })
 
-    const request = await api.put(
-      `${URLS.chamado}${cardAlterado?.value?.id}/`,
-      value
-    )
-    console.log(request)
+      return modificado
+    }
+
+    // Object.keys(value).forEach((key) => {
+    //   if (value[key] === null) {
+    //     delete value[key] // for delete empty fields
+    //   }
+    // })
+
+    const data = pegaMudancas()
+    debugger
+    try {
+      const request = await api.put(
+        `${URLS.chamado}${cardAlterado?.value?.id}/`,
+        data
+      )
+      console.log(request)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   watch(
@@ -112,6 +129,7 @@ export default function useKanban() {
 
     colunas = col
     cards = cardss
+    cardsCached = cardss
 
     console.log('montou')
   })
