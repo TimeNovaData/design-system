@@ -49,12 +49,12 @@ export default function useKanban() {
   }
 
   async function sendCardChange() {
-    debugger
+    // debugger
     const value = computedOnlyCards.value.reduce(getCardPerID, {})
     const valueCached = cardsCached.value.reduce(getCardPerID, {})
 
     const data = pegaMudancas(value, valueCached)
-    debugger
+    // debugger
 
     try {
       const request = await api.patch(
