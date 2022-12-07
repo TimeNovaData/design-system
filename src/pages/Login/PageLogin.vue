@@ -10,6 +10,7 @@
           size="md"
           label="Login"
         ></OInput>
+
         <OInput
           v-model="data.senha"
           :rules="[(val) => !!val || 'Campo Obrigatorio']"
@@ -17,6 +18,7 @@
           label="Senha"
           type="password"
         ></OInput>
+
         <OButton size="md" type="submit" primary class="w-full">Login</OButton>
       </q-card>
     </q-form>

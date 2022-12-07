@@ -1,19 +1,28 @@
 import { is } from 'quasar'
 import axios, { api } from 'src/boot/axios'
-import { computed, nextTick, onMounted, reactive, ref, watch } from 'vue'
-import { useCached } from '@vueuse/core'
+import {
+  computed,
+  nextTick,
+  onMounted,
+  reactive,
+  ref,
+  toRaw,
+  unref,
+  watch,
+} from 'vue'
+
+// import { useCached } from '@vueuse/core'
+
 const { URLS } = api.defaults
 
 export default function useKanban() {
-  let colunas
-  let cards
-  let cardsCached
-
+  const cardsCached = ref([])
   const colunasWithCards = ref([])
+  const cardAlterado = ref({ id: null })
   const colunasWithCardsOrdenate = computed(() => ordenateCards())
-  const cardAlterado = ref({
-    id: null,
-  })
+  const computedOnlyCards = computed(() => onlyCards())
+
+  const testando = ref([])
 
   const isLoading = ref(false)
 
@@ -24,53 +33,93 @@ export default function useKanban() {
     return acc
   }
 
+  const pegaMudancas = (value, valueCached) => {
+    const modificado = {}
+
+    Object.entries(value).forEach(([key, v]) => {
+      const a = toRaw(value[key])
+      const b = toRaw(valueCached[key])
+
+      if (a !== b) {
+        modificado[key] = v
+      }
+    })
+
+    return modificado
+  }
+
   async function sendCardChange() {
-    const value = cards.reduce(getCardPerID, {})
-    const valueCached = cardsCached.reduce(getCardPerID, {})
-
-    const pegaMudancas = () => {
-      const modificado = {}
-      Object.entries(value).forEach(([key, value]) => {
-        if (value[key] !== valueCached[key]) {
-          modificado[key] = value
-        }
-      })
-
-      return modificado
-    }
-
-    // Object.keys(value).forEach((key) => {
-    //   if (value[key] === null) {
-    //     delete value[key] // for delete empty fields
-    //   }
-    // })
-
-    const data = pegaMudancas()
     debugger
+    const value = computedOnlyCards.value.reduce(getCardPerID, {})
+    const valueCached = cardsCached.value.reduce(getCardPerID, {})
+
+    const data = pegaMudancas(value, valueCached)
+    debugger
+
     try {
-      const request = await api.put(
-        `${URLS.chamado}${cardAlterado?.value?.id}/`,
+      const request = await api.patch(
+        `${URLS.chamado}${cardAlterado?.value?.id}/?atualizar`,
         data
       )
-      console.log(request)
     } catch (e) {
       console.log(e)
     }
   }
 
+  function onlyCards() {
+    return colunasWithCards.value.reduce((acc, item) => {
+      acc.push(...item.cards)
+      return acc
+    }, [])
+  }
+
   watch(
     () => colunasWithCards,
     async () => {
-      // await nextTick()
-      const arr = colunasWithCards.value.reduce((acc, item) => {
-        acc.push(...item.cards)
-        return acc
-      }, [])
-
-      console.log('colunasWithCards')
-      cards = arr
+      console.log('colunasWithCards watch')
+      console.log(computedOnlyCards.value.reduce(getCardPerID, {}).fase, '🔥')
     },
-    { deep: true, flush: 'post' }
+    { deep: true }
+  )
+  watch(
+    () => testando,
+    () => {
+      console.log('testando')
+      console.log(testando.value.reduce(getCardPerID, {}).fase, 'testando')
+    },
+    { deep: true }
+  )
+
+  watch(
+    () => cardAlterado.value.id,
+    async () => {
+      console.log(`cardAlterado.value.id é ${cardAlterado.value.id}`)
+    }
+  )
+
+  watch(
+    () => cardsCached,
+    () => {
+      if (!cardsCached.value) return
+      const oi = [...cardsCached.value]
+      console.log(cardAlterado.value.id)
+
+      console.log(`cardsCached`, oi.reduce(getCardPerID, {}).fase)
+      console.log(`cardsCached`, oi.reduce(getCardPerID, {}).id)
+    },
+    { deep: true }
+  )
+
+  watch(
+    () => computedOnlyCards,
+    async () => {
+      console.log(
+        `computedOnlyCards `,
+        computedOnlyCards.value.reduce(getCardPerID, {})
+      )
+      computedOnlyCards.value.reduce(getCardPerID, {})
+    },
+    { deep: true }
   )
 
   async function getColunas() {
@@ -125,13 +174,10 @@ export default function useKanban() {
   onMounted(async () => {
     const col = await getColunas()
     const cardss = await getCards()
+    cardsCached.value = cardss
+    testando.value = cardss
+
     colunasWithCards.value = createColunasWithCards(col, cardss)
-
-    colunas = col
-    cards = cardss
-    cardsCached = cardss
-
-    console.log('montou')
   })
 
   return {
@@ -142,6 +188,8 @@ export default function useKanban() {
     colunasWithCardsOrdenate,
     cardAlterado,
     sendCardChange,
+    computedOnlyCards,
+    cardsCached,
   }
 }
 

@@ -13,7 +13,21 @@ import 'src/css/pages/DesignSystem.sass'
 import 'src/css/tailwind.css'
 import 'src/css/stores/blurMode.sass'
 import 'src/css/vendor/materialSymbolsRounded.sass'
+import { LoadingBar } from 'quasar'
 
+LoadingBar.setDefaults({
+  // return a Boolean which has the meaning of
+  // "should this URL trigger LoadingBar?"
+  hijackFilter(url) {
+    // example (only https://my-service.com/* should trigger)
+    // return /^https:\/\/my-service\.com/.test(url)
+    console.log(url)
+    // http://localhost:8000/api/chamado/41/
+
+    const list = [/\/api\/chamado\/\d\d\/\?atualizar/]
+    return url
+  },
+})
 export default defineComponent({
   name: 'App',
   // setup() {

@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useKanbanBG } from 'src/stores/kanbanBG'
 import { useVisaoExpandida } from 'src/stores/visaoExpandida'
@@ -59,7 +59,6 @@ import KanbanCol from 'src/components/Kanban/KanbanCol.vue'
 import KanbanCard from 'src/components/Kanban/KanbanCard.vue'
 import KanbanModal from 'src/components/Kanban/KanbanModal.vue'
 import useKanban from 'src/composables/UseKanban'
-import { nextTick } from 'process'
 
 const { /*  generateRange, modelo1, */ setHeightInCol } = GLOBAL
 
@@ -68,12 +67,7 @@ const { visaoExpandida } = storeToRefs(useVisaoExpandida())
 
 const modal = ref(null)
 
-const {
-  colunasWithCardsOrdenate,
-  colunasWithCards,
-  cardAlterado,
-  sendCardChange,
-} = useKanban()
+const { colunasWithCardsOrdenate, colunasWithCards, cardAlterado } = useKanban()
 
 // Drag
 const drag = ref(false)
@@ -101,6 +95,7 @@ const handleStartEndDrag = async (e, start) => {
   drag.value = start
 
   const { oldIndex, newIndex, to, from, item } = e
+
   const id = item._underlying_vm_.id
   const fromID = from.closest('.kanban-col').getAttribute('data-id')
   const toID = to.closest('.kanban-col').getAttribute('data-id')
@@ -123,7 +118,6 @@ const handleStartEndDrag = async (e, start) => {
   if (!start) {
     colunasWithCards.value = colunasWithCards.value.map(mudaAFase(data))
     console.log(item._underlying_vm_.fase)
-    sendCardChange()
   }
 }
 
