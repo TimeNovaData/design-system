@@ -137,7 +137,7 @@ export default function useKanban() {
   async function getCards() {
     isLoading.value = true
     try {
-      const { data } = await api.get(URLS.chamado)
+      const { data } = await api.get(URLS.chamado + '?concluidos=True')
       return data
     } catch (e) {
       console.log(e)
