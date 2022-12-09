@@ -177,7 +177,7 @@ module.exports = configure(function (ctx) {
 
     // https://v2.quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
-      workboxMode: 'generateSW', // or 'injectManifest'
+      workboxMode: 'injectManifest', // or ' generateSW'
       injectPwaMetaTags: true,
       swFilename: 'sw.js',
       manifestFilename: 'manifest.json',
@@ -188,6 +188,8 @@ module.exports = configure(function (ctx) {
       // extendManifestJson (json) {}
       // extendPWACustomSWConf (esbuildConf) {}
       workboxOptions: {
+        // swSrc is required in InjectManifest mode.
+        swSrc: 'service-worker.js',
         skipWaiting: true,
         clientsClaim: true,
         exclude: [/_redirects/],
