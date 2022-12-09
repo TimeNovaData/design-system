@@ -4,15 +4,15 @@ import axios from 'axios'
 import { useManualRefHistory } from '@vueuse/core'
 import { useAuthStore } from 'stores/auth.store'
 import { useChamadoStore } from 'src/stores/chamado.store'
-
+import GLOBAL from 'src/utils/GLOBAL'
 const BACKEND_URL = process.env.BACKEND_URL
 const { URLS } = api.defaults
 
 export default function useKanban() {
   const colunasWithCards = ref([])
   const cardAlterado = ref({ id: null })
-  const { getFase, getChamado } = useChamadoStore()
-
+  const { getFase, getChamado, getTags } = useChamadoStore()
+  const tags = ref([])
   const { history, commit, clear /* undo, redo, */ } = useManualRefHistory(
     colunasWithCards,
     {
@@ -63,29 +63,63 @@ export default function useKanban() {
     return acc
   }
 
+  watch(
+    () => history,
+    (v) => {
+      if (history.value.length < 2) return
+      console.log(
+        convertInOnlyCardsOrCol(history.value[0]?.snapshot).reduce(
+          getCardPerID(cardAlterado.value.id),
+          {}
+        ).fase,
+        'Snap0'
+      )
+
+      console.log(
+        convertInOnlyCardsOrCol(history.value[1]?.snapshot).reduce(
+          getCardPerID(cardAlterado.value.id),
+          {}
+        ).fase,
+        'Snap1'
+      )
+
+      console.log(history.value, 'history.value')
+    },
+    { deep: true, flush: 'post' }
+  )
+
   function historyAlt(history) {
-    // const timeStamp0 = history.value[0].snapshot
-    // const timeStamp1 = history.value[1].snapshot
-    // const id = cardAlterado.value.id
-    // const OLD = convertInOnlyCards(timeStamp0).reduce(getCardPerID(id), {})
-    // const NEW = convertInOnlyCards(timeStamp1).reduce(getCardPerID(id), {})
-    // const data = GLOBAL.compareAndReturnDiff(OLD, NEW)
+    const timeStamp0 = history.value[0].snapshot
+    const timeStamp1 = history.value[1].snapshot
+    const id = cardAlterado.value.id
+    const OLD = convertInOnlyCardsOrCol(timeStamp0).reduce(getCardPerID(id), {})
+    const NEW = convertInOnlyCardsOrCol(timeStamp1).reduce(getCardPerID(id), {})
+    const data = GLOBAL.compareAndReturnDiff(NEW, OLD)
+    return data
   }
 
   async function sendCardChange() {
     // Pega as apenas as diferenca entre o card do historico
-    // historyAlt(history)
-    const { TOKEN } = useAuthStore()
+    const diff = historyAlt(history)
     const listIDSInOrder = convertInOnlyCardsOrCol(colunasWithCards.value).map(
       (i) => i.id
     )
 
     try {
+      // patch no chamado mudando a ordem
+      const teste = await api.patch(
+        URLS.chamado + cardAlterado.value.id + '/',
+        diff
+      )
+
+      // atualiza a ordem
       const request = await axios.post(
         `${BACKEND_URL}${URLS.atualizar_ordem_chamado}`,
-        listIDSInOrder,
-        { headers: { Authorization: `Bearer ${TOKEN}` } }
+        { 'ids_task[]': listIDSInOrder }
       )
+
+      commit()
+      clear()
     } catch (e) {
       console.log(e)
     }
@@ -108,11 +142,12 @@ export default function useKanban() {
     colunasWithCards.value = createColunasWithCards(fase, [])
     const chamado = await getChamado()
     colunasWithCards.value = createColunasWithCards(fase, chamado)
+    clear()
+    commit()
 
     await nextTick()
-
-    commit()
     clear()
+    commit()
   })
 
   return {

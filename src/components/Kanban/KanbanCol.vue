@@ -4,9 +4,7 @@
       <div class="inline-flex items-center gap-6">
         <p class="text-headline-3">{{ colData.nome }}</p>
         <OCounter
-          bg="var(--neutral-60)"
-          color="var(--neutral-70)"
-          class="!text-14 !rounded !p-0 min-w-20 !h-20 dark:!bg-white/10 dark:!text-white/70"
+          class="!text-14 !rounded !w-max !p-0 min-w-20 !h-20 dark:!bg-white/10 dark:!text-white/70 bg-neutral-100/5 text-neutral-70 !px-2"
         >
           {{ cards.length }}
         </OCounter>
@@ -17,7 +15,7 @@
         class="!p-0 !w-32 !h-32 ml-auto"
         @click="$emit('newCards', colData)"
       >
-        <q-icon size="1.25rem" name="add" tertiary></q-icon>
+        <q-icon size="1.25rem" name="add_circle" tertiary></q-icon>
       </OButton>
     </header>
 

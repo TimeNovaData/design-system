@@ -7,17 +7,15 @@
 <script setup>
 import { useAttrs } from 'vue'
 
-
 const props = defineProps({
   bg: String,
-  color: String
+  color: String,
 })
 
 const styleObj = {
-  background: `rgba(var(${props.bg}), 1)`,
-  color: `rgba(var(${props.color}), 1)`
+  background: `rgba(${props.bg}, 1)`,
+  color: `rgba(${props.color}, 1)`,
 }
-
 
 const attrs = useAttrs()
 </script>

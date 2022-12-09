@@ -4,30 +4,29 @@
     :class="'size-' + attrs.size"
     v-bind="attrs"
     :size="null"
+    ref="componentRef"
   >
     <template v-for="slot in Object.keys(slots)" v-slot:[slot]>
       <slot :name="slot"></slot>
     </template>
   </q-input>
-
-   
 </template>
-
-
 
 <script>
 export default { inheritAttrs: false }
 </script>
 
 <script setup>
-import { useSlots, useAttrs } from 'vue'
-
+import { useSlots, useAttrs, ref } from 'vue'
+const componentRef = ref(null)
 
 const slots = useSlots()
 const attrs = useAttrs()
 const appendSize = attrs['append-size']
 const appendsize = attrs['append-size'] ? attrs['append-size'] : '35px'
 const prependsize = attrs['prepend-size'] ? attrs['prepend-size'] : '20px'
+
+defineExpose({ componentRef })
 </script>
 
 <style lang="sass">
@@ -59,7 +58,4 @@ const prependsize = attrs['prepend-size'] ? attrs['prepend-size'] : '20px'
     input:-webkit-autofill:focus
       -webkit-box-shadow: 0 0 0 50px rgb(var(--white)) inset
       -webkit-text-fill-color: rgba(var(--neutral-70), 1) !important
-
-
-  
 </style>

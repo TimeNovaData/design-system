@@ -14,29 +14,29 @@
         <q-icon class="!text-20" name="arrow_outward"></q-icon>
       </o-button>
     </div>
-    <o-badge size="sm" :badge="true" bg="--alert-warning">
+    <o-badge size="sm" :badge="true" color="var(--alert-warning)">
       <template v-slot:content>Badge sm text</template>
     </o-badge>
 
-    <o-badge size="md" :badge="true" bg="--primary-pure" color="--neutral-100">
+    <o-badge size="md" :badge="true" color="var(--primary-pure)">
       <template v-slot:content>Badge MD color</template>
     </o-badge>
 
-    <o-badge size="lg" :badge="true" bg="--alert-success">
+    <o-badge size="lg" :badge="true" color="var(--alert-success)">
       <template v-slot:content>Badge LG</template>
     </o-badge>
 
-    <o-badge size="lg" :badge="true" bg="--alert-error" square>
+    <o-badge size="lg" :badge="true" color="var(--alert-error)" square>
       <template v-slot:content>Badge LG Square</template>
     </o-badge>
 
-    <o-badge size="lg" :badge="false" bg="--alert-success">
+    <o-badge size="lg" :badge="false" color="var(--alert-success)">
       <template v-slot:content>
         <q-avatar icon="star" size="1.35rem" class="m-2" /> With Icon
       </template>
     </o-badge>
 
-    <o-badge size="lg" :badge="false" bg="--alert-success">
+    <o-badge size="lg" :badge="false" color="var(--alert-success)">
       <template v-slot:content>
         <q-avatar
           size="1.35rem"
@@ -74,12 +74,18 @@
 
     <p class="mt-16 mb-8">Counter</p>
     <div class="flex gap-8">
-      <o-counter bg="--primary-pure" color="--neutral-100" @click="count++">{{
-        count
-      }}</o-counter>
-      <o-counter bg="--neutral-100" color="--white" @click="count--">{{
-        count
-      }}</o-counter>
+      <o-counter
+        bg="var(--primary-pure)"
+        color="var(--neutral-100)"
+        @click="count++"
+        >{{ count }}</o-counter
+      >
+      <o-counter
+        bg="var(--neutral-100)"
+        color="var(--white)"
+        @click="count--"
+        >{{ count }}</o-counter
+      >
     </div>
     <syntax-highlight :code="code"></syntax-highlight>
   </q-card>

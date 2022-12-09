@@ -84,6 +84,7 @@
                       size="sm"
                       class="!p-0 !w-32 !h-32 bg-neutral-20 dark:bg-white/10 dark:hover:bg-white/20"
                       tertiary
+                      @click="$emit('tagButtonClick')"
                     >
                       <q-icon size="1.25rem" name="add"></q-icon>
                     </OButton>
@@ -307,6 +308,7 @@ import AvatarMultiple from 'src/components/Avatar/AvatarMultiple.vue'
 import KanbanItemEditable from './KanbanItemEditable.vue'
 import OButton from 'src/components/Button/OButton.vue'
 import GLOBAL from 'src/utils/GLOBAL'
+
 const { returnRGB, FData, FTime } = GLOBAL
 
 const tab = ref('info')
@@ -330,6 +332,7 @@ defineEmits([
   // REQUIRED; need to specify some events that your
   // component will emit through useDialogPluginComponent()
   ...useDialogPluginComponent.emits,
+  'tagButtonClick',
 ])
 
 const { dialogRef, onDialogHide, onDialogOK, onDialogCancel, onDialogShow } =

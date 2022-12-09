@@ -13,7 +13,7 @@ import 'src/css/pages/DesignSystem.sass'
 import 'src/css/tailwind.css'
 import 'src/css/stores/blurMode.sass'
 import 'src/css/vendor/materialSymbolsRounded.sass'
-import { LoadingBar } from 'quasar'
+import { LoadingBar, Notify } from 'quasar'
 
 LoadingBar.setDefaults({
   // return a Boolean which has the meaning of
@@ -28,6 +28,15 @@ LoadingBar.setDefaults({
     return url
   },
 })
+
+Notify.registerType('error', {
+  icon: 'warning',
+  progress: true,
+  // color: 'alert-error-10',
+  // textColor: 'alert-error',
+  classes: 'notify-error',
+})
+
 export default defineComponent({
   name: 'App',
   // setup() {

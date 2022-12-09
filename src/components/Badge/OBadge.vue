@@ -7,9 +7,9 @@
     :ripple="false"
   >
     <q-badge
-      class="shrink-0 w-8 h-8"
       v-if="attrs.badge"
       rounded
+      class="shrink-0 w-8 h-8"
       :style="styleBadge"
     ></q-badge>
 

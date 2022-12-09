@@ -44,7 +44,11 @@
     </div>
   </section>
 
-  <KanbanModal :data="chamadoAtivo" ref="modal"></KanbanModal>
+  <KanbanModal
+    @tagButtonClick="handleGetTags"
+    :data="chamadoAtivo"
+    ref="modal"
+  ></KanbanModal>
 
   <img :src="kanbanBG" aria-hidden="true" class="image-bg" alt="" />
 </template>
@@ -61,6 +65,8 @@ import KanbanModal from 'src/components/Kanban/KanbanModal.vue'
 import useKanban from 'src/composables/UseKanban'
 import draggable from 'vuedraggable'
 
+import { useChamadoStore } from 'src/stores/chamado.store'
+
 const { /*  generateRange, modelo1, */ setHeightInCol } = GLOBAL
 
 const { kanbanBG } = storeToRefs(useKanbanBG())
@@ -68,8 +74,15 @@ const { visaoExpandida } = storeToRefs(useVisaoExpandida())
 
 const modal = ref(null)
 const chamadoAtivo = ref(null)
-const { colunasWithCards, cardAlterado, commitAlt, returnCardPerID } =
-  useKanban()
+const {
+  colunasWithCards,
+  cardAlterado,
+  commitAlt,
+  returnCardPerID,
+  /* asas */
+} = useKanban()
+
+const { getTags, tags } = useChamadoStore()
 
 // Drag
 const drag = ref(false)
@@ -133,6 +146,12 @@ function handleColClick(e) {
 
 function createNewChamado(fase) {
   console.log(fase)
+}
+
+async function handleGetTags() {
+  const request = await getTags()
+  debugger
+  tags.value = request
 }
 
 onMounted(() => {

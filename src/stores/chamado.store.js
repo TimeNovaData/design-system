@@ -14,11 +14,7 @@ export const useChamadoStore = defineStore('chamadoStore', () => {
   async function getFase() {
     isLoading.value = true
 
-    const { data, error /* isFinished */ } = await useAxios(
-      URLS.fase,
-      { method: 'GET' },
-      api
-    )
+    const { data, error } = await useAxios(URLS.fase, { method: 'GET' }, api)
 
     try {
       return data.value
@@ -32,8 +28,26 @@ export const useChamadoStore = defineStore('chamadoStore', () => {
   async function getChamado() {
     isLoading.value = true
 
-    const { data, error /* isFinished */ } = await useAxios(
+    const { data, error } = await useAxios(
       URLS.chamado + '?concluidos=False',
+      { method: 'GET' },
+      api
+    )
+
+    try {
+      return data.value
+    } catch (e) {
+      return error
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  async function getTags() {
+    isLoading.value = true
+
+    const { data, error } = await useAxios(
+      URLS.tagchamado,
       { method: 'GET' },
       api
     )
@@ -72,6 +86,7 @@ export const useChamadoStore = defineStore('chamadoStore', () => {
     getFase,
     getChamado,
     createChamado,
+    getTags,
   }
 })
 
