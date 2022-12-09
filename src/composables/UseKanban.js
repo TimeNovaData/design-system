@@ -5,6 +5,7 @@ import { useManualRefHistory } from '@vueuse/core'
 import { useAuthStore } from 'stores/auth.store'
 import { useChamadoStore } from 'src/stores/chamado.store'
 import GLOBAL from 'src/utils/GLOBAL'
+import { Notify } from 'quasar'
 const BACKEND_URL = process.env.BACKEND_URL
 const { URLS } = api.defaults
 
@@ -92,9 +93,9 @@ export default function useKanban() {
     const timeStamp0 = history.value[0].snapshot
     const timeStamp1 = history.value[1].snapshot
     const id = cardAlterado.value.id
-    const OLD = convertInOnlyCardsOrCol(timeStamp0).reduce(getCardPerID(id), {})
-    const NEW = convertInOnlyCardsOrCol(timeStamp1).reduce(getCardPerID(id), {})
-    const data = GLOBAL.compareAndReturnDiff(NEW, OLD)
+    const NEW = convertInOnlyCardsOrCol(timeStamp0).reduce(getCardPerID(id), {})
+    const OLD = convertInOnlyCardsOrCol(timeStamp1).reduce(getCardPerID(id), {})
+    const data = GLOBAL.compareAndReturnDiff(OLD, NEW)
     return data
   }
 
@@ -107,13 +108,13 @@ export default function useKanban() {
 
     try {
       // patch no chamado mudando a ordem
-      const teste = await api.patch(
+      await api.patch(
         URLS.chamado + cardAlterado.value.id + '/' + '?no_loading',
         diff
       )
 
       // atualiza a ordem
-      const request = await axios.post(
+      await axios.post(
         `${BACKEND_URL}${URLS.atualizar_ordem_chamado}?no_loading`,
         { 'ids_task[]': listIDSInOrder }
       )
@@ -121,7 +122,17 @@ export default function useKanban() {
       commit()
       clear()
     } catch (e) {
+      colunasWithCards.value = history.value[1].snapshot
+      clear()
+      commit()
       console.log(e)
+      Notify.create({
+        type: 'error',
+        message: `Ops, Um erro aconteceu`,
+        position: 'top-right',
+        timeout: 1000,
+        html: true,
+      })
     }
   }
 

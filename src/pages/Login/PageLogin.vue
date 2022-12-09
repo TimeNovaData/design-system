@@ -2,10 +2,7 @@
   <q-layout class="grid place-items-center">
     <div class="grid grid-cols-2 h-screen w-screen">
       <div class="img-wrapper relative overflow-hidden">
-        <q-img
-          class="w-full h-full object-cover"
-          src="src/assets/image/bg-login.jpg"
-        />
+        <q-img class="w-full h-full object-cover" :src="imageLogin" />
 
         <div
           class="svg-container svg-circulo absolute z-10 bottom-[5.65rem] left-[7.5rem] w-[clamp(9rem,_12vw,_15.65rem)] h-[clamp(9rem,_12vw,_15.65rem)]"
@@ -314,7 +311,7 @@ import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import OCheck from 'src/components/Checkbox/OCheck.vue'
 import gsap from 'gsap/dist/gsap'
-
+import imageLogin from 'src/assets/image/bg-login.jpg'
 const form = ref(null)
 const type = ref('password')
 const login = ref(null)

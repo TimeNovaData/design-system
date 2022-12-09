@@ -21,9 +21,7 @@ LoadingBar.setDefaults({
   hijackFilter(url) {
     console.log(url)
 
-    const list = [/\/api\/chamado\/\d\d\/\?atualizar/, /\?no_loading/].filter(
-      (i) => i.test(url)
-    )
+    const list = [/no_loading/].filter((i) => i.test(url))
     const verif = Boolean(list.length)
     return !verif
   },
