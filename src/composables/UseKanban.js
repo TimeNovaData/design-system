@@ -24,14 +24,18 @@ export default function useKanban() {
   // const computedOnlyCards = computed(() => onlyCards())
 
   function createColunasWithCards(colunas = Array, cards = Array) {
-    return colunas.map((col) => {
-      const cardslist = []
-      cards.forEach((card) => col.id === card.fase.id && cardslist.push(card))
-      return unref({
-        coluna: col,
-        cards: cardslist,
+    return colunas
+      .map((col) => {
+        const cardslist = []
+        cards?.forEach(
+          (card) => col.id === card.fase.id && cardslist.push(card)
+        )
+        return unref({
+          coluna: col,
+          cards: cardslist,
+        })
       })
-    })
+      .sort(ordenate)
   }
 
   async function commitAlt(val) {
@@ -88,11 +92,18 @@ export default function useKanban() {
     return convertInOnlyCards(colunasWithCards.value).reduce(getCardPerID(id))
   }
 
+  function ordenate(a, b) {
+    if (a.ordem > b.ordem) return 1
+    if (a.ordem < b.ordem) return -1
+    return 0
+  }
+
   onMounted(async () => {
     const fase = await getFase()
+    colunasWithCards.value = createColunasWithCards(fase, [])
     const chamado = await getChamado()
-
     colunasWithCards.value = createColunasWithCards(fase, chamado)
+
     await nextTick()
 
     commit()
