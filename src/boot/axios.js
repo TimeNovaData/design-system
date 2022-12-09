@@ -9,7 +9,7 @@ const axiosController = new AbortController()
 
 const api = axios.create({
   baseURL: API_URL,
-  signal: controller.signal,
+  signal: axiosController.signal,
   headers: {
     Authorization: `Bearer ${TOKEN}`,
   },
