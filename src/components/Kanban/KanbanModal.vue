@@ -87,6 +87,8 @@
                       @click="$emit('tagButtonClick')"
                     >
                       <q-icon size="1.25rem" name="add"></q-icon>
+                      <div class="hidden"></div>
+                      <KanbanTagsPopup :value="popUpTags"></KanbanTagsPopup>
                     </OButton>
                   </div>
                 </div>
@@ -308,6 +310,7 @@ import AvatarMultiple from 'src/components/Avatar/AvatarMultiple.vue'
 import KanbanItemEditable from './KanbanItemEditable.vue'
 import OButton from 'src/components/Button/OButton.vue'
 import GLOBAL from 'src/utils/GLOBAL'
+import KanbanTagsPopup from 'src/components/Kanban/KanbanTagsPopup.vue'
 
 const { returnRGB, FData, FTime } = GLOBAL
 
@@ -315,6 +318,8 @@ const tab = ref('info')
 const dialogState = ref(false)
 const props = defineProps({
   data: Object,
+  popUpTags: Boolean,
+  tags: Array,
 })
 const taskActive = ref('andamento')
 

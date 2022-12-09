@@ -108,13 +108,13 @@ export default function useKanban() {
     try {
       // patch no chamado mudando a ordem
       const teste = await api.patch(
-        URLS.chamado + cardAlterado.value.id + '/',
+        URLS.chamado + cardAlterado.value.id + '/' + '?no_loading',
         diff
       )
 
       // atualiza a ordem
       const request = await axios.post(
-        `${BACKEND_URL}${URLS.atualizar_ordem_chamado}`,
+        `${BACKEND_URL}${URLS.atualizar_ordem_chamado}?no_loading`,
         { 'ids_task[]': listIDSInOrder }
       )
 

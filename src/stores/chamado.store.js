@@ -10,6 +10,7 @@ export const useChamadoStore = defineStore('chamadoStore', () => {
   // const chamados = ref(false)
   // const fase = ref(false)
   const isLoading = ref(false)
+  const tags = ref([])
 
   async function getFase() {
     isLoading.value = true
@@ -87,9 +88,12 @@ export const useChamadoStore = defineStore('chamadoStore', () => {
     getChamado,
     createChamado,
     getTags,
+    tags,
   }
 })
 
+// limpar o json com oq nao precisa
+// adicionar o que precisa
 const oi = {
   id: 41,
   projeto: {

@@ -15,7 +15,7 @@
       :mask="inputMask()"
     > -->
     <!--       <template v-slot:after> -->
-    <OSelect></OSelect>
+    <OSelect v-model="scope.value"></OSelect>
     <div class="flex w-full no-wrap flex-1 gap-4 !mt-4">
       <OButton
         size="lg"
@@ -52,7 +52,8 @@ import { testPattern } from 'src/utils/patterns.js'
 import OSelect from 'src/components/Select/OSelect.vue'
 
 const props = defineProps({
-  tags: String,
+  tags: Array,
+  value: Boolean,
   // type: String,
   // editable: {
   //   type: Boolean,
@@ -63,7 +64,8 @@ const props = defineProps({
 const popupValue = ref(props.value)
 
 const validateFn = (val) => {
-  return testPattern[props.type](val)
+  // return testPattern[props.type](val)
+  return true
 }
 // const inputMask = () => {
 //   if (props.type === 'date') return '##/##/####'

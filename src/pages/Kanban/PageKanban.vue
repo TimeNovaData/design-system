@@ -47,6 +47,8 @@
   <KanbanModal
     @tagButtonClick="handleGetTags"
     :data="chamadoAtivo"
+    :popUpTags="popUpTags"
+    :tags="tags"
     ref="modal"
   ></KanbanModal>
 
@@ -72,6 +74,8 @@ const { /*  generateRange, modelo1, */ setHeightInCol } = GLOBAL
 const { kanbanBG } = storeToRefs(useKanbanBG())
 const { visaoExpandida } = storeToRefs(useVisaoExpandida())
 
+const popUpTags = ref(false)
+
 const modal = ref(null)
 const chamadoAtivo = ref(null)
 const {
@@ -81,7 +85,6 @@ const {
   returnCardPerID,
   /* asas */
 } = useKanban()
-
 const { getTags, tags } = useChamadoStore()
 
 // Drag
@@ -93,7 +96,7 @@ watch(drag, () => setHeightInCol())
 watch(visaoExpandida, () => setTimeout(() => setHeightInCol(), 300))
 watch(colunasWithCards, () => setTimeout(() => setHeightInCol(), 300))
 
-const handleStartEndDrag = async (e, start) => {
+async function handleStartEndDrag(e, start) {
   e.stopImmediatePropagation()
   e.stopPropagation()
 
@@ -150,8 +153,8 @@ function createNewChamado(fase) {
 
 async function handleGetTags() {
   const request = await getTags()
-  debugger
-  tags.value = request
+  tags.value = await request
+  popUpTags.value = true
 }
 
 onMounted(() => {

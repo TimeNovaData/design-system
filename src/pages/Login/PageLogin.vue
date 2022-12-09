@@ -312,17 +312,14 @@ import OInput from 'src/components/Input/OInput.vue'
 import { useAuthStore } from 'src/stores/auth.store'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useDarkMode } from 'src/stores/darkMode'
-import { storeToRefs } from 'pinia'
 import OCheck from 'src/components/Checkbox/OCheck.vue'
 import gsap from 'gsap/dist/gsap'
 
 const form = ref(null)
 const type = ref('password')
-const dark = useDarkMode()
+const login = ref(null)
 const permanecerConectado = ref(true)
 const router = useRouter()
-const login = ref(null)
 
 const data = ref({
   login: 'emanuel2',
@@ -334,12 +331,12 @@ onMounted(() => {
 
   gsap.set('.form-login', {
     opacity: 0,
-    y: 30,
+    y: 90,
   })
   gsap.to('.form-login', {
     opacity: 1,
     y: 0,
-    ease: 'sine',
+    ease: 'power1.out',
   })
 
   gsap.to('.letras', {
