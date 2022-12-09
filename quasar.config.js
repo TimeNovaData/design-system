@@ -190,6 +190,7 @@ module.exports = configure(function (ctx) {
       workboxOptions: {
         skipWaiting: true,
         clientsClaim: true,
+        exclude: [/_redirects/],
       },
     },
 
