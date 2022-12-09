@@ -19,10 +19,10 @@
         </template>
       </OBadge>
     </div>
-    <p class="three-lines">
-      {{ item.id }}
+    <div class="three-lines card-descicao inline-block text-paragraph-2">
+      <div class="card-id inline-block mr-4">(Nº{{ item.id }})</div>
       {{ item.titulo }}
-    </p>
+    </div>
     <slot></slot>
 
     <OBadge
@@ -146,7 +146,6 @@ import { onMounted } from 'vue'
 const { FData, FTime } = GLOBAL
 const { returnRGB } = GLOBAL
 
-
 defineProps({
   item: Object,
   visaoExpandida: Boolean,
@@ -165,10 +164,12 @@ function handleEmit(e, item) {
 onMounted(() => {
   colors.hexToRgb('#000')
 })
-
 </script>
 
 <style lang="sass">
+
+@import 'src/css/quasar/variables.sass'
+@import 'src/css/quasar/core/typography.sass'
 
 .ghost
   &::after
@@ -194,4 +195,8 @@ onMounted(() => {
   left: -0.375rem
   border: 0
   display: block
+
+.kanban-card
+  .card-id
+    @include text(headline-3)
 </style>

@@ -1,5 +1,5 @@
 import { api } from 'src/boot/axios'
-import { nextTick, onMounted, ref, unref, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, unref, watch } from 'vue'
 import axios from 'axios'
 import { useManualRefHistory } from '@vueuse/core'
 import { useAuthStore } from 'stores/auth.store'
@@ -22,6 +22,9 @@ export default function useKanban() {
     }
   )
   // const computedOnlyCards = computed(() => onlyCards())
+  const computedOnlyCols = computed(() =>
+    convertInOnlyCardsOrCol(colunasWithCards.value, 'coluna')
+  )
 
   function createColunasWithCards(colunas = Array, cards = Array) {
     return colunas
@@ -48,9 +51,9 @@ export default function useKanban() {
 
   // converte lista de array de objectos de cards e colunas
   // en lista somente de cards
-  function convertInOnlyCards(arr) {
+  function convertInOnlyCardsOrCol(arr, type = 'cards') {
     return arr.reduce((acc, item) => {
-      acc.push(...item.cards)
+      acc.push(...item[type])
       return acc
     }, [])
   }
@@ -73,7 +76,7 @@ export default function useKanban() {
     // Pega as apenas as diferenca entre o card do historico
     // historyAlt(history)
     const { TOKEN } = useAuthStore()
-    const listIDSInOrder = convertInOnlyCards(colunasWithCards.value).map(
+    const listIDSInOrder = convertInOnlyCardsOrCol(colunasWithCards.value).map(
       (i) => i.id
     )
 
@@ -89,7 +92,9 @@ export default function useKanban() {
   }
 
   function returnCardPerID(id) {
-    return convertInOnlyCards(colunasWithCards.value).reduce(getCardPerID(id))
+    return convertInOnlyCardsOrCol(colunasWithCards.value).reduce(
+      getCardPerID(id)
+    )
   }
 
   function ordenate(a, b) {
@@ -115,6 +120,7 @@ export default function useKanban() {
     cardAlterado,
     commitAlt,
     returnCardPerID,
+    computedOnlyCols,
   }
 }
 
