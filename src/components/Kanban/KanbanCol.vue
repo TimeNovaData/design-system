@@ -4,9 +4,9 @@
       <div class="inline-flex items-center gap-6">
         <p class="text-headline-3">{{ colData.nome }}</p>
         <OCounter
-          bg="var(--neutral-30)"
+          bg="var(--neutral-60)"
           color="var(--neutral-70)"
-          class="!text-14 !rounded !p-0 !w-20 !h-20 dark:!bg-white/10 dark:!text-white/70"
+          class="!text-14 !rounded !p-0 min-w-20 !h-20 dark:!bg-white/10 dark:!text-white/70"
         >
           {{ cards.length }}
         </OCounter>

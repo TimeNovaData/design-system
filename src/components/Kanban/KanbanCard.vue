@@ -19,7 +19,7 @@
         </template>
       </OBadge>
     </div>
-    <p>
+    <p class="three-lines">
       {{ item.id }}
       {{ item.titulo }}
     </p>
@@ -36,7 +36,7 @@
       :ripple="false"
     >
       <template #content>
-        <p class="text-center mx-auto">{{ item.projeto.nome }}</p>
+        <p class="text-center mx-auto one-line">{{ item.projeto.nome }}</p>
       </template>
     </OBadge>
 
