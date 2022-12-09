@@ -190,8 +190,8 @@ module.exports = configure(function (ctx) {
       workboxOptions: {
         skipWaiting: true,
         clientsClaim: true,
-        navigateFallbackDenylist: [/_redirects/],
-        exclude: [/_redirects/],
+        // navigateFallbackDenylist: [/_redirects/],
+        exclude: ['_redirects/'],
       },
     },
 
