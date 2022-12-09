@@ -5,11 +5,13 @@ import { Cookies } from 'quasar'
 
 const API_URL = process.env.API_URL
 const TOKEN = Cookies.get('NDT_TOKEN')
+const axiosController = new AbortController()
 
 const api = axios.create({
   baseURL: API_URL,
+  signal: controller.signal,
   headers: {
-    Authorization: `Bearer ${ TOKEN }`,
+    Authorization: `Bearer ${TOKEN}`,
   },
 
   URLS: {
@@ -36,16 +38,16 @@ const api = axios.create({
   },
 })
 
-api.interceptors.response.use(undefined, async function(error) {
+api.interceptors.response.use(undefined, async function (error) {
   const authStore = useAuthStore()
 
   async function getToken() {
-    if ( error.response.status === 403 ) {
-      console.warn(`TOKEN INVALIDO ou VAZIO ${ error }`)
+    if (error.response.status === 403) {
+      console.warn(`TOKEN INVALIDO ou VAZIO ${error}`)
 
       const refresh = await authStore.refreshToken()
 
-      error.config.headers.Authorization = `Bearer ${ authStore.user.access }`
+      error.config.headers.Authorization = `Bearer ${authStore.user.access}`
 
       return await axios.request(error.config)
     }
@@ -60,4 +62,4 @@ export default boot(({ app }) => {
   app.config.globalProperties.$API_URL = API_URL
 })
 
-export { api, API_URL }
+export { api, API_URL, axiosController }

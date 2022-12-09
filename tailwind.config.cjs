@@ -145,7 +145,7 @@ module.exports = {
         '.text-title-5': { fontSize: '1rem', lineHeight: '150%', 'letterSpacing': '-0.02em', fontWeight: '400', fontFamily: 'DM Sans, sans-serif'},
         
         '.text-headline-1': { fontSize: '1.125rem', lineHeight: '144%', 'letterSpacing': '-0.02em', fontWeight: '500', fontFamily: 'Inter, sans-serif'},
-        '.text-headline-2': { fontSize: '1rem', lineHeight: '150%', 'le]]tterSpacing': '-0.02em', fontWeight: '500', fontFamily: 'Inter, sans-serif'},
+        '.text-headline-2': { fontSize: '1rem', lineHeight: '150%', 'letterSpacing': '-0.02em', fontWeight: '500', fontFamily: 'Inter, sans-serif'},
         '.text-headline-3': { fontSize: '.875rem', lineHeight: '157%', 'letterSpacing': '-0.02em', fontWeight: '500', fontFamily: 'Inter, sans-serif'},
         '.text-headline-4': { fontSize: '.75rem', lineHeight: '158%', 'letterSpacing': '-0.02em', fontWeight: '500', fontFamily: 'Inter, sans-serif'},
         '.text-headline-5': { fontSize: '.625rem', lineHeight: '180%', 'letterSpacing': '-0.02em', fontWeight: '500', fontFamily: 'Inter, sans-serif'},

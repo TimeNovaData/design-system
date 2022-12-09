@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { api } from 'src/boot/axios'
+import { api, axiosController } from 'src/boot/axios'
 import { nextTick, ref, watch } from 'vue'
 import { Cookies, Notify } from 'quasar'
 
@@ -76,6 +76,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function logout() {
     user.value = {}
+    axiosController.abort()
     Cookies.remove('NDT_REFRESH_TOKEN')
     Cookies.remove('NDT_TOKEN')
   }
