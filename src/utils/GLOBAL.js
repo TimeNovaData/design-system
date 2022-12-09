@@ -74,7 +74,6 @@ export default {
       } else {
         modificado[key] = v
       }
-      debugger
     })
     return modificado
   },
