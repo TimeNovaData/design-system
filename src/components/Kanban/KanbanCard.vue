@@ -145,6 +145,8 @@ import { colors } from 'quasar'
 import { onMounted } from 'vue'
 const { FData, FTime } = GLOBAL
 const { returnRGB } = GLOBAL
+
+
 defineProps({
   item: Object,
   visaoExpandida: Boolean,
@@ -163,6 +165,7 @@ function handleEmit(e, item) {
 onMounted(() => {
   colors.hexToRgb('#000')
 })
+
 </script>
 
 <style lang="sass">
