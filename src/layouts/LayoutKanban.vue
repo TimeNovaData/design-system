@@ -1,28 +1,28 @@
 <template>
-  <q-layout view="hHh Lpr fFf" class="layout-kanban">
-    <MenuMultiLevel :menu="menuList"></MenuMultiLevel>
+  <q-layout view='hHh Lpr fFf' class='layout-kanban'>
+    <MenuMultiLevel :menu='menuList'></MenuMultiLevel>
     <BaseHeader>
       <template #right>
         <OInput
-          size="sm"
-          placeholder="Busque por chamado, projeto.."
-          class="no-label text-white/70"
-          type="search"
-          style="--neutral-70: rgba(var(--white), 0.7)"
+          size='sm'
+          placeholder='Busque por chamado, projeto..'
+          class='no-label text-white/70'
+          type='search'
+          style='--neutral-70: rgba(var(--white), 0.7)'
         >
           <template #prepend>
-            <q-icon name="search"></q-icon>
+            <q-icon name='search'></q-icon>
           </template>
         </OInput>
 
         <!-- settings -->
         <OButton
-          class="text-neutral-10 w-32 h-32 !p-0 bg-white/10 !border-transparent"
+          class='text-neutral-10 w-32 h-32 !p-0 bg-white/10 !border-transparent'
           secondary
-          size="sm"
+          size='sm'
         >
-          <q-icon size="1.25rem" name="notifications"></q-icon>
-          <q-menu class="w-[200px]">
+          <q-icon size='1.25rem' name='notifications'></q-icon>
+          <q-menu class='w-[200px]'>
             <q-item>
               <q-item-section>Em Breve</q-item-section>
             </q-item>
@@ -30,11 +30,11 @@
         </OButton>
       </template>
     </BaseHeader>
-    <KanbanHeader @tree-points-click="openModalRight"></KanbanHeader>
-    <KanbanModalRight ref="modalRight"></KanbanModalRight>
+    <KanbanHeader @tree-points-click='openModalRight'></KanbanHeader>
+    <KanbanModalRight ref='modalRight'></KanbanModalRight>
     <q-page-container
-      class="kanban-page-container"
-      style="padding-top: var(--top-size)"
+      class='kanban-page-container'
+      style='padding-top: var(--top-size)'
     >
       <router-view />
     </q-page-container>
@@ -52,12 +52,13 @@ import OInput from 'src/components/Input/OInput.vue'
 import OButton from 'src/components/Button/OButton.vue'
 
 const modalRight = ref(null)
+
 function openModalRight() {
   modalRight.value.dialogRef.show()
 }
 </script>
 
-<style lang="sass">
+<style lang='sass'>
 
 body
   --breadcrumb-color: rgba(var(--white),0.7)
@@ -68,6 +69,7 @@ body
   --top-size: calc(var(--header-kanban-height) + var(--header-base-height))
   .body--dark &
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))
+
 
 .kanban-page-container
 

@@ -1,5 +1,6 @@
 import gsap from 'gsap/dist/gsap'
-import { date } from 'quasar'
+import { date, is, colors } from 'quasar'
+import { unref } from 'vue'
 
 export default {
   debounce: (time, fn, name) => {
@@ -62,20 +63,21 @@ export default {
     )
   },
 
-  modelo1: (i, totalElementos) => ({
-    id: totalElementos + i,
-    nome: 'usuario' + i,
-    tags: [
-      {
-        nome: 'Front End',
-        cor: '--alert-warning',
-      },
-      {
-        nome: 'Back End',
-        cor: '--alert-error',
-      },
-    ],
-  }),
+  compareAndReturnDiff: (valueA, valueB) => {
+    const modificado = {}
+    Object.entries(unref(valueB)).forEach(([key, v]) => {
+      const a = valueA[key]
+      const b = valueB[key]
+      // eslint-disable-next-line eqeqeq
+      if (is.deepEqual(a, b)) {
+        return
+      } else {
+        modificado[key] = v
+      }
+      debugger
+    })
+    return modificado
+  },
 
   // Atualiza o height de acordo com a quantidade de filhos + gap
   setHeightInCol: () => {
@@ -95,6 +97,7 @@ export default {
       })
     })
   },
+  returnRGB: (v) => `${Object.values(colors.hexToRgb(v))}`,
 
   FData(value) {
     if (date.isValid(value)) {

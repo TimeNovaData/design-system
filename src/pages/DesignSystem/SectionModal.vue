@@ -4,23 +4,23 @@
       <div class="flex items-center justify-between">
         <h1 class="text-title-2 mb-18">Modal</h1>
 
-        <o-button
-          secondary
-          type="a"
-          href="https://quasar.dev/quasar-plugins/dialog#introduction"
-          target="_blank"
-          >QDocs
+        <OButton
+            secondary
+            type="a"
+            href="https://quasar.dev/quasar-plugins/dialog#introduction"
+            target="_blank"
+        >QDocs
           <q-icon class="!text-20" name="arrow_outward"></q-icon>
-        </o-button>
+        </OButton>
       </div>
-      <o-button primary type="a" @click="dialogRef.show()">Open </o-button>
+      <OButton primary type="a" @click="dialogRef.show()">Open</OButton>
 
       <q-dialog ref="dialogRef" @hide="onDialogHide">
         <q-card class="q-dialog-plugin p-32">
           <p>Modalzin</p>
           <q-card-actions align="right">
-            <q-btn color="primary" label="OK" @click="onOKClick" />
-            <q-btn color="primary" label="Cancel" @click="onDialogCancel" />
+            <q-btn color="primary" label="OK" @click="onOKClick"/>
+            <q-btn color="primary" label="Cancel" @click="onDialogCancel"/>
           </q-card-actions>
         </q-card>
       </q-dialog>
@@ -31,8 +31,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import oButton from 'src/components/Button/OButton.vue'
+import OButton from 'src/components/Button/OButton.vue'
 import SyntaxHighlight from 'src/components/DesignSystem/SyntaxHighlight.vue'
 
 import { useDialogPluginComponent } from 'quasar'
@@ -48,7 +47,7 @@ defineEmits([
 ])
 
 const { dialogRef, onDialogHide, onDialogOK, onDialogCancel } =
-  useDialogPluginComponent()
+    useDialogPluginComponent()
 // dialogRef      - Vue ref to be applied to QDialog
 // onDialogHide   - Function to be used as handler for @hide on QDialog
 // onDialogOK     - Function to call to settle dialog with "ok" outcome
@@ -64,6 +63,7 @@ function onOKClick() {
   // or with payload: onDialogOK({ ... })
   // ...and it will also hide the dialog automatically
 }
+
 const code = ``
 </script>
 

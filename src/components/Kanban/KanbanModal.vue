@@ -15,13 +15,18 @@
               class="w-24 h-24"
               name="svguse:/icons.svg#icon_screen"
             ></q-icon>
-            <p class="">BUGS e melhorias gerais já priorizadas</p>
+            <p class="">{{ data.titulo }}</p>
           </div>
           <div class="flex items-center ml-[2.25rem] gap-12 px-24">
-            <p>Squad Logbit</p>
-            <OBadge size="sm" :badge="false" bg="--d-success" square>
+            <!-- <p>Squad Logbit</p> -->
+            <OBadge
+              size="sm"
+              :badge="false"
+              :color="returnRGB(data.projeto.cor)"
+              square
+            >
               <template #content>
-                <p class="text-center mx-auto">Assessment coolers</p>
+                <p class="text-center mx-auto">{{ data.projeto.nome }}</p>
               </template>
             </OBadge>
           </div>
@@ -65,16 +70,23 @@
                   <div class="flex gap-8 flex-wrap mt-6">
                     <OBadge
                       size="lg"
-                      v-for="item in 9"
+                      v-for="tag in data.tag"
                       :badge="true"
-                      :key="item"
-                      bg="--alert-warning"
+                      :key="tag.id"
+                      :color="returnRGB(tag.cor_letra)"
                       class="rounded-generic h-32 dark:!text-white/90"
                     >
                       <template #content>
-                        <p class="text-center mx-auto" square>Tag</p>
+                        <p class="text-center mx-auto" square>{{ tag.nome }}</p>
                       </template>
                     </OBadge>
+                    <OButton
+                      size="sm"
+                      class="!p-0 !w-32 !h-32 bg-neutral-20 dark:bg-white/10 dark:hover:bg-white/20"
+                      tertiary
+                    >
+                      <q-icon size="1.25rem" name="add"></q-icon>
+                    </OButton>
                   </div>
                 </div>
                 <div class="grid grid-cols-2">
@@ -114,7 +126,7 @@
 
                     <div class="mt-6">
                       <KanbanItemEditable
-                        value="16/09/2022"
+                        :value="FData(data.data_criacao)"
                         :editable="true"
                         type="date"
                       />
@@ -127,7 +139,7 @@
                     />
 
                     <div class="mt-6">
-                      <KanbanItemEditable value="17/09/2022" />
+                      <KanbanItemEditable :value="FData(data.data_desejada)" />
                     </div>
                   </div>
                   <div>
@@ -137,7 +149,7 @@
                     />
 
                     <div class="mt-6">
-                      <KanbanItemEditable value="18/09/2022" />
+                      <KanbanItemEditable :value="FData(data.data_prevista)" />
                     </div>
                   </div>
                 </div>
@@ -150,7 +162,7 @@
 
                     <div class="mt-6">
                       <KanbanItemEditable
-                        value="19h 30m"
+                        :value="FTime(data.tempo_estimado)"
                         :editable="true"
                         type="time"
                       />
@@ -163,7 +175,9 @@
                     />
 
                     <div class="mt-6">
-                      <KanbanItemEditable value="1h 24m" />
+                      <KanbanItemEditable
+                        :value="FTime(data.tempo_decorrido)"
+                      />
                     </div>
                   </div>
                 </div>
@@ -181,11 +195,10 @@
                 <div
                   class="ml-24 pt-16 text-neutral-70 text-paragraph-2 dark:text-white/80"
                 >
-                  <p>
-                    Cálculo do meu score da tela home tá errado(tem que ser a
-                    média do score dos módulos e o score dos módulos tem que ser
-                    a média do score dos itens)
-                  </p>
+                  <div class="descricao-content">
+                    <div v-html="data.descricao_quill_html"></div>
+                  </div>
+                  <p v-show="!data.descricao_quill_html">Sem Descrição</p>
                 </div>
               </section>
 
@@ -293,11 +306,13 @@ import KanbanSectionHeader from './KanbanSectionHeader.vue'
 import AvatarMultiple from 'src/components/Avatar/AvatarMultiple.vue'
 import KanbanItemEditable from './KanbanItemEditable.vue'
 import OButton from 'src/components/Button/OButton.vue'
+import GLOBAL from 'src/utils/GLOBAL'
+const { returnRGB, FData, FTime } = GLOBAL
 
 const tab = ref('info')
 const dialogState = ref(false)
 const props = defineProps({
-  // ...your custom props
+  data: Object,
 })
 const taskActive = ref('andamento')
 
@@ -367,6 +382,7 @@ defineExpose({ dialogRef })
 </style>
 
 <style lang="sass" scoped>
+@import "src/css/quasar/variables.sass"
 .kanban-modal
   height: 95vh
   width: 880px
@@ -375,7 +391,12 @@ defineExpose({ dialogRef })
   overflow: hidden
   display: flex
   flex-direction: column
-
+  .descricao-content
+    :deep(img)
+      max-height: 13.75rem
+      margin: .5rem 0
+      border-radius: $generic-border-radius
+      object-fit: contain
 .kanban-modal-separator
   height: 1px
   width: 100%

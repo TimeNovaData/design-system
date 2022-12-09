@@ -54,17 +54,16 @@ import { storeToRefs } from 'pinia'
 import { useDarkMode } from 'src/stores/darkMode'
 import { useAuthStore } from 'src/stores/auth.store'
 import OInput from 'src/components/Input/OInput.vue'
-import router from 'src/router'
+import { useRouter } from 'vue-router'
 const dev = process.env.development
 const auth = useAuthStore()
 const dark = useDarkMode()
 
 const { darkMode } = storeToRefs(dark)
-
+const router = useRouter()
 async function logout() {
-  await auth.logout()
-  router().push({ name: 'login' })
-  window.location.reload()
+  auth.logout()
+  router.push({ name: 'login' })
 }
 </script>
 

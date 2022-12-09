@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div class="h-32">
     <q-avatar
       v-for="n in items"
       :key="n"

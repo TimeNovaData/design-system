@@ -5,17 +5,18 @@
       @mousedown="(e) => enableDragScroll(e)"
     >
       <KanbanCol
-        v-for="coluna in colunasWithCardsOrdenate"
-        :cards="coluna.cards"
-        :colData="coluna.coluna"
+        v-for="col in colunasWithCards"
+        :cards="col.cards"
+        :colData="col.coluna"
+        :key="col.coluna.id"
+        :data-id="col.coluna.id"
         @mouseup="handleColClick"
         @mousedown="handleColClick"
-        :key="coluna.coluna.id"
-        :data-id="coluna.coluna.id"
+        @newCards="createNewChamado"
       >
         <draggable
           v-bind="dragOptions"
-          :list="coluna.cards"
+          :list="col.cards"
           :component-data="{
             tag: 'div',
             type: 'transition-group',
@@ -31,7 +32,7 @@
             <KanbanCard
               :item="element"
               :visaoExpandida="visaoExpandida"
-              @cardClick="handleCardClick"
+              @cardClick="handleCardClick(element)"
               :data-card-id="element.id"
             >
             </KanbanCard>
@@ -43,22 +44,22 @@
     </div>
   </section>
 
-  <KanbanModal ref="modal"></KanbanModal>
+  <KanbanModal :data="chamadoAtivo" ref="modal"></KanbanModal>
 
-  <img class="image-bg" :src="kanbanBG" aria-hidden="true" />
+  <img :src="kanbanBG" aria-hidden="true" class="image-bg" alt="" />
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch, nextTick } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useKanbanBG } from 'src/stores/kanbanBG'
 import { useVisaoExpandida } from 'src/stores/visaoExpandida'
-import draggable from 'vuedraggable'
 import GLOBAL from 'src/utils/GLOBAL'
 import KanbanCol from 'src/components/Kanban/KanbanCol.vue'
 import KanbanCard from 'src/components/Kanban/KanbanCard.vue'
 import KanbanModal from 'src/components/Kanban/KanbanModal.vue'
 import useKanban from 'src/composables/UseKanban'
+import draggable from 'vuedraggable'
 
 const { /*  generateRange, modelo1, */ setHeightInCol } = GLOBAL
 
@@ -66,8 +67,9 @@ const { kanbanBG } = storeToRefs(useKanbanBG())
 const { visaoExpandida } = storeToRefs(useVisaoExpandida())
 
 const modal = ref(null)
-
-const { colunasWithCardsOrdenate, colunasWithCards, cardAlterado } = useKanban()
+const chamadoAtivo = ref(null)
+const { colunasWithCards, cardAlterado, commitAlt, returnCardPerID } =
+  useKanban()
 
 // Drag
 const drag = ref(false)
@@ -76,17 +78,7 @@ const enableDragScroll = GLOBAL.enableDragScroll(removeEventsWrapper)
 
 watch(drag, () => setHeightInCol())
 watch(visaoExpandida, () => setTimeout(() => setHeightInCol(), 300))
-watch(colunasWithCardsOrdenate, () => setTimeout(() => setHeightInCol(), 300))
-
-const mudaAFase =
-  ({ toID, id }) =>
-  (chamado) => {
-    if (chamado.coluna.id === Number(toID)) {
-      const index = chamado.cards.findIndex((card) => card.id === Number(id))
-      chamado.cards[index].fase = chamado.coluna
-    }
-    return chamado
-  }
+watch(colunasWithCards, () => setTimeout(() => setHeightInCol(), 300))
 
 const handleStartEndDrag = async (e, start) => {
   e.stopImmediatePropagation()
@@ -110,24 +102,37 @@ const handleStartEndDrag = async (e, start) => {
     fromID,
   }
 
-  cardAlterado.value = {
-    id,
-    // obj:colunasWithCards.value.filter(i => i.card)
-  }
+  cardAlterado.value = { id }
 
   if (!start) {
-    colunasWithCards.value = colunasWithCards.value.map(mudaAFase(data))
-    console.log(item._underlying_vm_.fase)
+    const v = colunasWithCards.value.map(mudaAFase(data))
+    commitAlt(v)
   }
 }
 
-function handleCardClick(v) {
+function mudaAFase({ toID, id }) {
+  return function (chamado) {
+    if (chamado.coluna.id === Number(toID)) {
+      const index = chamado.cards.findIndex((card) => card.id === Number(id))
+
+      chamado.cards[index].fase = chamado.coluna
+    }
+    return chamado
+  }
+}
+
+function handleCardClick(element) {
+  chamadoAtivo.value = returnCardPerID(element.id)
   modal.value.dialogRef.show()
 }
 
 function handleColClick(e) {
   e.stopImmediatePropagation()
   removeEventsWrapper.value = true
+}
+
+function createNewChamado(fase) {
+  console.log(fase)
 }
 
 onMounted(() => {
@@ -146,9 +151,9 @@ const dragOptions = computed(() => ({
 </script>
 
 <style lang="sass">
-:root
-  --kanban-col-bg: rgba(var(--neutral-10), 1)
-  --kanban-col-width:18rem
+\:root
+  --kanban-col-bg: rgba(var(--neutral-20), 1)
+  --kanban-col-width: 18rem
 
 
 .image-bg
@@ -162,11 +167,13 @@ const dragOptions = computed(() => ({
   pointer-events: none
   user-select: none
 
+
 .kanban
   &-container
     width: 100%
     height: inherit
     user-select: none
+
   &-col
     background: var(--kanban-col-bg)
     width: var(--kanban-col-width)
@@ -179,54 +186,45 @@ const dragOptions = computed(() => ({
     flex-shrink: 0
 
 
-
   &-col--wrapper
     height: 100%
     display: flex
     gap: 1rem
-    width:100%
+    width: 100%
     overflow-x: auto
 
-
-      /* width */
     &::-webkit-scrollbar
       width: 10px
 
-
-    /* Track */
     &::-webkit-scrollbar-track
-      background: rgba(0,0,0,0)
-      border-radius:3px
+      background: rgba(0, 0, 0, 0)
+      border-radius: 3px
 
-    /* Handle */
     &::-webkit-scrollbar-thumb
-      background: rgba(255,255,255,0.2)
-      border-radius:3px
+      background: rgba(255, 255, 255, 0.2)
+      border-radius: 3px
 
-
-    /* Handle on hover */
     &::-webkit-scrollbar-thumb:hover
-      background: rgba(255,255,255,0.4)
+      background: rgba(255, 255, 255, 0.4)
 
 
 .cards-wrapper
+  display: flex
+  flex-direction: column
+  // flex: 1 0 auto
+  flex: initial
+  height: 100%
+  min-height: 270px
+
+  .transition-div
     display: flex
     flex-direction: column
-    // flex: 1 0 auto
-    flex: initial
+    gap: .5rem
+    flex: 1
     height: 100%
-    min-height: 270px
-    .transition-div
-      display: flex
-      flex-direction: column
-      gap: .5rem
-      flex: 1
-      height: 100%
-      padding: 8px
-      padding-bottom: 0
-      min-height: 260px
-      margin-bottom: .5rem
-
+    padding: 8px 8px 0
+    min-height: 260px
+    margin-bottom: .5rem
 
 
 //qscrollbar dentro da coluna
@@ -236,11 +234,13 @@ const dragOptions = computed(() => ({
   height: 100%
   flex: 1
 
+
 .q-scrollarea__container
   display: flex
   flex-direction: column
   height: 100%
   flex: 1
+
 
 .q-scrollarea__bar--v, .q-scrollarea__thumb--v
   right: 0
@@ -251,9 +251,11 @@ const dragOptions = computed(() => ({
 .body--light
   .kanban-col--wrapper
     &::-webkit-scrollbar-thumb
-     background: rgba(255,255,255,0.5)
+      background: rgba(255, 255, 255, 0.5)
+
     &::-webkit-scrollbar-thumb:hover
-      background: rgba(255,255,255,0.65)
+      background: rgba(255, 255, 255, 0.65)
+
 
 .body--dark
   --kanban-col-bg: rgb(var(--d-neutral-10))

@@ -26,15 +26,17 @@
     <slot></slot>
 
     <OBadge
+      v-if="item.projeto.nome"
       size="sm"
       :badge="false"
-      bg="--d-success"
+      :bg="returnRGB(item.projeto.cor)"
+      :color="returnRGB(item.projeto.cor)"
       square
       class="w-full text-center justify-center my-6"
       :ripple="false"
     >
       <template #content>
-        <p class="text-center mx-auto">Assessment coolers</p>
+        <p class="text-center mx-auto">{{ item.projeto.nome }}</p>
       </template>
     </OBadge>
 
@@ -60,16 +62,17 @@
     <section class="flex gap-6 justify-between items-center w-full">
       <div class="flex items-center gap-6">
         <q-icon
+          v-if="item.descricao_quill_html"
           class="w-18 h-18"
           name="svguse:/icons.svg#icon_menu_kanban"
         ></q-icon>
 
-        <div class="inline-flex items-center">
+        <div class="inline-flex items-center" v-if="item.anexo">
           <q-icon
             class="w-18 h-18"
             name="svguse:/icons.svg#icon_attach"
           ></q-icon>
-          <p class="opacity-40 text-headline-4">4</p>
+          <p class="opacity-40 text-headline-4">{{ item.anexo.length }}</p>
         </div>
       </div>
       <div class="h-32 ml-auto w-[150px] relative right-[-20px]">
@@ -141,13 +144,13 @@ import GLOBAL from 'src/utils/GLOBAL'
 import { colors } from 'quasar'
 import { onMounted } from 'vue'
 const { FData, FTime } = GLOBAL
-
+const { returnRGB } = GLOBAL
 defineProps({
   item: Object,
   visaoExpandida: Boolean,
 })
 
-const returnRGB = (v) => `${Object.values(colors.hexToRgb(v))}`
+// const returnRGB = (v) => `${Object.values(colors.hexToRgb(v))}`
 
 const emit = defineEmits(['cardClick'])
 
@@ -181,7 +184,7 @@ onMounted(() => {
 
 .kanban-card-separator
   height: .0625rem
-  width: calc(100% - 0.75rem)
+  width: calc(100% + 0.75rem)
   background: rgba(var(--neutral-100), 0.1)
   margin: 6px 0
   position: relative

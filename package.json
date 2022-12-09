@@ -7,11 +7,13 @@
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
-    "test": "echo \"No test specified\" && exit 0"
+    "test": "echo \"No test specified\" && exit 0",
+    "dev": "yarn quasar dev"
   },
   "dependencies": {
     "@quasar/extras": "^1.15.6",
     "@vueuse/core": "^9.6.0",
+    "@vueuse/integrations": "^9.6.0",
     "axios": "^1.2.0",
     "eslint-plugin-no-relative-import-paths": "^1.5.0",
     "gsap": "^3.11.3",
@@ -45,6 +47,7 @@
     "npm-check-updates": "^16.4.3",
     "postcss": "^8.4.19",
     "prettier": "^2.8.0",
+    "sass-lint": "^1.13.1",
     "vue-eslint-parser": "^9.1.0",
     "workbox-build": "^6.5.4",
     "workbox-cacheable-response": "^6.5.4",

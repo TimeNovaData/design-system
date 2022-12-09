@@ -68,6 +68,9 @@ module.exports = configure(function (ctx) {
         API_URL: ctx.dev
           ? 'http://localhost:8000/api/'
           : 'https://hub.novadata.com.br/api/',
+        BACKEND_URL: ctx.dev
+          ? 'http://localhost:8000/'
+          : 'https://hub.novadata.com.br/',
 
         HTTPS_MODE: !ctx.dev,
         development: ctx.dev,

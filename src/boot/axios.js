@@ -9,7 +9,7 @@ const TOKEN = Cookies.get('NDT_TOKEN')
 const api = axios.create({
   baseURL: API_URL,
   headers: {
-    Authorization: `Bearer ${TOKEN}`,
+    Authorization: `Bearer ${ TOKEN }`,
   },
 
   URLS: {
@@ -31,23 +31,23 @@ const api = axios.create({
     tagchamado: 'tagchamado/',
     subprojeto: 'subprojeto/',
     colunasubprojeto: 'colunasubprojeto/',
+    atualizar_fase_chamado: 'url_atualizar_fase_chamado/',
+    atualizar_ordem_chamado: 'atualizar_ordem_chamado_ajax/',
   },
 })
 
-api.interceptors.response.use(undefined, async function (error) {
+api.interceptors.response.use(undefined, async function(error) {
   const authStore = useAuthStore()
 
   async function getToken() {
-    if (error.response.status === 403) {
-      console.warn(`TOKEN INVALIDO ou VAZIO ${error}`)
+    if ( error.response.status === 403 ) {
+      console.warn(`TOKEN INVALIDO ou VAZIO ${ error }`)
 
       const refresh = await authStore.refreshToken()
 
-      error.config.headers.Authorization = `Bearer ${authStore.user.access}`
+      error.config.headers.Authorization = `Bearer ${ authStore.user.access }`
 
-      const request = await axios.request(error.config)
-
-      return request
+      return await axios.request(error.config)
     }
   }
 

@@ -12,7 +12,11 @@
         </OCounter>
       </div>
 
-      <OButton size="sm" class="!p-0 !w-32 !h-32 ml-auto">
+      <OButton
+        size="sm"
+        class="!p-0 !w-32 !h-32 ml-auto"
+        @click="$emit('newCards', colData)"
+      >
         <q-icon size="1.25rem" name="add" tertiary></q-icon>
       </OButton>
     </header>
@@ -28,6 +32,7 @@
 <script setup>
 import OButton from 'src/components/Button/OButton.vue'
 import OCounter from 'src/components/Counter/OCounter.vue'
+
 const props = defineProps({
   cards: Array,
   colData: Object,
@@ -39,6 +44,7 @@ const props = defineProps({
 //animacao
 .flip-list-move
   transition: transform 0.5s
+
 
 .no-move
   transition: transform 0s

@@ -39,7 +39,6 @@
             name="svguse:/icons.svg#icon_tree_points"
           ></q-icon>
           Opções
-          <q-badge rounded class="bg-primary-pure w-8 h-8" floating></q-badge>
         </OButton>
       </div>
 
