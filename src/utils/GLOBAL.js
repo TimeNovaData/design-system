@@ -70,7 +70,7 @@ export default {
       const b = valueB[key]
       // eslint-disable-next-line eqeqeq
       if (is.deepEqual(a, b)) {
-        return
+        return null
       } else {
         modificado[key] = v
       }
