@@ -55,6 +55,8 @@ export default boot(async ({ app }) => {
   }
   window.Apex.plotOptions = {
     bar: {
+      borderRadius: 4,
+
       colors: {
         backgroundBarOpacity: 1,
       },

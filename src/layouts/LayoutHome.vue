@@ -2,10 +2,7 @@
   <q-layout view="hHh Lpr fFf" class="home-layout">
     <MenuMultiLevel :menu="menuList"></MenuMultiLevel>
     <BaseHeader></BaseHeader>
-    <q-page-container
-      class="home-page-container bg-neutral-10"
-      style="padding-top: var(--top-size)"
-    >
+    <q-page-container class="home-page-container bg-neutral-10">
       <router-view />
     </q-page-container>
   </q-layout>
@@ -34,7 +31,7 @@ onMounted(async () => {
   --top-size: var(--header-base-height)
   margin-left: var(--Nv0-sidebar-width)
   // margin-top: var(--top-size)
-  height: calc(100vh - var(--top-size))
+  height:100vh
 
   .body--dark &
     background: rgb(var(--d-neutral-10))

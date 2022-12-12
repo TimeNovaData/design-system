@@ -43,6 +43,12 @@
       position: relative
       background: inherit
 
+  .q-field__native
+    span
+      overflow: hidden
+      display: -webkit-box
+      -webkit-line-clamp: 1
+      -webkit-box-orient: vertical
 // addressbar always gets shown, so need to slim this down
 body.mobile:not(.native-mobile) .q-select__dialog
   max-height: calc(100vh - 108px) !important
@@ -76,4 +82,4 @@ body.platform-ios
     border-radius: $generic-border-radius !important
 
 .q-select.q-field--focused.q-field--highlighted
-  box-shadow: $shadow-2
+  // box-shadow: $shadow-2

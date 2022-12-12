@@ -1,11 +1,5 @@
 <template>
   <q-layout view="hHh Lpr fFf" class="layout-kanban">
-    <p
-      class="fixed z-[99999999999] bottom-4 right-4 bg-alert-error block p-4 px-8 rounded-md"
-      v-show="!dev"
-    >
-      Atenção não faça alterações (Pode impactar em produção)
-    </p>
     <MenuMultiLevel :menu="menuList"></MenuMultiLevel>
     <BaseHeader>
       <template #right>
