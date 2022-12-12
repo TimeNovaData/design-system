@@ -32,8 +32,8 @@
             <KanbanCard
               :item="element"
               :visaoExpandida="visaoExpandida"
-              @cardClick="handleCardClick(element)"
               :data-card-id="element.id"
+              @cardClick="handleCardClick(element)"
             >
             </KanbanCard>
           </template>
@@ -45,14 +45,15 @@
   </section>
 
   <KanbanModal
-    @tagButtonClick="handleGetTags"
+    ref="modal"
     :data="chamadoAtivo"
     :popUpTags="popUpTags"
     :tags="tags"
-    ref="modal"
+    @tagButtonClick="handleGetTags"
   ></KanbanModal>
 
   <img :src="kanbanBG" aria-hidden="true" class="image-bg" alt="" />
+  q-t
 </template>
 
 <script setup>
@@ -85,8 +86,9 @@ const {
   returnCardPerID,
   /* asas */
 } = useKanban()
-const { getTags, tags } = useChamadoStore()
 
+const { getTags } = useChamadoStore()
+const tags = ref([])
 // Drag
 const drag = ref(false)
 const removeEventsWrapper = ref(false)
@@ -173,7 +175,7 @@ const dragOptions = computed(() => ({
 </script>
 
 <style lang="sass">
-\:root
+:root
   --kanban-col-bg: rgba(var(--neutral-20), 1)
   --kanban-col-width: 18rem
 

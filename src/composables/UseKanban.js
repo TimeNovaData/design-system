@@ -2,22 +2,33 @@ import { api } from 'src/boot/axios'
 import { computed, nextTick, onMounted, ref, unref, watch } from 'vue'
 import axios from 'axios'
 import { useManualRefHistory } from '@vueuse/core'
-import { useAuthStore } from 'stores/auth.store'
 import { useChamadoStore } from 'src/stores/chamado.store'
 import GLOBAL from 'src/utils/GLOBAL'
 import { Notify } from 'quasar'
+
 const BACKEND_URL = process.env.BACKEND_URL
 const { URLS } = api.defaults
+const { ordenateKey, getItemPerID } = GLOBAL
+
+// converte lista de array de objectos de cards e colunas
+// en lista somente de cards
+function convertInOnlyCardsOrCol(arr, type = 'cards') {
+  return arr.reduce((acc, item) => {
+    acc.push(...item[type])
+    return acc
+  }, [])
+}
 
 export default function useKanban() {
   const colunasWithCards = ref([])
   const cardAlterado = ref({ id: null })
   const { getFase, getChamado, getTags } = useChamadoStore()
   const tags = ref([])
+
   const { history, commit, clear /* undo, redo, */ } = useManualRefHistory(
     colunasWithCards,
     {
-      capacity: 2, // limit  history records
+      capacity: 1, // limit  history records
       flush: 'sync', // options 'pre' (default), 'post' and 'sync'
       clone: true,
     }
@@ -39,7 +50,7 @@ export default function useKanban() {
           cards: cardslist,
         })
       })
-      .sort(ordenate)
+      .sort(ordenateKey('ordem'))
   }
 
   async function commitAlt(val) {
@@ -47,41 +58,28 @@ export default function useKanban() {
     await nextTick()
     commit()
     console.log(history.value)
-    await sendCardChange()
-  }
-
-  // converte lista de array de objectos de cards e colunas
-  // en lista somente de cards
-  function convertInOnlyCardsOrCol(arr, type = 'cards') {
-    return arr.reduce((acc, item) => {
-      acc.push(...item[type])
-      return acc
-    }, [])
-  }
-
-  const getCardPerID = (id) => (acc, i) => {
-    if (i.id === id) acc = i
-    return acc
+    await sendChamadoChange()
   }
 
   watch(
     () => history,
-    (v) => {
+    () => {
       if (history.value.length < 2) return
-      console.log(
-        convertInOnlyCardsOrCol(history.value[0]?.snapshot).reduce(
-          getCardPerID(cardAlterado.value.id),
-          {}
-        ).fase,
-        'Snap0'
-      )
 
       console.log(
         convertInOnlyCardsOrCol(history.value[1]?.snapshot).reduce(
-          getCardPerID(cardAlterado.value.id),
+          getItemPerID(cardAlterado.value.id),
           {}
         ).fase,
-        'Snap1'
+        'OLD'
+      )
+
+      console.log(
+        convertInOnlyCardsOrCol(history.value[0]?.snapshot).reduce(
+          getItemPerID(cardAlterado.value.id),
+          {}
+        ).fase,
+        'NEW'
       )
 
       console.log(history.value, 'history.value')
@@ -93,13 +91,12 @@ export default function useKanban() {
     const timeStamp0 = history.value[0].snapshot
     const timeStamp1 = history.value[1].snapshot
     const id = cardAlterado.value.id
-    const NEW = convertInOnlyCardsOrCol(timeStamp0).reduce(getCardPerID(id), {})
-    const OLD = convertInOnlyCardsOrCol(timeStamp1).reduce(getCardPerID(id), {})
-    const data = GLOBAL.compareAndReturnDiff(OLD, NEW)
-    return data
+    const NEW = convertInOnlyCardsOrCol(timeStamp0).reduce(getItemPerID(id), {})
+    const OLD = convertInOnlyCardsOrCol(timeStamp1).reduce(getItemPerID(id), {})
+    return GLOBAL.compareAndReturnDiff(OLD, NEW)
   }
 
-  async function sendCardChange() {
+  async function sendChamadoChange() {
     // Pega as apenas as diferenca entre o card do historico
     const diff = historyAlt(history)
     const listIDSInOrder = convertInOnlyCardsOrCol(colunasWithCards.value).map(
@@ -128,24 +125,18 @@ export default function useKanban() {
       console.log(e)
       Notify.create({
         type: 'error',
-        message: `Ops, Um erro aconteceu`,
+        message: `Ops, Um erro ocorreu`,
         position: 'top-right',
-        timeout: 1000,
-        html: true,
+        timeout: 1500,
+        // html: true,
       })
     }
   }
 
   function returnCardPerID(id) {
     return convertInOnlyCardsOrCol(colunasWithCards.value).reduce(
-      getCardPerID(id)
+      getItemPerID(id)
     )
-  }
-
-  function ordenate(a, b) {
-    if (a.ordem > b.ordem) return 1
-    if (a.ordem < b.ordem) return -1
-    return 0
   }
 
   onMounted(async () => {
@@ -153,10 +144,6 @@ export default function useKanban() {
     colunasWithCards.value = createColunasWithCards(fase, [])
     const chamado = await getChamado()
     colunasWithCards.value = createColunasWithCards(fase, chamado)
-    clear()
-    commit()
-
-    await nextTick()
     clear()
     commit()
   })
@@ -177,7 +164,7 @@ export default function useKanban() {
 // const computedOnlyCards = computed(() => onlyCards())
 // const testando = ref([])
 // const isLoading = ref(false)
-// const getCardPerID = (acc, i) => {
+// const getItemPerID = (acc, i) => {
 //   if (i.id === cardAlterado.value.id) {
 //     acc = i
 //   }
@@ -194,10 +181,10 @@ export default function useKanban() {
 //   })
 //   return modificado
 // }
-// async function sendCardChange() {
+// async function sendChamadoChange() {
 //   // debugger
-//   const value = computedOnlyCards.value.reduce(getCardPerID, {})
-//   const valueCached = cardsCached.value.reduce(getCardPerID, {})
+//   const value = computedOnlyCards.value.reduce(getItemPerID, {})
+//   const valueCached = cardsCached.value.reduce(getItemPerID, {})
 //   const data = pegaMudancas(value, valueCached)
 //   // debugger
 //   try {
@@ -219,7 +206,7 @@ export default function useKanban() {
 //   () => colunasWithCards,
 //   async () => {
 //     console.log('colunasWithCards watch')
-//     console.log(computedOnlyCards.value.reduce(getCardPerID, {}).fase, '🔥')
+//     console.log(computedOnlyCards.value.reduce(getItemPerID, {}).fase, '🔥')
 //   },
 //   { deep: true }
 // )
@@ -227,7 +214,7 @@ export default function useKanban() {
 //   () => testando,
 //   () => {
 //     console.log('testando')
-//     console.log(testando.value.reduce(getCardPerID, {}).fase, 'testando')
+//     console.log(testando.value.reduce(getItemPerID, {}).fase, 'testando')
 //   },
 //   { deep: true }
 // )
@@ -243,8 +230,8 @@ export default function useKanban() {
 //     if (!cardsCached.value) return
 //     const oi = [...cardsCached.value]
 //     console.log(cardAlterado.value.id)
-//     console.log(`cardsCached`, oi.reduce(getCardPerID, {}).fase)
-//     console.log(`cardsCached`, oi.reduce(getCardPerID, {}).id)
+//     console.log(`cardsCached`, oi.reduce(getItemPerID, {}).fase)
+//     console.log(`cardsCached`, oi.reduce(getItemPerID, {}).id)
 //   },
 //   { deep: true }
 // )
@@ -253,9 +240,9 @@ export default function useKanban() {
 //   async () => {
 //     console.log(
 //       `computedOnlyCards `,
-//       computedOnlyCards.value.reduce(getCardPerID, {})
+//       computedOnlyCards.value.reduce(getItemPerID, {})
 //     )
-//     computedOnlyCards.value.reduce(getCardPerID, {})
+//     computedOnlyCards.value.reduce(getItemPerID, {})
 //   },
 //   { deep: true }
 // )
@@ -317,7 +304,7 @@ export default function useKanban() {
 //   // chamado,
 //   colunasWithCardsOrdenate,
 //   cardAlterado,
-//   sendCardChange,
+//   sendChamadoChange,
 //   computedOnlyCards,
 //   cardsCached,
 // }

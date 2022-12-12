@@ -168,4 +168,41 @@
   </symbol>
 
 
+  <symbol id="icon_horas" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5.62537 18.3577C8.50409 21.2441 12.963 21.8361 16.4952 19.801C20.0274 17.7658 21.7514 13.6112 20.698 9.67314C19.6446 5.73504 16.0766 2.99622 12 2.99622" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M3.77789 15.4265C3.77786 15.4541 3.75546 15.4765 3.72785 15.4765C3.70024 15.4765 3.67786 15.4541 3.67785 15.4265C3.67784 15.3989 3.7002 15.3765 3.72781 15.3765C3.7411 15.3764 3.75384 15.3817 3.76324 15.3911C3.77264 15.4005 3.77791 15.4133 3.77789 15.4265" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M3.09637 12C3.09634 12.0276 3.07394 12.05 3.04633 12.05C3.01872 12.05 2.99634 12.0276 2.99633 12C2.99632 11.9724 3.01868 11.95 3.04629 11.9499C3.05958 11.9499 3.07233 11.9552 3.08172 11.9646C3.09112 11.974 3.09639 11.9867 3.09637 12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M3.77789 8.57357C3.77789 8.60119 3.75551 8.62358 3.72789 8.62359C3.70027 8.6236 3.67787 8.60123 3.67785 8.57361C3.67783 8.54599 3.70019 8.52358 3.72781 8.52355C3.7411 8.52354 3.75385 8.52881 3.76324 8.53821C3.77264 8.5476 3.77791 8.56035 3.77789 8.57364" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M5.71881 5.66886C5.71877 5.69646 5.69637 5.71882 5.66876 5.71881C5.64116 5.7188 5.61878 5.69642 5.61877 5.66881C5.61875 5.6412 5.64111 5.61881 5.66872 5.61877C5.68201 5.61875 5.69476 5.62402 5.70416 5.63342C5.71356 5.64282 5.71883 5.65557 5.71881 5.66886" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M8.62358 3.72793C8.62355 3.75554 8.60115 3.7779 8.57354 3.77789C8.54593 3.77788 8.52355 3.75549 8.52354 3.72788C8.52353 3.70027 8.5459 3.67788 8.57351 3.67785C8.5868 3.67783 8.59955 3.6831 8.60895 3.6925C8.61835 3.70189 8.62362 3.71464 8.6236 3.72793" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M16.0494 12.6025H11.3975" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M11.3975 12.6025V6.99792" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+  </symbol>
+
+
+  <symbol id="icon_date_time" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="17.5" cy="16.5" r="4.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M7 10H11" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M7.5 2V5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M16.5 2V5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M10 20H6C4.34315 20 3 18.6569 3 17V6.5C3 4.84315 4.34315 3.5 6 3.5H18C19.6569 3.5 21 4.84315 21 6.5V9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M7 14H8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M17.3929 14.9833V16.7369L18.7751 17.58" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+  </symbol>
+
+
+  <symbol id='icon_filtros' viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M13.2917 12.375L18.0648 7.60188C18.2372 7.42954 18.3334 7.19671 18.3334 6.95379V4.58329C18.3334 4.07729 17.9227 3.66663 17.4167 3.66663H4.58341C4.07741 3.66663 3.66675 4.07729 3.66675 4.58329V6.95379C3.66675 7.19671 3.763 7.43046 3.93533 7.60188L8.70842 12.375" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M8.7085 12.375V18.1032C8.7085 18.8485 9.40883 19.3957 10.1321 19.2152L12.4237 18.6422C12.9334 18.5148 13.2918 18.0565 13.2918 17.5303V12.375" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+  </symbol>
+
+
+  <symbol id="icon_tempo_atividade" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18.0025 9.99913V7.82623C18.0025 7.29601 17.7914 6.78679 17.4163 6.41164L14.5871 3.58246C14.212 3.2073 13.7027 2.99622 13.1725 2.99622H5.99754C4.89208 2.99622 3.9967 3.89159 3.9967 4.99705V19.0029C3.9967 20.1083 4.89208 21.0037 5.99754 21.0037H9.9992" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M18.0026 7.9983H14.0009C13.4487 7.9983 13.0005 7.55011 13.0005 6.99788V2.99622" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M16.5019 22.0041C14.0158 22.0041 12 19.9883 12 17.5022C12 15.0162 14.0158 13.0004 16.5019 13.0004C18.9889 13.0004 21.0037 15.0162 21.0037 17.5022C21.0037 19.9883 18.9889 22.0041 16.5019 22.0041" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+    <path d="M16.3949 15.9846V17.7434L17.7775 18.5867" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+  </symbol>
+
+
 </svg>

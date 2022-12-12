@@ -57,32 +57,34 @@ export default {
     domElement.addEventListener('mousedown', onMouseDown)
   },
 
-  generateRange: (totalElementos, modelo) => {
+  // gera um rage de um array
+  generateRange: (totalElementos, modelo /* cb  return obj template */) => {
     return Array.from({ length: totalElementos }, (_, i) =>
       modelo(i, totalElementos)
     )
   },
 
-  compareAndReturnDiff: (valueA, valueB) => {
+  // compara dois objetos e retorna a diferença
+  compareAndReturnDiff: (valueA = {}, valueB = {}) => {
     const modificado = {}
     Object.entries(unref(valueB)).forEach(([key, v]) => {
       const a = valueA[key]
       const b = valueB[key]
-      // eslint-disable-next-line eqeqeq
-      if (is.deepEqual(a, b)) {
-        return null
-      } else {
-        modificado[key] = v
-      }
+      if (is.deepEqual(a, b)) return null
+      else modificado[key] = v
     })
     return modificado
   },
 
   // Atualiza o height de acordo com a quantidade de filhos + gap
-  setHeightInCol: () => {
-    document.querySelectorAll('.cards-wrapper').forEach((i) => {
-      const filhos = [...i.querySelectorAll('.kanban-card')]
-      const gap = filhos.length * 7
+  setHeightInCol: (
+    wrapper = '.cards-wrapper',
+    item = '.kanban-card',
+    space = 7
+  ) => {
+    document.querySelectorAll(wrapper).forEach((i) => {
+      const filhos = [...i.querySelectorAll(item)]
+      const gap = filhos.length * space
       const height = filhos.reduce((acc, children) => {
         acc += children.getBoundingClientRect().height
         return acc
@@ -96,6 +98,19 @@ export default {
       })
     })
   },
+
+  ordenateKey: (key) => (a, b /* sort cb */) => {
+    if (a[key] > b[key]) return 1
+    if (a[key] < b[key]) return -1
+    return 0
+  },
+
+  getItemPerID: (id) => (acc, i /* reduce cb */) => {
+    if (i.id === id) acc = i
+    return acc
+  },
+
+  // return ex: '255, 255,255'
   returnRGB: (v) => `${Object.values(colors.hexToRgb(v))}`,
 
   FData(value) {
@@ -105,7 +120,8 @@ export default {
       return '-'
     }
   },
-  FTime(value) {
+
+  FTime(value /* 00:00:00 */) {
     const hora = value?.slice(0, 2)
     const minutos = value?.slice(3, 5)
     const data = date.buildDate({ year: 2022, hours: hora, minutes: minutos })

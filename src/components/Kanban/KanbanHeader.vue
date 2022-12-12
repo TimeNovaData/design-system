@@ -24,8 +24,9 @@
           secondary
           class="bg-white/10 !py-0 !h-32 !border-transparent"
         >
-          <q-icon size="1.5rem" name="svguse:/icons.svg#icon_filter"></q-icon>
-          Filtro
+          <!-- <q-icon size="1.5rem" name="svguse:/icons.svg#icon_filter"></q-icon> -->
+          <q-icon size="1.5rem" name="filter_alt"></q-icon>
+          Filtros
         </OButton>
 
         <OButton

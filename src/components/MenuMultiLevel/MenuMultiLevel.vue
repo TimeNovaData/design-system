@@ -21,6 +21,7 @@
           @Nv0Click="() => handleClick(true)"
           @click="(e) => Nv0HandleClick(e, Nv0)"
           :showHeader="showHeader"
+          :exact="true"
         >
           <q-item-section v-if="Nv0.icon" avatar class="min-w-32 pl-10">
             <q-icon size="24px" :name="Nv0.icon"></q-icon>

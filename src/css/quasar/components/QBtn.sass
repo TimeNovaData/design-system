@@ -31,6 +31,11 @@
 
   &[secondary]
     border: 1px solid rgba(var(--neutral-100),0.1)
+    &.active
+      border: 1px solid rgba(var(--primary-pure),1) !important
+      color: rgb(var(--primary-pure)) !important
+      background: rgba(var(--primary-pure),0.05) !important
+
     &:before
       box-shadow: initial !important
     .q-btn__progress-indicator
@@ -188,6 +193,7 @@
 .body--dark
   .q-btn[secondary]
     border: 1px solid rgba(var(--white),0.1)
+    color: rgba(var(--white), 0.9)
   .q-btn
     &:focus
       outline: 1px solid rgba(var(--white),0.3) !important

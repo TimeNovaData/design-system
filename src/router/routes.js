@@ -1,13 +1,14 @@
-import DesignSystem from 'src/pages/DesignSystem/DesignSystem.vue'
+// import DesignSystem from 'src/pages/DesignSystem/DesignSystem.vue'
 import LayoutKanban from 'src/layouts/LayoutKanban.vue'
 import LayoutHome from 'src/layouts/LayoutHome.vue'
 import PageKanban from 'src/pages/Kanban/PageKanban.vue'
 import PageLogin from 'src/pages/Login/PageLogin.vue'
 import PageBlank from 'src/pages/Blank/PageBlank.vue'
+import ConsumoHoras from 'src/pages/ConsumoHoras/ConsumoHoras.vue'
 const routes = [
   {
     path: '/design-system',
-    component: DesignSystem,
+    component: () => import('src/pages/DesignSystem/DesignSystem.vue'),
   },
 
   {
@@ -17,11 +18,26 @@ const routes = [
     meta: {
       breadcrumbs: [{ label: 'Home', name: 'home' }],
     },
+    children: [
+      {
+        name: 'consumo_horas',
+        path: 'consumo_horas',
+        component: ConsumoHoras,
+        meta: {
+          breadcrumbs: [
+            { label: 'Home', name: 'home' },
+            { label: 'Horas Consumidas', name: 'consumo_horas' },
+          ],
+        },
+      },
+    ],
   },
+
   {
     path: '/login',
     name: 'login',
     component: PageLogin,
+    // meta: { transition: 'slide-right' },
   },
   {
     path: '/kanban/:id',
@@ -29,18 +45,19 @@ const routes = [
 
     children: [
       {
-        name: 'kanban.board',
+        name: 'kanban_board',
         path: 'board',
         component: PageKanban,
         meta: {
           breadcrumbs: [
             { label: 'Home', name: 'home' },
-            { label: 'Kanban', name: 'kanban.board' },
+            { label: 'Kanban', name: 'kanban_board' },
           ],
         },
       },
     ],
   },
+
   { path: '/:pathMatch(.*)*', component: PageBlank },
 ]
 

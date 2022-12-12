@@ -9,6 +9,7 @@
           :label="item.label"
           :to="{ name: item.name }"
           :key="item.name"
+          :exact="true"
         />
       </q-breadcrumbs>
       <q-space></q-space>
@@ -87,4 +88,5 @@ console.log(router, 'assas')
   .base-header
     --header-bg: rgb(var(--d-neutral-10))
     --header-border-b: 1px solid rgba(var(--white),0.05)
+    --breadcrumb-color: rgba(var(--white), 0.9)
 </style>

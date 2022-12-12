@@ -7,15 +7,11 @@
     class="kanban-popup-editable border border-neutral-30"
     :validate="validateFn"
   >
-    <!--     <OInput
-      size="md"
-      v-model="scope.value"
-      autofocus
-      @keyup.enter.stop
-      :mask="inputMask()"
-    > -->
-    <!--       <template v-slot:after> -->
-    <OSelect v-model="scope.value"></OSelect>
+    <pre>
+      <code>
+        {{ scope.value.map((i) => i.nome) }}
+      </code>
+    </pre>
     <div class="flex w-full no-wrap flex-1 gap-4 !mt-4">
       <OButton
         size="lg"
@@ -45,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import OInput from 'src/components/Input/OInput.vue'
 import OButton from 'src/components/Button/OButton.vue'
 import { testPattern } from 'src/utils/patterns.js'
@@ -61,7 +57,15 @@ const props = defineProps({
   // },
 })
 
-const popupValue = ref(props.value)
+watch(
+  () => props.tags,
+  () => {
+    popupValue.value = props.tags
+  },
+  { deep: true }
+)
+
+const popupValue = ref(props.tags)
 
 const validateFn = (val) => {
   // return testPattern[props.type](val)

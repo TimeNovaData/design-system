@@ -33,9 +33,14 @@ onMounted(async () => {
   --header-bg: white
   --top-size: var(--header-base-height)
   margin-left: var(--Nv0-sidebar-width)
-  margin-top: var(--top-size)
+  // margin-top: var(--top-size)
   height: calc(100vh - var(--top-size))
 
   .body--dark &
-    background: rgb(var(--d-neutral-30))
+    background: rgb(var(--d-neutral-10))
+</style>
+
+<style lang="sass" scoped>
+.base-header
+ background: rgba(var(--white), 0.04) !important
 </style>

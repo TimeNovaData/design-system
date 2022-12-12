@@ -294,7 +294,12 @@
             class="mt-24 !text-neutral-60 dark:text-white/60"
             style="--neutral-100: var(--neutral-60)"
           ></OCheck>
-          <OButton size="lg" type="submit" primary class="w-full mt-40"
+          <OButton
+            :loading="load"
+            size="lg"
+            type="submit"
+            primary
+            class="w-full mt-40"
             >Login</OButton
           >
         </q-card>
@@ -312,11 +317,17 @@ import { useRouter } from 'vue-router'
 import OCheck from 'src/components/Checkbox/OCheck.vue'
 import gsap from 'gsap/dist/gsap'
 import imageLogin from 'src/assets/image/bg-login.jpg'
+import { storeToRefs } from 'pinia'
+import { useDarkMode } from 'src/stores/darkMode'
+
+const dark = useDarkMode()
+// const { darkMode } = storeToRefs(dark)
 const form = ref(null)
 const type = ref('password')
 const login = ref(null)
 const permanecerConectado = ref(true)
 const router = useRouter()
+const load = ref(false)
 
 const data = ref({
   login: 'emanuel2',
@@ -345,11 +356,13 @@ onMounted(() => {
 })
 
 async function onSubmit() {
+  load.value = true
   const authStore = useAuthStore()
 
   const logged = await authStore.login(data.value.login, data.value.senha)
   if (logged) router.push({ path: '/' })
   // else form.value.isInvalid()
+  load.value = false
 }
 </script>
 

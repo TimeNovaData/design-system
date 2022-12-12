@@ -87,8 +87,10 @@
                       @click="$emit('tagButtonClick')"
                     >
                       <q-icon size="1.25rem" name="add"></q-icon>
-                      <div class="hidden"></div>
-                      <KanbanTagsPopup :value="popUpTags"></KanbanTagsPopup>
+                      <KanbanTagsPopup
+                        :tags="tags"
+                        :value="popUpTags"
+                      ></KanbanTagsPopup>
                     </OButton>
                   </div>
                 </div>
@@ -321,6 +323,7 @@ const props = defineProps({
   popUpTags: Boolean,
   tags: Array,
 })
+
 const taskActive = ref('andamento')
 
 const beforeshow = (e) =>

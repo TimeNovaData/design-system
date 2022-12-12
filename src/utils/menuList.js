@@ -13,6 +13,13 @@ const menuList = [
   },
 
   {
+    title: 'Horas Consumidas',
+    nivel: 0,
+    icon: 'timelapse',
+    href: '/consumo_horas',
+  },
+
+  {
     title: 'Financeiro',
     nivel: 0,
     icon: 'credit_score',
