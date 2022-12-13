@@ -73,7 +73,6 @@ module.exports = configure(function (ctx) {
           : 'https://hub.novadata.com.br/',
 
         HTTPS_MODE: !ctx.dev,
-        development: ctx.dev,
       },
       // rawDefine: {}
       // ignorePublicFolder: true,
@@ -133,7 +132,7 @@ module.exports = configure(function (ctx) {
       //
       // components: [],
       // directives: [],
-      iconSet: 'svg-mdi-v6',
+      iconSet: 'material-symbols-rounded',
       // Quasar plugins
       plugins: ['Notify', 'Dialog', 'LoadingBar'],
     },

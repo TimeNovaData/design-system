@@ -1,13 +1,10 @@
 <template>
-  <router-view />
-  <!-- 
- <router-view v-slot="{ Component }">
-    <transition :name="$route.meta.transitionName || 'tra'">
+  <!-- <router-view v-slot="{ Component }">
+    <transition :name="$route.meta.transitionName || 'fade'">
       <component :is="Component" />
     </transition>
-  </router-view>
-
-   -->
+  </router-view> -->
+  <RouterView></RouterView>
 </template>
 
 <script>
@@ -35,8 +32,14 @@ export default defineComponent({
 })
 </script>
 
-<style>
-/* *::selection {
-  background: rgba(var(--primary-pure), 0.1);
-} */
+<style lang="sass">
+
+
+.fade-enter-active,
+.fade-leave-active
+  transition: opacity 0.5s ease
+
+.fade-enter-from,
+.fade-leave-to
+  opacity: 0
 </style>

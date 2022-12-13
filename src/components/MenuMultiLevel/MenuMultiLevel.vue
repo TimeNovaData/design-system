@@ -51,7 +51,7 @@
 import MenuLogo from './MenuLogo.vue'
 import MenuLi from './MenuLi.vue'
 
-import { onMounted, onUnmounted, ref, watch } from 'vue'
+import { onMounted, onUnmounted, ref, watch, onBeforeUnmount } from 'vue'
 import { useRoute, onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
 
 import GLOBAL from 'src/utils/GLOBAL'
@@ -87,6 +87,8 @@ onMounted(() => {
   setTimeout(() => {
     state.value.passive = false
   }, 300)
+
+  window.animaa = animate
 })
 
 watch(showHeader, () => {
@@ -147,6 +149,9 @@ onUnmounted(() => {
     open: false,
     passive: true,
   }
+  console.log('desmontou')
+  animate.logoAnimationToNDT.seek()
+  animate.logoAnimationToNovadata.seek(0)
 })
 
 function handleMouseEnter() {
