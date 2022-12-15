@@ -1,10 +1,12 @@
 import { api } from 'src/boot/axios'
 import { computed, nextTick, onMounted, ref, unref, watch } from 'vue'
 import axios from 'axios'
-import { useManualRefHistory } from '@vueuse/core'
-import { useChamadoStore } from 'src/stores/chamado.store'
 import GLOBAL from 'src/utils/GLOBAL'
 import { Notify } from 'quasar'
+import { useManualRefHistory } from '@vueuse/core'
+import { useChamadoStore } from 'src/stores/chamados/chamados.store'
+// import { useTagStore } from 'src/stores/tags/state'
+import { useFaseStore } from 'src/stores/fases/fases.store'
 
 const BACKEND_URL = process.env.BACKEND_URL
 const { URLS } = api.defaults
@@ -22,18 +24,18 @@ function convertInOnlyCardsOrCol(arr, type = 'cards') {
 export default function useKanban() {
   const colunasWithCards = ref([])
   const cardAlterado = ref({ id: null })
-  const { getFase, getChamado, getTags } = useChamadoStore()
-  const tags = ref([])
 
-  const { history, commit, clear /* undo, redo, */ } = useManualRefHistory(
-    colunasWithCards,
-    {
-      capacity: 1, // limit  history records
-      flush: 'sync', // options 'pre' (default), 'post' and 'sync'
-      clone: true,
-    }
-  )
-  // const computedOnlyCards = computed(() => onlyCards())
+  // Stores
+  const { getChamado } = useChamadoStore()
+  const { getFases } = useFaseStore()
+  // const { getTags } = useTagStore()
+
+  const { history, commit, clear } = useManualRefHistory(colunasWithCards, {
+    capacity: 1,
+    flush: 'sync',
+    clone: true,
+  })
+
   const computedOnlyCols = computed(() =>
     convertInOnlyCardsOrCol(colunasWithCards.value, 'coluna')
   )
@@ -123,6 +125,7 @@ export default function useKanban() {
       clear()
       commit()
       console.log(e)
+
       Notify.create({
         type: 'error',
         message: `Ops, Um erro ocorreu`,
@@ -139,13 +142,17 @@ export default function useKanban() {
     )
   }
 
-  onMounted(async () => {
-    const fase = await getFase()
+  async function getDadosAndDeclare() {
+    const fase = await getFases()
     colunasWithCards.value = createColunasWithCards(fase, [])
     const chamado = await getChamado()
     colunasWithCards.value = createColunasWithCards(fase, chamado)
     clear()
     commit()
+  }
+
+  onMounted(async () => {
+    getDadosAndDeclare()
   })
 
   return {
@@ -154,6 +161,7 @@ export default function useKanban() {
     commitAlt,
     returnCardPerID,
     computedOnlyCols,
+    getDadosAndDeclare,
   }
 }
 

@@ -47,6 +47,7 @@
     "prettier": "^2.8.0",
     "sass-lint": "^1.13.1",
     "vue-eslint-parser": "^9.1.0",
+    "vue-intellisense": "^1.0.1",
     "workbox-build": "^6.5.4",
     "workbox-cacheable-response": "^6.5.4",
     "workbox-core": "^6.5.4",

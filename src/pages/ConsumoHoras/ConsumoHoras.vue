@@ -14,7 +14,7 @@
             transition-show="jump-down"
             transition-hide="jump-up"
           >
-            <q-form>
+            <q-form ref="form">
               <q-list class="min-w-[23.5rem]">
                 <q-item
                   class="px-0 text-headline-3 text-neutral-60 dark:text-white/60"
@@ -24,12 +24,12 @@
                 </q-item>
                 <q-item class="px-0">
                   <OSelect
+                    v-model="filtros.cliente.model"
                     use-input
                     label="Cliente"
                     size="md"
                     class="w-full"
                     :options="filtros.cliente.options"
-                    v-model="filtros.cliente.model"
                     clearable
                   >
                   </OSelect>
@@ -262,7 +262,7 @@
 <script setup>
 import TextIcon from 'src/components/Text/TextIcon.vue'
 import OButton from 'src/components/Button/OButton.vue'
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, onMounted } from 'vue'
 import OBadge from 'src/components/Badge/OBadge.vue'
 import OTable from 'src/components/Table/OTable.vue'
 import UseConsumoHoras from 'src/composables/useConsumoHoras'
@@ -270,16 +270,59 @@ import OInput from 'src/components/Input/OInput.vue'
 import OSelect from 'src/components/Select/OSelect.vue'
 import { date } from 'quasar'
 import GLOBAL from 'src/utils/GLOBAL'
+// import { useGetStore } from 'src/stores/get.store.js'
+import { storeToRefs } from 'pinia'
+import { useClientesStore } from 'src/stores/clientes/clientes.store'
 
 const { FData } = GLOBAL
 const por = ref('projeto')
+
 const { columns, rows, filter } = UseConsumoHoras()
 
-const dataRangeFiltro = computed(() => {
-  const from = filtros.value.data.days.from
-  const to = filtros.value.data.days.to
-  return `${from && FData(from)} ${to && '  até  '} ${to && FData(to)}`
+const form = ref(null)
+
+const { getClientes, clientesOptions } = useClientesStore()
+
+onMounted(() => {
+  getClientes()
+  console.log(clientesOptions)
 })
+// const {
+//   getClientes,
+//   getProjetos,
+//   getSubProjetos,
+//   getUsuarios,
+//   /*  */
+// } = useGetStore()
+
+// const {
+//   isLoadings,
+//   clientes,
+//   projetos,
+//   subProjetos,
+//   usuarios,
+//   /*  */
+// } = storeToRefs(useGetStore())
+
+// const clienteOpts = computed(() =>
+//   clientes.value.map((i) => ({ label: i.nome, value: i.id }))
+// )
+
+// const projetosOpts = computed(() =>
+//   projetos.value.map((i) => ({ label: i.nome, value: i.id }))
+// )
+
+// onMounted(async () => {
+//   await getClientes()
+//   await getProjetos()
+//   await getSubProjetos()
+//   await getUsuarios()
+// })
+// console.log('getProjeto', getProjeto())
+// console.log('getSubProjeto', getSubProjeto())
+// console.log('getUsuario', getUsuario())
+
+// console.log(getCliente(), 'getCliente')
 
 const options = {
   chart: {
@@ -348,6 +391,12 @@ const filtros = ref({
       to: '',
     },
   },
+})
+
+const dataRangeFiltro = computed(() => {
+  const from = filtros.value.data.days.from
+  const to = filtros.value.data.days.to
+  return `${from && FData(from)} ${to && '  até  '} ${to && FData(to)}`
 })
 
 watch(

@@ -111,7 +111,7 @@ export default {
   },
 
   // return ex: '255, 255,255'
-  returnRGB: (v) => `${Object.values(colors.hexToRgb(v))}`,
+  returnRGB: (v) => (v ? `${Object.values(colors.hexToRgb(v))}` : ''),
 
   FData(value) {
     if (date.isValid(value)) {

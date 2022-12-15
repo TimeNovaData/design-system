@@ -14,6 +14,7 @@
       self="bottom start"
       class="kanban-popup-editable border border-neutral-30"
       :validate="validateFn"
+      :class="popupClass"
     >
       <OInput
         size="md"
@@ -61,6 +62,7 @@ import { testPattern } from 'src/utils/patterns.js'
 const props = defineProps({
   value: String,
   type: String,
+  popupClass: String,
   editable: {
     type: Boolean,
     default: false,
@@ -74,12 +76,14 @@ const classObj = {
 const popupValue = ref(props.value)
 
 const validateFn = (val) => {
+  if (!props.type) return true
   return testPattern[props.type](val)
 }
+
 const inputMask = () => {
   if (props.type === 'date') return '##/##/####'
   if (props.type === 'time') return '##h ##m'
-  else return null
+  else return ''
 }
 </script>
 <style lang="sass">
@@ -106,18 +110,4 @@ const inputMask = () => {
   .q-field__marginal
     height: 100% !important
 </style>
-<style lang="sass" scoped>
-.editavel
-  cursor: pointer
-  border: 1px solid transparent
-  transition: .3s
-  &:hover
-    border-color: rgba(var(--neutral-100), 0.3)
-    background: rgba(var(--neutral-30),1)
-
-.body--dark
-  .editavel
-    &:hover
-      border-color: rgba(var(--white), 0.1)
-      background: rgba(var(--white), 0.2) !important
-</style>
+<style lang="sass" scoped></style>

@@ -10,14 +10,27 @@
     <q-card class="kanban-modal q-dialog-plugin remove-styles">
       <header class="bg-neutral-30 dark:bg-d-neutral-10">
         <div>
-          <div class="text-title-2 px-24 pt-24 pb-6 flex items-center gap-12">
+          <div class="px-24 pt-24 pb-6 flex items-center gap-12">
             <q-icon
               class="w-24 h-24"
               name="svguse:/icons.svg#icon_screen"
             ></q-icon>
-            <p class="">{{ data.titulo }}</p>
+            <!-- <p class="">
+              {{ data.titulo }}
+              <KanbanPopoupEdit :value="data.titulo"></KanbanPopoupEdit>
+            </p> -->
+            <KanbanItemEditable
+              class="!text-title-2 !p-0 !bg-transparent"
+              :editable="true"
+              :value="data.titulo"
+              popup-class="!min-w-[300px]"
+            ></KanbanItemEditable>
           </div>
-          <div class="flex items-center ml-[2.25rem] gap-12 px-24">
+
+          <div
+            class="flex items-center ml-[2.25rem] gap-12 px-24"
+            v-if="data.projeto.nome"
+          >
             <!-- <p>Squad Logbit</p> -->
             <OBadge
               size="sm"
@@ -29,6 +42,36 @@
                 <p class="text-center mx-auto">{{ data.projeto.nome }}</p>
               </template>
             </OBadge>
+          </div>
+
+          <div v-else class="ml-[2.25rem] px-24 w-max no-label editavel">
+            Selecione um projeto
+            <q-popup-proxy anchor="top left" class="min-w-[430px] p-8">
+              <p class="mb-16">Selecione um projeto</p>
+              <OSelect
+                v-model="data.projeto.id"
+                :options="projetoAndSubProjetoOptions"
+                size="md"
+                behavior="menu"
+                label="Projeto"
+                :clearable="true"
+                use-input
+              ></OSelect>
+            </q-popup-proxy>
+            <!-- <q-popup-proxy
+              :model-value="false"
+              :breakpoint="450"
+              :target="true"
+              :no-parent-event="false"
+              :context-menu="false"
+              @update:model-value="null"
+              @before-show="null"
+              @show="null"
+              @before-hide="null"
+              @hide="null"
+            >
+              content
+            </q-popup-proxy> -->
           </div>
         </div>
 
@@ -313,16 +356,28 @@ import KanbanItemEditable from './KanbanItemEditable.vue'
 import OButton from 'src/components/Button/OButton.vue'
 import GLOBAL from 'src/utils/GLOBAL'
 import KanbanTagsPopup from 'src/components/Kanban/KanbanTagsPopup.vue'
+import KanbanPopoupEdit from './KanbanPopoupEdit.vue'
+import OSelect from 'src/components/Select/OSelect.vue'
 
 const { returnRGB, FData, FTime } = GLOBAL
 
 const tab = ref('info')
 const dialogState = ref(false)
+
 const props = defineProps({
-  data: Object,
+  chamado: Object,
   popUpTags: Boolean,
-  tags: Array,
+  tags: Object,
+  projetoAndSubProjetoOptions: Array,
 })
+const data = ref(props.chamado)
+
+watch(
+  () => props.chamado,
+  (v) => {
+    data.value = v
+  }
+)
 
 const taskActive = ref('andamento')
 
@@ -423,4 +478,21 @@ defineExpose({ dialogRef })
    display: grid
    grid-template-columns: minmax(560px,1fr) minmax( 256px,1fr)
    column-gap: 1rem
+
+
+.kanban-modal
+  .editavel
+    cursor: pointer
+    border: 1px solid transparent
+    transition: .3s
+    border-radius: 3px
+    &:hover
+      border-color: rgba(var(--neutral-100), 0.3)
+      background: rgba(var(--neutral-30),1)
+
+  .body--dark &
+    .editavel
+      &:hover
+        border-color: rgba(var(--white), 0.1)
+        background: rgba(var(--white), 0.2) !important
 </style>

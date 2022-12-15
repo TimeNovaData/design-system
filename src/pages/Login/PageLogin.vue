@@ -325,9 +325,9 @@ const dark = useDarkMode()
 const form = ref(null)
 const type = ref('password')
 const login = ref(null)
-const permanecerConectado = ref(true)
 const router = useRouter()
 const load = ref(false)
+const permanecerConectado = ref(true)
 
 const data = ref({
   login: 'emanuel2',
@@ -341,6 +341,7 @@ onMounted(() => {
     opacity: 0,
     y: 90,
   })
+
   gsap.to('.form-login', {
     opacity: 1,
     y: 0,
