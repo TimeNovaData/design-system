@@ -1,5 +1,5 @@
 // file referenced from docs
-
+// prettier-ignore
 const
   hex = /^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/,
   hexa = /^#[0-9a-fA-F]{4}([0-9a-fA-F]{4})?$/,
@@ -8,9 +8,11 @@ const
   rgba = /^rgba\(((0|[1-9][\d]?|1[\d]{0,2}|2[\d]?|2[0-4][\d]|25[0-5]),){2}(0|[1-9][\d]?|1[\d]{0,2}|2[\d]?|2[0-4][\d]|25[0-5]),(0|0\.[0-9]+[1-9]|0\.[1-9]+|1)\)$/
 
 // Keep in sync with ui/types/api/validation.d.ts
+// prettier-ignore
 export const testPattern = {
   date: v => /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i.test(v),
-  time: v => /^([0-1]?\d|2[0-3]):[0-5]\d$/.test(v),
+  // time: v => /^([0-1]?\d|2[0-3]):[0-5]\d$/.test(v),
+
   fulltime: v => /^([0-1]?\d|2[0-3]):[0-5]\d:[0-5]\d$/.test(v),
   timeOrFulltime: v => /^([0-1]?\d|2[0-3]):[0-5]\d(:[0-5]\d)?$/.test(v),
 
@@ -36,5 +38,5 @@ export const testPattern = {
 }
 
 export default {
-  testPattern
+  testPattern,
 }

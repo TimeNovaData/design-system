@@ -23,6 +23,15 @@
           size="sm"
           secondary
           class="bg-white/10 !py-0 !h-32 !border-transparent"
+          @click="updateDados"
+        >
+          <q-icon size="1.5rem" name="replay"></q-icon>
+        </OButton>
+
+        <OButton
+          size="sm"
+          secondary
+          class="bg-white/10 !py-0 !h-32 !border-transparent"
         >
           <!-- <q-icon size="1.5rem" name="svguse:/icons.svg#icon_filter"></q-icon> -->
           <q-icon size="1.5rem" name="filter_alt"></q-icon>
@@ -52,8 +61,10 @@
 import { ref } from 'vue'
 import OButton from 'src/components/Button/OButton.vue'
 const emit = defineEmits(['tree-points-click'])
-
 const tab = ref('quadro')
+const props = defineProps({
+  updateDados: Function,
+})
 </script>
 
 <style lang="sass">

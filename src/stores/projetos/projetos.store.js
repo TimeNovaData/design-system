@@ -11,15 +11,8 @@ export const useProjetoStore = defineStore('projetoStore', () => {
   const subProjetos = ref([])
   const isLoading = ref(false)
 
-  const projetosOptions = computed(() =>
-    projetos.value.map((i) => ({ label: i.nome, value: i.id }))
-  )
-
-  const subProjetoOptions = computed(() =>
-    projetos.value.map((i) => ({ label: i.nome, value: i.id }))
-  )
   const projetoAndSubProjetoOptions = computed(() =>
-    subProjetoOptions.value.concat(projetosOptions.value)
+    subProjetos.value.concat(projetos.value)
   )
 
   function setProjetos(value) {
@@ -70,8 +63,6 @@ export const useProjetoStore = defineStore('projetoStore', () => {
     setSubProjetos,
     projetos,
     subProjetos,
-    projetosOptions,
-    subProjetoOptions,
     projetoAndSubProjetoOptions,
   }
 })

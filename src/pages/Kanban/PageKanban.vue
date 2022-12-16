@@ -25,8 +25,8 @@
           }"
           group="a"
           itemKey="name"
-          @end="(e) => handleStartEndDrag(e, false)"
-          @start="(e) => handleStartEndDrag(e, true)"
+          @end="(e) => startAndEndDrag(e, false)"
+          @start="(e) => startAndEndDrag(e, true)"
         >
           <template #item="{ element }">
             <KanbanCard
@@ -47,17 +47,17 @@
   <KanbanModal
     ref="modal"
     :chamado="chamadoAtivo"
-    :popUpTags="popUpTags"
     :tags="tags"
     :projetoAndSubProjetoOptions="projetoAndSubProjetoOptions"
     @tagButtonClick="handleGetTags"
+    @changed="commitAlt(colunasWithCards)"
   ></KanbanModal>
 
   <img :src="kanbanBG" aria-hidden="true" class="image-bg" alt="" />
 </template>
 
 <script setup>
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, provide, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useKanbanBG } from 'src/stores/kanbanBG'
 import { useVisaoExpandida } from 'src/stores/visaoExpandida'
@@ -76,8 +76,6 @@ const { /*  generateRange, modelo1, */ setHeightInCol } = GLOBAL
 const { kanbanBG } = storeToRefs(useKanbanBG())
 const { visaoExpandida } = storeToRefs(useVisaoExpandida())
 
-const popUpTags = ref(false)
-
 const modal = ref(null)
 const chamadoAtivo = ref(null)
 
@@ -86,8 +84,10 @@ const {
   cardAlterado,
   commitAlt,
   returnCardPerID,
-  getDadosAndDeclare,
-  /*    */
+  // getDadosAndDeclare,
+  startAndEndDrag,
+
+  drag,
 } = useKanban()
 
 // Store to refs
@@ -102,7 +102,7 @@ const {
 const { projetoAndSubProjetoOptions } = storeToRefs(useProjetoStore())
 
 // Drag
-const drag = ref(false)
+
 const removeEventsWrapper = ref(false)
 const enableDragScroll = GLOBAL.enableDragScroll(removeEventsWrapper)
 
@@ -110,49 +110,9 @@ watch(drag, () => setHeightInCol())
 watch(visaoExpandida, () => setTimeout(() => setHeightInCol(), 300))
 watch(colunasWithCards, () => setTimeout(() => setHeightInCol(), 300))
 
-async function handleStartEndDrag(e, start) {
-  e.stopImmediatePropagation()
-  e.stopPropagation()
-
-  drag.value = start
-
-  const { oldIndex, newIndex, to, from, item } = e
-
-  const id = item._underlying_vm_.id
-  const fromID = from.closest('.kanban-col').getAttribute('data-id')
-  const toID = to.closest('.kanban-col').getAttribute('data-id')
-
-  const data = {
-    id,
-    oldIndex,
-    newIndex,
-    to,
-    from,
-    toID,
-    fromID,
-  }
-
-  cardAlterado.value = { id }
-
-  if (!start) {
-    const v = colunasWithCards.value.map(mudaAFase(data))
-    commitAlt(v)
-  }
-}
-
-function mudaAFase({ toID, id }) {
-  return function (chamado) {
-    if (chamado.coluna.id === Number(toID)) {
-      const index = chamado.cards.findIndex((card) => card.id === Number(id))
-
-      chamado.cards[index].fase = chamado.coluna
-    }
-    return chamado
-  }
-}
-
 function handleCardClick(element) {
   chamadoAtivo.value = returnCardPerID(element.id)
+  cardAlterado.value = chamadoAtivo.value
   modal.value.dialogRef.show()
 }
 
@@ -162,9 +122,6 @@ function handleColClick(e) {
 }
 
 async function createNewChamado(colData) {
-  getProjetos()
-  getSubProjetos()
-
   const dados = {
     idColuna: colData.id,
   }
@@ -178,6 +135,7 @@ async function createNewChamado(colData) {
       cor: '',
       projeto: null,
     },
+    data_criacao: '',
   })
 
   const oi = {
@@ -268,7 +226,6 @@ async function createNewChamado(colData) {
 
 async function handleGetTags() {
   await getTags()
-  popUpTags.value = true
 }
 
 onMounted(() => {
@@ -276,6 +233,8 @@ onMounted(() => {
   document
     .querySelector('.kanban-col--wrapper')
     .dispatchEvent(new Event('mousedown'))
+  getProjetos()
+  getSubProjetos()
 })
 
 const dragOptions = computed(() => ({
@@ -284,6 +243,10 @@ const dragOptions = computed(() => ({
   disabled: false,
   ghostClass: 'ghost',
 }))
+
+provide('chamado', chamadoAtivo)
+provide('tags', tags)
+provide('projetoAndSubProjetoOptions', projetoAndSubProjetoOptions)
 </script>
 
 <style lang="sass">

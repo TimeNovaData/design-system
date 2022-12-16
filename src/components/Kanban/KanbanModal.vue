@@ -1,9 +1,9 @@
 <template>
   <q-dialog
     ref="dialogRef"
-    @hide="onDialogHide"
     transition-hide="slide-down"
     v-model="dialogState"
+    @hide="onDialogHide"
     @before-show="beforeshow"
     @before-hide="beforehide"
   >
@@ -15,63 +15,58 @@
               class="w-24 h-24"
               name="svguse:/icons.svg#icon_screen"
             ></q-icon>
-            <!-- <p class="">
-              {{ data.titulo }}
-              <KanbanPopoupEdit :value="data.titulo"></KanbanPopoupEdit>
-            </p> -->
+
             <KanbanItemEditable
               class="!text-title-2 !p-0 !bg-transparent"
+              popup-class="!min-w-[18.75rem]"
               :editable="true"
               :value="data.titulo"
-              popup-class="!min-w-[300px]"
+              @update="(v) => updateValue('titulo')(v)"
             ></KanbanItemEditable>
           </div>
 
           <div
-            class="flex items-center ml-[2.25rem] gap-12 px-24"
-            v-if="data.projeto.nome"
+            class="ml-[3.75rem] pr-24 w-max no-label editavel group inline-flex items-center"
           >
-            <!-- <p>Squad Logbit</p> -->
-            <OBadge
-              size="sm"
-              :badge="false"
-              :color="returnRGB(data.projeto.cor)"
-              square
+            <div class="" v-if="data.projeto.nome">
+              <!-- <p>Squad Logbit</p> -->
+              <OBadge
+                size="sm"
+                :badge="false"
+                :color="returnRGB(data.projeto.cor)"
+                square
+              >
+                <template #content>
+                  <p class="text-center mx-auto">{{ data.projeto.nome }}</p>
+                </template>
+              </OBadge>
+            </div>
+            <div v-else>Selecione um projeto</div>
+            <q-icon
+              class="opacity-0 group-hover:opacity-100 relative -right-16"
+              name="expand_more"
+            ></q-icon>
+            <q-popup-edit
+              anchor="top left"
+              class="w-[26.875rem] p-8"
+              @update="(v) => updateValue('projeto')(v)"
+              :model-value="projetoSelected"
+              ref="popupUpProjeto"
             >
-              <template #content>
-                <p class="text-center mx-auto">{{ data.projeto.nome }}</p>
-              </template>
-            </OBadge>
-          </div>
-
-          <div v-else class="ml-[2.25rem] px-24 w-max no-label editavel">
-            Selecione um projeto
-            <q-popup-proxy anchor="top left" class="min-w-[430px] p-8">
               <p class="mb-16">Selecione um projeto</p>
               <OSelect
-                v-model="data.projeto.id"
-                :options="projetoAndSubProjetoOptions"
+                option-value="id"
+                option-label="nome"
                 size="md"
                 behavior="menu"
                 label="Projeto"
-                :clearable="true"
                 use-input
+                :auto-save="true"
+                v-model="projetoSelected"
+                :options="projetoAndSubProjetoOptions"
+                @update:model-value="handleProjetoUpdate"
               ></OSelect>
-            </q-popup-proxy>
-            <!-- <q-popup-proxy
-              :model-value="false"
-              :breakpoint="450"
-              :target="true"
-              :no-parent-event="false"
-              :context-menu="false"
-              @update:model-value="null"
-              @before-show="null"
-              @show="null"
-              @before-hide="null"
-              @hide="null"
-            >
-              content
-            </q-popup-proxy> -->
+            </q-popup-edit>
           </div>
         </div>
 
@@ -104,6 +99,7 @@
           <q-tab-panel name="info">
             <q-scroll-area class="fit">
               <article class="grid-info px-24 pt-24">
+                {{ data.projeto }}
                 <div>
                   <KanbanSectionHeader
                     text="Tags"
@@ -129,11 +125,29 @@
                       tertiary
                       @click="$emit('tagButtonClick')"
                     >
-                      <q-icon size="1.25rem" name="add"></q-icon>
-                      <KanbanTagsPopup
-                        :tags="tags"
-                        :value="popUpTags"
-                      ></KanbanTagsPopup>
+                      <q-icon size="20px" name="add"></q-icon>
+
+                      <!-- @update="(v) => updateValue('projeto')(v)" -->
+                      <!-- <q-popup-edit
+                        anchor="top left"
+                        class="w-[26.875rem] p-8"
+                        :model-value="tagSelected"
+                        ref="popUpTags"
+                      >
+                        <p class="mb-16">Selecione uma Tag</p>
+                        <OSelect
+                          option-value="id"
+                          option-label="nome"
+                          size="md"
+                          behavior="menu"
+                          label="Projeto"
+                          use-input
+                          :auto-save="true"
+                          v-model="tagSelected"
+                          :options="tags"
+                          @update:model-value="handleProjetoUpdate"
+                        ></OSelect>
+                      </q-popup-edit> -->
                     </OButton>
                   </div>
                 </div>
@@ -174,9 +188,8 @@
 
                     <div class="mt-6">
                       <KanbanItemEditable
-                        :value="FData(data.data_criacao)"
-                        :editable="true"
                         type="date"
+                        :value="FData(data.data_criacao)"
                       />
                     </div>
                   </div>
@@ -187,7 +200,15 @@
                     />
 
                     <div class="mt-6">
-                      <KanbanItemEditable :value="FData(data.data_desejada)" />
+                      <KanbanItemEditable
+                        :value="FData(data.data_desejada)"
+                        @update="
+                          (v) =>
+                            updateValue('data_desejada')(GLOBAL.FDateBRtoEU(v))
+                        "
+                        type="date"
+                        :editable="true"
+                      />
                     </div>
                   </div>
                   <div>
@@ -197,7 +218,15 @@
                     />
 
                     <div class="mt-6">
-                      <KanbanItemEditable :value="FData(data.data_prevista)" />
+                      <KanbanItemEditable
+                        :value="FData(data.data_prevista)"
+                        @update="
+                          (v) =>
+                            updateValue('data_prevista')(GLOBAL.FDateBRtoEU(v))
+                        "
+                        type="date"
+                        :editable="true"
+                      />
                     </div>
                   </div>
                 </div>
@@ -212,7 +241,9 @@
                       <KanbanItemEditable
                         :value="FTime(data.tempo_estimado)"
                         :editable="true"
+                        :notFormat="true"
                         type="time"
+                        @update="(v) => updateValue('tempo_estimado')(v)"
                       />
                     </div>
                   </div>
@@ -244,9 +275,22 @@
                   class="ml-24 pt-16 text-neutral-70 text-paragraph-2 dark:text-white/80"
                 >
                   <div class="descricao-content">
-                    <div v-html="data.descricao_quill_html"></div>
+                    <div v-html="data.descricao"></div>
                   </div>
-                  <p v-show="!data.descricao_quill_html">Sem Descrição</p>
+
+                  <div class="flex w-full mt-8 justify-end">
+                    <OButton class="" size="md" secondary icon="edit_note">
+                      Editar
+                      <q-popup-edit
+                        anchor="top left"
+                        class="w-[800px]"
+                        @update="(v) => updateValue('descricao')(v)"
+                        :model-value="data.descricao"
+                      >
+                        <q-editor v-model="data.descricao" min-height="5rem" />
+                      </q-popup-edit>
+                    </OButton>
+                  </div>
                 </div>
               </section>
 
@@ -259,7 +303,7 @@
                   >
                     <q-icon
                       class="opacity-40"
-                      size="1.25rem"
+                      size="20px"
                       name="svguse:/icons.svg#icon_historic"
                     ></q-icon>
                     <p class="">Histórico de atividade</p>
@@ -287,7 +331,7 @@
                   >
                     <template #content>
                       <q-icon
-                        size="20px"
+                        size="1.25rem"
                         name="svguse:/icons.svg#icon_andamento"
                       ></q-icon>
                       <p class="font-normal">Tarefas em andamento</p>
@@ -304,7 +348,7 @@
                   >
                     <template #content>
                       <q-icon
-                        size="20px"
+                        size="1.25rem"
                         name="svguse:/icons.svg#icon_concluido"
                       ></q-icon>
                       <p class="font-normal">Tarefas Concluidas</p>
@@ -347,7 +391,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed, inject, toRaw } from 'vue'
 import { useDialogPluginComponent } from 'quasar'
 import OBadge from 'src/components/Badge/OBadge.vue'
 import KanbanSectionHeader from './KanbanSectionHeader.vue'
@@ -355,29 +399,19 @@ import AvatarMultiple from 'src/components/Avatar/AvatarMultiple.vue'
 import KanbanItemEditable from './KanbanItemEditable.vue'
 import OButton from 'src/components/Button/OButton.vue'
 import GLOBAL from 'src/utils/GLOBAL'
-import KanbanTagsPopup from 'src/components/Kanban/KanbanTagsPopup.vue'
-import KanbanPopoupEdit from './KanbanPopoupEdit.vue'
+// import KanbanPopoupEdit from './KanbanPopoupEdit.vue'
 import OSelect from 'src/components/Select/OSelect.vue'
 
 const { returnRGB, FData, FTime } = GLOBAL
 
+const data = inject('chamado')
+const tags = inject('tags')
+const projetoAndSubProjetoOptions = inject('projetoAndSubProjetoOptions')
+const popupUpProjeto = ref(null)
 const tab = ref('info')
 const dialogState = ref(false)
-
-const props = defineProps({
-  chamado: Object,
-  popUpTags: Boolean,
-  tags: Object,
-  projetoAndSubProjetoOptions: Array,
-})
-const data = ref(props.chamado)
-
-watch(
-  () => props.chamado,
-  (v) => {
-    data.value = v
-  }
-)
+const projetoSelected = ref('')
+// const projetoOptions = projetoAndSubProjetoOptions
 
 const taskActive = ref('andamento')
 
@@ -391,11 +425,25 @@ const changeTask = () => {
     taskActive.value === 'andamento' ? 'concluidas' : 'andamento'
 }
 
-defineEmits([
+function updateValue(type) {
+  return function (value) {
+    data.value[type] = value
+    emit('changed')
+  }
+}
+
+// function updateProjeto(v) {
+//   data.value.projeto = v
+//   emit('changed')
+
+// }
+
+const emit = defineEmits([
   // REQUIRED; need to specify some events that your
   // component will emit through useDialogPluginComponent()
   ...useDialogPluginComponent.emits,
   'tagButtonClick',
+  'changed',
 ])
 
 const { dialogRef, onDialogHide, onDialogOK, onDialogCancel, onDialogShow } =
@@ -415,6 +463,22 @@ function onOKClick() {
   // or with payload: onDialogOK({ ... })
   // ...and it will also hide the dialog automatically
 }
+
+// function filterFn(val, update) {
+//   debugger
+//   update(() => {
+//     const needle = val.toLowerCase()
+//     options.value = options.value.filter(
+//       (v) => v.toLowerCase().indexOf(needle) > -1
+//     )
+//   })
+// }
+
+function handleProjetoUpdate(v) {
+  popupUpProjeto.value.hide()
+  updateValue('projeto')(v)
+}
+
 const showTabs = ref(false)
 
 watch(dialogState, () => {
@@ -444,30 +508,30 @@ defineExpose({ dialogRef })
     border-color: rgba(var(--white),0.05)
 
 .q-dialog__backdrop
-  backdrop-filter: blur(5px)
+  backdrop-filter: blur(.3125rem)
 </style>
 
 <style lang="sass" scoped>
 @import "src/css/quasar/variables.sass"
 .kanban-modal
   height: 95vh
-  width: 880px
+  width: 55rem
   background: var(--kanban-modal-bg)
-  border-radius: 6px
+  border-radius: .375rem
   overflow: hidden
   display: flex
   flex-direction: column
   .descricao-content
     :deep(img)
-      max-height: 13.75rem
-      margin: .5rem 0
+      max-height: 220px
+      margin: 8px 0
       border-radius: $generic-border-radius
       object-fit: contain
 .kanban-modal-separator
-  height: 1px
+  height: .0625rem
   width: 100%
   background: rgba(var(--neutral-100), 0.1)
-  margin: 1rem 0
+  margin: 16px 0
   border: 0
   display: block
   .body--dark &
@@ -476,16 +540,16 @@ defineExpose({ dialogRef })
 
 .grid-info
    display: grid
-   grid-template-columns: minmax(560px,1fr) minmax( 256px,1fr)
-   column-gap: 1rem
+   grid-template-columns: minmax(35rem,1fr) minmax( 16rem,1fr)
+   column-gap: 16px
 
 
 .kanban-modal
   .editavel
     cursor: pointer
-    border: 1px solid transparent
+    border: .0625rem solid transparent
     transition: .3s
-    border-radius: 3px
+    border-radius: .1875rem
     &:hover
       border-color: rgba(var(--neutral-100), 0.3)
       background: rgba(var(--neutral-30),1)

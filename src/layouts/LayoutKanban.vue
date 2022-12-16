@@ -30,7 +30,10 @@
         </OButton>
       </template>
     </BaseHeader>
-    <KanbanHeader @tree-points-click="openModalRight"></KanbanHeader>
+    <KanbanHeader
+      @tree-points-click="openModalRight"
+      :updateDados="updateDados"
+    ></KanbanHeader>
     <KanbanModalRight ref="modalRight"></KanbanModalRight>
     <q-page-container
       class="kanban-page-container"
@@ -50,6 +53,9 @@ import menuList from 'src/utils/menuList.js'
 import KanbanModalRight from 'src/components/Kanban/KanbanModalRight.vue'
 import OInput from 'src/components/Input/OInput.vue'
 import OButton from 'src/components/Button/OButton.vue'
+import useKanban from 'src/composables/UseKanban'
+
+const { updateDados } = useKanban()
 const dev = process.env.dev
 
 const modalRight = ref(null)

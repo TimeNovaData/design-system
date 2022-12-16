@@ -121,6 +121,14 @@ export default {
     }
   },
 
+  FDateBRtoEU(value) {
+    if (date.isValid(value)) {
+      return date.formatDate(value, 'YYYY-MM-DD')
+    } else {
+      return '-'
+    }
+  },
+
   FTime(value /* 00:00:00 */) {
     const hora = value?.slice(0, 2)
     const minutos = value?.slice(3, 5)

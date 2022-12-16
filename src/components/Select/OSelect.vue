@@ -2,8 +2,8 @@
   <q-select
     ref="componentRef"
     :class="'size-' + attrs.size"
-    :size="null"
     v-bind="attrs"
+    :size="null"
     popup-content-class="select-menu"
   >
     <template v-for="slot in Object.keys(slots)" #[slot]="slotProps">
@@ -24,7 +24,6 @@ const attrs = useAttrs()
 const componentRef = ref(null)
 
 defineExpose({ componentRef })
-
 </script>
 
 <style lang="sass"></style>

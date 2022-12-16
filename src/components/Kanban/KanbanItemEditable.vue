@@ -9,6 +9,7 @@
     <q-popup-edit
       v-if="editable"
       v-model="popupValue"
+      :model-value="popupValue"
       v-slot="scope"
       anchor="top start"
       self="bottom start"
@@ -36,6 +37,7 @@
 
             <OButton
               size="lg"
+              @click="$emit('update', scope.value)"
               @click.stop.prevent="scope.set"
               class="w-full flex-1"
               primary
@@ -63,6 +65,10 @@ const props = defineProps({
   value: String,
   type: String,
   popupClass: String,
+  notFormat: {
+    type: Boolean,
+    default: false,
+  },
   editable: {
     type: Boolean,
     default: false,
@@ -76,13 +82,13 @@ const classObj = {
 const popupValue = ref(props.value)
 
 const validateFn = (val) => {
-  if (!props.type) return true
+  if (!props.type || props.notFormat) return true
   return testPattern[props.type](val)
 }
 
 const inputMask = () => {
   if (props.type === 'date') return '##/##/####'
-  if (props.type === 'time') return '##h ##m'
+  if (props.type === 'time') return '##h##m'
   else return ''
 }
 </script>

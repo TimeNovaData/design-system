@@ -24,7 +24,7 @@ function convertInOnlyCardsOrCol(arr, type = 'cards') {
 export default function useKanban() {
   const colunasWithCards = ref([])
   const cardAlterado = ref({ id: null })
-
+  const drag = ref(false)
   // Stores
   const { getChamado } = useChamadoStore()
   const { getFases } = useFaseStore()
@@ -106,11 +106,13 @@ export default function useKanban() {
     )
 
     try {
-      // patch no chamado mudando a ordem
-      await api.patch(
-        URLS.chamado + cardAlterado.value.id + '/' + '?no_loading',
-        diff
-      )
+      // patch no chamado mudando a fase
+      if (diff) {
+        await api.patch(
+          URLS.chamado + cardAlterado.value.id + '/' + '?no_loading',
+          diff
+        )
+      }
 
       // atualiza a ordem
       await axios.post(
@@ -147,8 +149,63 @@ export default function useKanban() {
     colunasWithCards.value = createColunasWithCards(fase, [])
     const chamado = await getChamado()
     colunasWithCards.value = createColunasWithCards(fase, chamado)
+    commit()
+  }
+
+  async function updateDados() {
+    const fase = await getFases()
+    const chamado = await getChamado()
+    const value = createColunasWithCards(fase, chamado)
+    colunasWithCards.value = value
     clear()
     commit()
+  }
+
+  function startAndEndDrag(e, start) {
+    e.stopImmediatePropagation()
+    e.stopPropagation()
+    drag.value = start
+
+    const { oldIndex, newIndex, to, from, item } = e
+
+    const id = item._underlying_vm_.id
+    const fromID = from.closest('.kanban-col').getAttribute('data-id')
+    const toID = to.closest('.kanban-col').getAttribute('data-id')
+
+    const data = {
+      id,
+      oldIndex,
+      newIndex,
+      to,
+      from,
+      toID,
+      fromID,
+    }
+
+    cardAlterado.value = { id }
+
+    if (!start) {
+      const v = colunasWithCards.value //
+        .map(mudaAFase(data))
+        .map(mudaAOrdem)
+
+      commitAlt(v)
+    }
+  }
+
+  function mudaAOrdem(i) {
+    i.cards.map((i, index) => (i.ordem = index))
+    return i
+  }
+  function mudaAFase({ toID, id }) {
+    return function (chamado) {
+      if (chamado.coluna.id === Number(toID)) {
+        const index = chamado.cards.findIndex((card) => card.id === Number(id))
+
+        chamado.cards[index].fase = chamado.coluna
+      }
+      return chamado
+    }
   }
 
   onMounted(async () => {
@@ -162,6 +219,9 @@ export default function useKanban() {
     returnCardPerID,
     computedOnlyCols,
     getDadosAndDeclare,
+    updateDados,
+    startAndEndDrag,
+    drag,
   }
 }
 
