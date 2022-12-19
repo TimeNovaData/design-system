@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { api } from 'src/boot/axios'
 import { useAxios } from '@vueuse/integrations/useAxios'
 
 const { URLS } = api.defaults
 
-export const useTagsStore = defineStore('tagStore', () => {
+export const useTagStore = defineStore('tagStore', () => {
   const isLoading = ref(false)
   const tags = ref([])
 
@@ -17,9 +17,8 @@ export const useTagsStore = defineStore('tagStore', () => {
       { method: 'GET' },
       api
     )
-
     try {
-      setTags(data)
+      setTags(data.value)
       return data.value
     } catch (e) {
       return error

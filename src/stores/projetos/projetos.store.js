@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { api } from 'src/boot/axios'
-// const BACKEND_URL = process.env.BACKEND_URL
 import { useAxios } from '@vueuse/integrations/useAxios'
 
 const { URLS } = api.defaults

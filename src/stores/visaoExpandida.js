@@ -7,11 +7,19 @@ export const useVisaoExpandida = defineStore('visaoExpandida', () => {
 
   onMounted(() => {
     if (LocalStorage.has('visaoExpandida')) {
-      visaoExpandida.value = LocalStorage.getItem('visaoExpandida') 
+      visaoExpandida.value = LocalStorage.getItem('visaoExpandida')
     } else {
-      LocalStorage.set('visaoExpandida',visaoExpandida.value)
+      LocalStorage.set('visaoExpandida', visaoExpandida.value)
     }
   })
+
+  function initDarkMode() {
+    if (LocalStorage.has('visaoExpandida')) {
+      visaoExpandida.value = LocalStorage.getItem('visaoExpandida')
+    } else {
+      LocalStorage.set('visaoExpandida', visaoExpandida.value)
+    }
+  }
 
   watch(visaoExpandida, (newX) => {
     LocalStorage.set('visaoExpandida', visaoExpandida.value)

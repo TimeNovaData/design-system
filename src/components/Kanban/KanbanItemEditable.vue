@@ -9,13 +9,14 @@
     <q-popup-edit
       v-if="editable"
       v-model="popupValue"
-      :model-value="popupValue"
       v-slot="scope"
+      :model-value="popupValue"
       anchor="top start"
       self="bottom start"
       class="kanban-popup-editable border border-neutral-30"
       :validate="validateFn"
       :class="popupClass"
+      tabindex="1"
     >
       <OInput
         size="md"
@@ -23,6 +24,7 @@
         autofocus
         @keyup.enter.stop
         :mask="inputMask()"
+        tabindex="2"
       >
         <template v-slot:after>
           <div class="flex w-full no-wrap flex-1 gap-4 !mt-4">
@@ -31,6 +33,7 @@
               @click.stop.prevent="scope.cancel"
               class="w-full flex-1"
               tertiary
+              tabindex="4"
             >
               Cancelar
             </OButton>
@@ -45,6 +48,7 @@
                 scope.validate(scope.value) === false ||
                 scope.initialValue === scope.value
               "
+              tabindex="3"
             >
               Atualizar
             </OButton>

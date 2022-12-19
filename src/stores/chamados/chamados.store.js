@@ -9,7 +9,6 @@ const { URLS } = api.defaults
 export const useChamadoStore = defineStore('chamadoStore', () => {
   const chamados = ref(false)
   const isLoading = ref(false)
-  const tags = ref([])
 
   async function getChamado() {
     isLoading.value = true
@@ -58,6 +57,5 @@ export const useChamadoStore = defineStore('chamadoStore', () => {
   return {
     getChamado,
     createChamado,
-    tags,
   }
 })

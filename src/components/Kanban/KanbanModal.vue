@@ -1,8 +1,8 @@
 <template>
   <q-dialog
+    v-model="dialogState"
     ref="dialogRef"
     transition-hide="slide-down"
-    v-model="dialogState"
     @hide="onDialogHide"
     @before-show="beforeshow"
     @before-hide="beforehide"
@@ -17,7 +17,7 @@
             ></q-icon>
 
             <KanbanItemEditable
-              class="!text-title-2 !p-0 !bg-transparent"
+              class="!text-title-2 !p-0 !bg-transparent !w-full !flex relative -left-6 pl-6"
               popup-class="!min-w-[18.75rem]"
               :editable="true"
               :value="data.titulo"
@@ -25,11 +25,11 @@
             ></KanbanItemEditable>
           </div>
 
+          <!--   PROJETO -->
           <div
             class="ml-[3.75rem] pr-24 w-max no-label editavel group inline-flex items-center"
           >
             <div class="" v-if="data.projeto.nome">
-              <!-- <p>Squad Logbit</p> -->
               <OBadge
                 size="sm"
                 :badge="false"
@@ -41,32 +41,21 @@
                 </template>
               </OBadge>
             </div>
+
             <div v-else>Selecione um projeto</div>
+
             <q-icon
               class="opacity-0 group-hover:opacity-100 relative -right-16"
               name="expand_more"
             ></q-icon>
-            <q-popup-edit
-              anchor="top left"
-              class="w-[26.875rem] p-8"
-              @update="(v) => updateValue('projeto')(v)"
-              :model-value="projetoSelected"
-              ref="popupUpProjeto"
-            >
-              <p class="mb-16">Selecione um projeto</p>
-              <OSelect
-                option-value="id"
-                option-label="nome"
-                size="md"
-                behavior="menu"
-                label="Projeto"
-                use-input
-                :auto-save="true"
-                v-model="projetoSelected"
-                :options="projetoAndSubProjetoOptions"
-                @update:model-value="handleProjetoUpdate"
-              ></OSelect>
-            </q-popup-edit>
+
+            <KanbanItemEditableSelect
+              @updateValue="(v) => updateValue('projeto')(v)"
+              text="Selecione um projeto"
+              :options="projetoAndSubProjetoOptions"
+              selectLabel="Projeto"
+              :selected="data.projeto"
+            ></KanbanItemEditableSelect>
           </div>
         </div>
 
@@ -78,8 +67,20 @@
         >
           <q-tab :ripple="false" name="info" label="Informações gerais"></q-tab>
           <q-tab :ripple="false" name="tarefas" label="Tarefas"></q-tab>
-          <q-tab :ripple="false" name="anexos" label="Anexos" disable></q-tab>
-          <q-tab :ripple="false" name="chat" label="Chat" disable></q-tab>
+          <q-tab
+            :ripple="false"
+            name="anexos"
+            label="Anexos"
+            disable
+            class="!opacity-10"
+          ></q-tab>
+          <q-tab
+            :ripple="false"
+            name="chat"
+            label="Chat"
+            disable
+            class="!opacity-10"
+          ></q-tab>
         </q-tabs>
       </header>
 
@@ -99,7 +100,6 @@
           <q-tab-panel name="info">
             <q-scroll-area class="fit">
               <article class="grid-info px-24 pt-24">
-                {{ data.projeto }}
                 <div>
                   <KanbanSectionHeader
                     text="Tags"
@@ -125,29 +125,52 @@
                       tertiary
                       @click="$emit('tagButtonClick')"
                     >
-                      <q-icon size="20px" name="add"></q-icon>
-
-                      <!-- @update="(v) => updateValue('projeto')(v)" -->
-                      <!-- <q-popup-edit
-                        anchor="top left"
-                        class="w-[26.875rem] p-8"
-                        :model-value="tagSelected"
-                        ref="popUpTags"
+                      <q-tooltip v-bind="tooltipProps"
+                        >Adicionar/Remover</q-tooltip
                       >
-                        <p class="mb-16">Selecione uma Tag</p>
-                        <OSelect
-                          option-value="id"
-                          option-label="nome"
-                          size="md"
-                          behavior="menu"
-                          label="Projeto"
-                          use-input
-                          :auto-save="true"
-                          v-model="tagSelected"
-                          :options="tags"
-                          @update:model-value="handleProjetoUpdate"
-                        ></OSelect>
-                      </q-popup-edit> -->
+                      <q-icon size="20px" name="add"></q-icon>
+                      <KanbanItemEditableSelect
+                        :options="tagsList"
+                        text="Selecione uma Tag"
+                        @updateValue="(v) => updateValue('tag')(unref(v))"
+                        :selectProps="{
+                          multiple: true,
+                          'use-chips': true,
+                        }"
+                        :selected="data.tag"
+                        :closeOnSelect="false"
+                      >
+                        <template #option="scope">
+                          <q-item
+                            v-bind="scope.itemProps"
+                            class="items-center gap-8"
+                            :key="scope.opt.id"
+                          >
+                            <q-badge
+                              rounded
+                              class="shrink-0 w-8 h-8"
+                              :style="{ background: scope.opt.cor_letra }"
+                            ></q-badge>
+                            {{ scope.opt.nome }}
+                          </q-item>
+                        </template>
+
+                        <template #selected-item="scope">
+                          <OBadge
+                            size="sm"
+                            :badge="true"
+                            :color="returnRGB(scope.opt.cor_letra)"
+                            class="rounded-generic h-32 dark:!text-white/90"
+                            :key="scope.opt.id"
+                          >
+                            <template #content>
+                              <p class="text-center mx-auto" square>
+                                {{ scope.opt.nome }}
+                              </p>
+                            </template>
+                          </OBadge>
+                        </template>
+                      </KanbanItemEditableSelect>
                     </OButton>
                   </div>
                 </div>
@@ -240,10 +263,8 @@
                     <div class="mt-6">
                       <KanbanItemEditable
                         :value="FTime(data.tempo_estimado)"
-                        :editable="true"
                         :notFormat="true"
                         type="time"
-                        @update="(v) => updateValue('tempo_estimado')(v)"
                       />
                     </div>
                   </div>
@@ -275,20 +296,18 @@
                   class="ml-24 pt-16 text-neutral-70 text-paragraph-2 dark:text-white/80"
                 >
                   <div class="descricao-content">
-                    <div v-html="data.descricao"></div>
+                    <div v-html="data.descricao_quill_html"></div>
                   </div>
 
                   <div class="flex w-full mt-8 justify-end">
                     <OButton class="" size="md" secondary icon="edit_note">
                       Editar
-                      <q-popup-edit
-                        anchor="top left"
-                        class="w-[800px]"
-                        @update="(v) => updateValue('descricao')(v)"
-                        :model-value="data.descricao"
-                      >
-                        <q-editor v-model="data.descricao" min-height="5rem" />
-                      </q-popup-edit>
+                      <KanbanItemEditableEditor
+                        :data="data.descricao_quill_html"
+                        @updateValue="
+                          (v) => updateValue('descricao_quill_html')(v)
+                        "
+                      ></KanbanItemEditableEditor>
                     </OButton>
                   </div>
                 </div>
@@ -391,7 +410,7 @@
 </template>
 
 <script setup>
-import { ref, watch, computed, inject, toRaw } from 'vue'
+import { ref, watch, onMounted, inject, toRaw, unref } from 'vue'
 import { useDialogPluginComponent } from 'quasar'
 import OBadge from 'src/components/Badge/OBadge.vue'
 import KanbanSectionHeader from './KanbanSectionHeader.vue'
@@ -401,23 +420,19 @@ import OButton from 'src/components/Button/OButton.vue'
 import GLOBAL from 'src/utils/GLOBAL'
 // import KanbanPopoupEdit from './KanbanPopoupEdit.vue'
 import OSelect from 'src/components/Select/OSelect.vue'
+import KanbanItemEditableSelect from './KanbanItemEditableSelect.vue'
+import KanbanItemEditableEditor from './KanbanItemEditableEditor.vue'
 
 const { returnRGB, FData, FTime } = GLOBAL
 
 const data = inject('chamado')
-const tags = inject('tags')
+const tagsList = inject('tagsList')
+
 const projetoAndSubProjetoOptions = inject('projetoAndSubProjetoOptions')
-const popupUpProjeto = ref(null)
 const tab = ref('info')
 const dialogState = ref(false)
-const projetoSelected = ref('')
-// const projetoOptions = projetoAndSubProjetoOptions
 
 const taskActive = ref('andamento')
-
-const beforeshow = (e) =>
-  setTimeout(() => document.body.classList.add('kanban-modal-show'), 300)
-const beforehide = (e) => document.body.classList.remove('kanban-modal-show')
 
 const changeTask = () => {
   console.log(taskActive.value)
@@ -428,15 +443,12 @@ const changeTask = () => {
 function updateValue(type) {
   return function (value) {
     data.value[type] = value
+    console.log('value', value)
+    console.log('type', type)
+    console.log('data.value[type]', data.value[type])
     emit('changed')
   }
 }
-
-// function updateProjeto(v) {
-//   data.value.projeto = v
-//   emit('changed')
-
-// }
 
 const emit = defineEmits([
   // REQUIRED; need to specify some events that your
@@ -473,11 +485,9 @@ function onOKClick() {
 //     )
 //   })
 // }
-
-function handleProjetoUpdate(v) {
-  popupUpProjeto.value.hide()
-  updateValue('projeto')(v)
-}
+const beforeshow = (e) =>
+  setTimeout(() => document.body.classList.add('kanban-modal-show'), 300)
+const beforehide = (e) => document.body.classList.remove('kanban-modal-show')
 
 const showTabs = ref(false)
 
@@ -491,6 +501,12 @@ watch(dialogState, () => {
     tab.value = 'info'
   }
 })
+
+const tooltipProps = {
+  anchor: 'top middle',
+  self: 'bottom middle',
+  offset: [10, 10],
+}
 
 defineExpose({ dialogRef })
 </script>

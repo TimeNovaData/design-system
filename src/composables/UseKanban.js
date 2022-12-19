@@ -88,6 +88,9 @@ export default function useKanban() {
     },
     { deep: true, flush: 'post' }
   )
+  watch(colunasWithCards, () => {
+    // debugger
+  })
 
   function historyAlt(history) {
     const timeStamp0 = history.value[0].snapshot
@@ -156,8 +159,8 @@ export default function useKanban() {
     const fase = await getFases()
     const chamado = await getChamado()
     const value = createColunasWithCards(fase, chamado)
-    colunasWithCards.value = value
-    clear()
+    colunasWithCards.value = []
+    await nextTick()
     commit()
   }
 

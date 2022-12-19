@@ -132,7 +132,7 @@ module.exports = configure(function (ctx) {
       //
       // components: [],
       // directives: [],
-      iconSet: 'material-symbols-rounded',
+      // iconSet: 'material-symbols-rounded',
       // Quasar plugins
       plugins: ['Notify', 'Dialog', 'LoadingBar'],
     },

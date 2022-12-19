@@ -19,7 +19,10 @@
         </template>
       </OBadge>
     </div>
-    <div class="three-lines card-descicao inline-block text-paragraph-2">
+    <div
+      class="three-lines card-descicao inline-block text-paragraph-2"
+      style="word-break: break-word"
+    >
       <div class="card-id inline-block mr-4">(Nº{{ item.id }})</div>
       {{ item.titulo }}
     </div>
@@ -143,6 +146,7 @@ import OBadge from 'src/components/Badge/OBadge.vue'
 import GLOBAL from 'src/utils/GLOBAL'
 import { colors } from 'quasar'
 import { onMounted } from 'vue'
+
 const { FData, FTime } = GLOBAL
 const { returnRGB } = GLOBAL
 
