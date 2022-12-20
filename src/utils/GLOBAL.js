@@ -115,15 +115,20 @@ export default {
 
   FData(value) {
     if (date.isValid(value)) {
-      return date.formatDate(value, 'DD/MM/YYYY')
+      const dataFormatted = value.length > 10 ? value : value.replace('-', '/')
+      const data = date.formatDate(dataFormatted, 'DD/MM/YYYY')
+      return data
     } else {
       return '-'
     }
   },
 
   FDateBRtoEU(value) {
-    if (date.isValid(value)) {
-      return date.formatDate(value, 'YYYY-MM-DD')
+    if (value) {
+      const dia = value.slice(0, 2)
+      const mes = value.slice(3, 5)
+      const ano = value.slice(6, 10)
+      return `${ano}-${mes}-${dia}`
     } else {
       return '-'
     }

@@ -21,6 +21,21 @@
     overflow: auto
     max-width: 100%
 
+    a[href]
+      text-decoration: underline !important
+      text-decoration-style: dashed !important
+      text-decoration-color: rgba(var(--neutral-100), 0.3) !important
+
+    ul
+      li
+        list-style: circle
+        margin-left: 12px
+
+  ol
+    li
+      list-style: auto
+      margin-left: 12px
+
     pre
       white-space: pre-wrap
 
@@ -38,6 +53,8 @@
   &__toolbar
     border-bottom: 1px solid $editor-border-color
     min-height: 32px
+    .q-icon
+      font-size: 2.25em !important
 
   &__toolbars-container
     max-width: 100%

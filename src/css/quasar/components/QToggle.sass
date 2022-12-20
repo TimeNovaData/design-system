@@ -130,20 +130,18 @@ body.desktop
       .q-toggle__thumb:before
         transform: scale3d(1.5, 1.5, 1)
 
-/* 
- 
- .q-toggle 
- --inner-width:28px;  
- --inner-height:16px;
- --thumb-size:12px;
- --gap:3px;
+.q-toggle
+  --inner-width: 28px
+  --inner-height: 16px
+  --thumb-size: 12px
+  --gap: 3px
 
-    .q-toggle__inner
-      font-size: initial
-      min-width: initial
-      width: var(--inner-width)
-      height: var(--inner-height)
-      padding: 0
+  .q-toggle__inner
+    font-size: initial
+    min-width: initial
+    width: var(--inner-width)
+    height: var(--inner-height)
+    padding: 0
 
     .q-toggle__track
       height: 100%
@@ -167,13 +165,10 @@ body.desktop
       &:after
         background-color: white
 
-    &[aria-checked="true"]
-      .q-toggle__track
-        opacity: 0.9 !important
-
-      .q-toggle__thumb
-        // left: initial;
-        // right: 0.1em !important;
-        transform: translateX(calc(var(--inner-width) - var(--thumb-size) - var(--gap)))
-
-  */
+  &[aria-checked="true"]
+    .q-toggle__track
+      opacity: 1 !important
+    .q-toggle__thumb
+      transform: translateX(calc(var(--inner-width) - var(--thumb-size) - var(--gap))) !important
+        // left: initial
+        // right: 0.1em !important

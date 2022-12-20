@@ -1,31 +1,40 @@
 <template>
   <q-popup-edit
-    anchor="top left"
-    class="w-[800px]"
+    anchor="bottom left"
+    class="w-[51.875rem] !p-12"
     v-slot="scope"
     :model-value="data"
-    tabindex="1"
+    ref="popup"
+    @show="editor.focus()"
+    :persistent="true"
   >
-    <q-editor v-model="scope.value" min-height="5rem" />
+    <p class="mb-16 text-title-5">{{ text }}</p>
+    <q-editor
+      ref="editor"
+      v-model="scope.value"
+      min-height="5rem"
+      max-height="17.75rem"
+      :toolbar="editorToobar()"
+    />
     <div class="flex items-center gap-8 mt-8">
       <OButton
         size="lg"
         @click.stop.prevent="scope.cancel"
-        class="w-full flex-1"
+        class="flex-1"
         tertiary
-        tabindex="3"
       >
         Cancelar
       </OButton>
+      <q-space class="flex-2 flex"></q-space>
 
       <OButton
+        ref="ok"
         size="lg"
         @click="$emit('updateValue', scope.value)"
         @click.stop.prevent="scope.set"
-        class="w-full flex-[2]"
+        class="flex-1"
         primary
         :disable="scope.initialValue === scope.value"
-        tabindex="2"
       >
         Atualizar
       </OButton>
@@ -35,13 +44,18 @@
 
 <script setup>
 import OButton from 'src/components/Button/OButton.vue'
-
+import { ref } from 'vue'
+import editorToobar from 'src/utils/editorToolbar'
+const ok = ref(null)
+const editor = ref(null)
+const popup = ref(null)
 const emit = defineEmits(['updateValue'])
 const props = defineProps({
   data: {
     type: String,
     default: '',
   },
+  text: String,
 })
 </script>
 <style lang="sass"></style>

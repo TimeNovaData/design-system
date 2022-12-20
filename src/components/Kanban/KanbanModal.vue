@@ -6,6 +6,7 @@
     @hide="onDialogHide"
     @before-show="beforeshow"
     @before-hide="beforehide"
+    @show="onShow"
   >
     <q-card class="kanban-modal q-dialog-plugin remove-styles">
       <header class="bg-neutral-30 dark:bg-d-neutral-10">
@@ -17,7 +18,7 @@
             ></q-icon>
 
             <KanbanItemEditable
-              class="!text-title-2 !p-0 !bg-transparent !w-full !flex relative -left-6 pl-6"
+              class="!text-title-2 !p-0 !bg-transparent min-w-[500px] !pl-4 relative -l-4"
               popup-class="!min-w-[18.75rem]"
               :editable="true"
               :value="data.titulo"
@@ -27,7 +28,7 @@
 
           <!--   PROJETO -->
           <div
-            class="ml-[3.75rem] pr-24 w-max no-label editavel group inline-flex items-center"
+            class="ml-[3.75rem] w-max no-label relative editavel group inline-flex items-center pr-40"
           >
             <div class="" v-if="data.projeto.nome">
               <OBadge
@@ -45,7 +46,7 @@
             <div v-else>Selecione um projeto</div>
 
             <q-icon
-              class="opacity-0 group-hover:opacity-100 relative -right-16"
+              class="opacity-0 group-hover:opacity-100 absolute right-4"
               name="expand_more"
             ></q-icon>
 
@@ -55,7 +56,22 @@
               :options="projetoAndSubProjetoOptions"
               selectLabel="Projeto"
               :selected="data.projeto"
-            ></KanbanItemEditableSelect>
+            >
+              <template #option="scope">
+                <q-item
+                  v-bind="scope.itemProps"
+                  class="items-center gap-8"
+                  :key="scope.opt.id"
+                >
+                  <q-badge
+                    rounded
+                    class="shrink-0 w-8 h-8"
+                    :style="{ background: scope.opt.cor }"
+                  ></q-badge>
+                  {{ scope.opt.nome }}
+                </q-item>
+              </template>
+            </KanbanItemEditableSelect>
           </div>
         </div>
 
@@ -66,7 +82,14 @@
           secondary
         >
           <q-tab :ripple="false" name="info" label="Informações gerais"></q-tab>
-          <q-tab :ripple="false" name="tarefas" label="Tarefas"></q-tab>
+          <q-tab :ripple="false" name="tarefas" label="Tarefas">
+            <q-badge
+              v-if="data.quantidade_tasks_pendentes"
+              floating
+              class="w-16 h-16 rounded-full place-items-center p-0 flex bg-neutral-100/30 justify-center text-10"
+              >{{ data.quantidade_tasks_pendentes }}
+            </q-badge>
+          </q-tab>
           <q-tab
             :ripple="false"
             name="anexos"
@@ -98,7 +121,7 @@
           key="tabs"
         >
           <q-tab-panel name="info">
-            <q-scroll-area class="fit">
+            <q-scroll-area class="fit overflow-x-hidden">
               <article class="grid-info px-24 pt-24">
                 <div>
                   <KanbanSectionHeader
@@ -140,7 +163,7 @@
                         :selected="data.tag"
                         :closeOnSelect="false"
                       >
-                        <template #option="scope">
+                        <!-- <template #option="scope">
                           <q-item
                             v-bind="scope.itemProps"
                             class="items-center gap-8"
@@ -153,7 +176,7 @@
                             ></q-badge>
                             {{ scope.opt.nome }}
                           </q-item>
-                        </template>
+                        </template> -->
 
                         <template #selected-item="scope">
                           <OBadge
@@ -162,6 +185,8 @@
                             :color="returnRGB(scope.opt.cor_letra)"
                             class="rounded-generic h-32 dark:!text-white/90"
                             :key="scope.opt.id"
+                            removable
+                            @remove="scope.toggleOption(scope.opt)"
                           >
                             <template #content>
                               <p class="text-center mx-auto" square>
@@ -183,7 +208,11 @@
                         icon="svguse:/icons.svg#icon_user"
                       />
                       <div class="mt-4">
-                        <AvatarMultiple :items="1" />
+                        <AvatarSingle :index="1" :item="data.user_criacao">
+                          <q-tooltip anchor="top middle" self="center middle">{{
+                            data.user_criacao.nome
+                          }}</q-tooltip>
+                        </AvatarSingle>
                       </div>
                     </div>
                   </div>
@@ -194,7 +223,16 @@
                       icon="svguse:/icons.svg#icon_user"
                     />
                     <div class="mt-4">
-                      <AvatarMultiple :items="3" />
+                      <div
+                        v-for="(item, index) in data.responsaveis"
+                        :key="item.id"
+                      >
+                        <AvatarSingle :index="index" :item="item">
+                          <q-tooltip anchor="top middle" self="center middle">{{
+                            item.nome
+                          }}</q-tooltip>
+                        </AvatarSingle>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -295,18 +333,23 @@
                 <div
                   class="ml-24 pt-16 text-neutral-70 text-paragraph-2 dark:text-white/80"
                 >
-                  <div class="descricao-content">
-                    <div v-html="data.descricao_quill_html"></div>
+                  <div class="descricao-content break-words">
+                    <div v-html="data.descricao"></div>
                   </div>
 
                   <div class="flex w-full mt-8 justify-end">
-                    <OButton class="" size="md" secondary icon="edit_note">
+                    <OButton
+                      class="!p-4 !px-8"
+                      size="sm"
+                      secondary
+                      icon="edit_note"
+                      tabindex="0"
+                    >
                       Editar
                       <KanbanItemEditableEditor
-                        :data="data.descricao_quill_html"
-                        @updateValue="
-                          (v) => updateValue('descricao_quill_html')(v)
-                        "
+                        :data="data.descricao"
+                        @updateValue="(v) => updateValue('descricao')(v)"
+                        text="Descrição"
                       ></KanbanItemEditableEditor>
                     </OButton>
                   </div>
@@ -336,7 +379,7 @@
           </q-tab-panel>
 
           <q-tab-panel name="tarefas">
-            <div class="flex-flex-col gap-16">
+            <div class="flex flex-col gap-16 h-full">
               <div class="flex justify-between p-24">
                 <div class="flex items-center gap-8">
                   <OBadge
@@ -381,14 +424,52 @@
                 enter-active-class="animated fadeIn"
                 leave-active-class="animated fadeOut"
               >
-                <section v-if="taskActive === 'andamento'" key="andamento">
-                  andamento
-                </section>
                 <section
+                  class="flex-1"
+                  v-if="taskActive === 'andamento'"
+                  key="andamento"
+                >
+                  <q-scroll-area>
+                    <div
+                      v-if="tasksChamadoPendente.length"
+                      class="task-wrapper border rounded-generic mx-24 border-neutral-30"
+                    >
+                      <div v-for="task in tasksChamadoPendente" :key="task.id">
+                        <KanbanTaskItem :task="task"></KanbanTaskItem>
+                      </div>
+                    </div>
+                    <div
+                      v-else
+                      class="text-neutral-60 text-paragraph-2 text-center mt-12"
+                    >
+                      Sem Tarefas para exibir.
+                    </div>
+                    <span class="block h-42"></span>
+                  </q-scroll-area>
+                </section>
+
+                <section
+                  class="flex-1"
                   v-else-if="taskActive === 'concluidas'"
                   key="concluidas"
                 >
-                  concluidas
+                  <q-scroll-area>
+                    <div
+                      v-if="tasksChamadoConcluido.length"
+                      class="task-wrapper border rounded-generic mx-24 border-neutral-30"
+                    >
+                      <div v-for="task in tasksChamadoConcluido" :key="task.id">
+                        <KanbanTaskItem :task="task"></KanbanTaskItem>
+                      </div>
+                    </div>
+                    <div
+                      v-else
+                      class="text-neutral-60 text-paragraph-2 text-center mt-12"
+                    >
+                      Sem Tarefas para exibir.
+                    </div>
+                    <span class="block h-42"></span>
+                  </q-scroll-area>
                 </section>
               </Transition>
             </div>
@@ -410,11 +491,10 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted, inject, toRaw, unref } from 'vue'
+import { ref, watch, onMounted, inject, toRaw, unref, onUnmounted } from 'vue'
 import { useDialogPluginComponent } from 'quasar'
 import OBadge from 'src/components/Badge/OBadge.vue'
 import KanbanSectionHeader from './KanbanSectionHeader.vue'
-import AvatarMultiple from 'src/components/Avatar/AvatarMultiple.vue'
 import KanbanItemEditable from './KanbanItemEditable.vue'
 import OButton from 'src/components/Button/OButton.vue'
 import GLOBAL from 'src/utils/GLOBAL'
@@ -422,6 +502,11 @@ import GLOBAL from 'src/utils/GLOBAL'
 import OSelect from 'src/components/Select/OSelect.vue'
 import KanbanItemEditableSelect from './KanbanItemEditableSelect.vue'
 import KanbanItemEditableEditor from './KanbanItemEditableEditor.vue'
+import { useTaskStore } from 'src/stores/tasks/tasks.store'
+import OCounter from 'src/components/Counter/OCounter.vue'
+import AvatarSingle from 'src/components/Avatar/AvatarSingle.vue'
+import { storeToRefs } from 'pinia'
+import KanbanTaskItem from './KanbanTaskItem.vue'
 
 const { returnRGB, FData, FTime } = GLOBAL
 
@@ -431,6 +516,10 @@ const tagsList = inject('tagsList')
 const projetoAndSubProjetoOptions = inject('projetoAndSubProjetoOptions')
 const tab = ref('info')
 const dialogState = ref(false)
+
+const { getTasks } = useTaskStore()
+const { tasksChamado, tasksChamadoPendente, tasksChamadoConcluido } =
+  storeToRefs(useTaskStore())
 
 const taskActive = ref('andamento')
 
@@ -485,9 +574,14 @@ function onOKClick() {
 //     )
 //   })
 // }
+
 const beforeshow = (e) =>
   setTimeout(() => document.body.classList.add('kanban-modal-show'), 300)
 const beforehide = (e) => document.body.classList.remove('kanban-modal-show')
+
+function onShow() {
+  getTasks(`&chamado__id=${data.value.id}`)
+}
 
 const showTabs = ref(false)
 
@@ -531,6 +625,7 @@ defineExpose({ dialogRef })
 @import "src/css/quasar/variables.sass"
 .kanban-modal
   height: 95vh
+  max-height: 1000px
   width: 55rem
   background: var(--kanban-modal-bg)
   border-radius: .375rem
@@ -543,6 +638,20 @@ defineExpose({ dialogRef })
       margin: 8px 0
       border-radius: $generic-border-radius
       object-fit: contain
+    :deep(ul)
+        li
+          list-style: circle !important
+          margin-left: 12px !important
+
+    :deep(ol)
+      li
+        list-style: auto
+        margin-left: 12px
+    :deep(a[href])
+      color: rgb(var(--neutral-100))
+      cursor: pointer !important
+      &:hover
+        color: rgb(var(--primary-pure)) !important
 .kanban-modal-separator
   height: .0625rem
   width: 100%
@@ -575,4 +684,8 @@ defineExpose({ dialogRef })
       &:hover
         border-color: rgba(var(--white), 0.1)
         background: rgba(var(--white), 0.2) !important
+
+    .descricao-content :deep(a[href])
+      color: white
+      text-decoration: underline
 </style>

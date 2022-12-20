@@ -43,20 +43,31 @@
       </template>
     </OBadge>
 
-    <section class="flex justify-between items-center" v-if="visaoExpandida">
+    <section
+      class="flex justify-between items-center"
+      v-if="visaoExpandida && item.quantidade_tasks > 0"
+    >
       <p class="inline-flex gap-2 text-headline-4">
-        <span class="text-primary-pure">6</span>
-        <span class="text-opacity-70">de</span> <span>10</span>
+        <span class="text-primary-pure">{{
+          item.quantidade_tasks_concluidas
+        }}</span>
+        <span class="text-opacity-70">de</span>
+        <span>{{ item.quantidade_tasks }}</span>
       </p>
       <p class="text-paragraph-3 text-opacity-70">Tarefas Concluídas</p>
     </section>
+
     <section
       class="h-4 w-full rounded-xl bg-neutral-100/10 dark:bg-white/10 overflow-hidden relative"
-      v-if="visaoExpandida"
+      v-if="visaoExpandida && item.quantidade_tasks > 0"
     >
       <span
         class="h-4 absolute left-0 top-0 bg-primary-pure block"
-        style="width: 60%"
+        :style="{
+          width:
+            (item.quantidade_tasks / item.quantidade_tasks_concluidas) * 100 +
+            '%',
+        }"
       ></span>
     </section>
 
@@ -65,7 +76,7 @@
     <section class="flex gap-6 justify-between items-center w-full">
       <div class="flex items-center gap-6">
         <q-icon
-          v-if="item.descricao_quill_html"
+          v-if="item.descricao"
           class="w-18 h-18"
           name="svguse:/icons.svg#icon_menu_kanban"
         ></q-icon>
@@ -79,15 +90,9 @@
         </div>
       </div>
       <div class="h-32 ml-auto w-[150px] relative right-[-20px]">
-        <q-avatar
-          v-for="n in 2"
-          :key="n"
-          size="40px"
-          class="overlapping w-32 h-32 absolute border-white border-2 dark:border-d-neutral-10 overflow-hidden"
-          :style="`right: ${n * 25}px`"
-        >
-          <img :src="`https://cdn.quasar.dev/img/avatar${n + 1}.jpg`" />
-        </q-avatar>
+        <div v-for="(item, index) in item.responsaveis" :key="item.id">
+          <AvatarSingle :index="index" :item="item"></AvatarSingle>
+        </div>
       </div>
     </section>
 
@@ -146,6 +151,7 @@ import OBadge from 'src/components/Badge/OBadge.vue'
 import GLOBAL from 'src/utils/GLOBAL'
 import { colors } from 'quasar'
 import { onMounted } from 'vue'
+import AvatarSingle from 'src/components/Avatar/AvatarSingle.vue'
 
 const { FData, FTime } = GLOBAL
 const { returnRGB } = GLOBAL

@@ -73,6 +73,7 @@ module.exports = configure(function (ctx) {
           : 'https://hub.novadata.com.br/',
 
         HTTPS_MODE: !ctx.dev,
+        development: ctx.dev,
       },
       // rawDefine: {}
       // ignorePublicFolder: true,

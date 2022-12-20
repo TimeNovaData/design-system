@@ -42,4 +42,23 @@ export default defineComponent({
 .fade-enter-from,
 .fade-leave-to
   opacity: 0
+
+
+
+/* width */
+::-webkit-scrollbar
+  width: 8px
+
+/* Track */
+::-webkit-scrollbar-track
+  background: rgba(var(--neutral-10),1)
+
+/* Handle */
+::-webkit-scrollbar-thumb
+  background: rgba(var(--neutral-100),0.2)
+  border-radius: 8px
+
+// /* Handle on hover */
+// ::-webkit-scrollbar-thumb:hover
+//   background: #555
 </style>

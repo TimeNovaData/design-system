@@ -6,7 +6,7 @@
     ref="popupUpProjeto"
     @show="selectShow"
   >
-    <p class="mb-16">{{ text }}</p>
+    <p class="mb-16 text-title-5">{{ text }}</p>
     <OSelect
       v-bind="selectProps"
       v-model="projetoSelected"
@@ -23,6 +23,28 @@
     >
       <template v-for="slot in Object.keys(slots)" #[slot]="slotProps">
         <slot :name="slot" v-bind="slotProps"></slot>
+      </template>
+
+      <template #option="{ itemProps, opt, selected, toggleOption }">
+        <q-item v-bind="itemProps">
+          <q-item-section>
+            <q-item-label class="flex items-center gap-8">
+              <q-badge
+                rounded
+                class="shrink-0 w-8 h-8"
+                :style="{ background: opt.cor_letra }"
+              ></q-badge>
+              <p class="!text-neutral-70 dark:!text-white/90">{{ opt.nome }}</p>
+            </q-item-label>
+          </q-item-section>
+          <q-item-section side class="!w-56">
+            <q-toggle
+              size="sm"
+              :model-value="selected"
+              @update:model-value="toggleOption(opt)"
+            />
+          </q-item-section>
+        </q-item>
       </template>
     </OSelect>
   </q-popup-edit>

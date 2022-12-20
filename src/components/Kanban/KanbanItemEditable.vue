@@ -25,6 +25,7 @@
         @keyup.enter.stop
         :mask="inputMask()"
         tabindex="2"
+        :placeholder="type === 'date' ? 'DD/MM/AAAA' : null"
       >
         <template v-slot:after>
           <div class="flex w-full no-wrap flex-1 gap-4 !mt-4">
