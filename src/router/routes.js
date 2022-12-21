@@ -5,7 +5,6 @@ import PageKanban from 'src/pages/Kanban/PageKanban.vue'
 import PageLogin from 'src/pages/Login/PageLogin.vue'
 import PageBlank from 'src/pages/Blank/PageBlank.vue'
 import ConsumoHoras from 'src/pages/ConsumoHoras/ConsumoHoras.vue'
-import IFrame from 'src/pages/ConsumoHoras/IFrame.vue'
 
 const routes = [
   {
@@ -24,7 +23,7 @@ const routes = [
       {
         name: 'consumo_horas',
         path: 'consumo_horas',
-        component: IFrame,
+        component: ConsumoHoras,
         meta: {
           breadcrumbs: [
             { label: 'Home', name: 'home' },

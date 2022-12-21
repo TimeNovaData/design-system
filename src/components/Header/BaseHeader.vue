@@ -47,12 +47,15 @@ import OInput from 'src/components/Input/OInput.vue'
 import OButton from 'src/components/Button/OButton.vue'
 import BaseHeaderMenu from './BaseHeaderMenu.vue'
 import { useRouter } from 'vue-router'
+import { inject } from 'vue'
+
+const userFoto = inject('userFoto')
+const user = inject('user')
+
 // import { useBreadcrumbs } from 'src/composables/useBreadcrumbs.js'
 // const { breadcrumbs } = useBreadcrumbs()
 
 const router = useRouter()
-
-console.log(router, 'assas')
 </script>
 
 <style lang="sass">

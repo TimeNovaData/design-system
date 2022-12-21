@@ -330,8 +330,8 @@ const load = ref(false)
 const permanecerConectado = ref(true)
 
 const data = ref({
-  login: 'emanuel2',
-  senha: 'papa1539',
+  login: '',
+  senha: '',
 })
 
 onMounted(() => {

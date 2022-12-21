@@ -1,13 +1,21 @@
 import { defineStore } from 'pinia'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { api } from 'src/boot/axios'
 import { useAxios } from '@vueuse/integrations/useAxios'
+import { useUsuarioStore } from './usuarios.store'
 
 const { URLS } = api.defaults
 
 export const useUserStore = defineStore('userStore', () => {
   const user = ref([])
   const isLoading = ref(false)
+  const usuarios = useUsuarioStore()
+
+  const userFoto = computed(() => {
+    const item = usuarios.usuariosFoto.filter((u) => u.id === user.value.id)[0]
+    const foto = item?.foto
+    return foto
+  })
 
   async function getUser() {
     isLoading.value = true
@@ -36,5 +44,6 @@ export const useUserStore = defineStore('userStore', () => {
     getUser,
     setUser,
     user,
+    userFoto,
   }
 })

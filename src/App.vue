@@ -33,12 +33,13 @@ export default defineComponent({ name: 'App' })
 
 <script setup>
 import { useUserStore } from 'src/stores/usuarios/user.store'
-const { user } = storeToRefs(useUserStore())
+const { user, userFoto } = storeToRefs(useUserStore())
 const { getUser } = useUserStore()
 onMounted(() => {
   getUser()
 })
 provide('user', user)
+provide('userFoto', userFoto)
 </script>
 
 <style lang="sass">
