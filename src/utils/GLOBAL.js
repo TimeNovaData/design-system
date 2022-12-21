@@ -170,4 +170,12 @@ export default {
     )
     return `?x=${filtros.join('')}`
   },
+  secondsToHours(seconds, mostrarSeconds = true) {
+    const hours = Math.floor(seconds / 3600)
+    const minutes = Math.floor((seconds - hours * 3600) / 60)
+    const seconds_ = seconds - hours * 3600 - minutes * 60
+    return `${hours}h ${minutes}m ${
+      mostrarSeconds ? `${Math.round(seconds_)}s` : ''
+    }`
+  },
 }

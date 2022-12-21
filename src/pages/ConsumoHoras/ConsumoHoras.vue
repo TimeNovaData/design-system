@@ -149,7 +149,7 @@
           <apexchart
             ref="chart"
             width="100%"
-            height="200px"
+            height="450px"
             type="bar"
             :options="options"
             :series="series"
@@ -309,7 +309,7 @@ import { useAxios } from '@vueuse/integrations/useAxios'
 
 const { URLS } = api.defaults
 
-const { FData, generateStringFilterFromObject } = GLOBAL
+const { FData, generateStringFilterFromObject, secondsToHours } = GLOBAL
 const por = ref('projeto')
 
 const { columns, rows, filter } = UseConsumoHoras()
@@ -336,12 +336,52 @@ onMounted(async () => {
 
 const options = {
   chart: {
-    id: 'vuechart-example',
+    id: 'chart1',
+    type: 'bar',
+    height: 450,
+    stacked: true,
+    toolbar: {
+      show: false,
+    },
+    zoom: {
+      enabled: false,
+    },
+    animations: {
+      enabled: false,
+    },
   },
   xaxis: {
     categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
   },
-  dataLabels: { enabled: false },
+  yaxis: {
+    floating: true,
+    labels: {
+      formatter: function (val, opt) {
+        return secondsToHours(val, false)
+      },
+    },
+  },
+  dataLabels: {
+    enabled: false,
+    formatter: function (val, opt) {
+      return secondsToHours(val, false)
+    },
+  },
+  tooltip: {
+    y: {
+      show: true,
+      format: 'dd MMM',
+      formatter: function (val, opt) {
+        return secondsToHours(val, false)
+      },
+    },
+  },
+  plotOptions: {
+    bar: {
+      horizontal: false,
+      borderRadius: 10,
+    },
+  },
 }
 
 const series = [
@@ -353,7 +393,7 @@ const series = [
 
 const dataAtual = date.formatDate(new Date(), 'YYYY/MM/DD')
 const seteDias = date.formatDate(
-  date.addToDate(dataAtual, { days: -30 }),
+  date.addToDate(dataAtual, { days: -10 }),
   'YYYY/MM/DD'
 )
 
