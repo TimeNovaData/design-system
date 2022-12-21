@@ -12,8 +12,18 @@
         :data-id="col.coluna.id"
         @mouseup="handleColClick"
         @mousedown="handleColClick"
-        @newCards="createNewChamado"
+        @newCards="clickNewCard"
       >
+        <Transition name="fade" duration="150">
+          <KanbanNewCard
+            v-if="novoCard.id === col.coluna.id"
+            :colData="col.coluna"
+            @digitandoNome="() => setHeightInCol()"
+            @invalid="closeNewCard"
+            @create="handleCreateChamado"
+          ></KanbanNewCard>
+        </Transition>
+
         <draggable
           v-bind="dragOptions"
           :list="col.cards"
@@ -21,7 +31,7 @@
             tag: 'div',
             type: 'transition-group',
             name: !drag ? 'flip-list' : null,
-            class: 'transition-div',
+            class: `transition-div `,
           }"
           group="a"
           itemKey="name"
@@ -60,19 +70,25 @@ import KanbanCard from 'src/components/Kanban/KanbanCard.vue'
 import KanbanModal from 'src/components/Kanban/KanbanModal.vue'
 import useKanban from 'src/composables/UseKanban'
 import draggable from 'vuedraggable'
+
 import { useChamadoStore } from 'src/stores/chamados/chamados.store'
 import { useTagStore } from 'src/stores/tags/tags.store'
 import { useProjetoStore } from 'src/stores/projetos/projetos.store'
 import { useUsuarioStore } from 'src/stores/usuarios/usuarios.store'
+import emitter from 'src/boot/emitter'
+import KanbanNewCard from 'src/components/Kanban/KanbanNewCard.vue'
 
 const { /*  generateRange, modelo1, */ setHeightInCol } = GLOBAL
 
 const { kanbanBG } = storeToRefs(useKanbanBG())
 const { visaoExpandida } = storeToRefs(useVisaoExpandida())
-const { getUsuarios } = useUsuarioStore()
+const { getUsuariosFoto } = useUsuarioStore()
+const { usuariosFoto } = storeToRefs(useUsuarioStore())
 
 const modal = ref(null)
 const chamadoAtivo = ref(null)
+
+const novoCard = ref({ id: null })
 
 const {
   colunasWithCards,
@@ -81,7 +97,7 @@ const {
   returnCardPerID,
   // getDadosAndDeclare,
   startAndEndDrag,
-
+  updateDados,
   drag,
 } = useKanban()
 
@@ -90,16 +106,10 @@ const { getTags } = useTagStore()
 const { tags } = storeToRefs(useTagStore())
 
 const { createChamado } = useChamadoStore()
-const {
-  getProjetos,
-  getSubProjetos,
-  /*  */
-} = useProjetoStore()
-
+const { getProjetos, getSubProjetos } = useProjetoStore()
 const { projetoAndSubProjetoOptions } = storeToRefs(useProjetoStore())
 
 // Drag
-
 const removeEventsWrapper = ref(false)
 const enableDragScroll = GLOBAL.enableDragScroll(removeEventsWrapper)
 
@@ -107,6 +117,7 @@ watch(drag, () => setHeightInCol())
 watch(visaoExpandida, () => setTimeout(() => setHeightInCol(), 300))
 watch(colunasWithCards, () => setTimeout(() => setHeightInCol(), 300))
 
+// Callbacks evento
 function handleCardClick(element) {
   chamadoAtivo.value = returnCardPerID(element.id)
   cardAlterado.value = chamadoAtivo.value
@@ -118,115 +129,19 @@ function handleColClick(e) {
   removeEventsWrapper.value = true
 }
 
-async function createNewChamado(colData) {
-  // const dados = {
-  //   idColuna: colData.id,
-  // }
-  // const mockData = (v) => ({
-  //   descricao: 'Sem Descrição',
-  //   titulo: 'Novo Chamado',
-  //   fase: { id: v.idColuna },
-  //   tag: [],
-  //   projeto: {
-  //     cor: '',
-  //     projeto: null,
-  //   },
-  //   data_criacao: '',
-  // })
-  // const oi = {
-  //   id: 35,
-  //   projeto: {
-  //     id: 15,
-  //     nome: '#aquipneus#',
-  //     logo: 'http://localhost:8000/media/logos_projetos/download-2-icon.png',
-  //     cor: '#11D276',
-  //     usuarios_com_acesso: [2, 6, 10],
-  //   },
-  //   tag: [],
-  //   titulo: 'teste modal adicionado',
-  //   descricao: '',
-  //   descricao_chamado: null,
-  //   prioridade: null,
-  //   fase: {
-  //     id: 9,
-  //     ultima_atualizacao: '2021-06-17T18:20:52.292709Z',
-  //     nome: 'Standby',
-  //     ordem: 10,
-  //     fase_conclusao: false,
-  //   },
-  //   link: null,
-  //   anexo: null,
-  //   data_prevista: null,
-  //   data_desejada: null,
-  //   tempo_estimado: '00:00:00',
-  //   data_conclusao: null,
-  //   aprovado: false,
-  //   prazo_aprovacao: null,
-  //   data_aprovacao: null,
-  //   responsavel: null,
-  //   data_criacao: '2022-03-09T15:15:39.555117-03:00',
-  //   data_atualizacao: '2022-03-09T15:15:39.555270-03:00',
-  //   usuario_criacao: {
-  //     id: 6,
-  //     password:
-  //       'pbkdf2_sha256$260000$Nav4Mn182aHrua1OLtHedL$aUzZ150OKg+An18jDSk8EraBOGGAqBUFuidWQWPm2S0=',
-  //     last_login: '2022-06-03T07:55:10.057938-03:00',
-  //     is_superuser: false,
-  //     username: 'emanuel4',
-  //     first_name: '',
-  //     last_name: '',
-  //     email: '',
-  //     is_staff: false,
-  //     is_active: true,
-  //     date_joined: '2021-07-28T09:37:32-03:00',
-  //     groups: [2],
-  //     user_permissions: [],
-  //   },
-  //   usuario_atualizacao: {
-  //     id: 2,
-  //     password:
-  //       'pbkdf2_sha256$260000$cmoUIN364AYpSRyE0MF0fD$Wzt5v6I6F0ns/NP5XRIO9JjZw4DxzU9TBYw1CDis30w=',
-  //     last_login: '2022-12-13T09:18:47.225738-03:00',
-  //     is_superuser: true,
-  //     username: 'emanuel2',
-  //     first_name: 'emanuel',
-  //     last_name: 'morais',
-  //     email: 'emanuelbruno2018vasc@gmail.com',
-  //     is_staff: true,
-  //     is_active: true,
-  //     date_joined: '2021-05-06T13:03:42-03:00',
-  //     groups: [],
-  //     user_permissions: [],
-  //   },
-  //   arquivado: false,
-  //   sub_projeto: null,
-  //   coluna_sub_projeto: null,
-  //   ordem: 10,
-  //   descricao_quill_html: '<p>edqwdwqdq</p>',
-  //   tempo_total: '0.0',
-  //   tempo_decorrido: '00:00:00',
-  // }
-  // chamadoAtivo.value = mockData(dados)
-  // modal.value.dialogRef.show()
-  // const modaal = modal.value.dialogRef
-  // try {
-  //   await createChamado(data)
-  //   getDadosAndDeclare()
-  // } catch (e) {
-  //   console.log(e)
-  // }
+async function clickNewCard(colData) {
+  novoCard.value.id = colData.id
+  setTimeout(() => setHeightInCol(), 50)
 }
-onMounted(() => {
-  setHeightInCol()
-  document
-    .querySelector('.kanban-col--wrapper')
-    .dispatchEvent(new Event('mousedown'))
-
-  getProjetos()
-  getSubProjetos()
-  getUsuarios()
-  getTags()
-})
+function closeNewCard() {
+  novoCard.value.id = null
+  setTimeout(() => setHeightInCol(), 180)
+}
+async function handleCreateChamado(v) {
+  await createChamado(v)
+  novoCard.value.id = null
+  emitter.emit('reloadDataKanban')
+}
 
 const dragOptions = computed(() => ({
   animation: 400,
@@ -235,8 +150,29 @@ const dragOptions = computed(() => ({
   ghostClass: 'ghost',
 }))
 
+onMounted(() => {
+  setHeightInCol()
+  document
+    .querySelector('.kanban-col--wrapper')
+    .dispatchEvent(new Event('mousedown'))
+
+  getProjetos()
+  getSubProjetos()
+  getUsuariosFoto()
+  getTags()
+})
+
+emitter.on('reloadDataKanban', async () => {
+  await updateDados()
+  getProjetos()
+  getSubProjetos()
+  getUsuariosFoto()
+  getTags()
+})
+
 provide('chamado', chamadoAtivo)
 provide('tagsList', tags)
+provide('usuarios', usuariosFoto)
 provide('projetoAndSubProjetoOptions', projetoAndSubProjetoOptions)
 </script>
 

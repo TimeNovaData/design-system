@@ -2,11 +2,11 @@
   <q-avatar
     size="32px"
     class="overlapping !w-32 !h-32 absolute border-white border-2 dark:border-d-neutral-10 overflow-hidden"
-    :style="`${side}: ${index * 25 + 25}px`"
+    :style="`${side}: ${index * 15}px;  'z-index':-${index}`"
   >
     <q-img
       :no-spinner="true"
-      :src="imgSrc(item.foto)"
+      :src="href ? href : imgSrc(item.foto)"
       class="w-full h-full m-auto absolute inset-0"
     />
     <slot></slot>
@@ -17,6 +17,7 @@
 defineProps({
   item: Object,
   index: Number,
+  href: String,
   side: {
     type: String,
     default: 'right',

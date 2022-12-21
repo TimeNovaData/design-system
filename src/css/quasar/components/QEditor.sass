@@ -39,12 +39,13 @@
     pre
       white-space: pre-wrap
 
-    hr
-      border: 0
-      outline: 0
-      margin: 1px
-      height: 1px
-      background: $editor-hr-color
+  hr
+    border: 0
+    outline: 0
+    margin: 1px
+    height: 1px
+    border-color: rgb(var(--neutral-30)) !important
+    background: rgb(var(--neutral-30)) !important
 
     &:empty:not(:focus):before
       content: attr(placeholder)
@@ -100,7 +101,8 @@
     .q-editor
 
       &__content hr
-        background: $editor-hr-dark-color
+        border-color: rgb(var(--neutral-30)) !important
+        background: rgba(var(--white),0.05) !important
 
       &__toolbar
         border-color: $editor-border-dark-color

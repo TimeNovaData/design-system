@@ -159,8 +159,7 @@ export default function useKanban() {
     const fase = await getFases()
     const chamado = await getChamado()
     const value = createColunasWithCards(fase, chamado)
-    colunasWithCards.value = []
-    await nextTick()
+    colunasWithCards.value = value
     commit()
   }
 

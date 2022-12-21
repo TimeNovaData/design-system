@@ -8,16 +8,17 @@ const { URLS } = api.defaults
 
 export const useUsuarioStore = defineStore('usuarioStore', () => {
   const usuarios = ref([])
+  const usuariosFoto = ref([])
   const isLoading = ref(false)
-
-  const usuariosOptions = computed(() =>
-    usuarios.value.map((i) => ({ label: i.nome, value: i.id }))
-  )
 
   async function getUsuarios() {
     isLoading.value = true
 
-    const { data, error } = await useAxios(URLS.cliente, { method: 'GET' }, api)
+    const { data, error } = await useAxios(
+      URLS.usuario + '?no_loading',
+      { method: 'GET' },
+      api
+    )
 
     try {
       setUsuarios(data.value)
@@ -29,14 +30,39 @@ export const useUsuarioStore = defineStore('usuarioStore', () => {
     }
   }
 
+  async function getUsuariosFoto() {
+    isLoading.value = true
+
+    const { data, error } = await useAxios(
+      URLS.fotoUsuario + '?no_loading',
+      { method: 'GET' },
+      api
+    )
+
+    try {
+      setUsuariosFoto(data.value)
+      return data.value
+    } catch (e) {
+      return error
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  function setUsuariosFoto(value) {
+    usuariosFoto.value = value
+  }
+
   function setUsuarios(value) {
     usuarios.value = value
   }
 
   return {
     getUsuarios,
+    getUsuariosFoto,
     setUsuarios,
+    setUsuariosFoto,
     usuarios,
-    usuariosOptions,
+    usuariosFoto,
   }
 })

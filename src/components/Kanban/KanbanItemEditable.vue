@@ -5,6 +5,7 @@
     :tabindex="`${editable ? 0 : null}`"
   >
     {{ value }}
+    <slot></slot>
 
     <q-popup-edit
       v-if="editable"

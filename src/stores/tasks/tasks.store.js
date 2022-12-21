@@ -9,6 +9,7 @@ export const useTaskStore = defineStore('taskstore', () => {
   const isLoading = ref(false)
   const tasks = ref([])
   const tasksChamado = ref([])
+
   const tasksChamadoConcluido = computed(() =>
     tasksChamado.value.filter((t) => t.status === 'Concluído')
   )

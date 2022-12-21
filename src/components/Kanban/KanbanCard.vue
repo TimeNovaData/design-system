@@ -89,7 +89,7 @@
           <p class="opacity-40 text-headline-4">{{ item.anexo.length }}</p>
         </div>
       </div>
-      <div class="h-32 ml-auto w-[150px] relative right-[-20px]">
+      <div class="h-32 ml-auto w-[150px] relative">
         <div v-for="(item, index) in item.responsaveis" :key="item.id">
           <AvatarSingle :index="index" :item="item"></AvatarSingle>
         </div>

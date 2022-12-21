@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { defineComponent, onMounted, ref, provide } from 'vue'
+import { defineComponent, toRefs, ref, provide, onMounted } from 'vue'
 // import emitter from 'src/boot/emitter'
 
 import 'src/css/cores.sass'
@@ -19,6 +19,7 @@ import 'src/css/tailwind.css'
 import 'src/css/stores/blurMode.sass'
 import 'src/css/vendor/materialSymbolsRounded.sass'
 import { Notify } from 'quasar'
+import { storeToRefs } from 'pinia'
 
 Notify.registerType('error', {
   icon: 'warning',
@@ -27,9 +28,17 @@ Notify.registerType('error', {
   timeout: 2000,
 })
 
-export default defineComponent({
-  name: 'App',
+export default defineComponent({ name: 'App' })
+</script>
+
+<script setup>
+import { useUserStore } from 'src/stores/usuarios/user.store'
+const { user } = storeToRefs(useUserStore())
+const { getUser } = useUserStore()
+onMounted(() => {
+  getUser()
 })
+provide('user', user)
 </script>
 
 <style lang="sass">

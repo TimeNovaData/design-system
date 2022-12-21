@@ -24,7 +24,11 @@ export const useProjetoStore = defineStore('projetoStore', () => {
 
   async function getProjetos() {
     isLoading.value = true
-    const { data, error } = await useAxios(URLS.projeto, { method: 'GET' }, api)
+    const { data, error } = await useAxios(
+      URLS.projeto + '?no_loading',
+      { method: 'GET' },
+      api
+    )
 
     try {
       setProjetos(data.value)

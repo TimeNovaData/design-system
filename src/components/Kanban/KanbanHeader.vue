@@ -2,7 +2,7 @@
   <q-header class="kanban-header">
     <div class="flex items-center justify-between w-full">
       <div class="flex gap-8 items-center">
-        <p class="text-title-3 text-white/90">Natura</p>
+        <p class="text-title-3 text-white/90"></p>
       </div>
 
       <q-tabs
@@ -23,7 +23,7 @@
           size="sm"
           secondary
           class="bg-white/10 !py-0 !h-32 !border-transparent"
-          @click="updateDados"
+          @click="$emit('reload')"
         >
           <q-icon size="1.5rem" name="replay"></q-icon>
         </OButton>
@@ -60,11 +60,8 @@
 <script setup>
 import { ref } from 'vue'
 import OButton from 'src/components/Button/OButton.vue'
-const emit = defineEmits(['tree-points-click'])
+const emit = defineEmits(['tree-points-click', 'reload'])
 const tab = ref('quadro')
-const props = defineProps({
-  updateDados: Function,
-})
 </script>
 
 <style lang="sass">

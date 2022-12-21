@@ -85,12 +85,21 @@ export default {
     document.querySelectorAll(wrapper).forEach((i) => {
       const filhos = [...i.querySelectorAll(item)]
       const gap = filhos.length * space
+
       const height = filhos.reduce((acc, children) => {
         acc += children.getBoundingClientRect().height
         return acc
       }, 0)
 
-      const heightWithGap = (height + gap + 16).toFixed(0)
+      const createCard = i
+        .closest('.kanban-col')
+        .querySelector('.kanban-new-card')
+
+      const newCardSize = createCard
+        ? createCard.getBoundingClientRect().height
+        : 0
+
+      const heightWithGap = (height + newCardSize + gap + 16).toFixed(0)
       gsap.to(i, {
         height: heightWithGap,
         duration: 0.5,

@@ -32,7 +32,7 @@
     </BaseHeader>
     <KanbanHeader
       @tree-points-click="openModalRight"
-      :updateDados="updateDados"
+      @reload="reloadData"
     ></KanbanHeader>
     <KanbanModalRight ref="modalRight"></KanbanModalRight>
     <q-page-container
@@ -53,15 +53,16 @@ import menuList from 'src/utils/menuList.js'
 import KanbanModalRight from 'src/components/Kanban/KanbanModalRight.vue'
 import OInput from 'src/components/Input/OInput.vue'
 import OButton from 'src/components/Button/OButton.vue'
-import useKanban from 'src/composables/UseKanban'
-
-const { updateDados } = useKanban()
+import emitter from 'src/boot/emitter'
 const dev = process.env.dev
 
 const modalRight = ref(null)
 
 function openModalRight() {
   modalRight.value.dialogRef.show()
+}
+function reloadData() {
+  emitter.emit('reloadDataKanban')
 }
 </script>
 

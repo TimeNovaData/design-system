@@ -40,7 +40,7 @@ export const useChamadoStore = defineStore('chamadoStore', () => {
       URLS.chamado,
       {
         method: 'POST',
-        data: v,
+        data: { ...v, projeto: v.projeto.id },
       },
       api
     )

@@ -29,6 +29,8 @@ const api = axios.create({
     comentario: 'comentario/',
     colunakanban: 'colunakanban/',
     usuario: 'usuario/',
+    user: 'usuario/usuario_logado/',
+    fotoUsuario: 'usuario/foto_usuario/',
     anexochamado: 'anexochamado/',
     tagchamado: 'tagchamado/',
     subprojeto: 'subprojeto/',
