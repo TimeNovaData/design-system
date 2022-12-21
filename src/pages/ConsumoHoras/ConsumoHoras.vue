@@ -147,6 +147,7 @@
         </div>
         <div class="w-full">
           <apexchart
+            ref="chart"
             width="100%"
             height="200px"
             type="bar"
@@ -303,14 +304,18 @@ import { useClientesStore } from 'src/stores/clientes/clientes.store'
 import { useProjetoStore } from 'src/stores/projetos/projetos.store'
 import { useUsuarioStore } from 'src/stores/usuarios/usuarios.store'
 import { nextTick } from 'process'
+import { api } from 'src/boot/axios'
+import { useAxios } from '@vueuse/integrations/useAxios'
 
-const { FData } = GLOBAL
+const { URLS } = api.defaults
+
+const { FData, generateStringFilterFromObject } = GLOBAL
 const por = ref('projeto')
 
 const { columns, rows, filter } = UseConsumoHoras()
 
 const form = ref(null)
-
+const chart = ref(null)
 const { getClientes } = useClientesStore()
 const { getProjetos } = useProjetoStore()
 const { getUsuariosFoto } = useUsuarioStore()
@@ -319,6 +324,7 @@ const { usuariosFoto } = storeToRefs(useUsuarioStore())
 const { clientes } = storeToRefs(useClientesStore())
 const { projetos } = storeToRefs(useProjetoStore())
 
+const isLoading = ref(false)
 onMounted(async () => {
   await getClientes()
   await getProjetos()
@@ -345,6 +351,12 @@ const series = [
   },
 ]
 
+const dataAtual = date.formatDate(new Date(), 'YYYY/MM/DD')
+const seteDias = date.formatDate(
+  date.addToDate(dataAtual, { days: -30 }),
+  'YYYY/MM/DD'
+)
+
 const filtros = ref({
   cliente: {
     options: [],
@@ -369,12 +381,20 @@ const filtros = ref({
       // return date >= '2019/02/03' && date <= '2019/02/15'
       return true
     },
+
     days: {
-      from: '',
-      to: '',
+      from: seteDias,
+      to: dataAtual,
     },
   },
 })
+const filtroOBJ = computed(() => ({
+  [filtros.value.cliente.name]: filtros.value.cliente.model,
+  [filtros.value.projeto.name]: filtros.value.projeto.model,
+  [filtros.value.usuario.name]: filtros.value.usuario.model,
+  datainicial: filtros.value.data.days.from.replaceAll('/', '-'),
+  datafinal: filtros.value.data.days.to.replaceAll('/', '-'),
+}))
 
 const dataRangeFiltro = computed(() => {
   const from = filtros.value.data.days.from
@@ -389,6 +409,83 @@ watch(
   },
   { deep: true }
 )
+
+// tempoTask ----------------------------------
+
+const tempoTask = ref([])
+
+async function getTempoTask() {
+  isLoading.value = true
+
+  const { data, error } = await useAxios(
+    URLS.tempoProjeto +
+      '/' +
+      generateStringFilterFromObject(filtroOBJ.value) +
+      '&no_loading',
+    { method: 'GET' },
+    api
+  )
+
+  try {
+    setTempoTask(data.value)
+
+    populateChart(data.value)
+    return data.value
+  } catch (e) {
+    return error
+  } finally {
+    isLoading.value = false
+  }
+}
+
+function setTempoTask(v) {
+  tempoTask.value = v
+}
+
+const getProjectName = (id) => (acc, i) => {
+  if (i.id === Number(id)) {
+    acc = i.nome
+  }
+  return acc
+}
+
+const projectName = (id) => projetos.value.reduce(getProjectName(id), '')
+
+function populateChart(tempoProjetos) {
+  const getDuracoes = (tempoProjeto) =>
+    Object.values(tempoProjeto).map((i) => i.duracao)
+  // projetos
+  const duracoes = Object.values(tempoProjetos).map(getDuracoes)
+
+  const labels = Object.keys(tempoProjetos).map((projeto) =>
+    projectName(projeto)
+  )
+
+  const categories = Object.values(tempoProjetos).map((projeto) =>
+    Object.keys(projeto)
+  )[0]
+  const generateSeriesApex = (item, index) => ({
+    name: labels[index],
+    data: duracoes[index],
+  })
+
+  const seriesApex = Object.values(tempoProjetos).map(generateSeriesApex)
+  console.log(seriesApex)
+
+  chart.value.updateOptions({
+    series: seriesApex,
+    // xaxis: {
+    //   categories: categories.map((key) =>
+    //     moment(key, 'DD/MM/YYYY').format('DD/MM/YY')
+    //   ),
+    // },
+    // secondsToHours(i.duracao)
+  })
+}
+
+onMounted(() => {
+  getTempoTask()
+})
 </script>
 
 <style lang="sass" scoped>

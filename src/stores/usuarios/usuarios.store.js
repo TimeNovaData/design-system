@@ -41,7 +41,7 @@ export const useUsuarioStore = defineStore('usuarioStore', () => {
     )
 
     try {
-      setUsuariosFoto(data.value)
+      setUsuariosFoto(data.value.filter((i) => i.nome.trim()))
       return data.value
     } catch (e) {
       return error

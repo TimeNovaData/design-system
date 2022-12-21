@@ -23,6 +23,7 @@
               :editable="true"
               :value="data.titulo"
               @update="(v) => updateValue('titulo')(v)"
+              popupClass="min-w-500px"
             ></KanbanItemEditable>
           </div>
 
@@ -363,8 +364,9 @@
                             updateValue('data_prevista')(GLOBAL.FDateBRtoEU(v))
                         "
                         type="date"
-                        :editable="user.is_staff"
+                        :editable="user?.is_staff"
                       />
+                      <!-- :editable="user.is_staff" -->
                       <!-- //uswer.stagg -->
                     </div>
                   </div>

@@ -164,4 +164,10 @@ export default {
       return url
     }
   },
+  generateStringFilterFromObject(obj) {
+    const filtros = Object.entries(obj).map(
+      ([key, value]) => `&${key?.trim()}=${value?.trim() && value?.trim()}`
+    )
+    return `?x=${filtros.join('')}`
+  },
 }

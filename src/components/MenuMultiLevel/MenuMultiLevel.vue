@@ -56,7 +56,6 @@ import { useRoute, onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
 
 import GLOBAL from 'src/utils/GLOBAL'
 import logoAnimation from 'src/utils/animation/logo'
-const dev = process.env.development
 
 const router = useRoute()
 

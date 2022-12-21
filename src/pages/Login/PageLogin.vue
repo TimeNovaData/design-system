@@ -328,10 +328,11 @@ const login = ref(null)
 const router = useRouter()
 const load = ref(false)
 const permanecerConectado = ref(true)
+const dev = process.env.development
 
 const data = ref({
-  login: '',
-  senha: '',
+  login: dev ? 'emanuel2' : '',
+  senha: dev ? 'papa1539' : '',
 })
 
 onMounted(() => {

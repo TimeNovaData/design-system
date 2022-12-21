@@ -24,6 +24,7 @@ const api = axios.create({
     areaatendimento: 'areaatendimento/',
     task: 'task/',
     tempotask: 'tempotask/',
+    tempoProjeto: 'tempotask/tempo_projeto',
     tipotask: 'tipotask/',
     anexo: 'anexo/',
     comentario: 'comentario/',
