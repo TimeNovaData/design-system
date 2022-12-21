@@ -17,10 +17,14 @@
             <q-form ref="form">
               <q-list class="min-w-[23.5rem]">
                 <q-item
-                  class="px-0 text-headline-3 text-neutral-60 dark:text-white/60"
+                  class="px-0 text-headline-3 text-neutral-60 dark:text-white/60 justify-between flex items-center w-full"
                   dense
                 >
                   Filtros
+                  <q-icon
+                    size="20px"
+                    name="svguse:/icons.svg#icon_filtros"
+                  ></q-icon>
                 </q-item>
                 <q-item class="px-0">
                   <OSelect
@@ -31,6 +35,8 @@
                     class="w-full"
                     :options="filtros.cliente.options"
                     clearable
+                    option-value="id"
+                    option-label="nome"
                   >
                   </OSelect>
                 </q-item>
@@ -43,22 +49,12 @@
                     :options="filtros.projeto.options"
                     v-model="filtros.projeto.model"
                     clearable
+                    option-value="id"
+                    option-label="nome"
                   >
                   </OSelect>
                 </q-item>
 
-                <q-item class="px-0 flex gap-4">
-                  <OSelect
-                    use-input
-                    label="Subprojeto"
-                    size="md"
-                    class="w-full"
-                    :options="filtros.subprojeto.options"
-                    v-model="filtros.subprojeto.model"
-                    clearable
-                  >
-                  </OSelect>
-                </q-item>
                 <q-item class="px-0 flex gap-4">
                   <OSelect
                     use-input
@@ -68,6 +64,8 @@
                     :options="filtros.usuario.options"
                     v-model="filtros.usuario.model"
                     clearable
+                    option-value="id"
+                    option-label="nome"
                   >
                   </OSelect>
                 </q-item>
@@ -119,7 +117,7 @@
             icon="svguse:/icons.svg#icon_date_time"
           />
 
-          <div class="flex items-center gap-6">
+          <div class="flex items-center gap-6 pointer-events-none opacity-30">
             <p class="mr-6 text-caps-3">visualizando por:</p>
             <OButton
               class="text-neutral-70"
@@ -172,11 +170,40 @@
       <q-card
         class="p-16 mt-16 dark:border-white/10 dark:border overflow-hidden"
       >
-        <TextIcon
-          class="text-title-4"
-          text="Tempo por atividade"
-          icon="svguse:/icons.svg#icon_tempo_atividade"
-        />
+        <div class="flex items-center justify-between w-full">
+          <TextIcon
+            class="text-title-4"
+            text="Tempo por atividade"
+            icon="svguse:/icons.svg#icon_tempo_atividade"
+          />
+          <div class="flex items-center gap-6 pointer-events-none opacity-30">
+            <p class="mr-6 text-caps-3">visualizando por:</p>
+            <OButton
+              class="text-neutral-70"
+              :class="{ active: por === 'projeto' }"
+              size="md"
+              secondary
+              @click="por = 'projeto'"
+              >Projeto</OButton
+            >
+            <OButton
+              class="text-neutral-70"
+              :class="{ active: por === 'subprojeto' }"
+              size="md"
+              secondary
+              @click="por = 'subprojeto'"
+              >Subprojeto</OButton
+            >
+            <OButton
+              class="text-neutral-70"
+              :class="{ active: por === 'usuario' }"
+              size="md"
+              secondary
+              @click="por = 'usuario'"
+              >Usuário</OButton
+            >
+          </div>
+        </div>
 
         <OTable
           :filter="filter"
@@ -273,6 +300,9 @@ import GLOBAL from 'src/utils/GLOBAL'
 // import { useGetStore } from 'src/stores/get.store.js'
 import { storeToRefs } from 'pinia'
 import { useClientesStore } from 'src/stores/clientes/clientes.store'
+import { useProjetoStore } from 'src/stores/projetos/projetos.store'
+import { useUsuarioStore } from 'src/stores/usuarios/usuarios.store'
+import { nextTick } from 'process'
 
 const { FData } = GLOBAL
 const por = ref('projeto')
@@ -281,48 +311,22 @@ const { columns, rows, filter } = UseConsumoHoras()
 
 const form = ref(null)
 
-const { getClientes, clientesOptions } = useClientesStore()
+const { getClientes } = useClientesStore()
+const { getProjetos } = useProjetoStore()
+const { getUsuariosFoto } = useUsuarioStore()
 
-onMounted(() => {
-  getClientes()
-  console.log(clientesOptions)
+const { usuariosFoto } = storeToRefs(useUsuarioStore())
+const { clientes } = storeToRefs(useClientesStore())
+const { projetos } = storeToRefs(useProjetoStore())
+
+onMounted(async () => {
+  await getClientes()
+  await getProjetos()
+  await getUsuariosFoto()
+  filtros.value.cliente.options = clientes.value
+  filtros.value.projeto.options = projetos.value
+  filtros.value.usuario.options = usuariosFoto.value
 })
-// const {
-//   getClientes,
-//   getProjetos,
-//   getSubProjetos,
-//   getUsuarios,
-//   /*  */
-// } = useGetStore()
-
-// const {
-//   isLoadings,
-//   clientes,
-//   projetos,
-//   subProjetos,
-//   usuarios,
-//   /*  */
-// } = storeToRefs(useGetStore())
-
-// const clienteOpts = computed(() =>
-//   clientes.value.map((i) => ({ label: i.nome, value: i.id }))
-// )
-
-// const projetosOpts = computed(() =>
-//   projetos.value.map((i) => ({ label: i.nome, value: i.id }))
-// )
-
-// onMounted(async () => {
-//   await getClientes()
-//   await getProjetos()
-//   await getSubProjetos()
-//   await getUsuarios()
-// })
-// console.log('getProjeto', getProjeto())
-// console.log('getSubProjeto', getSubProjeto())
-// console.log('getUsuario', getUsuario())
-
-// console.log(getCliente(), 'getCliente')
 
 const options = {
   chart: {
@@ -333,6 +337,7 @@ const options = {
   },
   dataLabels: { enabled: false },
 }
+
 const series = [
   {
     name: 'series-1',
@@ -342,42 +347,20 @@ const series = [
 
 const filtros = ref({
   cliente: {
-    options: [
-      {
-        label: 'Logbit',
-        value: 1,
-      },
-    ],
+    options: [],
     model: '',
+    name: 'clienteid',
   },
   projeto: {
-    options: [
-      {
-        label: 'Logbit - Assessment',
-        value: 1,
-      },
-    ],
+    options: [],
     model: '',
-  },
-
-  subprojeto: {
-    options: [
-      {
-        label: 'Logbit - Assessment',
-        value: 1,
-      },
-    ],
-    model: '',
+    name: 'projetoid',
   },
 
   usuario: {
-    options: [
-      {
-        label: 'Andrei',
-        value: 1,
-      },
-    ],
+    options: [],
     model: '',
+    name: 'userid',
   },
 
   data: {

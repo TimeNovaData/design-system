@@ -10,7 +10,7 @@
       <MenuLogo />
     </header>
 
-    <section>
+    <section class="">
       <q-list class="Nv0-ul" tag="ul">
         <MenuLi
           v-for="(Nv0, index) in props.menu"
@@ -56,6 +56,7 @@ import { useRoute, onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
 
 import GLOBAL from 'src/utils/GLOBAL'
 import logoAnimation from 'src/utils/animation/logo'
+const dev = process.env.development
 
 const router = useRoute()
 

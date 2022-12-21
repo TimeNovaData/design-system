@@ -6,7 +6,7 @@
   >
     <q-img
       :no-spinner="true"
-      :src="href ? href : imgSrc(item.foto)"
+      :src="href ? href : GLOBAL.imgSrc(item.foto)"
       class="w-full h-full m-auto absolute inset-0"
     />
     <slot></slot>
@@ -14,6 +14,7 @@
 </template>
 
 <script setup>
+import GLOBAL from 'src/utils/GLOBAL'
 defineProps({
   item: Object,
   index: Number,
@@ -23,15 +24,6 @@ defineProps({
     default: 'right',
   },
 })
-function imgSrc(url) {
-  if (!url) return ''
-  const haveMedia = url.includes('/media')
-  if (process.env.development && haveMedia) {
-    return `${process.env.BACKEND_URL}${url.replace('/', '')}`
-  } else {
-    return url
-  }
-}
 </script>
 
 <style lang="scss" scoped></style>

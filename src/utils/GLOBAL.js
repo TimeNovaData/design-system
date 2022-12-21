@@ -154,4 +154,14 @@ export default {
       return '-'
     }
   },
+
+  imgSrc(url) {
+    if (!url) return ''
+    const haveMedia = url.includes('/media')
+    if (process.env.development && haveMedia) {
+      return `${process.env.BACKEND_URL}${url.replace('/', '')}`
+    } else {
+      return url
+    }
+  },
 }

@@ -10,10 +10,6 @@ export const useClientesStore = defineStore('clientesStore', () => {
   const clientes = ref([])
   const isLoading = ref(false)
 
-  const clientesOptions = computed(() =>
-    clientes.value.map((i) => ({ label: i.nome, value: i.id }))
-  )
-
   async function getClientes() {
     isLoading.value = true
 
@@ -37,6 +33,5 @@ export const useClientesStore = defineStore('clientesStore', () => {
     getClientes,
     setClientes,
     clientes,
-    clientesOptions,
   }
 })

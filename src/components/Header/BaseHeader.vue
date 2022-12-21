@@ -29,7 +29,7 @@
             <!--       <q-badge rounded class="bg-primary-pure w-8 h-8" floating></q-badge> -->
             <img
               class="absolute w-full h-full left-0 right-0 object-cover"
-              src="https://cresspr.org.br/wp-content/uploads/2021/03/marielle-franco-1024x683.jpg"
+              :src="GLOBAL.imgSrc(userFoto)"
               alt=""
             />
           </q-avatar>
@@ -48,6 +48,7 @@ import OButton from 'src/components/Button/OButton.vue'
 import BaseHeaderMenu from './BaseHeaderMenu.vue'
 import { useRouter } from 'vue-router'
 import { inject } from 'vue'
+import GLOBAL from 'src/utils/GLOBAL'
 
 const userFoto = inject('userFoto')
 const user = inject('user')

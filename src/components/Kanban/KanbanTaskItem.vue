@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex py-12 px-16 border-b border-b-neutral-30 items-center gap-8 w-full flex-1 dark:!border-b-white/5"
+    class="flex py-12 px-16 border-b border-b-neutral-30 items-center gap-8 w-full flex-1 dark:border-b-white/5"
   >
     <AvatarSingle
       class="!relative !left-0 !h-48 !w-48"
