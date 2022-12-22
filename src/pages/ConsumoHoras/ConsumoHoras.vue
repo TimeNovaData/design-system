@@ -309,6 +309,7 @@
                     :badge="true"
                     :key="tag?.id"
                     :color="returnRGB(tag?.cor_letra)"
+                    :small="true"
                     class="rounded-generic h-32 dark:!text-white/90"
                   >
                     <template #content>
@@ -329,7 +330,7 @@
           label="Exportar para Excel"
           @click="exportTable"
           class="absolute bottom-16 sm:relative sm:w-full sm:bottom-0"
-          v-show="!chamadoLoading"
+          v-show="rows"
           no-caps
         >
         </q-btn>

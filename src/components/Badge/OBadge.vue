@@ -5,6 +5,9 @@
     :data-size="attrs.size"
     :size="null"
     :ripple="false"
+    :class="{
+      '!rounded-full h-20 cursor-pointer': attrs.small,
+    }"
   >
     <q-badge
       v-if="attrs.badge"
@@ -13,7 +16,11 @@
       :style="styleBadge"
     ></q-badge>
 
-    <slot name="content"></slot>
+    <q-tooltip v-if="attrs.small">
+      <slot name="content"></slot>
+    </q-tooltip>
+
+    <slot v-else name="content"></slot>
   </q-chip>
 </template>
 
