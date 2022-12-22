@@ -58,5 +58,6 @@ export const useChamadoStore = defineStore('chamadoStore', () => {
     chamados,
     getChamado,
     createChamado,
+    isLoading,
   }
 })

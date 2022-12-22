@@ -232,11 +232,14 @@
         </div>
 
         <OTable
-          v-if="chamados.length"
+          :loading="chamadoLoading"
           :filter="filter"
           :rows="rows"
           :columns="columns"
           primary
+          :pagination="{
+            rowsPerPage: 10,
+          }"
         >
           <template v-slot:top-left>
             <OInput
@@ -400,7 +403,7 @@ const { clientes } = storeToRefs(useClientesStore())
 const { projetos } = storeToRefs(useProjetoStore())
 
 const { getChamado } = useChamadoStore()
-const { chamados } = storeToRefs(useChamadoStore())
+const { chamados, isLoading: chamadoLoading } = storeToRefs(useChamadoStore())
 const isLoading = ref(true)
 
 const rows = ref([])
