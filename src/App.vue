@@ -18,6 +18,7 @@ import 'src/css/pages/DesignSystem.sass'
 import 'src/css/tailwind.css'
 import 'src/css/stores/blurMode.sass'
 import 'src/css/vendor/materialSymbolsRounded.sass'
+import 'src/css/vendor/apexCharts.sass'
 import { Notify } from 'quasar'
 import { storeToRefs } from 'pinia'
 
