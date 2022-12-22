@@ -418,14 +418,14 @@ watch(
 )
 
 onMounted(async () => {
-  await getClientes()
   await getProjetos()
+  filtros.value.projeto.options = projetos.value
+  getTempoTask()
+  getChamado()
+  await getClientes()
   await getUsuariosFoto()
   filtros.value.cliente.options = clientes.value
-  filtros.value.projeto.options = projetos.value
   filtros.value.usuario.options = usuariosFoto.value
-  await getChamado()
-  getTempoTask()
 })
 
 let filtrosAplicados = {}
