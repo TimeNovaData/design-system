@@ -263,7 +263,7 @@
               <q-td :auto-width="false" key="user_criacao">
                 <div class="inline-flex items-center">
                   <AvatarSingle
-                    class="!w-32 !h-32 overflow-hidden mr-2"
+                    class="!w-32 !h-32 overflow-hidden mr-2 ajuste-img"
                     :estatic="true"
                     :item="props.row.user_criacao"
                   ></AvatarSingle>

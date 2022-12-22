@@ -38,6 +38,7 @@ const { getUser } = useUserStore()
 onMounted(() => {
   getUser()
 })
+
 provide('user', user)
 provide('userFoto', userFoto)
 </script>

@@ -319,6 +319,9 @@ import gsap from 'gsap/dist/gsap'
 import imageLogin from 'src/assets/image/bg-login.jpg'
 import { storeToRefs } from 'pinia'
 import { useDarkMode } from 'src/stores/darkMode'
+import { useUserStore } from 'src/stores/usuarios/user.store'
+
+const { getUser } = useUserStore()
 
 const dark = useDarkMode()
 // const { darkMode } = storeToRefs(dark)
@@ -362,7 +365,11 @@ async function onSubmit() {
   const authStore = useAuthStore()
 
   const logged = await authStore.login(data.value.login, data.value.senha)
-  if (logged) router.push({ path: '/' })
+  if (logged) {
+    router.push({ path: '/' })
+    getUser()
+  }
+
   // else form.value.isInvalid()
   load.value = false
 }

@@ -19,6 +19,7 @@ export const useUserStore = defineStore('userStore', () => {
 
   async function getUser() {
     isLoading.value = true
+    user.value = []
 
     const { data, error } = await useAxios(
       URLS.user + '?no_loading',
