@@ -15,6 +15,7 @@
       <q-space></q-space>
       <div class="flex gap-8 items-center" style="--neutral-100: var(--white)">
         <slot name="right"> </slot>
+
         <OButton
           class="text-neutral-10 w-32 h-32 !p-0"
           tertiary
@@ -25,6 +26,7 @@
           <q-avatar
             size="2rem"
             class="border-d-neutral-10/10 !border-2 relative overflow-hidden dark:border-white/5"
+            style="border-style: unset"
           >
             <!--       <q-badge rounded class="bg-primary-pure w-8 h-8" floating></q-badge> -->
             <img

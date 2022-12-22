@@ -188,8 +188,8 @@ module.exports = configure(function (ctx) {
       // extendManifestJson (json) {}
       // extendPWACustomSWConf (esbuildConf) {}
       workboxOptions: {
-        skipWaiting: true,
-        clientsClaim: true,
+        // skipWaiting: true,
+        // clientsClaim: true,
         // navigateFallbackDenylist: [/_redirects/],
         exclude: ['_redirects/'],
       },
