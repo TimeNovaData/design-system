@@ -28,11 +28,9 @@
             class="p-12"
             transition-show="jump-down"
             transition-hide="jump-up"
-            v-model="popupValue"
-            :model-value="popupValue"
           >
             <q-form ref="form">
-              <q-list class="min-w-[23.5rem]">
+              <q-list class="w-[23.5rem]">
                 <q-item
                   class="px-0 text-headline-3 text-neutral-60 dark:text-white/60 justify-between flex items-center w-full"
                   dense
@@ -174,7 +172,7 @@
             >
           </div>
         </div>
-        <div class="w-full">
+        <div class="w-full px-16">
           <div class="h-[450px] grid place-items-center" v-show="isLoading">
             <div class="flex items-center gap-12">
               <q-spinner color="primary" class="shrink-0" size="48px" />
@@ -234,10 +232,10 @@
         </div>
 
         <OTable
+          v-if="chamados.length"
           :filter="filter"
           :rows="rows"
           :columns="columns"
-          row-key="name"
           primary
         >
           <template v-slot:top-left>
@@ -258,52 +256,61 @@
 
           <template v-slot:body="props">
             <q-tr :props="props">
-              <q-td key="name" :props="props">
-                <div class="flex gap-8 items-center">
-                  <q-avatar size="2rem">
-                    <img
-                      src="https://www.cnnbrasil.com.br/wp-content/uploads/sites/12/2022/01/272659509_640826040498160_305754906527072885_n-e1643549776803.jpg?w=876&h=484&crop=1"
-                      alt=""
-                    />
-                  </q-avatar>
-                  <div class="flex flex-col">
-                    <p class="text-paragraph-2">
-                      {{ props.row.name }}
-                    </p>
-                    <p
-                      class="text-paragraph-3 text-neutral-70 dark:text-white/50"
-                    >
-                      Colaborador
-                    </p>
-                  </div>
+              <q-td key="titulo" :auto-width="false">
+                {{ props.row.titulo }}
+              </q-td>
+
+              <q-td :auto-width="false" key="user_criacao">
+                <div class="inline-flex items-center">
+                  <AvatarSingle
+                    class="!w-32 !h-32 overflow-hidden mr-2"
+                    :estatic="true"
+                    :item="props.row.user_criacao"
+                  ></AvatarSingle>
+                  <p class="">{{ props.row.user_criacao?.nome }}</p>
                 </div>
               </q-td>
-              <q-td key="calories" :props="props">
-                {{ props.row.calories }}
+
+              <q-td :auto-width="false" key="projeto">
+                <div>
+                  <q-badge
+                    rounded
+                    class="shrink-0 w-8 h-8"
+                    :style="{ background: props.row.projeto.cor }"
+                  ></q-badge>
+                  {{ props.row.projeto.nome }}
+                </div>
               </q-td>
-              <q-td key="fat" :props="props">
-                {{ props.row.fat }}
+
+              <q-td :auto-width="false" key="tempo_estimado">
+                <p class="whitespace-nowrap text-paragraph-2">
+                  {{ GLOBAL.FTime(props.row.tempo_estimado) }}
+                </p>
+                <p class="whitespace-nowrap text-paragraph-3 text-neutral-70">
+                  <!-- {{ props.row.tempo_total }} -->
+                  00h00m
+                </p>
               </q-td>
-              <q-td key="carbs" :props="props">
-                {{ props.row.carbs }}
-              </q-td>
-              <q-td key="protein" :props="props">
-                {{ props.row.protein }}
-              </q-td>
-              <q-td key="sodium" :props="props" :auto-width="true">
-                <o-button class="mx-16" size="sm" primary
-                  >Adicionar ao carrinho</o-button
+
+              <q-td :auto-width="true" key="tag">
+                <div
+                  class="whitespace-nowrap text-paragraph-2 flex flex-nowrap gap-4"
                 >
-              </q-td>
-              <q-td key="calcium" :props="props">
-                <o-badge size="sm"
-                  ><template #content>{{
-                    props.row.calcium
-                  }}</template></o-badge
-                >
-              </q-td>
-              <q-td key="iron" :props="props">
-                <q-icon name="search"></q-icon>
+                  <OBadge
+                    v-for="tag in props.row.tag.filter((i) => i.nome)"
+                    size="sm"
+                    :badge="true"
+                    :key="tag?.id"
+                    :color="returnRGB(tag?.cor_letra)"
+                    class="rounded-generic h-32 dark:!text-white/90"
+                  >
+                    <template #content>
+                      <p class="text-center mx-auto" square>
+                        {{ tag?.nome }}
+                      </p>
+                    </template>
+                  </OBadge>
+                </div>
               </q-td>
             </q-tr>
           </template>
@@ -333,14 +340,54 @@ import { useUsuarioStore } from 'src/stores/usuarios/usuarios.store'
 import { nextTick } from 'process'
 import { api } from 'src/boot/axios'
 import { useAxios } from '@vueuse/integrations/useAxios'
+import { useChamadoStore } from 'src/stores/chamados/chamados.store'
+import AvatarSingle from 'src/components/Avatar/AvatarSingle.vue'
 
 const { URLS } = api.defaults
 
-const { FData, generateStringFilterFromObject, secondsToHours } = GLOBAL
+const { FData, generateStringFilterFromObject, secondsToHours, returnRGB } =
+  GLOBAL
 const por = ref('projeto')
 
-const { columns, rows, filter } = UseConsumoHoras()
+const columns = [
+  {
+    name: 'titulo',
+    field: (row) => row.titulo,
+    label: 'Chamado',
+    style: 'width: 100%',
+    align: 'left',
+    sortable: true,
+  },
+  {
+    name: 'Solicitante',
+    label: 'Solicitante',
+    field: (row) => row.user_criacao.nome,
+    align: 'left',
+    sortable: true,
+  },
 
+  {
+    name: 'Projeto',
+    label: 'Projeto',
+    field: (row) => row.projeto.nome,
+    align: 'left',
+    sortable: true,
+  },
+  {
+    name: 'Previsto / Realizado',
+    label: 'Previsto / Realizado',
+    align: 'left',
+  },
+  {
+    name: 'Tags',
+    label: 'Tags',
+    field: (row) => row.tags,
+    sortable: true,
+    align: 'left',
+  },
+]
+
+const filter = ref('')
 const form = ref(null)
 const chart = ref(null)
 const menu = ref(null)
@@ -352,14 +399,28 @@ const { usuariosFoto } = storeToRefs(useUsuarioStore())
 const { clientes } = storeToRefs(useClientesStore())
 const { projetos } = storeToRefs(useProjetoStore())
 
-const isLoading = ref(false)
+const { getChamado } = useChamadoStore()
+const { chamados } = storeToRefs(useChamadoStore())
+const isLoading = ref(true)
+
+const rows = ref([])
+
+watch(
+  () => chamados.value,
+  () => {
+    rows.value = chamados.value
+  }
+)
+
 onMounted(async () => {
+  getTempoTask()
   await getClientes()
   await getProjetos()
   await getUsuariosFoto()
   filtros.value.cliente.options = clientes.value
   filtros.value.projeto.options = projetos.value
   filtros.value.usuario.options = usuariosFoto.value
+  await getChamado()
 })
 
 let filtrosAplicados = {}
@@ -387,6 +448,7 @@ const options = {
     id: 'chart1',
     type: 'bar',
     height: 450,
+    width: '100%',
     stacked: true,
     toolbar: {
       show: false,
@@ -399,20 +461,37 @@ const options = {
     },
   },
   xaxis: {
-    categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998],
+    categories: [],
+    labels: {
+      rotateAlways: true,
+      style: {
+        fontSize: '12px',
+        fontFamily: 'Inter',
+      },
+    },
   },
   yaxis: {
-    floating: true,
+    // floating: true,
     labels: {
       formatter: function (val, opt) {
         return secondsToHours(val, false)
       },
+      style: {
+        fontSize: '12px',
+      },
+    },
+    axisBorder: {
+      show: false,
+      // color: '#78909C',
+      // offsetX: 0,
+      // offsetY: 0
     },
   },
   dataLabels: {
     enabled: true,
     style: {
-      fontSize: '10px',
+      fontSize: '12px',
+      fontFamily: 'Inter',
       fontWeight: 'bold',
     },
     formatter: function (val, opt) {
@@ -434,12 +513,32 @@ const options = {
       // borderRadius: 5,
     },
   },
+
+  grid: {
+    borderColor: '#E9ECEF',
+    strokeDashArray: 0,
+    position: 'back',
+    padding: {
+      right: 12,
+      left: 12,
+    },
+    xaxis: {
+      lines: {
+        show: false,
+      },
+    },
+    yaxis: {
+      lines: {
+        show: true,
+      },
+    },
+  },
 }
 
 const series = [
   {
-    name: 'series-1',
-    data: [30, 40, 45, 50, 49, 60, 70, 91],
+    name: '',
+    data: [],
   },
 ]
 
@@ -484,7 +583,7 @@ const filtrosDefault = {
   },
 }
 const filtros = ref(filtrosDefault)
-const popupValue = ref(filtros.value)
+const popupValue = ref(false)
 
 const filtroOBJ = computed(() => ({
   [filtros.value.cliente.name]: filtros.value.cliente.model?.id,
@@ -598,6 +697,9 @@ function populateChart(tempoProjetos) {
     },
     // secondsToHours(i.duracao)
   })
+
+  getChamado(`&projeto__id=${filtros.value.projeto.model.id}`)
+
   // }
 }
 async function handleRemoveFilters() {
@@ -605,9 +707,6 @@ async function handleRemoveFilters() {
   await nextTick()
   getTempoTask()
 }
-onMounted(() => {
-  getTempoTask()
-})
 </script>
 
 <style lang="sass" scoped>

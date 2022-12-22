@@ -3,11 +3,14 @@
     size="32px"
     class="overlapping !w-32 !h-32 absolute border-white border-2 dark:border-d-neutral-10 overflow-hidden"
     :style="`${side}: ${index * 15}px;  'z-index':-${index}`"
+    :class="{ '!static': estatic }"
   >
     <q-img
       :no-spinner="true"
       :src="href ? href : GLOBAL.imgSrc(item.foto)"
       class="w-full h-full m-auto absolute inset-0"
+      :class="{ '!relative': estatic }"
+      :no-transition="true"
     />
     <slot></slot>
   </q-avatar>
@@ -19,6 +22,7 @@ defineProps({
   item: Object,
   index: Number,
   href: String,
+  estatic: Boolean,
   side: {
     type: String,
     default: 'right',

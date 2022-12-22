@@ -10,11 +10,11 @@ export const useChamadoStore = defineStore('chamadoStore', () => {
   const chamados = ref(false)
   const isLoading = ref(false)
 
-  async function getChamado() {
+  async function getChamado(filters = '') {
     isLoading.value = true
 
     const { data, error } = await useAxios(
-      URLS.chamado + '?concluidos=False',
+      URLS.chamado + '?concluidos=False' + filters,
       { method: 'GET' },
       api
     )
@@ -55,6 +55,7 @@ export const useChamadoStore = defineStore('chamadoStore', () => {
   }
 
   return {
+    chamados,
     getChamado,
     createChamado,
   }
