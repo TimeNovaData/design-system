@@ -41,7 +41,7 @@
                     name="svguse:/icons.svg#icon_filtros"
                   ></q-icon>
                 </q-item>
-                <q-item class="px-0">
+                <q-item class="px-0" v-show="filtros.cliente.options.length">
                   <OSelect
                     v-model="filtros.cliente.model"
                     use-input
