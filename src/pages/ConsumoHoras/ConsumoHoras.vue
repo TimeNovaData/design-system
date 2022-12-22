@@ -327,26 +327,23 @@
 </template>
 
 <script setup>
-import TextIcon from 'src/components/Text/TextIcon.vue'
-import OButton from 'src/components/Button/OButton.vue'
-import { ref, watch, computed, onMounted } from 'vue'
+import { useAxios } from '@vueuse/integrations/useAxios'
+import { storeToRefs } from 'pinia'
+import { date } from 'quasar'
+import { api } from 'src/boot/axios'
+import AvatarSingle from 'src/components/Avatar/AvatarSingle.vue'
 import OBadge from 'src/components/Badge/OBadge.vue'
-import OTable from 'src/components/Table/OTable.vue'
-import UseConsumoHoras from 'src/composables/useConsumoHoras'
+import OButton from 'src/components/Button/OButton.vue'
 import OInput from 'src/components/Input/OInput.vue'
 import OSelect from 'src/components/Select/OSelect.vue'
-import { date } from 'quasar'
-import GLOBAL from 'src/utils/GLOBAL'
-// import { useGetStore } from 'src/stores/get.store.js'
-import { storeToRefs } from 'pinia'
+import OTable from 'src/components/Table/OTable.vue'
+import TextIcon from 'src/components/Text/TextIcon.vue'
+import { useChamadoStore } from 'src/stores/chamados/chamados.store'
 import { useClientesStore } from 'src/stores/clientes/clientes.store'
 import { useProjetoStore } from 'src/stores/projetos/projetos.store'
 import { useUsuarioStore } from 'src/stores/usuarios/usuarios.store'
-import { nextTick } from 'process'
-import { api } from 'src/boot/axios'
-import { useAxios } from '@vueuse/integrations/useAxios'
-import { useChamadoStore } from 'src/stores/chamados/chamados.store'
-import AvatarSingle from 'src/components/Avatar/AvatarSingle.vue'
+import GLOBAL from 'src/utils/GLOBAL'
+import { computed, onMounted, ref, watch } from 'vue'
 
 const { URLS } = api.defaults
 
@@ -709,7 +706,6 @@ function populateChart(tempoProjetos) {
 }
 async function handleRemoveFilters() {
   filtros.value = filtrosDefault
-  await nextTick()
   getTempoTask()
 }
 </script>

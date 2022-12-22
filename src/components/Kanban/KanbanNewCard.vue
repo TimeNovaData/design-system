@@ -35,7 +35,7 @@
               <p class="!text-neutral-70 dark:!text-white/90">{{ opt.nome }}</p>
             </q-item-label>
           </q-item-section>
-          <q-item-section side class="!w-56">
+          <q-item-section side class="!w-56 opacity-0">
             <q-toggle
               size="sm"
               :model-value="selected"
