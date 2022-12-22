@@ -174,7 +174,7 @@
           </div>
         </div>
         <div class="w-full">
-          <div class="h-[450px] grid place-items-center" v-if="isLoading">
+          <div class="h-[450px] grid place-items-center" v-show="isLoading">
             <div class="flex items-center gap-12">
               <q-spinner color="primary" class="shrink-0" size="48px" />
               <p class="text-paragraph-1 text-neutral-70 dark:text-white/70">
@@ -183,6 +183,7 @@
             </div>
           </div>
           <apexchart
+            v-show="!isLoading"
             ref="chart"
             width="100%"
             height="450px"
