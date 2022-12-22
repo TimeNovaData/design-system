@@ -31,7 +31,7 @@ defineProps({
 </script>
 
 <style lang="sass" scoped>
-.avatar
+.avatar :deep(img)
   width: calc(100% - 3px)
   height: calc(100% - 3px)
 </style>
