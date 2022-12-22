@@ -397,7 +397,7 @@ const columns = [
   {
     name: 'Tags',
     label: 'Tags',
-    field: (row) => row.tags,
+    field: (row) => row.tag.map((i) => i.nome).join(', '),
     sortable: true,
     align: 'left',
   },
