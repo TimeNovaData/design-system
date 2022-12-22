@@ -14,17 +14,10 @@
               size="md"
               :badge="false"
               class="!px-6 !bg-neutral-30 dark:!bg-white/5 text-neutral-70 border border-neutral-100/5"
-              v-show="item"
             >
               <template #content> {{ item }} </template>
             </OBadge>
           </div>
-          <q-spinner
-            v-if="isLoading"
-            color="primary"
-            :thickness="5"
-            size="16px"
-          />
         </div>
 
         <OButton primary size="md" icon="svguse:/icons.svg#icon_filtros"
@@ -489,14 +482,17 @@ const filtroNameOBJ = computed(() => {
     filtros.value.data.days.to,
     filtros.value.data.days.from
   )
+  const clientenome = filtros.value.cliente.model?.nome
+  const projetonome = filtros.value.projeto.model?.nome
+  const usuarionome = filtros.value.usuario.model?.nome
+  const obj = {}
+  clientenome && (obj[filtros.value.cliente.name] = clientenome)
+  projetonome && (obj[filtros.value.projeto.name] = projetonome)
+  usuarionome && (obj[filtros.value.usuario.name] = usuarionome)
+  obj.data = haveData ? `${dataInicial} ate ${dataFinal} ` : ''
+  obj.dias = haveData ? `${dias > 1 ? `${dias} dias` : `${dias} dia`}` : ''
 
-  return {
-    [filtros.value.cliente.name]: filtros.value.cliente.model?.nome,
-    [filtros.value.projeto.name]: filtros.value.projeto.model?.nome,
-    [filtros.value.usuario.name]: filtros.value.usuario.model?.nome,
-    data: haveData ? `${dataInicial} ate ${dataFinal} ` : '',
-    dias: haveData ? `${dias > 1 ? `${dias} dias` : `${dias} dia`}` : '',
-  }
+  return obj
 })
 
 const dataRangeFiltro = computed(() => {
