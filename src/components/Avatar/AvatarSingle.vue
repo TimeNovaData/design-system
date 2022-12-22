@@ -1,7 +1,7 @@
 <template>
   <q-avatar
     size="32px"
-    class="overlapping !w-32 !h-32 absolute border-white border-2 dark:border-d-neutral-10 overflow-hidden"
+    class="overlapping !w-32 !h-32 absolute border-white border-2 dark:border-d-neutral-10 overflow-hidden avatar"
     :style="`${side}: ${index * 15}px;  'z-index':-${index}`"
     :class="{ '!static': estatic }"
   >
@@ -30,4 +30,8 @@ defineProps({
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="sass" scoped>
+.avatar
+  width: calc(100% - 3px)
+  height: calc(100% - 3px)
+</style>

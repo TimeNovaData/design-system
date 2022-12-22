@@ -14,7 +14,7 @@
               v-show="item.length"
               size="md"
               :badge="false"
-              class="!px-6 !bg-neutral-30 dark:!bg-white/5 text-neutral-70 border border-neutral-100/5"
+              class="!px-6 !bg-neutral-30 dark:!bg-white/5 text-neutral-70 border border-neutral-100/5 dark:!text-white/70"
             >
               <template #content> {{ item }} </template>
             </OBadge>
