@@ -6,6 +6,8 @@
     :size="null"
     popup-content-class="select-menu"
     options-selected-class="option-selecionada"
+    @filter="filterFn"
+    :options="options"
   >
     <template v-for="slot in Object.keys(slots)" #[slot]="slotProps">
       <slot :name="slot" v-bind="slotProps"></slot>
@@ -23,8 +25,22 @@ import { useSlots, useAttrs, ref, onMounted } from 'vue'
 const slots = useSlots()
 const attrs = useAttrs()
 const componentRef = ref(null)
+const options = ref(attrs.options)
+
+const stringOptions = attrs.options
 
 defineExpose({ componentRef })
+
+function filterFn(val, update, abort) {
+  update(() => {
+    const needle = val.toLowerCase()
+    options.value = stringOptions.filter((v) => {
+      const option = v[attrs['option-label']]
+      const have = option.toLowerCase().indexOf(needle) > -1
+      return have
+    })
+  })
+}
 </script>
 
 <style lang="sass">

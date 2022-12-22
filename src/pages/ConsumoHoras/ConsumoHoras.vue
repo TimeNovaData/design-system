@@ -11,6 +11,7 @@
         <div class="flex gap-8 justify-end ml-auto mr-8">
           <div v-for="item in filtrosAplicados" :key="item">
             <OBadge
+              v-show="item.length"
               size="md"
               :badge="false"
               class="!px-6 !bg-neutral-30 dark:!bg-white/5 text-neutral-70 border border-neutral-100/5"
@@ -476,7 +477,8 @@ const filtroOBJ = computed(() => ({
 }))
 
 const filtroNameOBJ = computed(() => {
-  const haveData = filtros.value.data.days.from && filtros.value.data.days.to
+  const haveData =
+    filtros.value.data.days.from?.trim() && filtros.value.data.days.to?.trim()
   const dataInicial = FData(filtros.value.data.days.from)
   const dataFinal = FData(filtros.value.data.days.to)
   const dias = date.getDateDiff(
@@ -570,15 +572,15 @@ function populateChart(tempoProjetos) {
   const seriesApex = Object.values(tempoProjetos).map(generateSeriesApex)
   console.log(seriesApex)
 
+  // if (categories && seriesApex !== {}) {
   chart.value.updateOptions({
     series: seriesApex,
-    // xaxis: {
-    //   categories: categories.map((key) =>
-    //     moment(key, 'DD/MM/YYYY').format('DD/MM/YY')
-    //   ),
-    // },
+    xaxis: {
+      categories: categories || [],
+    },
     // secondsToHours(i.duracao)
   })
+  // }
 }
 async function handleRemoveFilters() {
   filtros.value = filtrosDefault
