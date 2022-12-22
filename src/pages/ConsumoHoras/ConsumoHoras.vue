@@ -365,6 +365,24 @@ onMounted(async () => {
 let filtrosAplicados = {}
 
 const options = {
+  colors: [
+    '#5a5568',
+    '#febf44',
+    '#6892ff',
+    '#30e8aa',
+    '#a82ac8',
+    '#fff9c6',
+    '#95ff8c',
+    '#ffb388',
+    '#99c5dd',
+    '#ff6565',
+    '#917bd9',
+    '#d91540',
+    '#800080',
+    '#FF871E',
+    '#77001A',
+    '#18B25D',
+  ],
   chart: {
     id: 'chart1',
     type: 'bar',
@@ -413,7 +431,7 @@ const options = {
   plotOptions: {
     bar: {
       horizontal: false,
-      borderRadius: 10,
+      // borderRadius: 5,
     },
   },
 }
