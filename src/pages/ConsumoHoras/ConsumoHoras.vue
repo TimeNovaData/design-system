@@ -291,9 +291,11 @@
                 <p class="whitespace-nowrap text-paragraph-2">
                   {{ GLOBAL.FTime(props.row.tempo_estimado) }}
                 </p>
-                <p class="whitespace-nowrap text-paragraph-3 text-neutral-70">
+                <p
+                  class="whitespace-nowrap text-paragraph-3 text-neutral-70 dark:text-white/70"
+                >
                   <!-- {{ props.row.tempo_total }} -->
-                  00h00m
+                  00h 00m
                 </p>
               </q-td>
 
