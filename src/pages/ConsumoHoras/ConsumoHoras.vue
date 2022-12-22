@@ -196,7 +196,7 @@
       </q-card>
 
       <q-card
-        class="p-16 mt-16 dark:border-white/10 dark:border overflow-hidden"
+        class="p-16 mt-16 dark:border-white/10 dark:border overflow-hidden relative"
       >
         <div class="flex items-center justify-between w-full">
           <TextIcon
@@ -322,6 +322,17 @@
             </q-tr>
           </template>
         </OTable>
+
+        <q-btn
+          secondary
+          icon-right="svguse:/icons.svg#icon_excel"
+          label="Exportar para Excel"
+          @click="exportTable"
+          class="absolute bottom-16 sm:relative sm:w-full sm:bottom-0"
+          v-show="!chamadoLoading"
+          no-caps
+        >
+        </q-btn>
       </q-card>
     </div>
     <!-- <span class="block h-48"></span> -->
@@ -331,7 +342,7 @@
 <script setup>
 import { useAxios } from '@vueuse/integrations/useAxios'
 import { storeToRefs } from 'pinia'
-import { date } from 'quasar'
+import { date, exportFile, useQuasar } from 'quasar'
 import { api } from 'src/boot/axios'
 import AvatarSingle from 'src/components/Avatar/AvatarSingle.vue'
 import OBadge from 'src/components/Badge/OBadge.vue'
@@ -430,23 +441,32 @@ onMounted(async () => {
 let filtrosAplicados = {}
 
 const options = {
+  // colors: [
+  //   '#5a5568',
+  //   '#febf44',
+  //   '#6892ff',
+  //   '#30e8aa',
+  //   '#a82ac8',
+  //   '#fff9c6',
+  //   '#95ff8c',
+  //   '#ffb388',
+  //   '#99c5dd',
+  //   '#ff6565',
+  //   '#917bd9',
+  //   '#d91540',
+  //   '#800080',
+  //   '#FF871E',
+  //   '#77001A',
+  //   '#18B25D',
+  // ],
   colors: [
-    '#5a5568',
-    '#febf44',
-    '#6892ff',
-    '#30e8aa',
-    '#a82ac8',
-    '#fff9c6',
-    '#95ff8c',
-    '#ffb388',
-    '#99c5dd',
-    '#ff6565',
-    '#917bd9',
-    '#d91540',
-    '#800080',
-    '#FF871E',
-    '#77001A',
-    '#18B25D',
+    '#0b8b4e',
+    '#40f09c',
+    '#0da35b',
+    '#28ee90',
+    '#0fba69',
+    '#13ea83',
+    '#11d276',
   ],
   chart: {
     id: 'chart1',
@@ -709,6 +729,55 @@ function populateChart(tempoProjetos) {
 async function handleRemoveFilters() {
   filtros.value = filtrosDefault
   getTempoTask()
+}
+
+// exportar tabela ----------------------------------
+const $q = useQuasar()
+function wrapCsvValue(val, formatFn, row) {
+  let formatted = formatFn !== void 0 ? formatFn(val, row) : val
+
+  formatted =
+    formatted === void 0 || formatted === null ? '' : String(formatted)
+
+  formatted = formatted.split('"').join('""')
+  /**
+   * Excel accepts \n and \r in strings, but some other CSV parsers do not
+   * Uncomment the next two lines to escape new lines
+   */
+  // .split('\n').join('\\n')
+  // .split('\r').join('\\r')
+
+  return `"${formatted}"`
+}
+const exportTable = () => {
+  // naive encoding to csv format
+  const content = [columns.map((col) => wrapCsvValue(col.label))]
+    .concat(
+      rows.value.map((row) =>
+        columns
+          .map((col) =>
+            wrapCsvValue(
+              typeof col.field === 'function'
+                ? col.field(row)
+                : row[col.field === void 0 ? col.name : col.field],
+              col.format,
+              row
+            )
+          )
+          .join(',')
+      )
+    )
+    .join('\r\n')
+
+  const status = exportFile('table-export.csv', content, 'text/csv')
+
+  if (status !== true) {
+    $q.notify({
+      message: 'Browser denied file download...',
+      color: 'negative',
+      icon: 'warning',
+    })
+  }
 }
 </script>
 
