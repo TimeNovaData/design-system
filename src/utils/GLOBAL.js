@@ -166,7 +166,7 @@ export default {
   },
   generateStringFilterFromObject(obj) {
     const filtros = Object.entries(obj).map(
-      ([key, value]) => `&${key?.trim()}=${value?.trim() && value?.trim()}`
+      ([key, value]) => `&${key?.trim()}=${value || ''}`
     )
     return `?x=${filtros.join('')}`
   },

@@ -5,14 +5,37 @@
     delay="0"
   >
     <div class="mx-48 mb-48">
-      <div class="flex items-center justify-between mt-24">
+      <div class="flex items-center mt-24">
         <TextIcon text="Horas Consumidas" icon="svguse:/icons.svg#icon_horas" />
+
+        <div class="flex gap-8 justify-end ml-auto mr-8">
+          <div v-for="item in filtrosAplicados" :key="item">
+            <OBadge
+              size="md"
+              :badge="false"
+              class="!px-6 !bg-neutral-30 dark:!bg-white/5 text-neutral-70 border border-neutral-100/5"
+              v-show="item"
+            >
+              <template #content> {{ item }} </template>
+            </OBadge>
+          </div>
+          <q-spinner
+            v-if="isLoading"
+            color="primary"
+            :thickness="5"
+            size="16px"
+          />
+        </div>
+
         <OButton primary size="md" icon="svguse:/icons.svg#icon_filtros"
           >Filtros
           <q-menu
+            ref="menu"
             class="p-12"
             transition-show="jump-down"
             transition-hide="jump-up"
+            v-model="popupValue"
+            :model-value="popupValue"
           >
             <q-form ref="form">
               <q-list class="min-w-[23.5rem]">
@@ -96,10 +119,22 @@
                 </q-item>
 
                 <q-item class="px-0 flex gap-4 justify-end w-full">
-                  <OButton size="md" icon="close" tertiary>
+                  <OButton
+                    size="md"
+                    icon="close"
+                    tertiary
+                    @click="handleRemoveFilters"
+                  >
                     Remover Filtros</OButton
                   >
-                  <OButton size="md" icon="check" primary>Aplicar</OButton>
+                  <OButton
+                    size="md"
+                    icon="check"
+                    primary
+                    @click="getTempoTask"
+                    :loading="isLoading"
+                    >Aplicar</OButton
+                  >
                 </q-item>
               </q-list>
             </q-form>
@@ -154,17 +189,6 @@
             :options="options"
             :series="series"
           ></apexchart>
-        </div>
-        <div class="inline-flex mx-auto items-center w-full justify-center">
-          <OBadge
-            square
-            size="md"
-            :badge="true"
-            class="!px-6 !bg-white border !border-neutral-100/10 dark:!bg-white/5"
-            badgeColor="var(--primary-pure)"
-          >
-            <template #content> Herbarium </template></OBadge
-          >
         </div>
       </q-card>
 
@@ -316,6 +340,7 @@ const { columns, rows, filter } = UseConsumoHoras()
 
 const form = ref(null)
 const chart = ref(null)
+const menu = ref(null)
 const { getClientes } = useClientesStore()
 const { getProjetos } = useProjetoStore()
 const { getUsuariosFoto } = useUsuarioStore()
@@ -333,6 +358,8 @@ onMounted(async () => {
   filtros.value.projeto.options = projetos.value
   filtros.value.usuario.options = usuariosFoto.value
 })
+
+let filtrosAplicados = {}
 
 const options = {
   chart: {
@@ -362,7 +389,11 @@ const options = {
     },
   },
   dataLabels: {
-    enabled: false,
+    enabled: true,
+    style: {
+      fontSize: '10px',
+      fontWeight: 'bold',
+    },
     formatter: function (val, opt) {
       return secondsToHours(val, false)
     },
@@ -397,22 +428,25 @@ const seteDias = date.formatDate(
   'YYYY/MM/DD'
 )
 
-const filtros = ref({
+const filtrosDefault = {
   cliente: {
     options: [],
     model: '',
     name: 'clienteid',
+    nameVisivel: 'Cliente',
   },
   projeto: {
     options: [],
     model: '',
     name: 'projetoid',
+    nameVisivel: 'Projeto',
   },
 
   usuario: {
     options: [],
     model: '',
     name: 'userid',
+    nameVisivel: 'Usuario',
   },
 
   data: {
@@ -427,13 +461,26 @@ const filtros = ref({
       to: dataAtual,
     },
   },
-})
+}
+const filtros = ref(filtrosDefault)
+const popupValue = ref(filtros.value)
+
 const filtroOBJ = computed(() => ({
-  [filtros.value.cliente.name]: filtros.value.cliente.model,
-  [filtros.value.projeto.name]: filtros.value.projeto.model,
-  [filtros.value.usuario.name]: filtros.value.usuario.model,
+  [filtros.value.cliente.name]: filtros.value.cliente.model?.id,
+  [filtros.value.projeto.name]: filtros.value.projeto.model?.id,
+  [filtros.value.usuario.name]: filtros.value.usuario.model?.id,
   datainicial: filtros.value.data.days.from.replaceAll('/', '-'),
   datafinal: filtros.value.data.days.to.replaceAll('/', '-'),
+}))
+
+const filtroNameOBJ = computed(() => ({
+  [filtros.value.cliente.name]: filtros.value.cliente.model?.nome,
+  [filtros.value.projeto.name]: filtros.value.projeto.model?.nome,
+  [filtros.value.usuario.name]: filtros.value.usuario.model?.nome,
+  data:
+    filtros.value.data.days.from && filtros.value.data.days.to
+      ? `${filtros.value.data.days.from} ate  ${filtros.value.data.days.to}`
+      : '',
 }))
 
 const dataRangeFiltro = computed(() => {
@@ -456,20 +503,18 @@ const tempoTask = ref([])
 
 async function getTempoTask() {
   isLoading.value = true
+  menu.value.hide()
 
   const { data, error } = await useAxios(
-    URLS.tempoProjeto +
-      '/' +
-      generateStringFilterFromObject(filtroOBJ.value) +
-      '&no_loading',
+    URLS.tempoProjeto + '/' + generateStringFilterFromObject(filtroOBJ.value),
     { method: 'GET' },
     api
   )
 
   try {
     setTempoTask(data.value)
-
     populateChart(data.value)
+    filtrosAplicados = filtroNameOBJ.value
     return data.value
   } catch (e) {
     return error
@@ -522,7 +567,10 @@ function populateChart(tempoProjetos) {
     // secondsToHours(i.duracao)
   })
 }
-
+function handleRemoveFilters() {
+  filtros.value = filtrosDefault
+  getTempoTask()
+}
 onMounted(() => {
   getTempoTask()
 })
