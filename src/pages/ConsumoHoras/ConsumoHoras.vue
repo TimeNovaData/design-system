@@ -181,6 +181,14 @@
           </div>
         </div>
         <div class="w-full">
+          <div class="h-[450px] grid place-items-center" v-if="isLoading">
+            <div class="flex items-center gap-12">
+              <q-spinner color="primary" class="shrink-0" size="48px" />
+              <p class="text-paragraph-1 text-neutral-70 dark:text-white/70">
+                Carregando
+              </p>
+            </div>
+          </div>
           <apexchart
             ref="chart"
             width="100%"
@@ -424,7 +432,7 @@ const series = [
 
 const dataAtual = date.formatDate(new Date(), 'YYYY/MM/DD')
 const seteDias = date.formatDate(
-  date.addToDate(dataAtual, { days: -10 }),
+  date.addToDate(dataAtual, { days: -7 }),
   'YYYY/MM/DD'
 )
 
@@ -473,15 +481,23 @@ const filtroOBJ = computed(() => ({
   datafinal: filtros.value.data.days.to.replaceAll('/', '-'),
 }))
 
-const filtroNameOBJ = computed(() => ({
-  [filtros.value.cliente.name]: filtros.value.cliente.model?.nome,
-  [filtros.value.projeto.name]: filtros.value.projeto.model?.nome,
-  [filtros.value.usuario.name]: filtros.value.usuario.model?.nome,
-  data:
-    filtros.value.data.days.from && filtros.value.data.days.to
-      ? `${filtros.value.data.days.from} ate  ${filtros.value.data.days.to}`
-      : '',
-}))
+const filtroNameOBJ = computed(() => {
+  const haveData = filtros.value.data.days.from && filtros.value.data.days.to
+  const dataInicial = FData(filtros.value.data.days.from)
+  const dataFinal = FData(filtros.value.data.days.to)
+  const dias = date.getDateDiff(
+    filtros.value.data.days.to,
+    filtros.value.data.days.from
+  )
+
+  return {
+    [filtros.value.cliente.name]: filtros.value.cliente.model?.nome,
+    [filtros.value.projeto.name]: filtros.value.projeto.model?.nome,
+    [filtros.value.usuario.name]: filtros.value.usuario.model?.nome,
+    data: haveData ? `${dataInicial} ate ${dataFinal} ` : '',
+    dias: haveData ? `${dias > 1 ? `${dias} dias` : `${dias} dia`}` : '',
+  }
+})
 
 const dataRangeFiltro = computed(() => {
   const from = filtros.value.data.days.from
@@ -567,8 +583,9 @@ function populateChart(tempoProjetos) {
     // secondsToHours(i.duracao)
   })
 }
-function handleRemoveFilters() {
+async function handleRemoveFilters() {
   filtros.value = filtrosDefault
+  await nextTick()
   getTempoTask()
 }
 onMounted(() => {
