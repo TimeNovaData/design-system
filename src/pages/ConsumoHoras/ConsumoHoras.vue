@@ -66,6 +66,7 @@
                     clearable
                     option-value="id"
                     option-label="nome"
+                    :loading="!filtros.projeto.options.length"
                   >
                   </OSelect>
                 </q-item>
@@ -81,6 +82,7 @@
                     clearable
                     option-value="id"
                     option-label="nome"
+                    :loading="!filtros.usuario.options.length"
                   >
                   </OSelect>
                 </q-item>
@@ -275,7 +277,7 @@
               </q-td>
 
               <q-td :auto-width="false" key="projeto">
-                <div>
+                <div class="projeto-td">
                   <q-badge
                     rounded
                     class="shrink-0 w-8 h-8"
@@ -716,4 +718,12 @@ async function handleRemoveFilters() {
 .scroll-area-48
   .q-scrollarea__container
     padding: 0 3rem
+
+.projeto-td
+    max-width: 13.75rem
+    word-break: break-word
+    white-space: break-spaces
+    display: flex
+    align-items: center
+    gap: 2px
 </style>
