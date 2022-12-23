@@ -365,6 +365,7 @@ async function onSubmit() {
   const authStore = useAuthStore()
 
   const logged = await authStore.login(data.value.login, data.value.senha)
+
   if (logged) {
     router.push({ path: '/' })
     getUser()

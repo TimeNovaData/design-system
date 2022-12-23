@@ -7,19 +7,6 @@ const menuList = [
     icon: 'home',
     href: '/',
   },
-  {
-    title: 'Kanban',
-    nivel: 0,
-    icon: 'space_dashboard',
-    href: '/kanban/1/board',
-  },
-
-  {
-    title: 'Horas Consumidas',
-    nivel: 0,
-    icon: 'timelapse',
-    href: '/consumo_horas',
-  },
 
   // {
   //   title: 'Financeiro',

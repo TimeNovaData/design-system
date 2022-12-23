@@ -31,7 +31,7 @@
             <!--       <q-badge rounded class="bg-primary-pure w-8 h-8" floating></q-badge> -->
             <img
               class="absolute w-full h-full left-0 right-0 object-cover"
-              :src="GLOBAL.imgSrc(userFoto)"
+              src="https://www.gravatar.com/avatar/c9190eb0cfa02e6e829ab811db1c3a7a/?s=100"
               alt=""
             />
           </q-avatar>
@@ -52,8 +52,8 @@ import { useRouter } from 'vue-router'
 import { inject } from 'vue'
 import GLOBAL from 'src/utils/GLOBAL'
 
-const userFoto = inject('userFoto')
-const user = inject('user')
+// const userFoto = inject('userFoto')
+// const user = inject('user')
 
 // import { useBreadcrumbs } from 'src/composables/useBreadcrumbs.js'
 // const { breadcrumbs } = useBreadcrumbs()

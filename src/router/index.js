@@ -7,8 +7,7 @@ import {
 } from 'vue-router'
 import routes from './routes'
 import { useAuthStore } from 'src/stores/auth.store'
-import { useBlurMode } from 'src/stores/blurMode'
-import emitter from 'src/boot/emitter'
+
 /*
  * If not building with SSR mode, you can
  * directly export the Router instantiation;
@@ -36,26 +35,23 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE),
   })
 
-  Router.beforeEach(async (to, from, next) => {
-    emitter.emit('loader', 'stop')
-    // redirect to login page if not logged in and trying to access a restricted page
-    const auth = useAuthStore()
-    const blur = useBlurMode()
-    const publicPages = ['/login']
-    const paginasObrigatorias = !publicPages.includes(to.path)
-    const haveRefresh = auth.user.refresh
-    const haveToken = auth.user.access
+  // FOR AUTH
+  // Router.beforeEach(async (to, from, next) => {
+  //   // redirect to login page if not logged in and trying to access a restricted page
+  //   const auth = useAuthStore()
+  //   const publicPages = ['/login']
+  //   const paginasObrigatorias = !publicPages.includes(to.path)
+  //   const haveRefresh = auth.user.refresh
+  //   const haveToken = auth.user.access
 
-    blur.isKanban = to.name === 'kanban_board'
-
-    if (paginasObrigatorias && !haveRefresh && !haveToken) {
-      next({ path: '/login' })
-    } else if (to.fullPath === '/login' && haveRefresh) {
-      next({ path: '/' })
-    } else {
-      next()
-    }
-  })
+  //   if (paginasObrigatorias && !haveRefresh && !haveToken) {
+  //     next({ path: '/login' })
+  //   } else if (to.fullPath === '/login' && haveRefresh) {
+  //     next({ path: '/' })
+  //   } else {
+  //     next()
+  //   }
+  // })
 
   return Router
 })

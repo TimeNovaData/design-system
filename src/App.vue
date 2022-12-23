@@ -1,5 +1,7 @@
 <template>
-  <!-- <router-view v-slot="{ Component }">
+  <!--
+    EX : usar transition na router view e ter acesso a instancia da page
+    <router-view v-slot="{ Component }">
     <transition :name="$route.meta.transitionName || 'fade'">
       <component :is="Component" />
     </transition>
@@ -8,18 +10,18 @@
 </template>
 
 <script>
-import { defineComponent, toRefs, ref, provide, onMounted } from 'vue'
+import { defineComponent, watch, ref, provide, onMounted } from 'vue'
 // import emitter from 'src/boot/emitter'
 
 import 'src/css/cores.sass'
 import 'src/css/quasar/@index.sass'
 import 'src/css/body.sass'
-import 'src/css/pages/DesignSystem.sass'
 import 'src/css/tailwind.css'
-import 'src/css/stores/blurMode.sass'
+import 'src/css/pages/DesignSystem.sass'
 import 'src/css/vendor/materialSymbolsRounded.sass'
 import 'src/css/vendor/apexCharts.sass'
-import { Notify } from 'quasar'
+
+import { Notify, LocalStorage, Dark } from 'quasar'
 import { storeToRefs } from 'pinia'
 
 Notify.registerType('error', {
@@ -33,15 +35,23 @@ export default defineComponent({ name: 'App' })
 </script>
 
 <script setup>
-import { useUserStore } from 'src/stores/usuarios/user.store'
-const { user, userFoto } = storeToRefs(useUserStore())
-const { getUser } = useUserStore()
-onMounted(() => {
-  getUser()
+import { useDarkMode } from 'src/stores/darkMode'
+// import { useUserStore } from 'src/stores/usuarios/user.store'
+
+const { darkMode } = storeToRefs(useDarkMode())
+
+watch(darkMode, (newX) => {
+  LocalStorage.set('darkMode', darkMode.value)
+  Dark.set(darkMode.value)
 })
 
-provide('user', user)
-provide('userFoto', userFoto)
+// EX Store para buscar e armazenar dados do usuario
+// const { user } = storeToRefs(useUserStore())
+// const { getUser } = useUserStore()
+// onMounted(() => {
+//   getUser()
+// })
+// provide('user', user)
 </script>
 
 <style lang="sass">
@@ -69,8 +79,4 @@ provide('userFoto', userFoto)
 ::-webkit-scrollbar-thumb
   background: rgba(var(--neutral-100),0.2)
   border-radius: 8px
-
-// /* Handle on hover */
-// ::-webkit-scrollbar-thumb:hover
-//   background: #555
 </style>

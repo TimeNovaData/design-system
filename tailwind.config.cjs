@@ -159,7 +159,6 @@ module.exports = {
         '.text-caps-2': { fontSize: '.75rem', lineHeight: '133%', 'letterSpacing': '0.04em', fontWeight: '600', fontFamily: 'Inter, sans-serif', textTransform:'uppercase'},
         '.text-caps-3': { fontSize: '.625rem', lineHeight: '160%', 'letterSpacing': '0.04em', fontWeight: '600', fontFamily: 'Inter, sans-serif', textTransform:'uppercase'}
         
-        
     })
     }),
   ],

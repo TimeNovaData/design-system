@@ -1,8 +1,8 @@
 <template>
   <q-menu class="overflow-x-hidden w-[250px]" padding>
-    <p class="px-16 pt-10 text-paragraph-2 text-start opacity-70 pb-8">
+    <!-- <p class="px-16 pt-10 text-paragraph-2 text-start opacity-70 pb-8">
       Seja Bem Vindo <span class="capitalize">{{ user.first_name }}</span>
-    </p>
+    </p> -->
 
     <q-separator />
     <q-list class="select-none min-w-[200px]">
@@ -39,14 +39,14 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { useDarkMode } from 'src/stores/darkMode'
-import { useAuthStore } from 'src/stores/auth.store'
-import OInput from 'src/components/Input/OInput.vue'
 import { useRouter } from 'vue-router'
 import { inject } from 'vue'
+import { useAuthStore } from 'src/stores/auth.store'
+// import OInput from 'src/components/Input/OInput.vue'
 
-const user = inject('user')
-
+// const user = inject('user')
 const auth = useAuthStore()
+
 const dark = useDarkMode()
 
 const { darkMode } = storeToRefs(dark)

@@ -14,10 +14,5 @@ export const useDarkMode = defineStore('darkMode', () => {
     darkMode.value = mode
   })
 
-  watch(darkMode, (newX) => {
-    LocalStorage.set('darkMode', darkMode.value)
-    Dark.set(darkMode.value)
-  })
-
   return { darkMode }
 })
