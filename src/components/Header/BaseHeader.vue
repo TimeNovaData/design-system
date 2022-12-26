@@ -30,6 +30,7 @@
           >
             <!--       <q-badge rounded class="bg-primary-pure w-8 h-8" floating></q-badge> -->
             <img
+              v-show="userFoto"
               class="absolute w-full h-full left-0 right-0 object-cover"
               :src="GLOBAL.imgSrc(userFoto)"
               alt=""
