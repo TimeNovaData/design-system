@@ -56,9 +56,9 @@
 
   <KanbanModal ref="modal" @changed="commitAlt(colunasWithCards)"></KanbanModal>
 
-  <Teleport to="#kanban-filters" :disabled="!notMounted">
+  <!-- <Teleport to="#kanban-filters" :disabled="!notMounted">
     <KanbanFilters></KanbanFilters>
-  </Teleport>
+  </Teleport> -->
 
   <img :src="kanbanBG" aria-hidden="true" class="image-bg" alt="" />
 </template>
@@ -112,7 +112,7 @@ const { tags } = storeToRefs(useTagStore())
 
 const { createChamado } = useChamadoStore()
 const { getProjetos, getSubProjetos } = useProjetoStore()
-const { projetoAndSubProjetoOptions } = storeToRefs(useProjetoStore())
+const { projetos, subProjetos } = storeToRefs(useProjetoStore())
 
 // Drag
 const removeEventsWrapper = ref(false)
@@ -184,7 +184,8 @@ emitter.on('reloadDataKanban', async () => {
 provide('chamado', chamadoAtivo)
 provide('tagsList', tags)
 provide('usuarios', usuariosFoto)
-provide('projetoAndSubProjetoOptions', projetoAndSubProjetoOptions)
+provide('projetos', projetos)
+provide('subProjetos', subProjetos)
 </script>
 
 <style lang="sass">

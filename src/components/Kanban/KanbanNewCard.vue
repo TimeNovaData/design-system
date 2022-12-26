@@ -17,12 +17,53 @@
         behavior="menu"
         option-value="id"
         option-label="nome"
-        :options="projetoAndSubProjetoOptions"
+        :options="projetos"
         label="Projeto"
         :auto-save="true"
         class="mb-10"
         :rules="[(val) => !!val]"
         @update:model-value="handleChangeSelect"
+      >
+        <template #option="{ itemProps, opt, selected, toggleOption }">
+          <q-item v-bind="itemProps">
+            <q-item-section>
+              <q-item-label class="flex items-center gap-8">
+                <q-badge
+                  rounded
+                  class="shrink-0 w-8 h-8"
+                  :style="{ background: opt.cor_letra }"
+                ></q-badge>
+                <p class="!text-neutral-70 dark:!text-white/90">
+                  {{ opt.nome }}
+                </p>
+              </q-item-label>
+            </q-item-section>
+            <q-item-section side class="!w-56 opacity-0">
+              <q-toggle
+                size="sm"
+                :model-value="selected"
+                @update:model-value="toggleOption(opt)"
+              />
+            </q-item-section>
+          </q-item>
+        </template>
+      </OSelect>
+
+      <OSelect
+        v-if="newCardData.projeto.tem_subprojetos"
+        ref="selectSubprojeto"
+        v-model="newCardData.subProjetos"
+        use-input
+        size="md"
+        behavior="menu"
+        option-value="id"
+        option-label="nome"
+        :options="subProjetos"
+        label="Projeto"
+        :auto-save="true"
+        class="mb-10 -mt-16"
+        :rules="[(val) => !!val]"
+        @update:model-value="() => input.componentRef.focus()"
       >
         <template #option="{ itemProps, opt, selected, toggleOption }">
           <q-item v-bind="itemProps">
@@ -74,7 +115,7 @@
 <script setup>
 import OButton from 'src/components/Button/OButton.vue'
 import OInput from 'src/components/Input/OInput.vue'
-import { ref, onMounted, inject, computed } from 'vue'
+import { ref, onMounted, inject, computed, nextTick } from 'vue'
 import OSelect from 'src/components/Select/OSelect.vue'
 
 const emit = defineEmits(['digitandoNome', 'create', 'invalid'])
@@ -82,20 +123,24 @@ const emit = defineEmits(['digitandoNome', 'create', 'invalid'])
 const card = ref(null)
 const input = ref(null)
 const select = ref(null)
+const selectSubprojeto = ref(null)
 
-const projetoAndSubProjetoOptions = inject('projetoAndSubProjetoOptions')
+const projetos = inject('projetos')
+const subProjetos = inject('subProjetos')
 
 const props = defineProps({
   colData: Object,
 })
+
 const newCardData = ref({
   titulo: '',
   projeto: '',
+  subProjetos: '',
   fase: null,
 })
 
 const chamadoValid = computed(
-  () => newCardData.value.titulo && newCardData.value.projeto
+  () => newCardData.value.titulo.length && newCardData.value.projeto.length
 )
 
 // function autoGrow({ currentTarget }) {
@@ -104,8 +149,14 @@ const chamadoValid = computed(
 //   emit('digitandoNome')
 // }
 
-function handleChangeSelect() {
-  input.value.componentRef.focus()
+async function handleChangeSelect() {
+  if (newCardData.value.projeto.tem_subprojetos) {
+    await nextTick()
+    selectSubprojeto.value.componentRef.focus()
+    selectSubprojeto.value.componentRef.showPopup()
+  } else {
+    input.value.componentRef.focus()
+  }
 }
 function handleFocusOut() {
   if (!chamadoValid.value) {

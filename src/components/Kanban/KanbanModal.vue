@@ -27,6 +27,53 @@
             ></KanbanItemEditable>
           </div>
 
+          <div
+            class="ml-[3.75rem] w-max no-label relative editavel group inline-flex items-center pr-40"
+          >
+            <div class="" v-if="data.projeto.nome">
+              <OBadge
+                size="sm"
+                :badge="false"
+                :color="returnRGB(data.projeto.cor)"
+                square
+              >
+                <template #content>
+                  <p class="text-center mx-auto">{{ data.projeto.nome }}</p>
+                </template>
+              </OBadge>
+            </div>
+
+            <div v-else>Selecione um projeto</div>
+
+            <q-icon
+              class="opacity-0 group-hover:opacity-100 absolute right-4"
+              name="expand_more"
+            ></q-icon>
+
+            <KanbanItemEditableSelect
+              @updateValue="(v) => updateValue('projeto')(v)"
+              text="Selecione um projeto"
+              :options="projetos"
+              selectLabel="Projeto"
+              :selected="data.projeto"
+            >
+              <template #option="scope">
+                <q-item
+                  v-bind="scope.itemProps"
+                  class="items-center gap-8"
+                  :key="scope.opt.id"
+                >
+                  <q-badge
+                    rounded
+                    class="shrink-0 w-8 h-8"
+                    :style="{ background: scope.opt.cor }"
+                  ></q-badge>
+                  {{ scope.opt.nome }}
+                </q-item>
+              </template>
+            </KanbanItemEditableSelect>
+          </div>
+
           <!--   PROJETO -->
           <div
             class="ml-[3.75rem] w-max no-label relative editavel group inline-flex items-center pr-40"
@@ -54,7 +101,7 @@
             <KanbanItemEditableSelect
               @updateValue="(v) => updateValue('projeto')(v)"
               text="Selecione um projeto"
-              :options="projetoAndSubProjetoOptions"
+              :options="projetos"
               selectLabel="Projeto"
               :selected="data.projeto"
             >
@@ -364,7 +411,7 @@
                             updateValue('data_prevista')(GLOBAL.FDateBRtoEU(v))
                         "
                         type="date"
-                        :editable="user?.is_staff"
+                        :editable="user.is_staff"
                       />
                       <!-- :editable="user.is_staff" -->
                       <!-- //uswer.stagg -->
@@ -596,7 +643,7 @@ const tagsList = inject('tagsList')
 const usuarios = inject('usuarios')
 const user = inject('user')
 
-const projetoAndSubProjetoOptions = inject('projetoAndSubProjetoOptions')
+const projetos = inject('projetos')
 const tab = ref('info')
 const dialogState = ref(false)
 

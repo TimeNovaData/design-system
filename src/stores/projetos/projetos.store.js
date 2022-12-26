@@ -10,9 +10,9 @@ export const useProjetoStore = defineStore('projetoStore', () => {
   const subProjetos = ref([])
   const isLoading = ref(false)
 
-  const projetoAndSubProjetoOptions = computed(() =>
-    subProjetos.value.concat(projetos.value)
-  )
+  // const projetoAndSubProjetoOptions = computed(() =>
+  //   subProjetos.value.concat(projetos.value)
+  // )
 
   function setProjetos(value) {
     projetos.value = value
@@ -66,6 +66,5 @@ export const useProjetoStore = defineStore('projetoStore', () => {
     setSubProjetos,
     projetos,
     subProjetos,
-    projetoAndSubProjetoOptions,
   }
 })

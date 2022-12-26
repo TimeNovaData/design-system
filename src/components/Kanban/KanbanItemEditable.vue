@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative text-headline-3 px-12 py-6 bg-neutral-20 rounded-generic dark:bg-white/5 flex"
+    class="relative text-headline-3 px-12 py-6 bg-neutral-20 rounded-generic dark:bg-white/5 flex item-editavel"
     :class="classObj"
     :tabindex="`${editable ? 0 : null}`"
   >
@@ -85,7 +85,7 @@ const props = defineProps({
 })
 
 const classObj = {
-  editavel: props.editable + 'pl-24',
+  editavel: props.editable,
 }
 
 const popupValue = ref(props.value)
@@ -125,6 +125,7 @@ const inputMask = () => {
   .q-field__marginal
     height: 100% !important
 
+.item-editavel
   .triangulo
     display: block
     position: absolute
@@ -133,8 +134,11 @@ const inputMask = () => {
     background: transparent
     width:6px
     height:6px
-    border-right: 1px solid
-    border-bottom: 1px solid
-    border-color: white
+    border-right: 2px solid
+    border-bottom: 2px solid
+    border-color: rgba(var(--white),0.5)
+
+.body--light .item-editavel .triangulo
+  border-color: rgba(var(--neutral-100),0.2)
 </style>
 <style lang="sass" scoped></style>
