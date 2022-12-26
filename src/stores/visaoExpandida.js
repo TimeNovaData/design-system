@@ -13,13 +13,13 @@ export const useVisaoExpandida = defineStore('visaoExpandida', () => {
     }
   })
 
-  function initDarkMode() {
-    if (LocalStorage.has('visaoExpandida')) {
-      visaoExpandida.value = LocalStorage.getItem('visaoExpandida')
-    } else {
-      LocalStorage.set('visaoExpandida', visaoExpandida.value)
-    }
-  }
+  // function initDarkMode() {
+  //   if (LocalStorage.has('visaoExpandida')) {
+  //     visaoExpandida.value = LocalStorage.getItem('visaoExpandida')
+  //   } else {
+  //     LocalStorage.set('visaoExpandida', visaoExpandida.value)
+  //   }
+  // }
 
   watch(visaoExpandida, (newX) => {
     LocalStorage.set('visaoExpandida', visaoExpandida.value)

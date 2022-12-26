@@ -29,7 +29,10 @@ export const useUserStore = defineStore('userStore', () => {
 
     try {
       setUser(data.value)
-      usuarios.getUsuariosFoto()
+      // necessario pois a foto do user
+      // esta em usersFoto
+      await usuarios.getUsuariosFoto()
+
       return data.value
     } catch (e) {
       return error
@@ -41,11 +44,15 @@ export const useUserStore = defineStore('userStore', () => {
   function setUser(value) {
     user.value = value
   }
+  function $reset() {
+    user.value = []
+  }
 
   return {
     getUser,
     setUser,
     user,
     userFoto,
+    $reset,
   }
 })

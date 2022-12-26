@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { api, axiosController } from 'src/boot/axios'
 import { nextTick, ref, watch } from 'vue'
 import { Cookies, Notify, LoadingBar } from 'quasar'
+import { useResetStore } from 'src/utils/useResetStore'
 
 const tokenOpt = {
   secure: process.env.HTTPS_MODE,
@@ -76,11 +77,14 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function logout() {
+    const resetStore = useResetStore()
     user.value = {}
     // axiosController.abort()
     LoadingBar.stop()
     Cookies.remove('NDT_REFRESH_TOKEN')
     Cookies.remove('NDT_TOKEN')
+    resetStore.usuarioStore()
+    resetStore.userStore()
   }
 
   return { user, returnUrl, login, logout, refreshToken, TOKEN }

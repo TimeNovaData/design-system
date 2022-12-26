@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { defineComponent, toRefs, ref, provide, watch } from 'vue'
+import { defineComponent, toRefs, ref, provide, watch, onMounted } from 'vue'
 // import emitter from 'src/boot/emitter'
 
 import 'src/css/cores.sass'
@@ -40,8 +40,17 @@ const { getUser } = useUserStore()
 
 const { user: userStore } = storeToRefs(useAuthStore())
 
-watch(userStore.value.access, () => {
-  getUser()
+if (userStore.value.access) {
+  watch(
+    () => userStore.value.access,
+    () => {
+      getUser()
+    }
+  )
+}
+
+onMounted(() => {
+  userStore.value.access && getUser()
 })
 
 provide('user', user)

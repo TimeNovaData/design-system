@@ -58,6 +58,10 @@ export const useUsuarioStore = defineStore('usuarioStore', () => {
     usuarios.value = value
   }
 
+  function $reset() {
+    usuarios.value = []
+    usuariosFoto.value = []
+  }
   return {
     getUsuarios,
     getUsuariosFoto,
@@ -65,5 +69,6 @@ export const useUsuarioStore = defineStore('usuarioStore', () => {
     setUsuariosFoto,
     usuarios,
     usuariosFoto,
+    $reset,
   }
 })
