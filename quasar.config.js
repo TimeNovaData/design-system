@@ -177,7 +177,7 @@ module.exports = configure(function (ctx) {
 
     // https://v2.quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
-      workboxMode: 'injectManifest', // or 'injectManifest, generateSW'
+      workboxMode: 'injectManifest', // or 'injectManifest'
       injectPwaMetaTags: true,
       swFilename: 'sw.js',
       manifestFilename: 'manifest.json',
@@ -187,12 +187,13 @@ module.exports = configure(function (ctx) {
       // extendInjectManifestOptions (cfg) {},
       // extendManifestJson (json) {}
       // extendPWACustomSWConf (esbuildConf) {}
-      // workboxOptions: {
-      // skipWaiting: true,
-      // clientsClaim: true,
-      // navigateFallbackDenylist: [/_redirects/],
-      //   exclude: ['_redirects/'],
-      // },
+
+      workboxOptions: {
+        // swSrc is required in InjectManifest mode.
+        swSrc: 'sw.js',
+        // ...other Workbox options...
+        exclude: [/\.map$/, /_redirects/], // this fixed it.
+      },
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
