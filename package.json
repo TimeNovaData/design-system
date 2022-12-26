@@ -33,6 +33,7 @@
     "@quasar/app-vite": "^1.1.3",
     "@quasar/icongenie": "^2.5.4",
     "autoprefixer": "^10.4.13",
+    "electron-builder": "^22.4.0",
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard": "^17.0.0",

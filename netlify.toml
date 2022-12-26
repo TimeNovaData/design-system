@@ -3,3 +3,16 @@
   from = "/*"
   to = "/index.html"
   status = 200
+[[headers]]
+  for = "/*"
+  [headers.values]
+  cache-control = '''
+  max-age=0,
+  no-cache,
+  no-store,
+  must-revalidate'''
+   for = "**/*.@(jpg|jpeg|gif|png|svg|webp|js|css|eot|otf|ttf|ttc|woff|woff2|font.css)"
+  [headers.values]
+  cache-control = '''
+  max-age=604800'''
+ 
