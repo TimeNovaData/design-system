@@ -160,6 +160,11 @@ onMounted(() => {
   getSubProjetos()
   getUsuariosFoto()
   getTags()
+
+  // setInterval(() => {
+  //   emitter.emit('reloadDataKanban')
+  //   console.log('teste')
+  // }, 10000)
 })
 
 emitter.on('reloadDataKanban', async () => {

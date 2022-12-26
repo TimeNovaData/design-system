@@ -30,10 +30,15 @@
           >
             <!--       <q-badge rounded class="bg-primary-pure w-8 h-8" floating></q-badge> -->
             <img
+              v-if="userFoto"
               class="absolute w-full h-full left-0 right-0 object-cover"
-              :src="userFoto ? GLOBAL.imgSrc(userFoto) : gravatar"
+              :src="GLOBAL.imgSrc(userFoto)"
               alt=""
             />
+            <div
+              v-else
+              class="absolute inset-0 m-auto w-full h-full bg-neutral-100/10 dark:bg-white/10"
+            ></div>
           </q-avatar>
           <BaseHeaderMenu></BaseHeaderMenu>
         </OButton>

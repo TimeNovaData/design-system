@@ -32,7 +32,6 @@ export const useUserStore = defineStore('userStore', () => {
       // necessario pois a foto do user
       // esta em usersFoto
       await usuarios.getUsuariosFoto()
-
       return data.value
     } catch (e) {
       return error
