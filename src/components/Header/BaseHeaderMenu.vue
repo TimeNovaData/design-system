@@ -1,7 +1,7 @@
 <template>
   <q-menu class="overflow-x-hidden w-[250px]" padding>
     <p class="px-16 pt-10 text-paragraph-2 text-start opacity-70 pb-8">
-      Seja Bem Vindo <span class="capitalize">{{ user.first_name }}</span>
+      Seja Bem Vindo(a) <span class="capitalize">{{ user.first_name }}</span>
     </p>
 
     <q-separator />
