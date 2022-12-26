@@ -508,6 +508,9 @@ $field-transition-label-right-up: .224s cubic-bezier(.4,0,.2,1)
     &.q-field--readonly
       .q-field__control:before
         border-bottom-style: dashed
+  &.no-border
+    .q-field__control:after
+      display: none !important
 
   &--dark
 
@@ -773,4 +776,3 @@ $field-transition-label-right-up: .224s cubic-bezier(.4,0,.2,1)
     &::placeholder
       color: inherit !important
       opacity: 0.7 !important
-

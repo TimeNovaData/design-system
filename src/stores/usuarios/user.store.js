@@ -29,6 +29,7 @@ export const useUserStore = defineStore('userStore', () => {
 
     try {
       setUser(data.value)
+      usuarios.getUsuariosFoto()
       return data.value
     } catch (e) {
       return error

@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { defineComponent, toRefs, ref, provide, onMounted } from 'vue'
+import { defineComponent, toRefs, ref, provide, watch } from 'vue'
 // import emitter from 'src/boot/emitter'
 
 import 'src/css/cores.sass'
@@ -21,6 +21,7 @@ import 'src/css/vendor/materialSymbolsRounded.sass'
 import 'src/css/vendor/apexCharts.sass'
 import { Notify } from 'quasar'
 import { storeToRefs } from 'pinia'
+import { useAuthStore } from './stores/auth.store'
 
 Notify.registerType('error', {
   icon: 'warning',
@@ -36,7 +37,10 @@ export default defineComponent({ name: 'App' })
 import { useUserStore } from 'src/stores/usuarios/user.store'
 const { user, userFoto } = storeToRefs(useUserStore())
 const { getUser } = useUserStore()
-onMounted(() => {
+
+const { user: userStore } = storeToRefs(useAuthStore())
+
+watch(userStore.value.access, () => {
   getUser()
 })
 

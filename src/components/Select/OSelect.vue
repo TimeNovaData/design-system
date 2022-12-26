@@ -12,6 +12,16 @@
     <template v-for="slot in Object.keys(slots)" #[slot]="slotProps">
       <slot :name="slot" v-bind="slotProps"></slot>
     </template>
+
+    <!-- <template #before-options>
+      <OInput
+        ref="input"
+        size="md"
+        v-model="val"
+        @keyup="handleInputChange"
+        class="no-border !border-0"
+      ></OInput>
+    </template> -->
   </q-select>
 </template>
 
@@ -21,7 +31,9 @@ export default { inheritAttrs: false }
 
 <script setup>
 import { useSlots, useAttrs, ref, onMounted } from 'vue'
+import OInput from 'src/components/Input/OInput.vue'
 
+const val = ref('')
 const slots = useSlots()
 const attrs = useAttrs()
 const componentRef = ref(null)
@@ -41,6 +53,14 @@ function filterFn(val, update, abort) {
     })
   })
 }
+
+// function handleInputChange() {
+//   componentRef.value.updateInputValue(val.value)
+// }
+
+onMounted(() => {
+  // componentRef.value.querySelector()
+})
 </script>
 
 <style lang="sass">
@@ -67,4 +87,12 @@ function filterFn(val, update, abort) {
   .q-field__native
     gap: 2px
     padding: 4px 2px 2px
+
+.q-select--single
+  .q-field__native
+    flex-wrap: nowrap
+    span
+      flex: 0 3 auto
+    input
+      flex: 1
 </style>

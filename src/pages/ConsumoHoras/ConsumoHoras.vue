@@ -706,6 +706,7 @@ function populateChart(tempoProjetos) {
   const categories = Object.values(tempoProjetos).map((projeto) =>
     Object.keys(projeto)
   )[0]
+
   const generateSeriesApex = (item, index) => ({
     name: labels[index],
     data: duracoes[index],
@@ -727,6 +728,7 @@ function populateChart(tempoProjetos) {
 
   // }
 }
+
 async function handleRemoveFilters() {
   filtros.value = filtrosDefault
   getTempoTask()

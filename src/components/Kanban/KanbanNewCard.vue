@@ -8,63 +8,66 @@
     >
       Novo Chamado
     </p>
+    <q-form>
+      <OSelect
+        ref="select"
+        v-model="newCardData.projeto"
+        use-input
+        size="md"
+        behavior="menu"
+        option-value="id"
+        option-label="nome"
+        :options="projetoAndSubProjetoOptions"
+        label="Projeto"
+        :auto-save="true"
+        class="mb-10"
+        :rules="[(val) => !!val]"
+        @update:model-value="handleChangeSelect"
+      >
+        <template #option="{ itemProps, opt, selected, toggleOption }">
+          <q-item v-bind="itemProps">
+            <q-item-section>
+              <q-item-label class="flex items-center gap-8">
+                <q-badge
+                  rounded
+                  class="shrink-0 w-8 h-8"
+                  :style="{ background: opt.cor_letra }"
+                ></q-badge>
+                <p class="!text-neutral-70 dark:!text-white/90">
+                  {{ opt.nome }}
+                </p>
+              </q-item-label>
+            </q-item-section>
+            <q-item-section side class="!w-56 opacity-0">
+              <q-toggle
+                size="sm"
+                :model-value="selected"
+                @update:model-value="toggleOption(opt)"
+              />
+            </q-item-section>
+          </q-item>
+        </template>
+      </OSelect>
 
-    <OSelect
-      ref="select"
-      v-model="newCardData.projeto"
-      use-input
-      size="md"
-      behavior="menu"
-      option-value="id"
-      option-label="nome"
-      :options="projetoAndSubProjetoOptions"
-      label="Projeto"
-      :auto-save="true"
-      class="mb-10"
-      @update:model-value="handleChangeSelect"
-    >
-      <template #option="{ itemProps, opt, selected, toggleOption }">
-        <q-item v-bind="itemProps">
-          <q-item-section>
-            <q-item-label class="flex items-center gap-8">
-              <q-badge
-                rounded
-                class="shrink-0 w-8 h-8"
-                :style="{ background: opt.cor_letra }"
-              ></q-badge>
-              <p class="!text-neutral-70 dark:!text-white/90">{{ opt.nome }}</p>
-            </q-item-label>
-          </q-item-section>
-          <q-item-section side class="!w-56 opacity-0">
-            <q-toggle
-              size="sm"
-              :model-value="selected"
-              @update:model-value="toggleOption(opt)"
-            />
-          </q-item-section>
-        </q-item>
-      </template>
-    </OSelect>
+      <OInput
+        size="md"
+        primary
+        class="new-card-input -mt-16 -mb-16"
+        v-model="newCardData.titulo"
+        ref="input"
+        placeholder="Titulo do chamado"
+        @keyup.enter="handleFocusOut"
+        :rules="[(val) => !!val]"
+      ></OInput>
 
-    <OInput
-      size="md"
-      type="textarea"
-      primary
-      class="!min-h-40 new-card-input"
-      v-model="newCardData.titulo"
-      rows="0"
-      ref="input"
-      placeholder="Titulo do chamado"
-      @focusout="handleFocusOut"
-    ></OInput>
-
-    <!-- <div class="flex items-center gap-8 mt-8 justify-end">
+      <!-- <div class="flex items-center gap-8 mt-8 justify-end">
       <OButton size="md" tertiary icon="close" @click="$emit('closeClick')">
       </OButton>
       <OButton class="!min-w-[100px]" size="md" primary :disable="!chamadoValid"
         >Criar
       </OButton>
     </div> -->
+    </q-form>
   </q-card>
 </template>
 
@@ -95,11 +98,11 @@ const chamadoValid = computed(
   () => newCardData.value.titulo && newCardData.value.projeto
 )
 
-function autoGrow({ currentTarget }) {
-  currentTarget.style.height = '18px'
-  currentTarget.style.height = currentTarget.scrollHeight + 'px'
-  emit('digitandoNome')
-}
+// function autoGrow({ currentTarget }) {
+//   currentTarget.style.height = '18px'
+//   currentTarget.style.height = currentTarget.scrollHeight + 'px'
+//   emit('digitandoNome')
+// }
 
 function handleChangeSelect() {
   input.value.componentRef.focus()
@@ -115,7 +118,7 @@ function handleFocusOut() {
 }
 
 onMounted(() => {
-  card.value.$el.querySelector('textarea').addEventListener('input', autoGrow)
+  // card.value.$el.querySelector('').addEventListener('input', autoGrow)
   select.value.componentRef.focus()
   select.value.componentRef.showPopup()
 })
@@ -125,10 +128,10 @@ onMounted(() => {
 .kanban-new-card
   display: flex
   flex-direction: column
-  .new-card-input :deep(.q-field__native)
-    padding-top: .5rem
-    height: auto
-    min-height: 60px
-    max-height: 190px
-    resize: none
+  // .new-card-input :deep(.q-field__native)
+  //   padding-top: .5rem
+  //   height: auto
+  //   min-height: 28px
+  //   max-height: 190px
+  //   resize: none
 </style>

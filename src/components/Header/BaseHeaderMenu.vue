@@ -53,7 +53,8 @@ const { darkMode } = storeToRefs(dark)
 const router = useRouter()
 async function logout() {
   auth.logout()
-  router.push({ name: 'login' })
+  // router.push({ name: 'login' })
+  window.location.reload()
 }
 </script>
 

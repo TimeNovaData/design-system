@@ -18,9 +18,6 @@ import menuList from 'src/utils/menuList.js'
 import { api } from 'src/boot/axios'
 
 onMounted(async () => {
-  // const oi2 = await api.get('cliente/')
-  // const oi = await api.get('usuario/')
-  // console.log(oi, oi2)
   const oi = api
   console.log(api)
 })

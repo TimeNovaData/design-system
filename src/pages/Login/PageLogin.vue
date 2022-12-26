@@ -243,14 +243,16 @@
        -->
 
       <q-form ref="form" @submit="onSubmit" class="mx-auto my-auto form-login">
-        <q-card class="!p-32 max-w-[26.75rem] flex flex-col">
-          <h3 class="text-title-2 text-primary-pure">Fazer login</h3>
+        <q-card class="!p-32 w-[27.75rem] flex flex-col">
+          <h3 class="text-title-2 text-primary-pure !font-medium">
+            Fazer login
+          </h3>
 
           <p
-            class="mt-8 text-paragraph-1 text-neutral-70 mb-48 dark:text-white/60"
+            class="mt-8 text-paragraph-1 text-neutral-70 mb-32 dark:text-white/60"
           >
-            Seja bem-vindo(a)! Insira seu e-mail e senha para entrar em sua
-            conta.
+            Seja bem-vindo(a)!<br />
+            Insira seu e-mail e senha para entrar em sua conta.
           </p>
           <OInput
             v-model="data.login"
