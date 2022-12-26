@@ -3,6 +3,7 @@
   from = "/*"
   to = "/index.html"
   status = 200
+
 [[headers]]
   for = "/*"
   [headers.values]
@@ -11,6 +12,8 @@
   no-cache,
   no-store,
   must-revalidate'''
+
+[[headers]]
    for = "**/*.@(jpg|jpeg|gif|png|svg|webp|js|css|eot|otf|ttf|ttc|woff|woff2|font.css)"
   [headers.values]
   cache-control = '''
