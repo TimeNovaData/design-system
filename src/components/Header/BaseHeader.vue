@@ -30,9 +30,8 @@
           >
             <!--       <q-badge rounded class="bg-primary-pure w-8 h-8" floating></q-badge> -->
             <img
-              v-show="userFoto"
               class="absolute w-full h-full left-0 right-0 object-cover"
-              :src="GLOBAL.imgSrc(userFoto)"
+              :src="userFoto ? GLOBAL.imgSrc(userFoto) : gravatar"
               alt=""
             />
           </q-avatar>
@@ -52,6 +51,7 @@ import BaseHeaderMenu from './BaseHeaderMenu.vue'
 import { useRouter } from 'vue-router'
 import { inject } from 'vue'
 import GLOBAL from 'src/utils/GLOBAL'
+import gravatar from 'src/assets/image/gravatar.jpg'
 
 const userFoto = inject('userFoto')
 const user = inject('user')
