@@ -358,55 +358,28 @@ import { useProjetoStore } from 'src/stores/projetos/projetos.store'
 import { useUsuarioStore } from 'src/stores/usuarios/usuarios.store'
 import GLOBAL from 'src/utils/GLOBAL'
 import { computed, onMounted, ref, watch } from 'vue'
-
+import { columns1 } from './columns'
+import stackedChartBar from 'src/utils/chart/stackedChartBar'
 const { URLS } = api.defaults
 
-const { FData, generateStringFilterFromObject, secondsToHours, returnRGB } =
-  GLOBAL
+const {
+  FData,
+  generateStringFilterFromObject,
+  // secondsToHours,
+  wrapCsvValue,
+  returnRGB,
+  //
+} = GLOBAL
+//
 const por = ref('projeto')
 
-const columns = [
-  {
-    name: 'titulo',
-    field: (row) => row.titulo,
-    label: 'Chamado',
-    style: 'width: 100%',
-    align: 'left',
-    sortable: true,
-  },
-  {
-    name: 'Solicitante',
-    label: 'Solicitante',
-    field: (row) => row.user_criacao.nome,
-    align: 'left',
-    sortable: true,
-  },
-
-  {
-    name: 'Projeto',
-    label: 'Projeto',
-    field: (row) => row.projeto.nome,
-    align: 'left',
-    sortable: true,
-  },
-  {
-    name: 'Previsto / Realizado',
-    label: 'Previsto / Realizado',
-    align: 'left',
-  },
-  {
-    name: 'Tags',
-    label: 'Tags',
-    field: (row) => row.tag.map((i) => i.nome).join(', '),
-    sortable: true,
-    align: 'left',
-  },
-]
-
-const filter = ref('')
+// elementos
 const form = ref(null)
 const chart = ref(null)
 const menu = ref(null)
+const filter = ref('')
+
+// stores
 const { getClientes } = useClientesStore()
 const { getProjetos } = useProjetoStore()
 const { getUsuariosFoto } = useUsuarioStore()
@@ -419,7 +392,7 @@ const { getChamado } = useChamadoStore()
 const { chamados, isLoading: chamadoLoading } = storeToRefs(useChamadoStore())
 const isLoading = ref(true)
 
-const rows = ref([])
+let filtrosAplicados = {}
 
 watch(
   () => chamados.value,
@@ -427,145 +400,6 @@ watch(
     rows.value = chamados.value
   }
 )
-
-onMounted(async () => {
-  await getProjetos()
-  filtros.value.projeto.options = projetos.value
-  getTempoTask()
-  getChamado()
-  await getClientes()
-  await getUsuariosFoto()
-  filtros.value.cliente.options = clientes.value
-  filtros.value.usuario.options = usuariosFoto.value
-})
-
-let filtrosAplicados = {}
-
-const options = {
-  // colors: [
-  //   '#5a5568',
-  //   '#febf44',
-  //   '#6892ff',
-  //   '#30e8aa',
-  //   '#a82ac8',
-  //   '#fff9c6',
-  //   '#95ff8c',
-  //   '#ffb388',
-  //   '#99c5dd',
-  //   '#ff6565',
-  //   '#917bd9',
-  //   '#d91540',
-  //   '#800080',
-  //   '#FF871E',
-  //   '#77001A',
-  //   '#18B25D',
-  // ],
-  colors: [
-    '#0b8b4e',
-    '#40f09c',
-    '#0da35b',
-    '#28ee90',
-    '#0fba69',
-    '#13ea83',
-    '#11d276',
-  ],
-  chart: {
-    id: 'chart1',
-    type: 'bar',
-    height: 450,
-    width: '100%',
-    stacked: true,
-    toolbar: {
-      show: false,
-    },
-    zoom: {
-      enabled: false,
-    },
-    animations: {
-      enabled: false,
-    },
-  },
-  xaxis: {
-    categories: [],
-    labels: {
-      rotateAlways: true,
-      style: {
-        fontSize: '12px',
-        fontFamily: 'Inter',
-      },
-    },
-  },
-  yaxis: {
-    // floating: true,
-    labels: {
-      formatter: function (val, opt) {
-        return secondsToHours(val, false)
-      },
-      style: {
-        fontSize: '12px',
-      },
-    },
-    axisBorder: {
-      show: false,
-      // color: '#78909C',
-      // offsetX: 0,
-      // offsetY: 0
-    },
-  },
-  dataLabels: {
-    enabled: true,
-    style: {
-      fontSize: '12px',
-      fontFamily: 'Inter',
-      fontWeight: 'bold',
-    },
-    formatter: function (val, opt) {
-      return secondsToHours(val, false)
-    },
-  },
-  tooltip: {
-    y: {
-      show: true,
-      format: 'dd MMM',
-      formatter: function (val, opt) {
-        return secondsToHours(val, false)
-      },
-    },
-  },
-  plotOptions: {
-    bar: {
-      horizontal: false,
-      borderRadius: 0,
-    },
-  },
-
-  grid: {
-    borderColor: '#E9ECEF',
-    strokeDashArray: 0,
-    position: 'back',
-    padding: {
-      right: 12,
-      left: 12,
-    },
-    xaxis: {
-      lines: {
-        show: false,
-      },
-    },
-    yaxis: {
-      lines: {
-        show: true,
-      },
-    },
-  },
-}
-
-const series = [
-  {
-    name: '',
-    data: [],
-  },
-]
 
 const dataAtual = date.formatDate(new Date(), 'YYYY/MM/DD')
 const seteDias = date.formatDate(
@@ -608,7 +442,6 @@ const filtrosDefault = {
   },
 }
 const filtros = ref(filtrosDefault)
-const popupValue = ref(false)
 
 const filtroOBJ = computed(() => ({
   [filtros.value.cliente.name]: filtros.value.cliente.model?.id,
@@ -657,7 +490,6 @@ watch(
 // tempoTask ----------------------------------
 
 const tempoTask = ref([])
-
 async function getTempoTask() {
   isLoading.value = true
   menu.value.hide()
@@ -734,24 +566,15 @@ async function handleRemoveFilters() {
   getTempoTask()
 }
 
+// CHART
+const columns = columns1
+const rows = ref([])
+const options = { ...stackedChartBar }
+const series = [{ name: '', data: [] }]
+
 // exportar tabela ----------------------------------
 const $q = useQuasar()
-function wrapCsvValue(val, formatFn, row) {
-  let formatted = formatFn !== void 0 ? formatFn(val, row) : val
 
-  formatted =
-    formatted === void 0 || formatted === null ? '' : String(formatted)
-
-  formatted = formatted.split('"').join('""')
-  /**
-   * Excel accepts \n and \r in strings, but some other CSV parsers do not
-   * Uncomment the next two lines to escape new lines
-   */
-  // .split('\n').join('\\n')
-  // .split('\r').join('\\r')
-
-  return `"${formatted}"`
-}
 const exportTable = () => {
   // naive encoding to csv format
   const content = [columns.map((col) => wrapCsvValue(col.label))]
@@ -782,6 +605,17 @@ const exportTable = () => {
     })
   }
 }
+
+onMounted(async () => {
+  await getProjetos()
+  filtros.value.projeto.options = projetos.value
+  getTempoTask()
+  getChamado()
+  await getClientes()
+  await getUsuariosFoto()
+  filtros.value.cliente.options = clientes.value
+  filtros.value.usuario.options = usuariosFoto.value
+})
 </script>
 
 <style lang="sass" scoped>

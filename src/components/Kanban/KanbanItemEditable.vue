@@ -1,11 +1,14 @@
 <template>
   <div
-    class="relative text-headline-3 px-12 py-6 bg-neutral-20 rounded-generic dark:bg-white/5"
+    class="relative text-headline-3 px-12 py-6 bg-neutral-20 rounded-generic dark:bg-white/5 flex"
     :class="classObj"
     :tabindex="`${editable ? 0 : null}`"
   >
     {{ value }}
+
     <slot></slot>
+
+    <div class="triangulo" v-if="editable"></div>
 
     <q-popup-edit
       v-if="editable"
@@ -82,7 +85,7 @@ const props = defineProps({
 })
 
 const classObj = {
-  editavel: props.editable,
+  editavel: props.editable + 'pl-24',
 }
 
 const popupValue = ref(props.value)
@@ -100,7 +103,7 @@ const inputMask = () => {
 </script>
 <style lang="sass">
 .kanban-popup-editable
-  padding: 4px !important
+  padding: .25rem !important
   min-height: max-content !important
   height: max-content !important
   .q-field
@@ -121,5 +124,17 @@ const inputMask = () => {
     margin-top: 0
   .q-field__marginal
     height: 100% !important
+
+  .triangulo
+    display: block
+    position: absolute
+    bottom: 0
+    right: 0
+    background: transparent
+    width:6px
+    height:6px
+    border-right: 1px solid
+    border-bottom: 1px solid
+    border-color: white
 </style>
 <style lang="sass" scoped></style>

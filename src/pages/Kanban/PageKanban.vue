@@ -56,6 +56,10 @@
 
   <KanbanModal ref="modal" @changed="commitAlt(colunasWithCards)"></KanbanModal>
 
+  <Teleport to="#kanban-filters" :disabled="!notMounted">
+    <KanbanFilters></KanbanFilters>
+  </Teleport>
+
   <img :src="kanbanBG" aria-hidden="true" class="image-bg" alt="" />
 </template>
 
@@ -77,9 +81,10 @@ import { useProjetoStore } from 'src/stores/projetos/projetos.store'
 import { useUsuarioStore } from 'src/stores/usuarios/usuarios.store'
 import emitter from 'src/boot/emitter'
 import KanbanNewCard from 'src/components/Kanban/KanbanNewCard.vue'
+import KanbanFilters from 'src/components/Kanban/KanbanFilters.vue'
 
 const { /*  generateRange, modelo1, */ setHeightInCol } = GLOBAL
-
+const notMounted = ref(false)
 const { kanbanBG } = storeToRefs(useKanbanBG())
 const { visaoExpandida } = storeToRefs(useVisaoExpandida())
 const { getUsuariosFoto } = useUsuarioStore()
@@ -160,6 +165,7 @@ onMounted(() => {
   getSubProjetos()
   getUsuariosFoto()
   getTags()
+  setTimeout(() => (notMounted.value = true), 2000)
 
   // setInterval(() => {
   //   emitter.emit('reloadDataKanban')

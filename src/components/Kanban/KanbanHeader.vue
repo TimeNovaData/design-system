@@ -29,6 +29,7 @@
         </OButton>
 
         <OButton
+          id="kanban-filters"
           size="sm"
           secondary
           class="bg-white/10 !py-0 !h-32 !border-transparent"
@@ -60,6 +61,7 @@
 <script setup>
 import { ref } from 'vue'
 import OButton from 'src/components/Button/OButton.vue'
+
 const emit = defineEmits(['tree-points-click', 'reload'])
 const tab = ref('quadro')
 </script>

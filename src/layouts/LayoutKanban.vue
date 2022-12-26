@@ -30,10 +30,13 @@
         </OButton>
       </template>
     </BaseHeader>
+
     <KanbanHeader
+      ref="kanbanHeader"
       @tree-points-click="openModalRight"
       @reload="reloadData"
     ></KanbanHeader>
+
     <KanbanModalRight ref="modalRight"></KanbanModalRight>
     <q-page-container
       class="kanban-page-container"
@@ -57,10 +60,12 @@ import emitter from 'src/boot/emitter'
 const dev = process.env.dev
 
 const modalRight = ref(null)
+const kanbanHeader = ref(null)
 
 function openModalRight() {
   modalRight.value.dialogRef.show()
 }
+
 function reloadData() {
   emitter.emit('reloadDataKanban')
 }
