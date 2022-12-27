@@ -7,6 +7,7 @@
     @show="selectShow"
   >
     <p class="mb-16 text-title-5">{{ text }}</p>
+
     <OSelect
       v-bind="selectProps"
       v-model="projetoSelected"

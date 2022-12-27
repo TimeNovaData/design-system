@@ -7,31 +7,17 @@
     <q-page-container class="home-page-container bg-neutral-10">
       <router-view />
 
-      <q-btn @click="openModal"> Abrir modal </q-btn>
-
-      <TaskModal ref="modal" />
+      <!--  MOVI PARA LAYOUTTEST 
+        /testes
+      -->
     </q-page-container>
   </q-layout>
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
 import BaseHeader from 'src/components/Header/BaseHeader.vue'
 import MenuMultiLevel from 'src/components/MenuMultiLevel/MenuMultiLevel.vue'
-import TaskModal from 'src/components/Task/TaskModal.vue'
 import menuList from 'src/utils/menuList.js'
-import { api } from 'src/boot/axios'
-
-onMounted(async () => {
-  const oi = api
-  console.log(api)
-})
-
-const modal = ref(null)
-
-function openModal() {
-  modal.value.dialogRef.show()
-}
 </script>
 
 <style lang="sass">

@@ -25,8 +25,10 @@
 <script setup>
 import { useDialogPluginComponent } from 'quasar'
 import OButton from 'src/components/Button/OButton.vue'
+import { ref } from 'vue'
 import DetailCard from './DetailCard.vue'
 
+const dialogState = ref(false)
 const { dialogRef } = useDialogPluginComponent()
 defineExpose({ dialogRef })
 </script>

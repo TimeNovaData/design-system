@@ -59,7 +59,7 @@
         option-value="id"
         option-label="nome"
         :options="subProjetos"
-        label="Projeto"
+        label="Subprojeto"
         :auto-save="true"
         class="mb-10 -mt-16"
         :rules="[(val) => !!val]"
@@ -127,6 +127,10 @@ const selectSubprojeto = ref(null)
 
 const projetos = inject('projetos')
 const subProjetos = inject('subProjetos')
+
+const subProjetosProjetoAtivo = computed(() =>
+  subProjetos.value.filter((p) => p.caso_pai === newCardData.value.projeto.id)
+)
 
 const props = defineProps({
   colData: Object,
