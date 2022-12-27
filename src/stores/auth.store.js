@@ -50,6 +50,7 @@ export const useAuthStore = defineStore('auth', () => {
       return true
     } catch (e) {
       console.log(e)
+
       Notify.create({
         type: 'error',
         message: `Usuario ou senha invalidos`,
