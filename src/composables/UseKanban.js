@@ -25,16 +25,21 @@ export default function useKanban() {
   const colunasWithCards = ref([])
   const cardAlterado = ref({ id: null })
   const drag = ref(false)
+  const filtroAplicado = ref(false)
+  const saveValue = ref([])
   // Stores
   const { getChamado } = useChamadoStore()
   const { getFases } = useFaseStore()
   // const { getTags } = useTagStore()
 
-  const { history, commit, clear } = useManualRefHistory(colunasWithCards, {
-    capacity: 1,
-    flush: 'sync',
-    clone: true,
-  })
+  const { history, commit, clear, undo, redo } = useManualRefHistory(
+    colunasWithCards,
+    {
+      capacity: 1,
+      flush: 'sync',
+      clone: true,
+    }
+  )
 
   const computedOnlyCols = computed(() =>
     convertInOnlyCardsOrCol(colunasWithCards.value, 'coluna')
@@ -61,6 +66,21 @@ export default function useKanban() {
     commit()
     console.log(history.value)
     await sendChamadoChange()
+  }
+
+  async function commitAltFront(val) {
+    colunasWithCards.value = val
+    await nextTick()
+    commit()
+  }
+
+  function applyFilters(value, arr) {
+    if (value === false) {
+      commitAltFront(arr)
+      return
+    }
+
+    commitAltFront(value)
   }
 
   watch(
@@ -118,10 +138,10 @@ export default function useKanban() {
       }
 
       // atualiza a ordem
-      await axios.post(
-        `${BACKEND_URL}${URLS.atualizar_ordem_chamado}?no_loading`,
-        { 'ids_chamados[]': listIDSInOrder }
-      )
+      // await axios.post(
+      //   `${BACKEND_URL}${URLS.atualizar_ordem_chamado}?no_loading`,
+      //   { id_chamados: listIDSInOrder }
+      // )
 
       commit()
       clear()
@@ -224,6 +244,8 @@ export default function useKanban() {
     updateDados,
     startAndEndDrag,
     drag,
+    applyFilters,
+    saveValue,
   }
 }
 

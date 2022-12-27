@@ -1,10 +1,10 @@
 <template>
   <div class="flex items-center gap-8 mt-6">
     <q-avatar size="1.75rem">
-      <q-img :src="GLOBAL.imgSrc(item.image)" />
+      <q-img :src="GLOBAL.imgSrc(item.foto)" />
     </q-avatar>
 
-    <p class="text-paragraph-1">{{ item.name }}</p>
+    <p class="text-paragraph-1 capitalize">{{ item.nome }}</p>
   </div>
 </template>
 

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative text-headline-3 px-12 py-6 bg-neutral-20 rounded-generic dark:bg-white/5 flex item-editavel"
+    class="relative text-headline-3 px-12 py-6 bg-neutral-20 rounded-generic dark:bg-white/5 flex item-editavel h-[2.25rem]"
     :class="classObj"
     :tabindex="`${editable ? 0 : null}`"
   >
@@ -8,7 +8,7 @@
 
     <slot></slot>
 
-    <div class="triangulo" v-if="editable"></div>
+    <div class="triangulo-editavel" v-if="editable"></div>
 
     <q-popup-edit
       v-if="editable"
@@ -29,7 +29,7 @@
         @keyup.enter.stop
         :mask="inputMask()"
         tabindex="2"
-        :placeholder="type === 'date' ? 'DD/MM/AAAA' : null"
+        :placeholder="type === 'date' ? 'DD/MM/AAAA' : placeholder"
       >
         <template v-slot:after>
           <div class="flex w-full no-wrap flex-1 gap-4 !mt-4">
@@ -74,10 +74,17 @@ const props = defineProps({
   value: String,
   type: String,
   popupClass: String,
+
+  placeholder: {
+    type: String,
+    default: '',
+  },
+
   notFormat: {
     type: Boolean,
     default: false,
   },
+
   editable: {
     type: Boolean,
     default: false,
@@ -124,21 +131,5 @@ const inputMask = () => {
     margin-top: 0
   .q-field__marginal
     height: 100% !important
-
-.item-editavel
-  .triangulo
-    display: block
-    position: absolute
-    bottom: 0
-    right: 0
-    background: transparent
-    width:6px
-    height:6px
-    border-right: 2px solid
-    border-bottom: 2px solid
-    border-color: rgba(var(--white),0.5)
-
-.body--light .item-editavel .triangulo
-  border-color: rgba(var(--neutral-100),0.2)
 </style>
 <style lang="sass" scoped></style>

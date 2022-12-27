@@ -4,11 +4,16 @@
     <BaseHeader>
       <template #right>
         <OInput
+          v-model="searchKanban"
           size="sm"
-          placeholder="Busque por chamado, projeto.."
-          class="no-label text-white/70"
+          placeholder="Busque por titulo ou ID"
+          class="no-label text-white/70 min-w-[220px]"
           type="search"
           style="--neutral-70: rgba(var(--white), 0.7)"
+          :clearable="true"
+          @clear="handleSearch"
+          @update:model-value="handleSearch"
+          debounce="400"
         >
           <template #prepend>
             <q-icon name="search"></q-icon>
@@ -31,13 +36,6 @@
       </template>
     </BaseHeader>
 
-    <KanbanHeader
-      ref="kanbanHeader"
-      @tree-points-click="openModalRight"
-      @reload="reloadData"
-    ></KanbanHeader>
-
-    <KanbanModalRight ref="modalRight"></KanbanModalRight>
     <q-page-container
       class="kanban-page-container"
       style="padding-top: var(--top-size)"
@@ -58,16 +56,19 @@ import OInput from 'src/components/Input/OInput.vue'
 import OButton from 'src/components/Button/OButton.vue'
 import emitter from 'src/boot/emitter'
 const dev = process.env.dev
+const searchKanban = ref('')
+// const kanbanHeader = ref(null)
 
-const modalRight = ref(null)
-const kanbanHeader = ref(null)
+// function openModalRight() {
+//   modalRight.value.dialogRef.show()
+// }
 
-function openModalRight() {
-  modalRight.value.dialogRef.show()
-}
+// function reloadData() {
+//   emitter.emit('reloadDataKanban')
+// }
 
-function reloadData() {
-  emitter.emit('reloadDataKanban')
+function handleSearch() {
+  emitter.emit('searchKanban', searchKanban.value)
 }
 </script>
 

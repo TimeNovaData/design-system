@@ -3,11 +3,19 @@
     class="attachment-file flex items-center justify-between px-8 py-10 bg-white/5"
   >
     <div class="flex gap-8">
-      <q-avatar class="w-40 h-40 rounded-sm" color="primary">
+      <q-avatar class="w-40 h-40 rounded-sm">
         <img v-if="hasImage" :src="file.src" />
-        <span v-else class="absolute uppercase text-caps-3 text-neutral-100">
-          Jpg
-        </span>
+
+        <q-icon
+          v-else
+          name="svguse:/icons.svg#icon_file"
+          class="w-full h-full absolute"
+          size="90px"
+        >
+          <span class="absolute uppercase text-caps-3 text-neutral-100">
+            Jpg
+          </span>
+        </q-icon>
       </q-avatar>
 
       <div class="flex flex-col">
@@ -20,20 +28,18 @@
 
     <div class="flex gap-6 pr-6">
       <OButton
-        class="font-normal w-32 h-32 grid place-content-center bg-white/10 dark:!border-transparent"
-        size="sm"
-        height="sm"
+        class="font-normal w-32 h-32 grid place-content-center bg-white/10 dark:!border-transparent text-neutral-100/40"
         secondary
         icon="svguse:/icons.svg#icon_view"
+        icon-size="1.25rem"
         v-if="hasImage"
       ></OButton>
 
       <OButton
-        class="font-normal w-32 h-32 grid place-content-center bg-white/10 dark:!border-transparent"
-        size="sm"
-        height="sm"
+        class="font-normal w-32 h-32 grid place-content-center bg-white/10 dark:!border-transparent text-neutral-100/40"
         secondary
         icon="svguse:/icons.svg#icon_donwload"
+        icon-size="1.25rem"
       ></OButton>
     </div>
   </q-card>
@@ -53,8 +59,4 @@ defineProps({
   .q-card
     border: 1px solid rgba(1, 7, 27, 0.1)
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.06)
-
-  .q-icon > svg
-    width: 1.25rem
-    height: 1.25rem
 </style>

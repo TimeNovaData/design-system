@@ -19,19 +19,21 @@ export const useTaskStore = defineStore('taskstore', () => {
     )
   )
 
-  async function getTasks(filtro = '') {
+  async function getTasks(id, filtro = '') {
     isLoading.value = true
 
+    const noLoading = filtro ? '&no_loading' : '?no_loading'
+
     const { data, error } = await useAxios(
-      URLS.task + '?no_loading' + filtro,
+      URLS.task + id + filtro + noLoading,
       { method: 'GET' },
       api
     )
     try {
-      if (filtro) setTasksChamado(data.value.results)
-      else setTasks(data.value.results)
+      // if (filtro) setTasksChamado(data.value.results)
+      setTasks(data.value)
 
-      return data.value.results
+      return data.value
     } catch (e) {
       return error
     } finally {

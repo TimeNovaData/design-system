@@ -18,108 +18,117 @@
             ></q-icon>
 
             <KanbanItemEditable
-              class="!text-title-2 !p-0 !bg-transparent min-w-[500px] !pl-4 relative -l-4"
+              class="!text-title-2 !p-0 !bg-transparent !pl-4 relative -l-4 left !pr-32"
               popup-class="!min-w-[18.75rem]"
               :editable="true"
               :value="data.titulo"
               @update="(v) => updateValue('titulo')(v)"
-              popupClass="min-w-500px"
+              popupClass="w-[500px]"
+              placeholder="Titulo"
             ></KanbanItemEditable>
           </div>
 
-          <div
-            class="ml-[3.75rem] w-max no-label relative editavel group inline-flex items-center pr-40"
-          >
-            <div class="" v-if="data.projeto.nome">
-              <OBadge
-                size="sm"
-                :badge="false"
-                :color="returnRGB(data.projeto.cor)"
-                square
+          <div>
+            <!-- SUBPROJETO -->
+            <div
+              v-if="data.projeto.tem_subprojetos"
+              class="ml-[3.75rem] w-max no-label relative editavel group inline-flex items-center pr-24 mr-4 px-4"
+            >
+              <div class="triangulo-editavel"></div>
+              <div
+                v-if="data.sub_projeto?.nome"
+                class="text-neutral-100/70 dark:text-white/70 text-paragraph-1"
               >
-                <template #content>
-                  <p class="text-center mx-auto">{{ data.projeto.nome }}</p>
+                {{ data.sub_projeto.nome }}
+              </div>
+
+              <div
+                v-else-if="
+                  data.projeto.tem_subprojetos &&
+                  !data.sub_projeto &&
+                  subProjetosProjetoAtivo?.length
+                "
+              >
+                Selecione um Subprojeto
+              </div>
+
+              <q-icon
+                class="opacity-0 group-hover:opacity-100 absolute right-4"
+                name="expand_more"
+              ></q-icon>
+
+              <KanbanItemEditableSelect
+                @updateValue="(v) => updateValue('sub_projeto')(v)"
+                text="Selecione um Subprojeto"
+                :options="subProjetosProjetoAtivo"
+                selectLabel="Subprojeto"
+                :selected="data.sub_projeto"
+              >
+                <template #option="scope">
+                  <q-item
+                    v-bind="scope.itemProps"
+                    class="items-center gap-8"
+                    :key="scope.opt.id"
+                  >
+                    <q-badge
+                      rounded
+                      class="shrink-0 w-8 h-8"
+                      :style="{ background: scope.opt.cor }"
+                    ></q-badge>
+                    {{ scope.opt.nome }}
+                  </q-item>
                 </template>
-              </OBadge>
+              </KanbanItemEditableSelect>
             </div>
 
-            <div v-else>Selecione um projeto</div>
-
-            <q-icon
-              class="opacity-0 group-hover:opacity-100 absolute right-4"
-              name="expand_more"
-            ></q-icon>
-
-            <KanbanItemEditableSelect
-              @updateValue="(v) => updateValue('projeto')(v)"
-              text="Selecione um projeto"
-              :options="projetos"
-              selectLabel="Projeto"
-              :selected="data.projeto"
+            <!--   PROJETO -->
+            <div
+              class="w-max no-label relative editavel group inline-flex items-center pr-40"
+              :class="`${!data.projeto.tem_subprojetos && 'ml-[3.75rem]'}`"
             >
-              <template #option="scope">
-                <q-item
-                  v-bind="scope.itemProps"
-                  class="items-center gap-8"
-                  :key="scope.opt.id"
+              <div class="" v-if="data.projeto.nome">
+                <OBadge
+                  size="sm"
+                  :badge="false"
+                  :color="returnRGB(data.projeto.cor)"
+                  square
                 >
-                  <q-badge
-                    rounded
-                    class="shrink-0 w-8 h-8"
-                    :style="{ background: scope.opt.cor }"
-                  ></q-badge>
-                  {{ scope.opt.nome }}
-                </q-item>
-              </template>
-            </KanbanItemEditableSelect>
-          </div>
+                  <template #content>
+                    <p class="text-center mx-auto">{{ data.projeto.nome }}</p>
+                  </template>
+                </OBadge>
+              </div>
 
-          <!--   PROJETO -->
-          <div
-            class="ml-[3.75rem] w-max no-label relative editavel group inline-flex items-center pr-40"
-          >
-            <div class="" v-if="data.projeto.nome">
-              <OBadge
-                size="sm"
-                :badge="false"
-                :color="returnRGB(data.projeto.cor)"
-                square
+              <div v-else>Selecione um projeto</div>
+
+              <q-icon
+                class="opacity-0 group-hover:opacity-100 absolute right-4"
+                name="expand_more"
+              ></q-icon>
+
+              <KanbanItemEditableSelect
+                @updateValue="(v) => updateValue('projeto')(v)"
+                text="Selecione um projeto"
+                :options="projetos"
+                selectLabel="Projeto"
+                :selected="data.projeto"
               >
-                <template #content>
-                  <p class="text-center mx-auto">{{ data.projeto.nome }}</p>
+                <template #option="scope">
+                  <q-item
+                    v-bind="scope.itemProps"
+                    class="items-center gap-8"
+                    :key="scope.opt.id"
+                  >
+                    <q-badge
+                      rounded
+                      class="shrink-0 w-8 h-8"
+                      :style="{ background: scope.opt.cor }"
+                    ></q-badge>
+                    {{ scope.opt.nome }}
+                  </q-item>
                 </template>
-              </OBadge>
+              </KanbanItemEditableSelect>
             </div>
-
-            <div v-else>Selecione um projeto</div>
-
-            <q-icon
-              class="opacity-0 group-hover:opacity-100 absolute right-4"
-              name="expand_more"
-            ></q-icon>
-
-            <KanbanItemEditableSelect
-              @updateValue="(v) => updateValue('projeto')(v)"
-              text="Selecione um projeto"
-              :options="projetos"
-              selectLabel="Projeto"
-              :selected="data.projeto"
-            >
-              <template #option="scope">
-                <q-item
-                  v-bind="scope.itemProps"
-                  class="items-center gap-8"
-                  :key="scope.opt.id"
-                >
-                  <q-badge
-                    rounded
-                    class="shrink-0 w-8 h-8"
-                    :style="{ background: scope.opt.cor }"
-                  ></q-badge>
-                  {{ scope.opt.nome }}
-                </q-item>
-              </template>
-            </KanbanItemEditableSelect>
           </div>
         </div>
 
@@ -629,7 +638,7 @@ import OBadge from 'src/components/Badge/OBadge.vue'
 import OButton from 'src/components/Button/OButton.vue'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import GLOBAL from 'src/utils/GLOBAL'
-import { inject, ref, unref, watch } from 'vue'
+import { inject, ref, unref, watch, computed } from 'vue'
 import KanbanItemEditable from './KanbanItemEditable.vue'
 import KanbanItemEditableEditor from './KanbanItemEditableEditor.vue'
 import KanbanItemEditableSelect from './KanbanItemEditableSelect.vue'
@@ -644,6 +653,12 @@ const usuarios = inject('usuarios')
 const user = inject('user')
 
 const projetos = inject('projetos')
+const subProjetos = inject('subProjetos')
+
+const subProjetosProjetoAtivo = computed(() =>
+  subProjetos.value.filter((p) => p.caso_pai === data.value.projeto.id)
+)
+
 const tab = ref('info')
 const dialogState = ref(false)
 

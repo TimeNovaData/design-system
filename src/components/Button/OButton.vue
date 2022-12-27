@@ -29,6 +29,7 @@ const padding = {
 }
 const sizes = { sm: '.75rem ', md: '.875rem', lg: '1rem' }
 const height = { sm: '2rem ', md: '2.5rem', lg: '3rem' }
+const iconSize = attrs['icon-size'] ? attrs['icon-size'] : '1.715em'
 
 const setPadding = padding[attrs.size]
 const setSize = sizes[attrs.size]
@@ -36,4 +37,10 @@ const setSize = sizes[attrs.size]
 const setHeight = height[attrs.size]
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="sass">
+.q-btn
+  --icon-size: v-bind(iconSize)
+
+  .q-icon
+    font-size: var(--icon-size)
+</style>
