@@ -1,55 +1,73 @@
 <template>
   <q-card class="detail-card px-16">
-    <div class="detail-line">
-      <span class="text-caps-3">TÍTULO</span>
-      <p>Telas do Hub</p>
+    <div class="flex flex-col py-20">
+      <span class="text-caps-3 dark:text-white/40">TÍTULO</span>
+      <p class="text-paragraph-1">Telas do Hub</p>
     </div>
 
     <hr />
 
-    <div class="detail-line">
-      <span class="text-caps-3">CLIENTE - PROJETO / SUBPROJETO</span>
-      <p>Telas do Hub</p>
+    <div class="flex flex-col py-20">
+      <span class="text-caps-3 dark:text-white/40">
+        CLIENTE - PROJETO / SUBPROJETO
+      </span>
+
+      <OAvatar :item="clientAvatar" />
     </div>
 
     <hr />
 
     <div class="grid grid-cols-2">
-      <div class="detail-line">
-        <span class="text-caps-3">GRUPO / TIPO</span>
-        <p>Telas do Hub</p>
+      <div class="flex flex-col py-20">
+        <span class="text-caps-3 dark:text-white/40">GRUPO / TIPO</span>
+        <p class="text-paragraph-1">Figma -> Dashboard</p>
       </div>
+
+      <div class="grid grid-cols-2">
+        <div class="flex flex-col py-20">
+          <span class="text-caps-3 dark:text-white/40">QUANTIDADE</span>
+          <p class="text-paragraph-1">2</p>
+        </div>
+        <div class="flex flex-col py-20">
+          <span class="text-caps-3 dark:text-white/40">Tempo estimado</span>
+          <p class="text-paragraph-1">00:00</p>
+        </div>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="grid grid-cols-2">
+      <div class="flex flex-col py-20">
+        <span class="text-caps-3 dark:text-white/40">
+          DATA DE ENTREGA DESEJADA
+        </span>
+        <p class="text-paragraph-1">10/10/2022 - 18h 30m</p>
+      </div>
+
+      <OAvatar :item="respAvatar" />
     </div>
   </q-card>
 </template>
 
 <script setup>
-import AvatarSingle from 'src/components/Avatar/AvatarSingle.vue'
-import OInput from 'src/components/Input/OInput.vue'
+import OAvatar from 'src/components/Avatar/OAvatar.vue'
+
+const clientAvatar = {
+  name: 'Cliente - Projeto / Subprojeto',
+  image: 'https://cdn.quasar.dev/img/avatar.png',
+}
+
+const respAvatar = {
+  name: 'Adriano',
+  image: 'https://cdn.quasar.dev/img/avatar.png',
+}
 </script>
 
 <style lang="sass" scoped>
-:deep(.q-field__native)
-  background: red !important
-
-.detail-line
-  display: flex
-  flex-direction: column
-  padding: 1.25rem 0
-
-  // span
-  //   display: block
-  //   color: rgb(var(--neutral-60))
-  //   font-weight: 600
-  //   font-size: .625rem
-  //   line-height: 160%
-  //   letter-spacing: 0.04em
-  //   margin-bottom: .375rem
-
-  // p
-  //   font-size: 1rem
-  //   line-height: 150%
-  //   color: rgb(var(--neutral-70))
+.body--dark
+  hr
+    border-color: rgba(var(--white), 0.1)
 
 hr
   border-color: rgba(var(--neutral-100), 0.1)

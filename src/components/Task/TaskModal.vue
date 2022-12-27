@@ -4,19 +4,27 @@
       <header class="modal-header">
         <div class="pl-16">
           <span class="text-caps-3 text-neutral-100/50">TASK</span>
-          <h2 class="text-title-4">Telas do Hub</h2>
+          <h2 class="text-title-4 text-neutral-100">Telas do Hub</h2>
         </div>
 
-        <OButton class="!w-max !h-max !p-0" size="lg" tertiary>
+        <OButton
+          class="!w-max !h-max !p-0"
+          size="lg"
+          tertiary
+          @click="closeDialog"
+        >
           <q-icon
-            class="w-48 h-48"
+            class="w-48 h-48 dark:text-neutral-100"
             name="svguse:/icons.svg#icon_close"
           ></q-icon>
         </OButton>
       </header>
 
       <section class="p-24 grid grid-cols-2">
-        <DetailCard />
+        <div class="flex flex-col gap-16">
+          <DetailCard />
+          <AttachmentCard />
+        </div>
       </section>
     </q-card>
   </q-dialog>
@@ -25,14 +33,26 @@
 <script setup>
 import { useDialogPluginComponent } from 'quasar'
 import OButton from 'src/components/Button/OButton.vue'
+import { ref } from 'vue'
+import AttachmentCard from './AttachmentCard.vue'
 import DetailCard from './DetailCard.vue'
 
+const dialogState = ref(false)
 const { dialogRef } = useDialogPluginComponent()
+
+const closeDialog = () => {
+  dialogState.value = false
+}
+
 defineExpose({ dialogRef })
 </script>
 
 <style lang="sass" scoped>
 @import "src/css/cores.sass"
+
+.body--dark
+  .task-modal
+    background: rgb(var(--d-neutral-20))
 
 .task-modal
   height: 95vh
