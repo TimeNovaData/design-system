@@ -138,10 +138,9 @@ export default function useKanban() {
       }
 
       // atualiza a ordem
-      // await axios.post(
-      //   `${BACKEND_URL}${URLS.atualizar_ordem_chamado}?no_loading`,
-      //   { id_chamados: listIDSInOrder }
-      // )
+      await api.post(`${URLS.atualizar_ordem_chamado}?no_loading`, {
+        id_chamados: listIDSInOrder,
+      })
 
       commit()
       clear()
