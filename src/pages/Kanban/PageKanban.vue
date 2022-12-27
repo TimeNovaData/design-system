@@ -172,9 +172,14 @@ function closeNewCard() {
   setTimeout(() => setHeightInCol(), 180)
 }
 async function handleCreateChamado(v) {
-  await createChamado(v)
+  const newCard = await createChamado(v)
+  colunasWithCards.value.map((i) => {
+    if (i.coluna.id === novoCard.value.id) i.cards.unshift(newCard)
+    return i
+  })
+
   novoCard.value.id = null
-  emitter.emit('reloadDataKanban')
+  // emitter.emit('reloadDataKanban')
 }
 
 const dragOptions = computed(() => ({
@@ -265,6 +270,7 @@ provide('usuarios', usuariosFoto)
 provide('projetos', projetos)
 provide('subProjetos', subProjetos)
 provide('tabs', tabs)
+provide('colunasWithCards', colunasWithCards)
 </script>
 
 <style lang="sass">

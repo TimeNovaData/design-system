@@ -50,7 +50,7 @@
       </OSelect>
 
       <OSelect
-        v-if="newCardData.projeto.tem_subprojetos"
+        v-if="newCardData.projeto?.tem_subprojetos"
         ref="selectSubprojeto"
         v-model="newCardData.subProjetos"
         use-input
@@ -58,7 +58,7 @@
         behavior="menu"
         option-value="id"
         option-label="nome"
-        :options="subProjetos"
+        :options="subProjetosProjetoAtivo"
         label="Subprojeto"
         :auto-save="true"
         class="mb-10 -mt-16"
@@ -115,8 +115,9 @@
 <script setup>
 import OButton from 'src/components/Button/OButton.vue'
 import OInput from 'src/components/Input/OInput.vue'
-import { ref, onMounted, inject, computed, nextTick } from 'vue'
+import { ref, onMounted, inject, computed, nextTick, watch } from 'vue'
 import OSelect from 'src/components/Select/OSelect.vue'
+import { Notify } from 'quasar'
 
 const emit = defineEmits(['digitandoNome', 'create', 'invalid'])
 
@@ -144,17 +145,11 @@ const newCardData = ref({
 })
 
 const chamadoValid = computed(
-  () => newCardData.value.titulo.length && newCardData.value.projeto.length
+  () => !!(newCardData.value.titulo.length && newCardData.value.projeto)
 )
 
-// function autoGrow({ currentTarget }) {
-//   currentTarget.style.height = '18px'
-//   currentTarget.style.height = currentTarget.scrollHeight + 'px'
-//   emit('digitandoNome')
-// }
-
 async function handleChangeSelect() {
-  if (newCardData.value.projeto.tem_subprojetos) {
+  if (newCardData.value.projeto?.tem_subprojetos) {
     await nextTick()
     selectSubprojeto.value.componentRef.focus()
     selectSubprojeto.value.componentRef.showPopup()
@@ -163,12 +158,23 @@ async function handleChangeSelect() {
   }
 }
 function handleFocusOut() {
-  if (!chamadoValid.value) {
-    emit('invalid')
-    newCardData.value = { titulo: '', projeto: '', id: null }
-  } else {
+  if (chamadoValid.value) {
     newCardData.value.fase = props.colData.id
     emit('create', newCardData.value)
+    Notify.create({
+      message: `Chamado Criado com sucesso`,
+      position: 'top-right',
+      timeout: 1000,
+    })
+  } else {
+    emit('invalid')
+    newCardData.value = { titulo: '', projeto: '', id: null }
+    Notify.create({
+      type: 'error',
+      message: `Chamado Invalido`,
+      position: 'top-right',
+      timeout: 1000,
+    })
   }
 }
 
