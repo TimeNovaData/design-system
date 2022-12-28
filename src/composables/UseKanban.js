@@ -45,6 +45,10 @@ export default function useKanban() {
     convertInOnlyCardsOrCol(colunasWithCards.value, 'coluna')
   )
 
+  const listIDSInOrder = computed(() =>
+    convertInOnlyCardsOrCol(colunasWithCards.value).map((i) => i.id)
+  )
+
   function createColunasWithCards(colunas = Array, cards = Array) {
     return colunas
       .map((col) => {
@@ -121,12 +125,16 @@ export default function useKanban() {
     return GLOBAL.compareAndReturnDiff(OLD, NEW)
   }
 
+  async function atualizarOrdem() {
+    // atualiza a ordem
+    await api.post(`${URLS.atualizar_ordem_chamado}?no_loading`, {
+      id_chamados: listIDSInOrder.value,
+    })
+  }
+
   async function sendChamadoChange() {
     // Pega as apenas as diferenca entre o card do historico
     const diff = historyAlt(history)
-    const listIDSInOrder = convertInOnlyCardsOrCol(colunasWithCards.value).map(
-      (i) => i.id
-    )
 
     try {
       // patch no chamado mudando a fase
@@ -137,10 +145,7 @@ export default function useKanban() {
         )
       }
 
-      // atualiza a ordem
-      await api.post(`${URLS.atualizar_ordem_chamado}?no_loading`, {
-        id_chamados: listIDSInOrder,
-      })
+      await atualizarOrdem()
 
       commit()
       clear()
@@ -245,6 +250,7 @@ export default function useKanban() {
     drag,
     applyFilters,
     saveValue,
+    atualizarOrdem,
   }
 }
 

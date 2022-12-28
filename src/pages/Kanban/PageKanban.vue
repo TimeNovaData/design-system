@@ -101,7 +101,6 @@ import KanbanModalRight from 'src/components/Kanban/KanbanModalRight.vue'
 import PageKanbanList from './PageKanbanList.vue'
 
 const { /*  generateRange, modelo1, */ setHeightInCol } = GLOBAL
-const notMounted = ref(false)
 const { kanbanBG } = storeToRefs(useKanbanBG())
 const { visaoExpandida } = storeToRefs(useVisaoExpandida())
 const { getUsuariosFoto } = useUsuarioStore()
@@ -122,12 +121,11 @@ const {
   cardAlterado,
   commitAlt,
   returnCardPerID,
-  // getDadosAndDeclare,
   startAndEndDrag,
   updateDados,
   drag,
   applyFilters,
-  saveValue,
+  atualizarOrdem,
 } = useKanban()
 
 // Store to refs
@@ -172,14 +170,9 @@ function closeNewCard() {
   setTimeout(() => setHeightInCol(), 180)
 }
 async function handleCreateChamado(v) {
-  const newCard = await createChamado(v)
-  colunasWithCards.value.map((i) => {
-    if (i.coluna.id === novoCard.value.id) i.cards.unshift(newCard)
-    return i
-  })
-
   novoCard.value.id = null
-  // emitter.emit('reloadDataKanban')
+  const newCard = await createChamado(v)
+  emitter.emit('reloadDataKanban')
 }
 
 const dragOptions = computed(() => ({
@@ -239,25 +232,19 @@ emitter.on('searchKanban', (value) => {
 })
 
 onMounted(() => {
-  setHeightInCol()
-  document
-    .querySelector('.kanban-col--wrapper')
-    .dispatchEvent(new Event('mousedown'))
-
-  getProjetos()
-  getSubProjetos()
-  getUsuariosFoto()
-  getTags()
-  setTimeout(() => (notMounted.value = true), 10000)
-
-  // setInterval(() => {
-  //   emitter.emit('reloadDataKanban')
-  //   console.log('teste')
-  // }, 10000)
+  // setHeightInCol()
+  // document
+  //   .querySelector('.kanban-col--wrapper')
+  //   .dispatchEvent(new Event('mousedown'))
+  // getProjetos()
+  // getSubProjetos()
+  // getUsuariosFoto()
+  // getTags()
 })
 
 emitter.on('reloadDataKanban', async () => {
   await updateDados()
+  await atualizarOrdem()
   getProjetos()
   getSubProjetos()
   getUsuariosFoto()
