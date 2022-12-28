@@ -60,7 +60,7 @@ const props = defineProps({
 
 // Separando o formato do arquivo
 const attachName = ref(props.data.anexo_nome)
-const attachType = attachName.value.split('.').at(-1)
+const attachType = attachName.value?.split('.').at(-1)
 </script>
 
 <style lang="sass">

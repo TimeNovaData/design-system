@@ -1,5 +1,10 @@
 <template>
-  <q-dialog v-model="dialogState" ref="dialogRef" transition-hide="slide-down">
+  <q-dialog
+    class="!border-0"
+    v-model="dialogState"
+    ref="dialogRef"
+    transition-hide="slide-down"
+  >
     <q-card class="task-modal">
       <header class="modal-header">
         <div class="pl-16">
@@ -123,8 +128,9 @@ defineExpose({ dialogRef })
     background: rgb(var(--d-neutral-20))
 
 .task-modal
-  height: 95vh
-  max-height: 747px
+  height: auto
+  max-height: 95vh
+  min-height: clamp(500px,95vh,747px)
   width: 76rem
   border-radius: .375rem
   display: flex
@@ -138,6 +144,13 @@ defineExpose({ dialogRef })
     justify-content: space-between
     background: rgb(var(--primary-pure))
     padding: 1rem .5rem
+    height: 5rem
+
+  :deep(.detail-card)
+    height: var(--detail-height)
+    overflow: hidden
+  // :deep(.attachment-card)
+  //   height: calc()
 
   .q-card
     border: 1px solid rgba(1, 7, 27, 0.1)
