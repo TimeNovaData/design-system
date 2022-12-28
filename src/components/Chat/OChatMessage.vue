@@ -14,11 +14,11 @@
       }"
     >
       <span>{{ data.user }}</span>
-      <span class="text-neutral-100/40">•</span>
-      <span class="text-neutral-60">{{ data.date }}</span>
-      <span class="text-neutral-100/40">•</span>
+      <span class="text-neutral-100/40 dark:text-white/10">•</span>
+      <span class="text-neutral-60 dark:text-white/40">{{ data.date }}</span>
+      <span class="text-neutral-100/40 dark:text-white/10">•</span>
 
-      <OBadge rounded size="sm" class="h-20 font-semibold">
+      <OBadge rounded size="sm" class="h-20 font-semibold dark:bg-white/10">
         <template v-slot:content>{{ data.tag }}</template>
       </OBadge>
     </div>

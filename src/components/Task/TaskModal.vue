@@ -32,8 +32,8 @@
           <q-tabs v-model="tabs" active-color="neutral-100">
             <q-tab class="!flex-none md:!flex-1" name="desc">
               <template
-                class="inline-flex items-center gap-8 text-neutral-70"
-                :class="{ 'text-neutral-100': tabs == 'desc' }"
+                class="inline-flex items-center gap-8 text-neutral-70 dark:text-white/70"
+                :class="{ 'text-neutral-100 dark:!text-white': tabs == 'desc' }"
               >
                 <q-icon
                   size="1.5rem"
@@ -41,7 +41,7 @@
                 ></q-icon>
                 <p class="text-paragraph-1">Descrição</p>
                 <OCounter
-                  class="!w-20 !h-20 bg-neutral-100/10 text-neutral-100"
+                  class="!w-20 !h-20 bg-neutral-100/10 text-neutral-100 dark:bg-white/10 dark:text-white"
                 >
                   0
                 </OCounter>
@@ -50,8 +50,8 @@
 
             <q-tab class="!flex-none md:!flex-1" name="chat">
               <template
-                class="inline-flex items-center gap-8 text-neutral-70"
-                :class="{ 'text-neutral-100': tabs == 'chat' }"
+                class="inline-flex items-center gap-8 text-neutral-70 dark:text-white/70"
+                :class="{ 'text-neutral-100 dark:!text-white': tabs == 'chat' }"
               >
                 <q-icon
                   size="1.5rem"
@@ -59,7 +59,7 @@
                 ></q-icon>
                 <p class="text-paragraph-1">Comentários</p>
                 <OCounter
-                  class="!w-20 !h-20 bg-neutral-100/10 text-neutral-100"
+                  class="!w-20 !h-20 bg-neutral-100/10 text-neutral-100 dark:bg-white/10 dark:text-white"
                 >
                   3
                 </OCounter>

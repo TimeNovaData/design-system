@@ -1,5 +1,5 @@
 <template>
-  <q-card class="p-16 flex flex-col bg-neutral-20 flex-1">
+  <q-card class="p-16 flex flex-col bg-neutral-20 dark:bg-d-neutral-10 flex-1">
     <div class="flex flex-col gap-8 flex-1">
       <OChatMessage v-for="data in messages" :key="data.id" :data="data" />
     </div>
@@ -8,13 +8,17 @@
       <OInput
         v-model="login.value"
         size="md"
-        label="Escreva sua mensagem"
+        placeholder="Escreva sua mensagem"
         ref="login"
-        class="h-40 flex-1 bg-white"
+        class="h-40 flex-1 bg-white dark:!bg-transparent no-label"
         @keydown.enter="submitMessage"
       ></OInput>
 
-      <OButton secondary class="bg-white h-40" @click="submitMessage">
+      <OButton
+        secondary
+        class="bg-white h-40 dark:!bg-white/10 dark:!border-transparent dark:text-white"
+        @click="submitMessage"
+      >
         Enviar mensagem
       </OButton>
     </footer>
@@ -64,4 +68,4 @@ function submitMessage() {
 }
 </script>
 
-<style lang="sass"></style>
+<style lang="sass" scoped></style>

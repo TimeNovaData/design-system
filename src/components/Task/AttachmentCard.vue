@@ -1,5 +1,5 @@
 <template>
-  <q-card class="attachment-card flex-1 p-16">
+  <q-card class="attachment-card flex-1 p-16 pb-0">
     <header class="flex justify-between">
       <span class="text-caps-3 dark:text-white/40">ANEXOS</span>
 
@@ -14,16 +14,16 @@
       </OButton>
     </header>
 
-    <div
-      class="!flex !flex-col gap-8 mt-16 overflow-y-auto max-h-[7.5rem] xl:max-h-[10.5rem] md:max-h-[15rem]"
-    >
-      <AttachmentFile
-        v-for="anexo in anexos"
-        :key="anexo.id"
-        :data="anexo"
-        :hasImage="true"
-      />
-    </div>
+    <q-scroll-area class="mt-16 !h-[6.5rem]">
+      <div class="!flex !flex-col gap-8">
+        <AttachmentFile
+          v-for="anexo in anexos"
+          :key="anexo.id"
+          :data="anexo"
+          :hasImage="true"
+        />
+      </div>
+    </q-scroll-area>
   </q-card>
 </template>
 

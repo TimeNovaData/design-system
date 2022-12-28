@@ -32,6 +32,8 @@
         secondary
         icon="svguse:/icons.svg#icon_view"
         icon-size="1.25rem"
+        :href="data.anexo"
+        target="_blank"
         v-if="hasImage"
       ></OButton>
 

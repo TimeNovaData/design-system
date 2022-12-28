@@ -13,6 +13,22 @@
       </span>
 
       <OAvatar :item="clientAvatar" />
+
+      <div class="grid grid-cols-2 items-center mt-10">
+        <OBadge size="sm" square class="bg-primary-pure-dark/40 w-max">
+          <template #content>
+            <p class="text-center mx-auto">{{ details.nome_projeto }}</p>
+          </template>
+        </OBadge>
+
+        <!-- v-if="details.sub_projeto" -->
+        <OBadge size="sm" square class="bg-primary-pure-dark/40 w-max">
+          <template #content>
+            <!-- <p class="text-center mx-auto">{{ details.sub_projeto }}</p> -->
+            <p class="text-center mx-auto">sub_projeto</p>
+          </template>
+        </OBadge>
+      </div>
     </div>
 
     <hr />
@@ -56,6 +72,7 @@
 <script setup>
 import GLOBAL from 'src/utils/GLOBAL'
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
+import OBadge from 'src/components/Badge/OBadge.vue'
 
 const props = defineProps({
   details: Object,
@@ -65,17 +82,9 @@ const props = defineProps({
 const estimatedTime = GLOBAL.FTime(props.details.tempo_estimado)
 const revisedDate = GLOBAL.FData(props.details.entrega_data_desejada)
 
-// Gerando o field de cliente / projeto
-const subProject = props.details.sub_projeto
-  ? ` / ${props.details.sub_projeto}`
-  : ''
-
-const clientName =
-  props.details.nome_cliente + ` - ${props.details.nome_projeto}` + subProject
-
 const clientAvatar = {
-  nome: clientName,
-  foto: 'https://cdn.quasar.dev/img/avatar.png',
+  nome: props.details.nome_cliente,
+  foto: '',
 }
 </script>
 

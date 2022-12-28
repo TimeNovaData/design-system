@@ -1,7 +1,8 @@
 <template>
   <div class="flex items-center gap-8 mt-6">
-    <q-avatar size="1.75rem">
-      <q-img :src="GLOBAL.imgSrc(item.foto)" />
+    <q-avatar size="1.75rem" color="primary">
+      <q-img v-if="item.foto" :src="item.foto" />
+      <!-- <q-img :src="GLOBAL.imgSrc(item.foto)" /> -->
     </q-avatar>
 
     <p class="text-paragraph-1 capitalize">{{ item.nome }}</p>
