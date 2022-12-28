@@ -18,37 +18,33 @@
   min-width: $chat-message-avatar-size
 
 .q-message
-  margin-bottom: $chat-message-distance
+  // margin-bottom: $chat-message-distance
   &:first-child .q-message-label
     margin-top: 0
 
 .q-message-avatar--received
-  margin-right: 8px
+  margin-right: .75rem
 .q-message-text--received
   color: $chat-message-received-bg
-  border-radius: $chat-message-border-radius $chat-message-border-radius $chat-message-border-radius 0
+  border-radius: $chat-message-border-radius
   &:last-child:before
-    right: 100%
-    border-right: 0 solid transparent
-    border-left: 8px solid transparent
-    border-bottom: 8px solid currentColor
+    display: none
+
 .q-message-text-content--received
   color: $chat-message-received-color
 
 .q-message-name--sent
   text-align: right
 .q-message-avatar--sent
-  margin-left: 8px
+  margin-left: .75rem
 .q-message-container--sent
   flex-direction: row-reverse
 .q-message-text--sent
   color: $chat-message-sent-bg
-  border-radius: $chat-message-border-radius $chat-message-border-radius 0 $chat-message-border-radius
+  border-radius: $chat-message-border-radius
   &:last-child:before
-    left: 100%
-    border-left: 0 solid transparent
-    border-right: 8px solid transparent
-    border-bottom: 8px solid currentColor
+    display: none
+
 .q-message-text-content--sent
   color: $chat-message-sent-color
 
@@ -57,12 +53,15 @@
   padding: $chat-message-text-padding
   line-height: max(1.2, $min-line-height)
   word-break: break-word
+  font-size: .875rem
   position: relative
 
   & + &
     margin-top: 3px
 
   &:last-child
+    display: flex
+    align-items: center
     min-height: $chat-message-avatar-size
 
     .q-message-stamp
@@ -73,3 +72,13 @@
       bottom: 0
       width: 0
       height: 0
+
+.q-message-container
+  align-items: flex-start !important
+
+  > div
+    display: flex
+    flex-direction: column-reverse
+
+.q-message-received .q-message-container > div
+  width: 100%

@@ -233,4 +233,43 @@
   </symbol>
 
 
+  <symbol id="icon_download" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12.9646 9.25885L10 12.2234L7.03546 9.25885" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M10 3.33054V12.2234" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M16.6695 13.7048C16.6695 15.3421 15.3422 16.6693 13.7049 16.6693H6.29513C4.65785 16.6693 3.33057 15.3421 3.33057 13.7048" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+
+  <symbol id="icon_view" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M2.59834 10.3892C2.46751 10.1467 2.46751 9.85249 2.59834 9.60999C4.17501 6.69416 7.08751 4.16666 10 4.16666C12.9125 4.16666 15.825 6.69416 17.4017 9.61082C17.5325 9.85332 17.5325 10.1475 17.4017 10.39C15.825 13.3058 12.9125 15.8333 10 15.8333C7.08751 15.8333 4.17501 13.3058 2.59834 10.3892Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M11.7678 8.23223C12.7441 9.20854 12.7441 10.7915 11.7678 11.7678C10.7915 12.7441 9.20854 12.7441 8.23223 11.7678C7.25592 10.7915 7.25592 9.20854 8.23223 8.23223C9.20854 7.25592 10.7915 7.25592 11.7678 8.23223" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+
+  <symbol id="icon_file" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M1.875 40C0.839464 40 0 39.1605 0 38.125V1.875C0 0.839465 0.839466 2.94294e-08 1.875 6.57325e-08L31.6335 1.10899e-06C32.1308 1.12642e-06 32.6077 0.197546 32.9593 0.549179L39.361 6.95083C39.7126 7.30246 39.9101 7.77937 39.9101 8.27665V38.125C39.9101 39.1605 39.0707 40 38.0351 40L1.875 40Z" fill="#11D276"/>
+    <path d="M34.2849 7.5H39.7573C39.5974 7.1875 39.529 7.11908 39.2849 6.875L33.0349 0.625C32.7224 0.3125 32.4099 0.17334 32.4099 0.17334V5.625C32.4099 6.66053 33.2494 7.5 34.2849 7.5Z" fill="black" fill-opacity="0.5"/>
+  </symbol>
+
+
+  <symbol id="icon_description" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 4.5H20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+    <path d="M4 9.5H16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+    <path d="M4 14.5H20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" opacity="0.7"/>
+    <path d="M4 19.5H12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+
+  <symbol id="icon_chat" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M9.84998 14.5H14.15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M8 11.25H16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M9.84998 8H14.15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M21 11.291C21 15.83 16.952 19.473 12 19.473C11.359 19.473 10.735 19.41 10.131 19.294" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6.599 17.826C4.42 16.336 3 13.974 3 11.291" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6.59901 17.826C6.59801 18.68 6.60001 19.832 6.60001 21.041" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M3 11.291C3 6.752 7.048 3.11 12 3.11C16.952 3.11 21 6.753 21 11.292" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M10.13 19.29L6.59998 21.04" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+
+
 </svg>

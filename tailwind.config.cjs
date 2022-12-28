@@ -115,6 +115,9 @@ module.exports = {
 
     extend: {
       screens: {
+        xl: { max: '90rem' },
+        lg: { max: '84rem' },
+        md: { max: '73rem' },
         sm: { max: '48rem' },
       },
 
