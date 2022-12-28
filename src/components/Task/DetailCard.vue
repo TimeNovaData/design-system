@@ -26,11 +26,11 @@
       <div class="grid grid-cols-2">
         <div class="flex flex-col py-20">
           <span class="text-caps-3 dark:text-white/40">QUANTIDADE</span>
-          <p class="text-paragraph-1">2</p>
+          <p class="text-paragraph-1">{{ details.quantidade }}</p>
         </div>
         <div class="flex flex-col py-20">
           <span class="text-caps-3 dark:text-white/40">TEMPO ESTIMADO</span>
-          <p class="text-paragraph-1">{{ details.tempo_estimado }}</p>
+          <p class="text-paragraph-1">{{ estimatedTime }}</p>
         </div>
       </div>
     </div>
@@ -42,8 +42,7 @@
         <span class="text-caps-3 dark:text-white/40">
           DATA DE ENTREGA DESEJADA
         </span>
-        <!-- <p class="text-paragraph-1">10/10/2022 - 18h 30m</p> -->
-        <p class="text-paragraph-1">{{ details.data_final_previsto }}</p>
+        <p class="text-paragraph-1">{{ revisedDate }}</p>
       </div>
 
       <div class="flex flex-col py-20">
@@ -55,23 +54,27 @@
 </template>
 
 <script setup>
+import GLOBAL from 'src/utils/GLOBAL'
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
-import { ref } from 'vue'
 
 const props = defineProps({
   details: Object,
 })
 
-const client = ref(props.details.nome_cliente)
-const project = props.details.nome_projeto
-  ? ` - ${props.details.nome_projeto}`
+// Formatando tempo e data
+const estimatedTime = GLOBAL.FTime(props.details.tempo_estimado)
+const revisedDate = GLOBAL.FData(props.details.entrega_data_desejada)
+
+// Gerando o field de cliente / projeto
+const subProject = props.details.sub_projeto
+  ? ` / ${props.details.sub_projeto}`
   : ''
 
-// nome_cliente nome_projeto
+const clientName =
+  props.details.nome_cliente + ` - ${props.details.nome_projeto}` + subProject
 
 const clientAvatar = {
-  nome: client.value + project,
-  // nome: 'Cliente - Projeto / Subprojeto',
+  nome: clientName,
   foto: 'https://cdn.quasar.dev/img/avatar.png',
 }
 </script>

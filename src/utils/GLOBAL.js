@@ -197,4 +197,20 @@ export default {
 
     return `"${formatted}"`
   },
+
+  async blobDownloadFile(url, fileName) {
+    const image = await fetch(url)
+    const imageBlob = await image.blob()
+    const imageURL = URL.createObjectURL(imageBlob)
+
+    const anchor = document.createElement('a')
+    anchor.href = imageURL
+    anchor.download = fileName
+
+    document.body.appendChild(anchor)
+    anchor.click()
+    document.body.removeChild(anchor)
+
+    URL.revokeObjectURL(imageURL)
+  },
 }

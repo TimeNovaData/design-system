@@ -233,7 +233,7 @@
   </symbol>
 
 
-  <symbol id="icon_donwload" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="icon_download" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M12.9646 9.25885L10 12.2234L7.03546 9.25885" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M10 3.33054V12.2234" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
     <path d="M16.6695 13.7048C16.6695 15.3421 15.3422 16.6693 13.7049 16.6693H6.29513C4.65785 16.6693 3.33057 15.3421 3.33057 13.7048" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
