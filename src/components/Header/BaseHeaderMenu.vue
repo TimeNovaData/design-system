@@ -37,8 +37,7 @@
 </template>
 
 <script setup>
-import { storeToRefs } from 'pinia'
-import { useDarkMode } from 'src/stores/darkMode'
+import useDarkMode from 'src/composables/useDarkMode'
 import { useAuthStore } from 'src/stores/auth.store'
 import OInput from 'src/components/Input/OInput.vue'
 import { useRouter } from 'vue-router'
@@ -49,7 +48,7 @@ const user = inject('user')
 const auth = useAuthStore()
 const dark = useDarkMode()
 
-const { darkMode } = storeToRefs(dark)
+const darkMode = inject('darkMode')
 const router = useRouter()
 async function logout() {
   auth.logout()

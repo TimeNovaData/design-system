@@ -319,14 +319,10 @@ import { useRouter } from 'vue-router'
 import OCheck from 'src/components/Checkbox/OCheck.vue'
 import gsap from 'gsap/dist/gsap'
 import imageLogin from 'src/assets/image/bg-login.jpg'
-import { storeToRefs } from 'pinia'
-import { useDarkMode } from 'src/stores/darkMode'
 import { useUserStore } from 'src/stores/usuarios/user.store'
 
 const { getUser } = useUserStore()
 
-const dark = useDarkMode()
-// const { darkMode } = storeToRefs(dark)
 const form = ref(null)
 const type = ref('password')
 const login = ref(null)

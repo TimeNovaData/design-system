@@ -1,8 +1,7 @@
-import { defineStore } from 'pinia'
 import { onMounted, watch, ref } from 'vue'
 import { LocalStorage, Dark } from 'quasar'
 
-export const useDarkMode = defineStore('darkMode', () => {
+export default function useDarkMode() {
   const darkMode = ref(false)
 
   onMounted(() => {
@@ -20,4 +19,4 @@ export const useDarkMode = defineStore('darkMode', () => {
   })
 
   return { darkMode }
-})
+}

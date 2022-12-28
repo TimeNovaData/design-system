@@ -22,7 +22,7 @@ import 'src/css/vendor/apexCharts.sass'
 import { Notify } from 'quasar'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from './stores/auth.store'
-
+import useDarkMode from 'src/composables/useDarkMode'
 Notify.registerType('error', {
   icon: 'warning',
   progress: true,
@@ -37,6 +37,7 @@ export default defineComponent({ name: 'App' })
 import { useUserStore } from 'src/stores/usuarios/user.store'
 const { user, userFoto } = storeToRefs(useUserStore())
 const { getUser } = useUserStore()
+const { darkMode } = useDarkMode()
 
 const { user: userStore } = storeToRefs(useAuthStore())
 
@@ -55,6 +56,7 @@ onMounted(() => {
 
 provide('user', user)
 provide('userFoto', userFoto)
+provide('darkMode', darkMode)
 </script>
 
 <style lang="sass">
