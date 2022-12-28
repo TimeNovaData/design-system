@@ -1,8 +1,19 @@
 <template>
   <q-card class="p-16 flex flex-col bg-neutral-20 dark:bg-d-neutral-10 flex-1">
-    <div class="flex flex-col gap-8 flex-1">
-      <OChatMessage v-for="data in messages" :key="data.id" :data="data" />
+    <div v-if="isLoading" class="flex-1 grid place-content-center">
+      Carregando...
     </div>
+
+    <q-scroll-area v-else>
+      <div class="flex flex-col gap-8 flex-1 pr-10">
+        <OChatMessage
+          v-for="data in comments"
+          :key="data.id"
+          :data="data"
+          :userId="userId"
+        />
+      </div>
+    </q-scroll-area>
 
     <footer class="flex gap-8 pt-16">
       <OInput
@@ -33,38 +44,18 @@ import OChatMessage from 'src/components/Chat/OChatMessage.vue'
 
 const login = ref('')
 
-const messages = [
-  {
-    id: 1,
-    user: 'Andrei',
-    userImg: 'https://cdn.quasar.dev/img/avatar4.jpg',
-    text: 'Cara, como faz pra ser ruim nisso?',
-    sent: true,
-    date: '14h 3m',
-    tag: 'Dúvida',
-  },
-  {
-    id: 2,
-    user: 'Bernardo',
-    userImg: 'https://cdn.quasar.dev/img/avatar1.jpg',
-    text: 'Sei lá bro, Oss.',
-    sent: false,
-    date: '15h 6m',
-    tag: 'Revisão',
-  },
-  {
-    id: 3,
-    user: 'Andrei',
-    userImg: 'https://cdn.quasar.dev/img/avatar4.jpg',
-    text: 'Então perfeito.',
-    sent: true,
-    date: '16h 2m',
-    tag: 'Update',
-  },
-]
+const props = defineProps({
+  comments: Array,
+  userId: Number,
+  isLoading: Boolean,
+  sendComment: Function,
+})
+
+console.log(props.comments)
 
 function submitMessage() {
-  console.warn(login.value)
+  props.sendComment(login.value)
+  console.log('aqui foi')
 }
 </script>
 

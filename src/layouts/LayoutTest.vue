@@ -24,7 +24,7 @@ const { getAnexos } = useAnexoStore()
 const { tasks: task } = storeToRefs(useTaskStore())
 const { anexos } = storeToRefs(useAnexoStore())
 
-const taskId = '166'
+const taskId = '167'
 
 getTasks(`${taskId}/`)
 getAnexos(`?task__id=${taskId}`)

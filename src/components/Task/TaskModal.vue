@@ -48,7 +48,7 @@
                 <OCounter
                   class="!w-20 !h-20 bg-neutral-100/10 text-neutral-100 dark:bg-white/10 dark:text-white"
                 >
-                  0
+                  1
                 </OCounter>
               </template>
             </q-tab>
@@ -66,7 +66,7 @@
                 <OCounter
                   class="!w-20 !h-20 bg-neutral-100/10 text-neutral-100 dark:bg-white/10 dark:text-white"
                 >
-                  3
+                  {{ comments.length }}
                 </OCounter>
               </template>
             </q-tab>
@@ -77,7 +77,13 @@
             :description="data.observacoes"
           />
 
-          <OChatBox v-else />
+          <OChatBox
+            v-else
+            :comments="comments"
+            :userId="logUser.id"
+            :sendComment="sendComment"
+            :isLoading="isLoading"
+          />
         </div>
       </section>
 
@@ -102,6 +108,7 @@ import AttachmentCard from './AttachmentCard.vue'
 import DetailCard from './DetailCard.vue'
 import DescriptionCard from './DescriptionCard.vue'
 import OChatBox from 'src/components/Chat/OChatBox.vue'
+import useComments from 'src/composables/useComments'
 
 const dialogState = ref(false)
 const { dialogRef } = useDialogPluginComponent()
@@ -118,6 +125,14 @@ const props = defineProps({
 const tabs = ref('desc')
 
 defineExpose({ dialogRef })
+
+const { isLoading, logUser, comments, getComments, sendComment } =
+  useComments(370)
+
+getComments()
+console.log(logUser)
+
+// console.log(comments)
 </script>
 
 <style lang="sass" scoped>
@@ -126,6 +141,10 @@ defineExpose({ dialogRef })
 .body--dark
   .task-modal
     background: rgb(var(--d-neutral-20))
+
+    .q-tab--active
+      color: rgb(var(--white))
+      background: rgb(var(--d-neutral-10))
 
 .task-modal
   height: auto

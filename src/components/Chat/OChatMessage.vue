@@ -1,36 +1,36 @@
 <template>
   <div>
     <q-chat-message
-      :avatar="data.userImg"
-      :text="[data.text]"
-      :sent="data.sent"
+      :avatar="userImg"
+      :text="[data.comentario]"
+      :sent="sender"
     ></q-chat-message>
 
     <div
       class="flex items-center gap-6 text-paragraph-3 mt-4"
       :class="{
-        'justify-end mr-[2.75rem]': data.sent,
-        'ml-[2.75rem]': !data.sent,
+        'justify-end mr-[2.75rem]': sender,
+        'ml-[2.75rem]': !sender,
       }"
     >
-      <span>{{ data.user }}</span>
+      <span>{{ data.usuario_criacao }}</span>
       <span class="text-neutral-100/40 dark:text-white/10">•</span>
-      <span class="text-neutral-60 dark:text-white/40">{{ data.date }}</span>
-      <span class="text-neutral-100/40 dark:text-white/10">•</span>
-
-      <OBadge rounded size="sm" class="h-20 font-semibold dark:bg-white/10">
-        <template v-slot:content>{{ data.tag }}</template>
-      </OBadge>
+      <span class="text-neutral-60 dark:text-white/40">{{ date }}</span>
     </div>
   </div>
 </template>
 
 <script setup>
-import OBadge from 'src/components/Badge/OBadge.vue'
+import GLOBAL from 'src/utils/GLOBAL'
 
 const props = defineProps({
   data: Object,
+  userId: Number,
 })
+
+const date = GLOBAL.FData(props.data.data_criacao)
+const sender = props.data.usuario_criacao === props.userId
+const userImg = 'https://cdn.quasar.dev/img/avatar4.jpg'
 </script>
 
 <style lang="sass"></style>
