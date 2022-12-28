@@ -57,24 +57,22 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { inject, ref, watch } from 'vue'
 import { useDialogPluginComponent } from 'quasar'
 import { storeToRefs } from 'pinia'
-import { useVisaoExpandida } from 'src/stores/visaoExpandida'
 import { useBlurMode } from 'src/stores/blurMode'
-import { useKanbanBG } from 'src/stores/kanbanBG'
+import useKanbanBG from 'src/composables/useKanbanBG'
 import OInput from 'src/components/Input/OInput.vue'
 
 const blur = useBlurMode()
 const bg = useKanbanBG()
-const { kanbanBG } = storeToRefs(bg)
+const kanbanBG = inject('kanbanBG')
 const { blurMode } = storeToRefs(blur)
 
 const dialogState = ref(false)
 const props = defineProps({})
 
-const visao = useVisaoExpandida()
-const { visaoExpandida } = storeToRefs(visao)
+const visaoExpandida = inject('visaoExpandida')
 
 defineEmits([...useDialogPluginComponent.emits])
 
@@ -85,7 +83,6 @@ watch(dialogState, () => {
 })
 
 defineExpose({ dialogRef })
-
 </script>
 
 <style lang="sass">

@@ -1,9 +1,8 @@
-import { defineStore } from 'pinia'
 import { onMounted, watch, ref } from 'vue'
 import { LocalStorage } from 'quasar'
 import img from 'src/assets/image/kanban-bg.jpg'
 
-export const useKanbanBG = defineStore('kanbanBg', () => {
+export default function useKanbanBG() {
   const kanbanBG = ref(img)
 
   onMounted(() => {
@@ -19,4 +18,4 @@ export const useKanbanBG = defineStore('kanbanBg', () => {
   })
 
   return { kanbanBG }
-})
+}

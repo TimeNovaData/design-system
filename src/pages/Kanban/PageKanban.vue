@@ -78,8 +78,8 @@
 <script setup>
 import { computed, onMounted, provide, ref, watch, toRaw, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useKanbanBG } from 'src/stores/kanbanBG'
-import { useVisaoExpandida } from 'src/stores/visaoExpandida'
+import useKanbanBG from 'src/composables/useKanbanBG'
+import useKanbanVisaoExpandida from 'src/composables/useKanbanVisaoExpandida'
 import GLOBAL from 'src/utils/GLOBAL'
 import KanbanCol from 'src/components/Kanban/KanbanCol.vue'
 import KanbanCard from 'src/components/Kanban/KanbanCard.vue'
@@ -100,11 +100,12 @@ import KanbanHeader from 'src/components/Kanban/KanbanHeader.vue'
 import KanbanModalRight from 'src/components/Kanban/KanbanModalRight.vue'
 import PageKanbanList from './PageKanbanList.vue'
 
-const { /*  generateRange, modelo1, */ setHeightInCol } = GLOBAL
-const { kanbanBG } = storeToRefs(useKanbanBG())
-const { visaoExpandida } = storeToRefs(useVisaoExpandida())
+const { setHeightInCol } = GLOBAL
+const { kanbanBG } = useKanbanBG()
+const { visaoExpandida } = useKanbanVisaoExpandida()
 const { getUsuariosFoto } = useUsuarioStore()
 const { usuariosFoto } = storeToRefs(useUsuarioStore())
+
 const tabs = ref('board')
 const modal = ref(null)
 const modalRight = ref(null)
@@ -258,6 +259,8 @@ provide('projetos', projetos)
 provide('subProjetos', subProjetos)
 provide('tabs', tabs)
 provide('colunasWithCards', colunasWithCards)
+provide('visaoExpandida', visaoExpandida)
+provide('kanbanBG', kanbanBG)
 </script>
 
 <style lang="sass">
