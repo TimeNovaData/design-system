@@ -154,18 +154,13 @@ async function handleChangeSelect() {
     selectSubprojeto.value.componentRef.focus()
     selectSubprojeto.value.componentRef.showPopup()
   } else {
-    input.value.componentRef.focus()
+    setTimeout(() => input.value.componentRef.focus(), 100)
   }
 }
 function handleFocusOut() {
   if (chamadoValid.value) {
     newCardData.value.fase = props.colData.id
     emit('create', newCardData.value)
-    Notify.create({
-      message: `Chamado Criado com sucesso`,
-      position: 'top-right',
-      timeout: 1000,
-    })
   } else {
     emit('invalid')
     newCardData.value = { titulo: '', projeto: '', id: null }
