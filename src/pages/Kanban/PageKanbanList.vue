@@ -59,14 +59,14 @@
                 type="projeto"
                 :cor="props.row.projeto.cor"
               />
-              {{ props.row.subprojeto }}
-              <!--   <TagBase
-                v-if="props.row.projeto?.tem_subprojetos"
-                :tag="props.row.subprojeto"
-                :nome="props.row.subprojeto.nome"
+
+              <TagBase
+                v-if="props.row.projeto.tem_subprojetos"
+                :tag="props.row.sub_projeto"
+                :nome="props.row.sub_projeto.nome"
                 type="projeto"
-                :cor="props.row.subprojeto.cor"
-              /> -->
+                :cor="props.row.sub_projeto.cor"
+              />
             </div>
           </q-td>
 
