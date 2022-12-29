@@ -66,8 +66,8 @@
     </div>
   </section>
 
-  <section v-else>
-    <PageKanbanList></PageKanbanList>
+  <section v-else class="h-[inherit] pb-32">
+    <PageKanbanList @openModal="handleCardClick"></PageKanbanList>
   </section>
 
   <KanbanModal ref="modal" @changed="commitAlt(colunasWithCards)"></KanbanModal>
@@ -76,29 +76,30 @@
 </template>
 
 <script setup>
-import { computed, onMounted, provide, ref, watch, toRaw, nextTick } from 'vue'
+import { computed, nextTick, onMounted, provide, ref, toRaw, watch } from 'vue'
 import { storeToRefs } from 'pinia'
+import KanbanCard from 'src/components/Kanban/KanbanCard.vue'
+import KanbanCol from 'src/components/Kanban/KanbanCol.vue'
+import KanbanModal from 'src/components/Kanban/KanbanModal.vue'
+import useKanban from 'src/composables/UseKanban'
 import useKanbanBG from 'src/composables/useKanbanBG'
 import useKanbanVisaoExpandida from 'src/composables/useKanbanVisaoExpandida'
 import GLOBAL from 'src/utils/GLOBAL'
-import KanbanCol from 'src/components/Kanban/KanbanCol.vue'
-import KanbanCard from 'src/components/Kanban/KanbanCard.vue'
-import KanbanModal from 'src/components/Kanban/KanbanModal.vue'
-import useKanban from 'src/composables/UseKanban'
 import draggable from 'vuedraggable'
 
 import { useChamadoStore } from 'src/stores/chamados/chamados.store'
-import { useTagStore } from 'src/stores/tags/tags.store'
 import { useProjetoStore } from 'src/stores/projetos/projetos.store'
+import { useTagStore } from 'src/stores/tags/tags.store'
 import { useUsuarioStore } from 'src/stores/usuarios/usuarios.store'
 import { deepUnref } from 'vue-deepunref'
 
 import emitter from 'src/boot/emitter'
-import KanbanNewCard from 'src/components/Kanban/KanbanNewCard.vue'
 import KanbanFilters from 'src/components/Kanban/KanbanFilters.vue'
 import KanbanHeader from 'src/components/Kanban/KanbanHeader.vue'
 import KanbanModalRight from 'src/components/Kanban/KanbanModalRight.vue'
+import KanbanNewCard from 'src/components/Kanban/KanbanNewCard.vue'
 import PageKanbanList from './PageKanbanList.vue'
+import { useRoute, useRouter } from 'vue-router'
 
 const { setHeightInCol } = GLOBAL
 const { kanbanBG } = useKanbanBG()
@@ -106,13 +107,16 @@ const { visaoExpandida } = useKanbanVisaoExpandida()
 const { getUsuariosFoto } = useUsuarioStore()
 const { usuariosFoto } = storeToRefs(useUsuarioStore())
 
-const tabs = ref('board')
+const router = useRouter()
+const route = useRoute()
+const tabs = ref(route.meta.tab)
 const modal = ref(null)
 const modalRight = ref(null)
 const chamadoAtivo = ref(null)
 
 watch(tabs, () => {
   tabs.value === 'board' && setTimeout(() => setHeightInCol(), 200)
+  router.push(tabs.value)
 })
 
 const novoCard = ref({ id: null })
@@ -120,13 +124,16 @@ const novoCard = ref({ id: null })
 const {
   colunasWithCards,
   cardAlterado,
+  drag,
+  chamados,
+  logAlt,
   commitAlt,
   returnCardPerID,
   startAndEndDrag,
   updateDados,
-  drag,
   applyFilters,
   atualizarOrdem,
+  getLogAlt,
 } = useKanban()
 
 // Store to refs
@@ -166,10 +173,12 @@ async function clickNewCard(colData) {
     setTimeout(() => setHeightInCol(), 50)
   }
 }
+
 function closeNewCard() {
   novoCard.value.id = null
   setTimeout(() => setHeightInCol(), 180)
 }
+
 async function handleCreateChamado(v) {
   novoCard.value.id = null
   const newCard = await createChamado(v)
@@ -187,7 +196,6 @@ const oldValue = ref([])
 
 async function handleApplyFilters(filters) {
   // salva o estado se nao tiver
-
   if (!oldValue.value?.length) {
     colunasWithCards.value.map((i) => oldValue.value.push(toRaw(i)))
   }
@@ -205,6 +213,7 @@ async function handleApplyFilters(filters) {
   const IDProjeto = filters.projeto?.model?.id
   const IDUsuario = filters.usuario?.model?.id
   const search = filters.search
+  const IDcol = filters.coluna
 
   const newValue = deepUnref(oldValue.value).map((item) => {
     if (IDProjeto)
@@ -219,6 +228,7 @@ async function handleApplyFilters(filters) {
           card.titulo.toLowerCase().includes(search.toLowerCase()) ||
           `${card.id}`.includes(search.toLowerCase())
       )
+    if (IDcol) item.cards = item.cards.filter((card) => card.fase.id === IDcol)
     return item
   })
 
@@ -233,14 +243,14 @@ emitter.on('searchKanban', (value) => {
 })
 
 onMounted(() => {
-  // setHeightInCol()
-  // document
-  //   .querySelector('.kanban-col--wrapper')
-  //   .dispatchEvent(new Event('mousedown'))
-  // getProjetos()
-  // getSubProjetos()
-  // getUsuariosFoto()
-  // getTags()
+  setHeightInCol()
+  document
+    .querySelector('.kanban-col--wrapper')
+    ?.dispatchEvent(new Event('mousedown'))
+  getProjetos()
+  getSubProjetos()
+  getUsuariosFoto()
+  getTags()
 })
 
 emitter.on('reloadDataKanban', async () => {
@@ -261,6 +271,9 @@ provide('tabs', tabs)
 provide('colunasWithCards', colunasWithCards)
 provide('visaoExpandida', visaoExpandida)
 provide('kanbanBG', kanbanBG)
+provide('chamados', chamados)
+provide('logAlt', logAlt)
+provide('getLogAlt', getLogAlt)
 </script>
 
 <style lang="sass">

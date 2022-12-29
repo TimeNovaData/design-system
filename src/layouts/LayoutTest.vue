@@ -23,15 +23,15 @@ import AddTaskModal from 'src/components/AddTask/AddTaskModal.vue'
 const modalTask = ref(null)
 const modalAddTask = ref(null)
 
-const { getTasks } = useTaskStore()
+const { getTask } = useTaskStore()
 const { getAnexos } = useAnexoStore()
 
-const { tasks: task } = storeToRefs(useTaskStore())
+const { task } = storeToRefs(useTaskStore())
 const { anexos } = storeToRefs(useAnexoStore())
 
 const taskId = '167'
 
-getTasks(`${taskId}/`)
+getTask(`${taskId}/`)
 getAnexos(`?task__id=${taskId}`)
 
 function openTaskModal() {

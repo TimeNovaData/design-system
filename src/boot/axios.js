@@ -38,6 +38,7 @@ const api = axios.create({
     colunasubprojeto: 'colunasubprojeto/',
     atualizar_fase_chamado: 'url_atualizar_fase_chamado/',
     atualizar_ordem_chamado: 'chamado/atualizar_ordem_chamado/',
+    logAlteracoesChamado: 'logalteracoeschamado/',
   },
 })
 

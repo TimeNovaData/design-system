@@ -132,6 +132,17 @@ export default {
     }
   },
 
+  FDataAndTime(value) {
+    if (date.isValid(value)) {
+      const dataFormatted = value.length > 10 ? value : value.replace('-', '/')
+      const data = date.formatDate(dataFormatted, 'DD MMMM')
+      const time = date.formatDate(dataFormatted, 'HH[h] mm[m]')
+      return `${data} às ${time}`
+    } else {
+      return '-'
+    }
+  },
+
   FDateBRtoEU(value) {
     if (value) {
       const dia = value.slice(0, 2)

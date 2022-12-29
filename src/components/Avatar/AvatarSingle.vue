@@ -7,11 +7,20 @@
   >
     <q-img
       :no-spinner="true"
-      :src="href ? href : GLOBAL.imgSrc(item.foto)"
+      :src="href ? href : item.foto"
       class="w-full h-full m-auto absolute inset-0"
       :class="{ '!relative': estatic }"
       :no-transition="true"
     />
+    <q-tooltip
+      v-if="nome"
+      v-bind="{
+        anchor: 'top middle',
+        self: 'bottom middle',
+        offset: [10, 10],
+      }"
+      >{{ nome }}</q-tooltip
+    >
     <slot></slot>
   </q-avatar>
 </template>
@@ -22,6 +31,7 @@ defineProps({
   item: Object,
   index: Number,
   href: String,
+  nome: String,
   estatic: Boolean,
   side: {
     type: String,

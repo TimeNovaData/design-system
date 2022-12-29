@@ -19,11 +19,11 @@
 
             <KanbanItemEditable
               class="!text-title-2 !p-0 !bg-transparent !pl-4 relative -l-4 left !pr-32"
-              popup-class="!min-w-[18.75rem]"
+              popup-class="!min-w-[300px]"
               :editable="true"
               :value="data.titulo"
               @update="(v) => updateValue('titulo')(v)"
-              popupClass="w-[500px]"
+              popupClass="w-[31.25rem]"
               placeholder="Titulo"
             ></KanbanItemEditable>
           </div>
@@ -32,7 +32,7 @@
             <!-- SUBPROJETO -->
             <div
               v-if="data.projeto.tem_subprojetos"
-              class="ml-[3.75rem] w-max no-label relative editavel group inline-flex items-center pr-24 mr-4 px-4"
+              class="ml-[60px] w-max no-label relative editavel group inline-flex items-center pr-24 mr-4 px-4"
             >
               <div class="triangulo-editavel"></div>
               <div
@@ -84,7 +84,7 @@
             <!--   PROJETO -->
             <div
               class="w-max no-label relative editavel group inline-flex items-center pr-40"
-              :class="`${!data.projeto.tem_subprojetos && 'ml-[3.75rem]'}`"
+              :class="`${!data.projeto.tem_subprojetos && 'ml-[60px]'}`"
             >
               <div class="" v-if="data.projeto.nome">
                 <OBadge
@@ -208,7 +208,7 @@
                         >Adicionar/Remover</q-tooltip
                       >
                       <q-icon
-                        size="20px"
+                        size="1.25rem"
                         name="svguse:/icons.svg#icon_edit"
                       ></q-icon>
                       <KanbanItemEditableSelect
@@ -251,7 +251,7 @@
                         text="Solicitante"
                         icon="svguse:/icons.svg#icon_user"
                       />
-                      <div class="mt-4 flex relative h-32 w-[100px]">
+                      <div class="mt-4 flex relative h-32 w-[6.25rem]">
                         <AvatarSingle
                           :index="0"
                           :item="data.user_criacao"
@@ -273,7 +273,7 @@
                     <div
                       class="mt-4 flex items-center justify-between flex-nowrap"
                     >
-                      <div class="flex relative h-32 w-[100px]">
+                      <div class="flex relative h-32 w-[6.25rem]">
                         <div
                           v-for="(item, index) in data.responsaveis"
                           :key="item.id"
@@ -298,7 +298,7 @@
                           >Adicionar/Remover</q-tooltip
                         >
                         <q-icon
-                          size="20px"
+                          size="1.25rem"
                           name="svguse:/icons.svg#icon_edit"
                         ></q-icon>
                         <KanbanItemEditableSelect
@@ -492,7 +492,7 @@
                 </div>
               </section>
 
-              <div class="opacity-20">
+              <div>
                 <span class="kanban-modal-separator"></span>
 
                 <section class="p-24 py-8">
@@ -502,13 +502,67 @@
                     >
                       <q-icon
                         class="opacity-40"
-                        size="20px"
+                        size="1.25rem"
                         name="svguse:/icons.svg#icon_historic"
                       ></q-icon>
                       <p class="">Histórico de atividade</p>
                     </div>
 
-                    <OButton size="sm" secondary>Mostrar Detalhes</OButton>
+                    <OButton
+                      size="sm"
+                      secondary
+                      v-if="!historicoAtividade"
+                      @click="handleHistorico"
+                      icon="expand_more"
+                      >Mostrar Detalhes</OButton
+                    >
+                    <OButton
+                      @click="handleHiddeAtividade"
+                      size="sm"
+                      icon="expand_less"
+                      secondary
+                      v-else
+                      >Ocultar</OButton
+                    >
+
+                    <div
+                      class="flex flex-col gap-16 w-full shrink-0 mt-16"
+                      v-if="historicoAtividade && logAlt.length"
+                    >
+                      <div v-for="item in logAlt" :key="item.id">
+                        <div class="flex items-start gap-4">
+                          <OAvatar
+                            size="2rem"
+                            :foto="item.dados_usuario.foto"
+                          ></OAvatar>
+
+                          <div class="flex flex-col">
+                            <div class="flex gap-4 text-paragraph-2">
+                              <p class="font-medium capitalize">
+                                {{ item.dados_usuario.nome }}
+                              </p>
+                              <div class="opacity-70">
+                                {{ item.frase }}
+                              </div>
+                            </div>
+
+                            <p class="opacity-70 text-paragraph-3">
+                              {{ FDataAndTime(item.data) }}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div
+                      v-else-if="
+                        historicoAtividade && !logAlt.length && !logLoading
+                      "
+                      class="w-full mt-16"
+                    >
+                      <p class="text-paragraph-3 text-center opacity-70">
+                        Sem Alterações para exibir.
+                      </p>
+                    </div>
                   </div>
                 </section>
                 <span class="kanban-modal-separator"></span>
@@ -531,7 +585,7 @@
                   >
                     <template #content>
                       <q-icon
-                        size="1.25rem"
+                        size="20px"
                         name="svguse:/icons.svg#icon_andamento"
                       ></q-icon>
                       <p class="font-normal">Tarefas em andamento</p>
@@ -549,7 +603,7 @@
                   >
                     <template #content>
                       <q-icon
-                        size="1.25rem"
+                        size="20px"
                         name="svguse:/icons.svg#icon_concluido"
                       ></q-icon>
                       <p class="font-normal">Tarefas Concluidas</p>
@@ -559,8 +613,8 @@
                 </div>
               </div>
               <Transition
-                :duration="200"
-                mode="out-in"
+                :duration="100"
+                mode="in-out"
                 enter-active-class="animated fadeIn"
                 leave-active-class="animated fadeOut"
               >
@@ -574,9 +628,16 @@
                       v-if="tasksChamadoPendente.length"
                       class="task-wrapper dark:border-transparent border rounded-generic mx-24 border-neutral-30"
                     >
-                      <div v-for="task in tasksChamadoPendente" :key="task.id">
-                        <KanbanTaskItem :task="task"></KanbanTaskItem>
-                      </div>
+                      <q-virtual-scroll
+                        style="max-height: auto"
+                        :items="tasksChamadoPendente"
+                        v-slot="{ item }"
+                      >
+                        <KanbanTaskItem
+                          :key="item.id"
+                          :task="item"
+                        ></KanbanTaskItem>
+                      </q-virtual-scroll>
                     </div>
                     <div
                       v-else
@@ -639,13 +700,14 @@ import OButton from 'src/components/Button/OButton.vue'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import GLOBAL from 'src/utils/GLOBAL'
 import { inject, ref, unref, watch, computed } from 'vue'
+import OAvatar from 'src/components/Avatar/OAvatar.vue'
 import KanbanItemEditable from './KanbanItemEditable.vue'
 import KanbanItemEditableEditor from './KanbanItemEditableEditor.vue'
 import KanbanItemEditableSelect from './KanbanItemEditableSelect.vue'
 import KanbanSectionHeader from './KanbanSectionHeader.vue'
 import KanbanTaskItem from './KanbanTaskItem.vue'
 
-const { returnRGB, FData, FTime } = GLOBAL
+const { returnRGB, FData, FTime, FDataAndTime } = GLOBAL
 
 const data = inject('chamado')
 const tagsList = inject('tagsList')
@@ -654,6 +716,11 @@ const user = inject('user')
 
 const projetos = inject('projetos')
 const subProjetos = inject('subProjetos')
+
+const logAlt = inject('logAlt')
+const getLogAlt = inject('getLogAlt')
+const historicoAtividade = ref(false)
+const logLoading = ref(false)
 
 const subProjetosProjetoAtivo = computed(() =>
   subProjetos.value.filter((p) => p.caso_pai === data.value.projeto.id)
@@ -708,10 +775,27 @@ const { dialogRef, onDialogHide, onDialogOK, onDialogCancel, onDialogShow } =
 
 const beforeshow = (e) =>
   setTimeout(() => document.body.classList.add('kanban-modal-show'), 300)
-const beforehide = (e) => document.body.classList.remove('kanban-modal-show')
+
+const beforehide = (e) => {
+  document.body.classList.remove('kanban-modal-show')
+  tasksChamado.value = []
+  historicoAtividade.value = false
+}
 
 function onShow() {
   getTasks(`&chamado__id=${data.value.id}`)
+}
+
+async function handleHistorico() {
+  logLoading.value = true
+  historicoAtividade.value = true
+  await getLogAlt(data.value.id)
+  logLoading.value = false
+}
+
+function handleHiddeAtividade() {
+  historicoAtividade.value = false
+  logAlt.value = []
 }
 
 const showTabs = ref(false)
@@ -749,35 +833,35 @@ defineExpose({ dialogRef })
     border-color: rgba(var(--white),0.05)
 
 .q-dialog__backdrop
-  backdrop-filter: blur(.3125rem)
+  backdrop-filter: blur(5px)
 </style>
 
 <style lang="sass" scoped>
 @import "src/css/quasar/variables.sass"
 .kanban-modal
   height: 95vh
-  max-height: 1000px
-  width: 55rem
+  max-height: 62.5rem
+  width: 880px
   background: var(--kanban-modal-bg)
-  border-radius: .375rem
+  border-radius: 6px
   overflow: hidden
   display: flex
   flex-direction: column
   .descricao-content
     :deep(img)
-      max-height: 220px
-      margin: 8px 0
+      max-height: 13.75rem
+      margin: .5rem 0
       border-radius: $generic-border-radius
       object-fit: contain
     :deep(ul)
         li
           list-style: circle !important
-          margin-left: 12px !important
+          margin-left: .75rem !important
 
     :deep(ol)
       li
         list-style: auto
-        margin-left: 12px
+        margin-left: .75rem
     :deep(a[href])
       color: rgb(var(--neutral-100))
       cursor: pointer !important
@@ -787,10 +871,10 @@ defineExpose({ dialogRef })
       border-color: rgba(var(--neutral-100),0.1)
 
 .kanban-modal-separator
-  height: .0625rem
+  height: 1px
   width: 100%
   background: rgba(var(--neutral-100), 0.1)
-  margin: 16px 0
+  margin: 1rem 0
   border: 0
   display: block
   .body--dark &
@@ -799,16 +883,16 @@ defineExpose({ dialogRef })
 
 .grid-info
    display: grid
-   grid-template-columns: minmax(35rem,1fr) minmax( 16rem,1fr)
-   column-gap: 16px
+   grid-template-columns: minmax(560px,1fr) minmax( 256px,1fr)
+   column-gap: 1rem
 
 
 .kanban-modal
   .editavel
     cursor: pointer
-    border: .0625rem solid transparent
+    border: 1px solid transparent
     transition: .3s
-    border-radius: .1875rem
+    border-radius: 3px
     &:hover
       border-color: rgba(var(--neutral-100), 0.3)
       background: rgba(var(--neutral-30),1)

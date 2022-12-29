@@ -32,7 +32,7 @@
             <img
               v-if="userFoto"
               class="absolute w-full h-full left-0 right-0 object-cover"
-              :src="GLOBAL.imgSrc(userFoto)"
+              :src="userFoto"
               alt=""
             />
             <div

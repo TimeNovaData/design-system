@@ -8,31 +8,49 @@ const { URLS } = api.defaults
 export const useTaskStore = defineStore('taskstore', () => {
   const isLoading = ref(false)
   const tasks = ref([])
+  const task = ref({})
   const tasksChamado = ref([])
 
   const tasksChamadoConcluido = computed(() =>
     tasksChamado.value.filter((t) => t.status === 'Concluído')
   )
+
   const tasksChamadoPendente = computed(() =>
     tasksChamado.value.filter(
       (t) => t.status === 'Em andamento' || t.status === 'Aguardando'
     )
   )
 
-  async function getTasks(id, filtro = '') {
+  async function getTasks(filtro = '') {
     isLoading.value = true
 
-    const noLoading = filtro ? '&no_loading' : '?no_loading'
-
     const { data, error } = await useAxios(
-      URLS.task + id + filtro + noLoading,
+      URLS.task + '?x=' + filtro + '&no_loading',
       { method: 'GET' },
       api
     )
     try {
-      // if (filtro) setTasksChamado(data.value.results)
-      setTasks(data.value)
+      setTasksChamado(data.value.results)
+      setTasks(data.value.results)
 
+      return data.value.results
+    } catch (e) {
+      return error
+    } finally {
+      isLoading.value = false
+    }
+  }
+
+  async function getTask(id) {
+    isLoading.value = true
+
+    const { data, error } = await useAxios(
+      URLS.task + id + '?x=' + '&no_loading',
+      { method: 'GET' },
+      api
+    )
+    try {
+      setTask(data.value)
       return data.value
     } catch (e) {
       return error
@@ -47,11 +65,16 @@ export const useTaskStore = defineStore('taskstore', () => {
   function setTasksChamado(value) {
     tasksChamado.value = value
   }
+  function setTask(value) {
+    task.value = value
+  }
 
   return {
-    getTasks,
-    setTasks,
+    task,
     tasks,
+    getTasks,
+    getTask,
+    setTasks,
     tasksChamado,
     tasksChamadoConcluido,
     tasksChamadoPendente,
