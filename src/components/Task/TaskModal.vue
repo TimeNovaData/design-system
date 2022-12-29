@@ -45,11 +45,6 @@
                   name="svguse:/icons.svg#icon_description"
                 ></q-icon>
                 <p class="text-paragraph-1">Descrição</p>
-                <OCounter
-                  class="!w-20 !h-20 bg-neutral-100/10 text-neutral-100 dark:bg-white/10 dark:text-white"
-                >
-                  1
-                </OCounter>
               </template>
             </q-tab>
 
@@ -64,26 +59,26 @@
                 ></q-icon>
                 <p class="text-paragraph-1">Comentários</p>
                 <OCounter
+                  v-if="commentsReverse.length"
                   class="!w-20 !h-20 bg-neutral-100/10 text-neutral-100 dark:bg-white/10 dark:text-white"
                 >
-                  {{ comments.length }}
+                  {{ commentsReverse.length }}
                 </OCounter>
               </template>
             </q-tab>
           </q-tabs>
 
-          <DescriptionCard
-            v-if="tabs == 'desc'"
-            :description="data.observacoes"
-          />
+          <q-tab-panels v-model="tabs" animated swipeable class="flex-1">
+            <DescriptionCard name="desc" :description="data.observacoes" />
 
-          <OChatBox
-            v-else
-            :comments="comments"
-            :userId="logUser.id"
-            :sendComment="sendComment"
-            :isLoading="isLoading"
-          />
+            <OChatBox
+              name="chat"
+              :comments="commentsReverse"
+              :sendComment="sendComment"
+              :getComments="getComments"
+              :isLoading="isLoading"
+            />
+          </q-tab-panels>
         </div>
       </section>
 
@@ -113,26 +108,22 @@ import useComments from 'src/composables/useComments'
 const dialogState = ref(false)
 const { dialogRef } = useDialogPluginComponent()
 
-const closeDialog = () => {
-  dialogState.value = false
-}
-
 const props = defineProps({
   data: Object,
   anexos: Array,
 })
 
 const tabs = ref('desc')
+const closeDialog = () => {
+  dialogState.value = false
+}
 
 defineExpose({ dialogRef })
 
-const { isLoading, logUser, comments, getComments, sendComment } =
+const { isLoading, commentsReverse, getComments, sendComment } =
   useComments(370)
 
 getComments()
-console.log(logUser)
-
-// console.log(comments)
 </script>
 
 <style lang="sass" scoped>

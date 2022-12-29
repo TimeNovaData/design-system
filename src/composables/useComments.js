@@ -1,37 +1,23 @@
 import { api } from 'src/boot/axios'
-import { computed, nextTick, onMounted, ref, unref, watch } from 'vue'
-import axios from 'axios'
+import { computed, ref } from 'vue'
 import { useAxios } from '@vueuse/integrations/useAxios'
+import { useUserStore } from 'src/stores/usuarios/user.store'
+import { storeToRefs } from 'pinia'
 
 const { URLS } = api.defaults
 
 export default function useComments(taskId) {
   const isLoading = ref(false)
   const comments = ref([])
-  const logUser = ref('')
+  const commentsReverse = computed(() => comments.value.reverse())
 
-  async function getUser() {
-    const { data, error } = await useAxios(
-      URLS.usuario + 'usuario_logado',
-      { method: 'GET' },
-      api
-    )
-
-    try {
-      logUser.value = data.value
-
-      return data.value
-    } catch (e) {
-      return error
-    }
-  }
+  const { user } = storeToRefs(useUserStore())
 
   async function getComments() {
     isLoading.value = true
-    await getUser()
 
     const { data, error } = await useAxios(
-      URLS.comentario + `?task=${taskId}`,
+      URLS.comentario + `?task=${taskId}&no_loading`,
       { method: 'GET' },
       api
     )
@@ -48,23 +34,18 @@ export default function useComments(taskId) {
   }
 
   async function sendComment(message) {
-    console.warn({
-      comentario: message.value,
-      task: taskId,
-      usuario_atualizacao: logUser.value.id,
-      usuario_criacao: logUser.value.id,
-    })
+    isLoading.value = true
 
-    // try {
-    //   await api.post(URLS.comentario + `?task=${taskId}`, {
-    //     comentario: 'string',
-    //     task: 0,
-    //     usuario_atualizacao: 0,
-    //     usuario_criacao: 0,
-    //   })
-    // } catch (err) {
-    //   console.log(err)
-    // }
+    try {
+      await api.post(URLS.comentario + `?task=${taskId}`, {
+        comentario: message,
+        task: taskId,
+        usuario_atualizacao: user.value.id,
+        usuario_criacao: user.value.id,
+      })
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   function setComments(value) {
@@ -73,8 +54,8 @@ export default function useComments(taskId) {
 
   return {
     isLoading,
-    logUser,
     comments,
+    commentsReverse,
     getComments,
     sendComment,
   }

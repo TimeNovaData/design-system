@@ -14,18 +14,25 @@
 
       <OAvatar :item="clientAvatar" />
 
-      <div class="grid grid-cols-2 items-center mt-10">
+      <div class="grid grid-cols-2 items-center mt-10 gap-16">
         <OBadge size="sm" square class="bg-primary-pure-dark/40 w-max">
           <template #content>
-            <p class="text-center mx-auto">{{ details.nome_projeto }}</p>
+            <p class="text-center mx-auto one-line">
+              {{ details.nome_projeto }}
+            </p>
           </template>
         </OBadge>
 
-        <!-- v-if="details.sub_projeto" -->
-        <OBadge size="sm" square class="bg-primary-pure-dark/40 w-max">
+        <OBadge
+          v-if="details.sub_projeto"
+          size="sm"
+          square
+          class="bg-primary-pure-dark/40 w-max"
+        >
           <template #content>
-            <!-- <p class="text-center mx-auto">{{ details.sub_projeto }}</p> -->
-            <p class="text-center mx-auto">sub_projeto</p>
+            <p class="text-center mx-auto one-line">
+              {{ details.sub_projeto }}
+            </p>
           </template>
         </OBadge>
       </div>
@@ -33,10 +40,10 @@
 
     <hr />
 
-    <div class="grid grid-cols-2">
+    <div class="grid grid-cols-2 gap-16">
       <div class="flex flex-col py-20">
         <span class="text-caps-3 dark:text-white/40">GRUPO / TIPO</span>
-        <p class="text-paragraph-1">{{ details.nome_tipo_task }}</p>
+        <p class="text-paragraph-1 one-line">{{ details.nome_tipo_task }}</p>
       </div>
 
       <div class="grid grid-cols-2">
@@ -53,7 +60,7 @@
 
     <hr />
 
-    <div class="grid grid-cols-2">
+    <div class="grid grid-cols-2 gap-16">
       <div class="flex flex-col py-20">
         <span class="text-caps-3 dark:text-white/40">
           DATA DE ENTREGA DESEJADA
@@ -84,7 +91,7 @@ const revisedDate = GLOBAL.FData(props.details.entrega_data_desejada)
 
 const clientAvatar = {
   nome: props.details.nome_cliente,
-  foto: '',
+  foto: props.details.logo_cliente,
 }
 </script>
 

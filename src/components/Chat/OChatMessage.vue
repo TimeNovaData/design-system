@@ -1,7 +1,7 @@
 <template>
   <div>
     <q-chat-message
-      :avatar="userImg"
+      :avatar="data.usuario.foto"
       :text="[data.comentario]"
       :sent="sender"
     ></q-chat-message>
@@ -13,24 +13,27 @@
         'ml-[2.75rem]': !sender,
       }"
     >
-      <span>{{ data.usuario_criacao }}</span>
+      <span class="capitalize">{{ data.usuario.nome || 'Sem nome' }}</span>
       <span class="text-neutral-100/40 dark:text-white/10">•</span>
-      <span class="text-neutral-60 dark:text-white/40">{{ date }}</span>
+      <span class="text-neutral-60 dark:text-white/40">{{
+        data.data_amigavel
+      }}</span>
     </div>
   </div>
 </template>
 
 <script setup>
-import GLOBAL from 'src/utils/GLOBAL'
+import { inject } from 'vue'
 
 const props = defineProps({
   data: Object,
-  userId: Number,
 })
 
-const date = GLOBAL.FData(props.data.data_criacao)
-const sender = props.data.usuario_criacao === props.userId
-const userImg = 'https://cdn.quasar.dev/img/avatar4.jpg'
+// Pegando os valores do usuário logado pelo provider
+const user = inject('user')
+
+// Verificando se usuário enviou ou recebeu a mensagem
+const sender = props.data.usuario_criacao === user.value.id
 </script>
 
 <style lang="sass"></style>
