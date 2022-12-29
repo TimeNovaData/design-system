@@ -780,6 +780,7 @@ const beforehide = (e) => {
   document.body.classList.remove('kanban-modal-show')
   tasksChamado.value = []
   historicoAtividade.value = false
+  logAlt.value = []
 }
 
 function onShow() {

@@ -75,7 +75,10 @@
               class="flex gap-4 text-paragraph-2"
               v-if="props.row.quantidade_tasks"
             >
-              <span>{{ props.row.quantidade_tasks_concluidas }}</span> de
+              <span class="text-primary-pure">{{
+                props.row.quantidade_tasks_concluidas
+              }}</span>
+              de
               {{ props.row.quantidade_tasks }}
             </div>
             <div v-else>-</div>
