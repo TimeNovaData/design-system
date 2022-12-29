@@ -11,8 +11,6 @@
 export default { inheritAttrs: false }
 </script>
 <script setup>
-import GLOBAL from 'src/utils/GLOBAL'
-
 defineProps({
   foto: String,
   nome: String,
