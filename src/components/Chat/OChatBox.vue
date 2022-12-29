@@ -54,12 +54,8 @@ const props = defineProps({
   getComments: Function,
 })
 
-function scrollChatToBottom() {
-  const chatContainer = document.querySelector(
-    '.q-chat .q-scrollarea__container'
-  )
-
-  chatContainer?.scrollTo(0, chatContainer.scrollHeight)
+function scrollChatToBottom(container) {
+  container?.scrollTo(0, container.scrollHeight)
 }
 
 async function submitMessage() {
@@ -74,18 +70,24 @@ async function submitMessage() {
 
 let timeout
 
-async function timer() {
+async function updateChat(container) {
   clearTimeout(timeout)
 
-  await props.getComments()
-  scrollChatToBottom()
+  // await props.getComments()
+  const lastMessage = container.querySelector('.o-chat-message:last-child')
+  console.log(lastMessage.clientHeight)
+  // scrollChatToBottom()
 
-  timeout = setTimeout(() => timer(), 30000)
+  timeout = setTimeout(() => updateChat(container), 5000)
 }
 
 onMounted(() => {
-  timer()
-  scrollChatToBottom()
+  const chatContainer = document.querySelector(
+    '.q-chat .q-scrollarea__container'
+  )
+
+  updateChat(chatContainer)
+  scrollChatToBottom(chatContainer)
 })
 </script>
 

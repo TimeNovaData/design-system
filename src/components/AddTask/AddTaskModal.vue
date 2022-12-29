@@ -5,11 +5,11 @@
     ref="dialogRef"
     transition-hide="slide-down"
   >
-    <q-card class="task-modal">
+    <q-card class="add-task-modal">
       <header class="modal-header">
         <div class="pl-16">
-          <span class="text-caps-3 text-neutral-100/50">TASK</span>
-          <h2 class="text-title-4 text-neutral-100">{{ data.nome_chamado }}</h2>
+          <span class="text-caps-3 text-neutral-100/50">ADICIONAR TASK</span>
+          <h2 class="text-title-4 text-neutral-100">Nova Task</h2>
         </div>
 
         <OButton
@@ -28,10 +28,7 @@
       <section
         class="flex-1 p-24 pb-2 grid grid-cols-2 gap-16 md:flex md:flex-col md:overflow-y-auto"
       >
-        <div class="flex flex-col gap-16">
-          <DetailCard :details="data" />
-          <AttachmentCard :anexos="anexos" />
-        </div>
+        <FieldsCard />
 
         <div class="flex flex-col">
           <q-tabs v-model="tabs" active-color="neutral-100">
@@ -58,36 +55,23 @@
                   name="svguse:/icons.svg#icon_chat"
                 ></q-icon>
                 <p class="text-paragraph-1">Comentários</p>
-                <OCounter
-                  v-if="commentsReverse.length"
-                  class="!w-20 !h-20 bg-neutral-100/10 text-neutral-100 dark:bg-white/10 dark:text-white"
-                >
-                  {{ commentsReverse.length }}
-                </OCounter>
               </template>
             </q-tab>
           </q-tabs>
 
           <q-tab-panels v-model="tabs" animated swipeable class="flex-1">
-            <DescriptionCard name="desc" :description="data.observacoes" />
-
-            <OChatBox
-              name="chat"
-              :comments="commentsReverse"
-              :sendComment="sendComment"
-              :getComments="getComments"
-              :isLoading="isLoading"
-            />
+            <DescriptionCard name="desc" description="" />
+            <OChatBox name="chat" comments sendComment getComments isLoading />
           </q-tab-panels>
         </div>
       </section>
 
       <footer class="flex items-center justify-end gap-6 p-24 pt-14">
-        <OButton primary icon="svguse:/icons.svg#icon_edit">
-          Editar Task
-        </OButton>
         <OButton secondary icon="svguse:/icons.svg#icon_close">
           Cancelar
+        </OButton>
+        <OButton primary icon="svguse:/icons.svg#icon_edit">
+          Adicionar Nova Task
         </OButton>
       </footer>
     </q-card>
@@ -97,47 +81,34 @@
 <script setup>
 import { ref } from 'vue'
 import { useDialogPluginComponent } from 'quasar'
-import useComments from 'src/composables/useComments'
 import OButton from 'src/components/Button/OButton.vue'
-import OCounter from 'src/components/Counter/OCounter.vue'
+import DescriptionCard from 'src/components/Task/DescriptionCard.vue'
 import OChatBox from 'src/components/Chat/OChatBox.vue'
-import AttachmentCard from './AttachmentCard.vue'
-import DetailCard from './DetailCard.vue'
-import DescriptionCard from './DescriptionCard.vue'
+import FieldsCard from 'src/components/AddTask/FieldsCard.vue'
 
 const tabs = ref('desc')
 const dialogState = ref(false)
 const { dialogRef } = useDialogPluginComponent()
-
-const props = defineProps({
-  data: Object,
-  anexos: Array,
-})
 
 const closeDialog = () => {
   dialogState.value = false
 }
 
 defineExpose({ dialogRef })
-
-const { isLoading, commentsReverse, getComments, sendComment } =
-  useComments(370)
-
-getComments()
 </script>
 
 <style lang="sass" scoped>
 @import "src/css/cores.sass"
 
 .body--dark
-  .task-modal
+  .add-task-modal
     background: rgb(var(--d-neutral-20))
 
     .q-tab--active
       color: rgb(var(--white))
       background: rgb(var(--d-neutral-10))
 
-.task-modal
+.add-task-modal
   height: auto
   max-height: 95vh
   min-height: clamp(500px,95vh,747px)
