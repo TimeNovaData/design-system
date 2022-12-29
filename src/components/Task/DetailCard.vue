@@ -8,11 +8,11 @@
     <hr />
 
     <div class="flex flex-col py-20">
-      <span class="text-caps-3 dark:text-white/40">
+      <span class="text-caps-3 dark:text-white/40 mb-6">
         CLIENTE - PROJETO / SUBPROJETO
       </span>
 
-      <OAvatar :item="clientAvatar" />
+      <OAvatar :nome="details.nome_cliente" :foto="details.logo_cliente" />
 
       <div class="grid grid-cols-2 items-center mt-10 gap-16">
         <OBadge size="sm" square class="bg-primary-pure-dark/40 w-max">
@@ -69,8 +69,11 @@
       </div>
 
       <div class="flex flex-col py-20">
-        <span class="text-caps-3 dark:text-white/40">RESPONSÁVEL</span>
-        <OAvatar :item="details.responsavel" />
+        <span class="text-caps-3 dark:text-white/40 mb-6">RESPONSÁVEL</span>
+        <OAvatar
+          :nome="details.responsavel.nome"
+          :foto="details.responsavel.foto"
+        />
       </div>
     </div>
   </q-card>
@@ -88,11 +91,6 @@ const props = defineProps({
 // Formatando tempo e data
 const estimatedTime = GLOBAL.FTime(props.details.tempo_estimado)
 const revisedDate = GLOBAL.FData(props.details.entrega_data_desejada)
-
-const clientAvatar = {
-  nome: props.details.nome_cliente,
-  foto: props.details.logo_cliente,
-}
 </script>
 
 <style lang="sass" scoped>
