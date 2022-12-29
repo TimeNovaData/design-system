@@ -55,17 +55,20 @@ const routes = [
             { label: 'Home', name: 'home' },
             { label: 'Kanban', name: 'kanban_board' },
           ],
+          tab: 'board',
         },
       },
+
       {
         name: 'kanban_list',
         path: 'list',
-        component: PageKanbanList,
+        component: PageKanban,
         meta: {
           breadcrumbs: [
             { label: 'Home', name: 'home' },
             { label: 'Kanban', name: 'kanban_board' },
           ],
+          tab: 'list',
         },
       },
     ],

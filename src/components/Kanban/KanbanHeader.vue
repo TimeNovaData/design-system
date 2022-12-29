@@ -17,7 +17,7 @@
           </template>
         </q-tab>
 
-        <q-tab name="lista">
+        <q-tab name="list">
           <template class="inline-flex flex-row items-center gap-4 text-white">
             <q-icon size="1.5rem" name="svguse:/icons.svg#icon_table"></q-icon>
             <p class="text-paragraph-1">Lista</p>

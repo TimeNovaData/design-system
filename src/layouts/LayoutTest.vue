@@ -18,15 +18,15 @@ import BaseHeaderMenu from 'src/components/Header/BaseHeaderMenu.vue'
 
 const modal = ref(null)
 
-const { getTasks } = useTaskStore()
+const { getTask } = useTaskStore()
 const { getAnexos } = useAnexoStore()
 
-const { tasks: task } = storeToRefs(useTaskStore())
+const { task } = storeToRefs(useTaskStore())
 const { anexos } = storeToRefs(useAnexoStore())
 
 const taskId = '166'
 
-getTasks(`${taskId}/`)
+getTask(`${taskId}/`)
 getAnexos(`?task__id=${taskId}`)
 
 function openModal() {

@@ -7,6 +7,7 @@ import { useManualRefHistory } from '@vueuse/core'
 import { useChamadoStore } from 'src/stores/chamados/chamados.store'
 // import { useTagStore } from 'src/stores/tags/state'
 import { useFaseStore } from 'src/stores/fases/fases.store'
+import { storeToRefs } from 'pinia'
 
 const BACKEND_URL = process.env.BACKEND_URL
 const { URLS } = api.defaults
@@ -25,10 +26,11 @@ export default function useKanban() {
   const colunasWithCards = ref([])
   const cardAlterado = ref({ id: null })
   const drag = ref(false)
-  const filtroAplicado = ref(false)
-  const saveValue = ref([])
+  const logAlt = ref([])
+
   // Stores
   const { getChamado } = useChamadoStore()
+  const { chamados } = storeToRefs(useChamadoStore())
   const { getFases } = useFaseStore()
   // const { getTags } = useTagStore()
 
@@ -112,9 +114,6 @@ export default function useKanban() {
     },
     { deep: true, flush: 'post' }
   )
-  watch(colunasWithCards, () => {
-    // debugger
-  })
 
   function historyAlt(history) {
     const timeStamp0 = history.value[0].snapshot
@@ -179,6 +178,24 @@ export default function useKanban() {
     commit()
   }
 
+  async function getLogAlt(id) {
+    try {
+      const { data } = await api.get(
+        `${URLS.logAlteracoesChamado}?chamado__id=${id}`
+      )
+
+      logAlt.value = data
+    } catch (e) {
+      Notify.create({
+        type: 'error',
+        message: `Erro ao puxar o log de alterações`,
+        position: 'top-right',
+        timeout: 2000,
+        html: true,
+      })
+    }
+  }
+
   async function updateDados() {
     const fase = await getFases()
     const chamado = await getChamado()
@@ -239,18 +256,20 @@ export default function useKanban() {
   })
 
   return {
+    chamados,
     colunasWithCards,
     cardAlterado,
+    computedOnlyCols,
+    drag,
+    logAlt,
     commitAlt,
     returnCardPerID,
-    computedOnlyCols,
     getDadosAndDeclare,
     updateDados,
     startAndEndDrag,
-    drag,
     applyFilters,
-    saveValue,
     atualizarOrdem,
+    getLogAlt,
   }
 }
 
