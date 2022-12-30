@@ -61,7 +61,9 @@
               />
 
               <TagBase
-                v-if="props.row.projeto.tem_subprojetos"
+                v-if="
+                  props.row.projeto.tem_subprojetos && props.row.sub_projeto
+                "
                 :tag="props.row.sub_projeto"
                 :nome="props.row.sub_projeto.nome"
                 type="projeto"
