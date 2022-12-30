@@ -40,12 +40,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import OButton from 'src/components/Button/OButton.vue'
 import OInput from 'src/components/Input/OInput.vue'
 import OChatMessage from 'src/components/Chat/OChatMessage.vue'
+import { scroll } from 'quasar'
 
-const message = ref('')
+// const { getScrollHeight, getVerticalScrollPosition, getScrollTarget } = scroll
 
 const props = defineProps({
   comments: Array,
@@ -53,6 +54,9 @@ const props = defineProps({
   sendComment: Function,
   getComments: Function,
 })
+
+const message = ref('')
+let chatContainer
 
 function scrollChatToBottom(container) {
   container?.scrollTo(0, container.scrollHeight)
@@ -65,29 +69,34 @@ async function submitMessage() {
   await props.sendComment(mensagem)
   await props.getComments()
 
-  scrollChatToBottom()
+  scrollChatToBottom(chatContainer)
 }
 
 let timeout
 
-async function updateChat(container) {
+async function updateChatInterval(container) {
   clearTimeout(timeout)
 
-  // await props.getComments()
-  const lastMessage = container.querySelector('.o-chat-message:last-child')
-  console.log(lastMessage.clientHeight)
-  // scrollChatToBottom()
+  const newComments = await props.getComments()
+  // const lastMessage = container.querySelector('.o-chat-message:last-child')
+  // const el = getScrollTarget(container)
+  // console.log(getVerticalScrollPosition(el), 'getVerticalScrollPosition')
+  // console.log(getScrollHeight(el), 'getScrollHeight')
+  // console.log(el.clientHeight, 'clientHeight')
+  newComments?.length && scrollChatToBottom(chatContainer)
 
-  timeout = setTimeout(() => updateChat(container), 5000)
+  timeout = setTimeout(() => updateChatInterval(container), 15000)
 }
 
 onMounted(() => {
-  const chatContainer = document.querySelector(
-    '.q-chat .q-scrollarea__container'
-  )
+  chatContainer = document.querySelector('.q-chat .q-scrollarea__container')
 
-  updateChat(chatContainer)
+  updateChatInterval(chatContainer)
   scrollChatToBottom(chatContainer)
+})
+
+onUnmounted(() => {
+  clearTimeout(timeout)
 })
 </script>
 
