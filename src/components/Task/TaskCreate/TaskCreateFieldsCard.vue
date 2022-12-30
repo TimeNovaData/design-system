@@ -11,9 +11,9 @@
       label="Cliente - Projeto / Subprojeto"
       size="lg"
       class="bg-white"
-      :options="clientOptions"
+      :options="userList"
       :modelValue="clientModel"
-      :loading="!clientOptions.length"
+      :loading="!userList.length"
       @update-value="(value) => (clientModel = value)"
     />
 
@@ -74,32 +74,34 @@
         </OButton>
       </div>
 
-      <!-- <OInput
+      <OInput
         size="lg"
         class="w-full cursor-pointer"
         label="Data de entrega desejada"
-        v-model="dateComplete"
+        v-model="deliveryDateComplete"
         @keydown.prevent
       >
         <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-          <q-date v-model="model" landscape>
-            <OInput size="md" type="time" />
+          <q-date v-model="deliveryDateModel" landscape>
+            <OInput size="md" type="time" v-model="deliveryTimeModel" />
           </q-date>
         </q-popup-proxy>
 
         <template v-slot:append>
-          <q-icon name="svguse:/icons.svg#icon_calendar" class="cursor-pointer">
-          </q-icon>
+          <q-icon
+            name="svguse:/icons.svg#icon_calendar"
+            class="cursor-pointer"
+          />
         </template>
-      </OInput> -->
-      <div></div>
+      </OInput>
+
       <OSelectAvatar
         label="Responsável"
         size="lg"
         class="bg-white"
-        :options="respOptions"
+        :options="userList"
         :modelValue="respModel"
-        :loading="!respOptions.length"
+        :loading="!userList.length"
         @update-value="(value) => (respModel = value)"
       />
     </div>
@@ -108,7 +110,8 @@
 
 <script setup>
 import OInput from 'src/components/Input/OInput.vue'
-import { ref, computed } from 'vue'
+import { ref, computed, inject } from 'vue'
+import GLOBAL from 'src/utils/GLOBAL'
 import OSelect from 'src/components/Select/OSelect.vue'
 import OButton from 'src/components/Button/OButton.vue'
 import OInputNumber from 'src/components/Input/OInputNumber.vue'
@@ -122,31 +125,18 @@ const respModel = ref(null)
 const qtdModel = ref(1)
 const timeModel = ref('00:00')
 
-const clientOptions = [
-  {
-    nome: 'Facebook',
-    foto: 'https://www.facebook.com/images/fb_icon_325x325.png',
-    id: 1,
-  },
-  {
-    nome: 'Twitter',
-    foto: 'https://help.twitter.com/content/dam/help-twitter/brand/logo.png',
-    id: 2,
-  },
-]
+const projectList = inject('projetos')
+const userList = inject('usuarios')
+
 const groupOptions = [{ val: 'Google' }, { val: 'Apple' }, { val: 'Oracle' }]
 
-const respOptions = [
-  {
-    nome: 'Marlon',
-    foto: 'https://avatars.githubusercontent.com/u/62356988?v=4',
-    id: 1,
-  },
-]
+const deliveryDateModel = ref('')
+const deliveryTimeModel = ref('')
+const deliveryDateComplete = computed(() => {
+  const today = new Date()
+  // const todayFormated = GLOBAL.FData(today)
 
-const model = ref('')
-const dateComplete = computed(() => {
-  return '10/10/2022 - 18h 30m'
+  return `${GLOBAL.FData(deliveryDateModel.value)} - ${deliveryTimeModel.value}`
   // return `${from && FData(from)} ${to && '  até  '} ${to && FData(to)}`
 })
 </script>
