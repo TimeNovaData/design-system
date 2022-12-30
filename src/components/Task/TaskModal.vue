@@ -29,8 +29,8 @@
         class="flex-1 p-24 pb-2 grid grid-cols-2 gap-16 md:flex md:flex-col md:overflow-y-auto"
       >
         <div class="flex flex-col gap-16">
-          <DetailCard :details="data" />
-          <AttachmentCard :anexos="anexos" />
+          <TaskDetailCard :details="data" />
+          <TaskAttachmentCard :anexos="anexos" />
         </div>
 
         <div class="flex flex-col">
@@ -69,7 +69,7 @@
           </q-tabs>
 
           <q-tab-panels v-model="tabs" animated swipeable class="flex-1">
-            <DescriptionCard name="desc" :description="data.observacoes" />
+            <TaskDescriptionCard name="desc" :description="data.observacoes" />
 
             <OChatBox
               name="chat"
@@ -101,9 +101,9 @@ import useComments from 'src/composables/useComments'
 import OButton from 'src/components/Button/OButton.vue'
 import OCounter from 'src/components/Counter/OCounter.vue'
 import OChatBox from 'src/components/Chat/OChatBox.vue'
-import AttachmentCard from './AttachmentCard.vue'
-import DetailCard from './DetailCard.vue'
-import DescriptionCard from './DescriptionCard.vue'
+import TaskAttachmentCard from './TaskAttachmentCard.vue'
+import TaskDetailCard from './TaskDetailCard.vue'
+import TaskDescriptionCard from './TaskDescriptionCard.vue'
 
 const tabs = ref('desc')
 const dialogState = ref(false)

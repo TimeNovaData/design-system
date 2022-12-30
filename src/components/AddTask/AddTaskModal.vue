@@ -28,7 +28,7 @@
       <section
         class="flex-1 p-24 pb-2 grid grid-cols-2 gap-16 md:flex md:flex-col md:overflow-y-auto"
       >
-        <FieldsCard />
+        <AddTaskFieldsCard />
 
         <div class="flex flex-col">
           <q-tabs v-model="tabs" active-color="neutral-100">
@@ -60,7 +60,7 @@
           </q-tabs>
 
           <q-tab-panels v-model="tabs" animated swipeable class="flex-1">
-            <DescriptionCard name="desc" description="" />
+            <AddDescriptionCard name="desc" description="" />
             <OChatBox name="chat" comments sendComment getComments isLoading />
           </q-tab-panels>
         </div>
@@ -82,9 +82,9 @@
 import { ref } from 'vue'
 import { useDialogPluginComponent } from 'quasar'
 import OButton from 'src/components/Button/OButton.vue'
-import DescriptionCard from 'src/components/Task/DescriptionCard.vue'
+import AddDescriptionCard from './AddDescriptionCard.vue'
 import OChatBox from 'src/components/Chat/OChatBox.vue'
-import FieldsCard from 'src/components/AddTask/FieldsCard.vue'
+import AddTaskFieldsCard from 'src/components/AddTask/AddTaskFieldsCard.vue'
 
 const tabs = ref('desc')
 const dialogState = ref(false)
