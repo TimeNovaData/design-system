@@ -35,8 +35,16 @@ export default defineComponent({ name: 'App' })
 
 <script setup>
 import { useUserStore } from 'src/stores/usuarios/user.store'
+import { useUsuarioStore } from 'src/stores/usuarios/usuarios.store'
+import { useProjetoStore } from 'src/stores/projetos/projetos.store'
+
 const { user, userFoto } = storeToRefs(useUserStore())
+const { usuariosFoto } = storeToRefs(useUsuarioStore())
+const { projetos } = storeToRefs(useProjetoStore())
+
 const { getUser } = useUserStore()
+const { getUsuariosFoto } = useUsuarioStore()
+const { getProjetos } = useProjetoStore()
 const { darkMode } = useDarkMode()
 
 const { user: userStore } = storeToRefs(useAuthStore())
@@ -46,6 +54,8 @@ if (userStore.value.access) {
     () => userStore.value.access,
     () => {
       getUser()
+      getUsuariosFoto()
+      getProjetos()
     }
   )
 }
@@ -54,8 +64,12 @@ onMounted(() => {
   userStore.value.access && getUser()
 })
 
+console.log(projetos, getProjetos)
+
 provide('user', user)
 provide('userFoto', userFoto)
+provide('usuarios', usuariosFoto)
+provide('projetos', projetos)
 provide('darkMode', darkMode)
 </script>
 
