@@ -3,7 +3,6 @@ import { api, axiosController } from 'src/boot/axios'
 import { nextTick, ref, watch } from 'vue'
 import { Cookies, Notify, LoadingBar } from 'quasar'
 import { useResetStore } from 'src/utils/useResetStore'
-import { useUserStore } from 'src/stores/usuarios/user.store'
 
 const tokenOpt = {
   secure: process.env.HTTPS_MODE,
@@ -20,7 +19,6 @@ export const useAuthStore = defineStore('auth', () => {
   const returnUrl = ref('/')
   const TOKEN = Cookies.get('NDT_TOKEN')
   const REFRESH_TOKEN = Cookies.get('NDT_REFRESH_TOKEN')
-  const userStore = useUserStore()
 
   const user = ref({
     access: TOKEN && TOKEN,

@@ -144,7 +144,7 @@
 </template>
 
 <script setup>
-import { ref, inject, watch, computed } from 'vue'
+import { ref, inject, watch, computed, onMounted } from 'vue'
 import OSelect from 'src/components/Select/OSelect.vue'
 import OBadge from 'src/components/Badge/OBadge.vue'
 import GLOBAL from 'src/utils/GLOBAL'
@@ -204,6 +204,11 @@ const filtros = ref(deepUnref(filtrosDefault))
 
 watch(projetos, (v) => (filtros.value.projeto.options = v))
 watch(usuarios, (v) => (filtros.value.usuario.options = v))
+
+onMounted(() => {
+  filtros.value.projeto.options = projetos
+  filtros.value.usuario.options = usuarios
+})
 
 watch(
   () => filtros.value,

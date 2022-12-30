@@ -210,4 +210,8 @@ const onlyCards = computed(() =>
 // })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="sass" scoped>
+.my-sticky-header-table
+  :deep(.q-table__bottom)
+    display: none
+</style>
