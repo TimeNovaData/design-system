@@ -7,29 +7,15 @@
       class="bg-white dark:!bg-transparent"
     />
 
-    <OSelect
-      use-input
+    <OSelectAvatar
       label="Cliente - Projeto / Subprojeto"
       size="lg"
       class="bg-white"
       :options="clientOptions"
-      v-model="clientModel"
-      option-value="id"
-      option-label="nome"
+      :modelValue="clientModel"
       :loading="!clientOptions.length"
-    >
-      <template #option="{ itemProps, opt }">
-        <q-item v-bind="itemProps">
-          <OAvatar :nome="opt.nome" :foto="opt.foto" />
-        </q-item>
-      </template>
-
-      <template #selected-item="{ itemProps, opt }">
-        <q-item v-bind="itemProps" class="translate-y-3">
-          <OAvatar :nome="opt.nome" :foto="opt.foto" />
-        </q-item>
-      </template>
-    </OSelect>
+      @update-value="(value) => (clientModel = value)"
+    />
 
     <OSelect
       use-input
@@ -45,30 +31,15 @@
 
     <div class="grid grid-cols-2 gap-16">
       <div class="grid grid-cols-2 gap-16">
-        <OInput
-          v-model.number="qtdModel"
-          label="Quantidade"
-          size="lg"
-          class="bg-white dark:!bg-transparent text-center"
-        >
-          <template v-slot:prepend>
-            <q-icon
-              size="1.5rem"
-              name="svguse:/icons.svg#icon_minus_circle"
-              class="cursor-pointer"
-              :class="{ 'cursor-not-allowed': qtdModel === 1 }"
-              @click="qtdModel > 1 ? qtdModel-- : (qtdModel = 1)"
-            ></q-icon>
-          </template>
-          <template v-slot:append>
-            <q-icon
-              size="1.5rem"
-              name="svguse:/icons.svg#icon_plus_circle"
-              class="cursor-pointer"
-              @click="qtdModel++"
-            ></q-icon>
-          </template>
-        </OInput>
+        <div>
+          <OInputNumber
+            :modelValue="qtdModel"
+            label="Quantidade"
+            size="lg"
+            class="bg-white dark:!bg-transparent"
+            @update-value="(value) => (qtdModel = value)"
+          ></OInputNumber>
+        </div>
 
         <OInput
           v-model="timeModel"
@@ -77,7 +48,7 @@
           class="bg-white dark:!bg-transparent"
           mask="##h ##m"
           reverse-fill-mask
-          placeholder="00:00"
+          placeholder="00h 00m"
         >
           <template v-slot:prepend>
             <q-icon size="1.5rem" name="svguse:/icons.svg#icon_clock"></q-icon>
@@ -103,41 +74,45 @@
         </OButton>
       </div>
 
-      <p>data entrega</p>
+      <!-- <OInput
+        size="lg"
+        class="w-full cursor-pointer"
+        label="Data de entrega desejada"
+        v-model="dateComplete"
+        @keydown.prevent
+      >
+        <q-popup-proxy cover transition-show="scale" transition-hide="scale">
+          <q-date v-model="model" landscape>
+            <OInput size="md" type="time" />
+          </q-date>
+        </q-popup-proxy>
 
-      <OSelect
-        use-input
+        <template v-slot:append>
+          <q-icon name="svguse:/icons.svg#icon_calendar" class="cursor-pointer">
+          </q-icon>
+        </template>
+      </OInput> -->
+      <div></div>
+      <OSelectAvatar
         label="Responsável"
         size="lg"
         class="bg-white"
         :options="respOptions"
-        v-model="respModel"
-        option-value="id"
-        option-label="nome"
+        :modelValue="respModel"
         :loading="!respOptions.length"
-      >
-        <template #option="{ itemProps, opt }">
-          <q-item v-bind="itemProps">
-            <OAvatar :nome="opt.nome" :foto="opt.foto" />
-          </q-item>
-        </template>
-
-        <template #selected-item="{ itemProps, opt }">
-          <q-item v-bind="itemProps" class="translate-y-3">
-            <OAvatar :nome="opt.nome" :foto="opt.foto" />
-          </q-item>
-        </template>
-      </OSelect>
+        @update-value="(value) => (respModel = value)"
+      />
     </div>
   </div>
 </template>
 
 <script setup>
 import OInput from 'src/components/Input/OInput.vue'
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import OSelect from 'src/components/Select/OSelect.vue'
 import OButton from 'src/components/Button/OButton.vue'
-import OAvatar from 'src/components/Avatar/OAvatar.vue'
+import OInputNumber from 'src/components/Input/OInputNumber.vue'
+import OSelectAvatar from 'src/components/Select/OSelectAvatar.vue'
 
 const titleModel = ref('')
 const clientModel = ref(null)
@@ -168,6 +143,12 @@ const respOptions = [
     id: 1,
   },
 ]
+
+const model = ref('')
+const dateComplete = computed(() => {
+  return '10/10/2022 - 18h 30m'
+  // return `${from && FData(from)} ${to && '  até  '} ${to && FData(to)}`
+})
 </script>
 
 <style lang="sass" scoped>

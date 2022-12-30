@@ -16,7 +16,7 @@
 
     <q-scroll-area class="mt-16 !h-[9.5rem] pr-16">
       <div class="!flex !flex-col gap-8">
-        <TaskAttachmentFile
+        <TaskViewAttachmentFile
           v-for="anexo in anexos"
           :key="anexo.id"
           :data="anexo"
@@ -30,7 +30,7 @@
 <script setup>
 import GLOBAL from 'src/utils/GLOBAL'
 import OButton from 'src/components/Button/OButton.vue'
-import TaskAttachmentFile from './TaskAttachmentFile.vue'
+import TaskViewAttachmentFile from './TaskViewAttachmentFile.vue'
 
 const props = defineProps({
   anexos: Array,
