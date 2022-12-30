@@ -4,9 +4,9 @@
       <OButton @click="openTaskModal"> Ver task </OButton>
       <OButton @click="openAddTaskModal"> Adicionar Task </OButton>
 
-      <TaskModal ref="modalTask" :data="task" :anexos="anexos" />
+      <TaskViewModal ref="modalTask" :data="task" :anexos="anexos" />
 
-      <AddTaskModal ref="modalAddTask" />
+      <TaskCreateModal ref="modalAddTask" />
     </div>
   </q-layout>
 </template>
@@ -17,8 +17,8 @@ import { storeToRefs } from 'pinia'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import { useAnexoStore } from 'src/stores/anexos/anexos.store'
 import OButton from 'src/components/Button/OButton.vue'
-import TaskModal from 'src/components/Task/TaskModal.vue'
-import AddTaskModal from 'src/components/AddTask/AddTaskModal.vue'
+import TaskViewModal from 'src/components/Task/TaskView/TaskViewModal.vue'
+import TaskCreateModal from 'src/components/Task/TaskCreate/TaskCreateModal.vue'
 
 const modalTask = ref(null)
 const modalAddTask = ref(null)
