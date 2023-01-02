@@ -804,7 +804,6 @@ const beforehide = (e) => {
   tasksChamado.value = []
   historicoAtividade.value = false
   logAlt.value = []
-
 }
 
 function onShow() {
