@@ -16,6 +16,7 @@
 <script>
 export default { inheritAttrs: false }
 </script>
+
 <script setup>
 defineProps({
   foto: String,
