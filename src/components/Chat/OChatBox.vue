@@ -10,7 +10,10 @@
     </div>
 
     <div v-else-if="!comments.length" class="flex place-content-center h-full">
-      <p>Sem mensagens no momento</p>
+      <div class="flex flex-col gap-6">
+        <q-icon class="block mx-auto" name="fluorescent" size="2.5rem"></q-icon>
+        <p>Sem mensagens no momento</p>
+      </div>
     </div>
 
     <q-scroll-area v-else>
@@ -40,12 +43,13 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import OButton from 'src/components/Button/OButton.vue'
 import OInput from 'src/components/Input/OInput.vue'
 import OChatMessage from 'src/components/Chat/OChatMessage.vue'
+import { scroll } from 'quasar'
 
-const message = ref('')
+// const { getScrollHeight, getVerticalScrollPosition, getScrollTarget } = scroll
 
 const props = defineProps({
   comments: Array,
@@ -54,12 +58,11 @@ const props = defineProps({
   getComments: Function,
 })
 
-function scrollChatToBottom() {
-  const chatContainer = document.querySelector(
-    '.q-chat .q-scrollarea__container'
-  )
+const message = ref('')
+let chatContainer
 
-  chatContainer?.scrollTo(0, chatContainer.scrollHeight)
+function scrollChatToBottom(container) {
+  container?.scrollTo(0, container.scrollHeight)
 }
 
 async function submitMessage() {
@@ -69,23 +72,34 @@ async function submitMessage() {
   await props.sendComment(mensagem)
   await props.getComments()
 
-  scrollChatToBottom()
+  scrollChatToBottom(chatContainer)
 }
 
 let timeout
 
-async function timer() {
+async function updateChatInterval(container) {
   clearTimeout(timeout)
 
-  await props.getComments()
-  scrollChatToBottom()
+  const newComments = await props.getComments()
+  // const lastMessage = container.querySelector('.o-chat-message:last-child')
+  // const el = getScrollTarget(container)
+  // console.log(getVerticalScrollPosition(el), 'getVerticalScrollPosition')
+  // console.log(getScrollHeight(el), 'getScrollHeight')
+  // console.log(el.clientHeight, 'clientHeight')
+  newComments?.length && scrollChatToBottom(chatContainer)
 
-  timeout = setTimeout(() => timer(), 30000)
+  timeout = setTimeout(() => updateChatInterval(container), 15000)
 }
 
 onMounted(() => {
-  timer()
-  scrollChatToBottom()
+  chatContainer = document.querySelector('.q-chat .q-scrollarea__container')
+
+  updateChatInterval(chatContainer)
+  scrollChatToBottom(chatContainer)
+})
+
+onUnmounted(() => {
+  clearTimeout(timeout)
 })
 </script>
 

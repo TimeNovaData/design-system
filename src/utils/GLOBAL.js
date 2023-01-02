@@ -1,6 +1,7 @@
 import gsap from 'gsap/dist/gsap'
 import { date, is, colors } from 'quasar'
 import { unref } from 'vue'
+import DOMPurify from 'dompurify'
 
 export default {
   debounce: (time, fn, name) => {
@@ -223,5 +224,21 @@ export default {
     document.body.removeChild(anchor)
 
     URL.revokeObjectURL(imageURL)
+  },
+
+  sanitizeHTML(v) {
+    const vNoStyle = v.replaceAll(/\s\w+="[^"]*"/g, '')
+
+    const value = DOMPurify.sanitize(v, {
+      USE_PROFILES: { html: true },
+      FORBID_TAGS: ['script'],
+      FORBID_ATTR: ['onclick', 'style'],
+    })
+    return value
+  },
+
+  removeHTMLFromString(v) {
+    return v.replaceAll(/<[^>]*>/g, '')
+    // .replaceAll('&nbsp;', ' ')
   },
 }

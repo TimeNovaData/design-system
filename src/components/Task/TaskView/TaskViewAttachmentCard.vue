@@ -1,5 +1,5 @@
 <template>
-  <q-card class="attachment-card flex-1 p-16 pb-0 pr-0">
+  <q-card class="attachment-card flex-1 p-16 pb-0 pr-0" v-if="anexos.length">
     <header class="flex justify-between">
       <span class="text-caps-3 dark:text-white/40">ANEXOS</span>
 
@@ -16,7 +16,7 @@
 
     <q-scroll-area class="mt-16 !h-[9.5rem] pr-16">
       <div class="!flex !flex-col gap-8">
-        <AttachmentFile
+        <TaskViewAttachmentFile
           v-for="anexo in anexos"
           :key="anexo.id"
           :data="anexo"
@@ -30,7 +30,7 @@
 <script setup>
 import GLOBAL from 'src/utils/GLOBAL'
 import OButton from 'src/components/Button/OButton.vue'
-import AttachmentFile from './AttachmentFile.vue'
+import TaskViewAttachmentFile from './TaskViewAttachmentFile.vue'
 
 const props = defineProps({
   anexos: Array,

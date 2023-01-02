@@ -2,9 +2,9 @@
   <q-select
     ref="componentRef"
     :class="'size-' + attrs.size"
+    popup-content-class="select-menu"
     v-bind="attrs"
     :size="null"
-    popup-content-class="select-menu"
     options-selected-class="option-selecionada"
     @filter="filterFn"
     :options="options"

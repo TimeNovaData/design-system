@@ -28,7 +28,15 @@ module.exports = configure(function (ctx) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli/boot-files
-    boot: ['i18n', 'axios', 'emitter', 'LoadingBar', 'apexCharts'],
+    boot: [
+      'i18n',
+      'axios',
+      'emitter',
+      'LoadingBar',
+      'apexCharts',
+      'filepond',
+      'Notify',
+    ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
     css: ['app.sass'],
@@ -82,7 +90,7 @@ module.exports = configure(function (ctx) {
       // distDir
 
       extendViteConf(viteConf) {
-        console.log('⚡ Vamo q vamo')
+        console.log('⚡ Vamo q vamo  ⠂')
         const empty = '../src/assets/empty.js'
         viteConf.resolve.alias['quasar/dist/quasar.sass'] = empty
         viteConf.resolve.alias['quasar/dist/quasar.css'] = empty
@@ -140,7 +148,7 @@ module.exports = configure(function (ctx) {
 
     // animations: 'all', // --- includes all animations
     // https://v2.quasar.dev/options/animations
-    animations: ['fadeIn', 'fadeOut'],
+    animations: ['fadeIn', 'fadeOut', 'fadeOutLeft', 'fadeOutLeft'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#property-sourcefiles
     // sourceFiles: {

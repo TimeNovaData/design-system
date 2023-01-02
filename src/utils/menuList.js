@@ -5,13 +5,13 @@ const menuList = [
     title: 'Home',
     nivel: 0,
     icon: 'home',
-    href: '/',
+    href: '/home',
   },
   {
     title: 'Kanban',
     nivel: 0,
     icon: 'space_dashboard',
-    href: '/kanban/1/board',
+    href: '/kanban/',
   },
 
   {
@@ -77,11 +77,25 @@ const menuList = [
 ]
 
 if (dev)
-  menuList.push({
-    title: 'Design System',
-    nivel: 0,
-    icon: 'design_services',
-    href: '/design-system',
-  })
+  menuList.push(
+    {
+      title: 'Design System',
+      nivel: 0,
+      icon: 'design_services',
+      href: '/design-system',
+    },
+    {
+      title: "Svg's",
+      nivel: 0,
+      icon: 'auto_awesome_motion',
+      href: '/svgs',
+    },
+    {
+      title: 'Testes',
+      nivel: 0,
+      icon: 'bug_report',
+      href: '/testes',
+    }
+  )
 
 export default menuList

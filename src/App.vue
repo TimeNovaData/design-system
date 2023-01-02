@@ -7,10 +7,8 @@
   <RouterView></RouterView>
 </template>
 
-<script>
-import { defineComponent, toRefs, ref, provide, watch, onMounted } from 'vue'
-// import emitter from 'src/boot/emitter'
-
+<script setup>
+// css
 import 'src/css/cores.sass'
 import 'src/css/quasar/@index.sass'
 import 'src/css/body.sass'
@@ -19,44 +17,62 @@ import 'src/css/tailwind.css'
 import 'src/css/stores/blurMode.sass'
 import 'src/css/vendor/materialSymbolsRounded.sass'
 import 'src/css/vendor/apexCharts.sass'
-import { Notify } from 'quasar'
+// script
+import { provide, watch, onMounted, ref, readonly } from 'vue'
 import { storeToRefs } from 'pinia'
-import { useAuthStore } from './stores/auth.store'
-import useDarkMode from 'src/composables/useDarkMode'
-Notify.registerType('error', {
-  icon: 'warning',
-  progress: true,
-  classes: 'notify-error',
-  timeout: 2000,
-})
 
-export default defineComponent({ name: 'App' })
-</script>
-
-<script setup>
+import { useAuthStore } from 'src/stores/auth.store'
 import { useUserStore } from 'src/stores/usuarios/user.store'
-const { user, userFoto } = storeToRefs(useUserStore())
-const { getUser } = useUserStore()
+import { useUsuarioStore } from 'src/stores/usuarios/usuarios.store'
+import { useProjetoStore } from 'src/stores/projetos/projetos.store'
+import useDarkMode from 'src/composables/useDarkMode'
+import { useClientesStore } from './stores/clientes/clientes.store'
+
+const { user, userFoto, userProfile } = storeToRefs(useUserStore())
+const { usuariosFoto } = storeToRefs(useUsuarioStore())
+const { projetos, subProjetos } = storeToRefs(useProjetoStore())
+const { clientes } = storeToRefs(useClientesStore())
+
+const { getUser, getProfile } = useUserStore()
+const { getUsuariosFoto } = useUsuarioStore()
+const { getProjetos, getSubProjetos } = useProjetoStore()
+const { getClientes } = useClientesStore()
 const { darkMode } = useDarkMode()
 
-const { user: userStore } = storeToRefs(useAuthStore())
+const { user: userAuthStore } = storeToRefs(useAuthStore())
 
-if (userStore.value.access) {
-  watch(
-    () => userStore.value.access,
-    () => {
-      getUser()
-    }
-  )
+const initialLoad = ref(false)
+
+async function requests() {
+  await getUser()
+  getProfile()
+  await getUsuariosFoto()
+  await getProjetos()
+  await getClientes()
+  await getSubProjetos()
 }
 
-onMounted(() => {
-  userStore.value.access && getUser()
-})
+if (userAuthStore.value.access) requests()
 
-provide('user', user)
-provide('userFoto', userFoto)
+watch(
+  () => userAuthStore.value.access,
+  (acess) => acess && requests()
+)
+
 provide('darkMode', darkMode)
+provide('user', readonly(user))
+provide('userFoto', readonly(userFoto))
+provide('usuarios', readonly(usuariosFoto))
+provide('clientes', readonly(clientes))
+provide('projetos', readonly(projetos))
+provide('subProjetos', readonly(subProjetos))
+provide('userProfile', readonly(userProfile))
+// provide('initialLoad', readonly(initialLoad))
+provide('get', {
+  getUsuariosFoto,
+  getProjetos,
+  getClientes,
+})
 </script>
 
 <style lang="sass">

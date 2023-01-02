@@ -9,7 +9,7 @@
           :label="item.label"
           :to="{ name: item.name }"
           :key="item.name"
-          :exact="true"
+          :exact="false"
         />
       </q-breadcrumbs>
       <q-space></q-space>

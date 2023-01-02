@@ -10,65 +10,66 @@
   </KanbanHeader>
 
   <KanbanModalRight ref="modalRight"></KanbanModalRight>
-
-  <section v-if="tabs === 'board'" class="kanban-container">
-    <div
-      class="kanban-col--wrapper p-16"
-      @mousedown="(e) => enableDragScroll(e)"
-    >
-      <KanbanCol
-        v-for="col in colunasWithCards"
-        :cards="col.cards"
-        :colData="col.coluna"
-        :key="col.coluna.id"
-        :data-id="col.coluna.id"
-        @mouseup="handleColClick"
-        @mousedown="handleColClick"
-        @newCards="clickNewCard"
+  <Transition @enter="enter" @before-enter="beforeEnter" :css="false">
+    <section v-if="tabs === 'board'" class="kanban-container">
+      <div
+        class="kanban-col--wrapper p-16"
+        @mousedown="(e) => enableDragScroll(e)"
       >
-        <Transition name="fade" duration="150">
-          <KanbanNewCard
-            v-if="novoCard.id === col.coluna.id"
-            :colData="col.coluna"
-            @digitandoNome="() => setHeightInCol()"
-            @invalid="closeNewCard"
-            @create="handleCreateChamado"
-          ></KanbanNewCard>
-        </Transition>
-
-        <draggable
-          v-bind="dragOptions"
-          :list="col.cards"
-          :component-data="{
-            tag: 'div',
-            type: 'transition-group',
-            name: !drag ? 'flip-list' : null,
-            class: `transition-div `,
-          }"
-          group="a"
-          itemKey="name"
-          @end="(e) => startAndEndDrag(e, false)"
-          @start="(e) => startAndEndDrag(e, true)"
+        <KanbanCol
+          v-for="col in colunasWithCards"
+          :cards="col.cards"
+          :colData="col.coluna"
+          :key="col.coluna.id"
+          :data-id="col.coluna.id"
+          @mouseup="handleColClick"
+          @mousedown="handleColClick"
+          @newCards="clickNewCard"
         >
-          <template #item="{ element }">
-            <KanbanCard
-              :item="element"
-              :visaoExpandida="visaoExpandida"
-              :data-card-id="element.id"
-              @cardClick="handleCardClick(element)"
-            >
-            </KanbanCard>
-          </template>
+          <Transition name="fade" duration="150">
+            <KanbanNewCard
+              v-if="novoCard.id === col.coluna.id"
+              :colData="col.coluna"
+              @digitandoNome="() => setHeightInCol()"
+              @invalid="closeNewCard"
+              @create="handleCreateChamado"
+            ></KanbanNewCard>
+          </Transition>
 
-          <!--  -->
-        </draggable>
-      </KanbanCol>
-    </div>
-  </section>
+          <draggable
+            v-bind="dragOptions"
+            :list="col.cards"
+            :component-data="{
+              tag: 'div',
+              type: 'transition-group',
+              name: !drag ? 'flip-list' : null,
+              class: `transition-div `,
+            }"
+            group="a"
+            itemKey="name"
+            @end="(e) => startAndEndDrag(e, false)"
+            @start="(e) => startAndEndDrag(e, true)"
+          >
+            <template #item="{ element }">
+              <KanbanCard
+                :item="element"
+                :visaoExpandida="visaoExpandida"
+                :data-card-id="element.id"
+                @cardClick="handleCardClick(element)"
+              >
+              </KanbanCard>
+            </template>
 
-  <section v-else class="h-[inherit] pb-32">
-    <PageKanbanList @openModal="handleCardClick"></PageKanbanList>
-  </section>
+            <!--  -->
+          </draggable>
+        </KanbanCol>
+      </div>
+    </section>
+
+    <section v-else class="h-[inherit] pb-32">
+      <PageKanbanList @openModal="handleCardClick"></PageKanbanList>
+    </section>
+  </Transition>
 
   <KanbanModal ref="modal" @changed="commitAlt(colunasWithCards)"></KanbanModal>
 
@@ -76,7 +77,16 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, provide, ref, toRaw, watch } from 'vue'
+import {
+  computed,
+  nextTick,
+  onMounted,
+  provide,
+  ref,
+  toRaw,
+  watch,
+  inject,
+} from 'vue'
 import { storeToRefs } from 'pinia'
 import KanbanCard from 'src/components/Kanban/KanbanCard.vue'
 import KanbanCol from 'src/components/Kanban/KanbanCol.vue'
@@ -100,12 +110,13 @@ import KanbanModalRight from 'src/components/Kanban/KanbanModalRight.vue'
 import KanbanNewCard from 'src/components/Kanban/KanbanNewCard.vue'
 import PageKanbanList from './PageKanbanList.vue'
 import { useRoute, useRouter } from 'vue-router'
+import gsap from 'gsap/dist/gsap'
 
 const { setHeightInCol } = GLOBAL
 const { kanbanBG } = useKanbanBG()
 const { visaoExpandida } = useKanbanVisaoExpandida()
-const { getUsuariosFoto } = useUsuarioStore()
-const { usuariosFoto } = storeToRefs(useUsuarioStore())
+// const { getUsuariosFoto } = useUsuarioStore()
+// const { usuariosFoto } = storeToRefs(useUsuarioStore())
 
 const router = useRouter()
 const route = useRoute()
@@ -120,6 +131,17 @@ watch(tabs, () => {
 })
 
 const novoCard = ref({ id: null })
+
+function beforeEnter(el) {
+  gsap.set(el, { x: tabs.value === 'board' ? -300 : 200 })
+}
+
+function enter(el, done) {
+  gsap
+    .timeline()
+    .to(el, { x: 0, ease: 'power1.out', duration: 0.5, delay: 0.1 })
+    .call(done, '')
+}
 
 const {
   colunasWithCards,
@@ -141,10 +163,7 @@ const { getTags } = useTagStore()
 const { tags } = storeToRefs(useTagStore())
 
 const { createChamado } = useChamadoStore()
-const { getProjetos, getSubProjetos } = useProjetoStore()
-const { projetos, subProjetos } = storeToRefs(useProjetoStore())
 
-// Drag
 const removeEventsWrapper = ref(false)
 const enableDragScroll = GLOBAL.enableDragScroll(removeEventsWrapper)
 
@@ -166,8 +185,8 @@ function handleColClick(e) {
 
 async function clickNewCard(colData) {
   if (novoCard.value.id === colData.id) {
-    setTimeout(() => setHeightInCol(), 50)
     novoCard.value.id = ''
+    setTimeout(() => setHeightInCol(), 50)
   } else {
     novoCard.value.id = colData.id
     setTimeout(() => setHeightInCol(), 50)
@@ -247,26 +266,26 @@ onMounted(() => {
   document
     .querySelector('.kanban-col--wrapper')
     ?.dispatchEvent(new Event('mousedown'))
-  getProjetos()
-  getSubProjetos()
-  getUsuariosFoto()
+  // getProjetos()
+  // getSubProjetos()
+  // getUsuariosFoto()
   getTags()
 })
 
 emitter.on('reloadDataKanban', async () => {
   await updateDados()
   await atualizarOrdem()
-  getProjetos()
-  getSubProjetos()
-  getUsuariosFoto()
+  // getProjetos()
+  // getSubProjetos()
+  // getUsuariosFoto()
   getTags()
 })
 
+// provide('usuarios', usuariosFoto)
+// provide('projetos', projetos)
+// provide('subProjetos', subProjetos)
 provide('chamado', chamadoAtivo)
 provide('tagsList', tags)
-provide('usuarios', usuariosFoto)
-provide('projetos', projetos)
-provide('subProjetos', subProjetos)
 provide('tabs', tabs)
 provide('colunasWithCards', colunasWithCards)
 provide('visaoExpandida', visaoExpandida)

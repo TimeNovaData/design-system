@@ -30,7 +30,7 @@
     .q-table__bottom,
     thead tr:first-child th
       /* bg color is important for th; just specify one */
-      background-color: rgb(var(--d-neutral-20))
+      background-color: rgb(var(--d-neutral-2q0))
 
   thead tr th
     position: sticky
@@ -42,3 +42,6 @@
   &.q-table--loading thead tr:last-child th
     /* height of all previous header rows */
     top: 48px
+
+input[type="time"]::-webkit-calendar-picker-indicator
+  filter: invert(69%) sepia(62%) saturate(3224%) hue-rotate(104deg) brightness(99%) contrast(87%)

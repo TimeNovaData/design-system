@@ -7,7 +7,9 @@
     @mouseleave="GLOBAL.debounce(50, handleMouseLeave, 'sideTime')()"
   >
     <header class="OSidebar-header" v-if="showHeader">
-      <MenuLogo />
+      <RouterLink :to="{ name: 'home' }">
+        <MenuLogo />
+      </RouterLink>
     </header>
 
     <section class="">
@@ -77,7 +79,6 @@ let $ = {}
 let animate
 
 onMounted(() => {
-  console.log('montou')
   $ = {
     Nv0: sidebar.value,
     body: document.body,
@@ -127,13 +128,13 @@ watch(
   }
 )
 
-watch(
-  () => state,
-  (v) => {
-    console.log('passive', v.value.passive)
-  },
-  { deep: true }
-)
+// watch(
+//   () => state,
+//   (v) => {
+//     console.log('MENU passive', v.value.passive)
+//   },
+//   { deep: true }
+// )
 
 onBeforeRouteLeave(() => {
   state.value = {
@@ -149,7 +150,7 @@ onUnmounted(() => {
     open: false,
     passive: true,
   }
-  console.log('desmontou')
+  // console.log('desmontou')
   animate.logoAnimationToNDT.seek()
   animate.logoAnimationToNovadata.seek(0)
 })

@@ -3,6 +3,7 @@ import { computed, ref } from 'vue'
 import { useAxios } from '@vueuse/integrations/useAxios'
 import { useUserStore } from 'src/stores/usuarios/user.store'
 import { storeToRefs } from 'pinia'
+import { deepUnref } from 'vue-deepunref'
 
 const { URLS } = api.defaults
 
@@ -23,9 +24,12 @@ export default function useComments(taskId) {
     )
 
     try {
-      setComments(data.value)
+      if (data.value.length !== comments.value.length) {
+        setComments(data.value)
+        return data.value
+      }
 
-      return data.value
+      return null
     } catch (e) {
       return error
     } finally {

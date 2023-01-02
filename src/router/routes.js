@@ -7,6 +7,8 @@ import PageLogin from 'src/pages/Login/PageLogin.vue'
 import PageBlank from 'src/pages/Blank/PageBlank.vue'
 import ConsumoHoras from 'src/pages/ConsumoHoras/ConsumoHoras.vue'
 import PageKanbanList from 'src/pages/Kanban/PageKanbanList.vue'
+import PageHome from 'src/pages/Home/PageHome.vue'
+import PageSvgs from 'src/pages/svg/PageSvgs.vue'
 const routes = [
   {
     path: '/design-system',
@@ -14,12 +16,10 @@ const routes = [
   },
 
   {
-    name: 'home',
     path: '/',
     component: LayoutHome,
-    meta: {
-      breadcrumbs: [{ label: 'Home', name: 'home' }],
-    },
+    redirect: { name: 'home' },
+
     children: [
       {
         name: 'consumo_horas',
@@ -32,6 +32,22 @@ const routes = [
           ],
         },
       },
+      {
+        name: 'home',
+        path: '/home',
+        component: PageHome,
+        meta: {
+          breadcrumbs: [{ label: 'Home', name: 'home' }],
+        },
+      },
+      {
+        name: 'svgs',
+        path: '/svgs',
+        component: PageSvgs,
+        meta: {
+          breadcrumbs: [{ label: 'Svgs', name: 'svgs' }],
+        },
+      },
     ],
   },
 
@@ -42,8 +58,10 @@ const routes = [
     // meta: { transition: 'slide-right' },
   },
   {
-    path: '/kanban/:id',
+    path: '/kanban/',
     component: LayoutKanban,
+    redirect: { name: 'kanban_board' },
+    name: 'kanban',
 
     children: [
       {
@@ -53,7 +71,7 @@ const routes = [
         meta: {
           breadcrumbs: [
             { label: 'Home', name: 'home' },
-            { label: 'Kanban', name: 'kanban_board' },
+            { label: 'Kanban', name: 'kanban' },
           ],
           tab: 'board',
         },
@@ -66,7 +84,7 @@ const routes = [
         meta: {
           breadcrumbs: [
             { label: 'Home', name: 'home' },
-            { label: 'Kanban', name: 'kanban_board' },
+            { label: 'Kanban', name: 'kanban' },
           ],
           tab: 'list',
         },

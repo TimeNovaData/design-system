@@ -42,49 +42,48 @@
                   ></q-icon>
                 </q-item>
                 <q-item class="px-0" v-show="filtros.cliente.options.length">
-                  <OSelect
-                    v-model="filtros.cliente.model"
+                  <OSelectAvatar
                     use-input
                     label="Cliente"
                     size="md"
                     class="w-full"
-                    :options="filtros.cliente.options"
+                    :modelValue="filtros.cliente.model"
+                    :options="clientes"
+                    :loading="!clientes"
                     clearable
-                    option-value="id"
-                    option-label="nome"
+                    @updateValue="(v) => (filtros.cliente.model = v)"
                   >
-                  </OSelect>
+                  </OSelectAvatar>
                 </q-item>
                 <q-item class="px-0">
-                  <OSelect
+                  <OSelectAvatar
                     use-input
                     label="Projeto"
                     size="md"
                     class="w-full"
-                    :options="filtros.projeto.options"
-                    v-model="filtros.projeto.model"
+                    :modelValue="filtros.projeto.model"
+                    :options="projetos"
+                    :loading="!projetos"
+                    fotoKey="logo"
                     clearable
-                    option-value="id"
-                    option-label="nome"
-                    :loading="!filtros.projeto.options.length"
+                    @updateValue="(v) => (filtros.projeto.model = v)"
                   >
-                  </OSelect>
+                  </OSelectAvatar>
                 </q-item>
 
                 <q-item class="px-0 flex gap-4">
-                  <OSelect
+                  <OSelectAvatar
                     use-input
                     label="Usuário"
                     size="md"
                     class="w-full"
-                    :options="filtros.usuario.options"
-                    v-model="filtros.usuario.model"
+                    :modelValue="filtros.usuario.model"
+                    :options="usuariosFoto"
+                    :loading="!usuariosFoto"
                     clearable
-                    option-value="id"
-                    option-label="nome"
-                    :loading="!filtros.usuario.options.length"
+                    @updateValue="(v) => (filtros.usuario.model = v)"
                   >
-                  </OSelect>
+                  </OSelectAvatar>
                 </q-item>
                 <q-item class="px-0">
                   <OInput
@@ -125,8 +124,8 @@
                     size="md"
                     icon="check"
                     primary
-                    @click="getTempoTask"
                     :loading="isLoading"
+                    @click="getTempoTask"
                     >Aplicar</OButton
                   >
                 </q-item>
@@ -146,30 +145,30 @@
             icon="svguse:/icons.svg#icon_date_time"
           />
 
-          <div class="flex items-center gap-6 pointer-events-none opacity-30">
+          <div class="flex items-center gap-6">
             <p class="mr-6 text-caps-3">visualizando por:</p>
             <OButton
               class="text-neutral-70"
-              :class="{ active: por === 'projeto' }"
+              :class="{ active: FiltroInvestimentoPor === 'projeto' }"
               size="md"
               secondary
-              @click="por = 'projeto'"
+              @click="handleChangeFiltroInvestimento('projeto')"
               >Projeto</OButton
             >
             <OButton
               class="text-neutral-70"
-              :class="{ active: por === 'subprojeto' }"
+              :class="{ active: FiltroInvestimentoPor === 'sub_projeto' }"
               size="md"
               secondary
-              @click="por = 'subprojeto'"
+              @click="handleChangeFiltroInvestimento('sub_projeto')"
               >Subprojeto</OButton
             >
             <OButton
               class="text-neutral-70"
-              :class="{ active: por === 'usuario' }"
+              :class="{ active: FiltroInvestimentoPor === 'usuario' }"
               size="md"
               secondary
-              @click="por = 'usuario'"
+              @click="handleChangeFiltroInvestimento('usuario')"
               >Usuário</OButton
             >
           </div>
@@ -204,30 +203,30 @@
             text="Tempo por atividade"
             icon="svguse:/icons.svg#icon_tempo_atividade"
           />
-          <div class="flex items-center gap-6 pointer-events-none opacity-30">
+          <div class="flex items-center gap-6">
             <p class="mr-6 text-caps-3">visualizando por:</p>
             <OButton
               class="text-neutral-70"
-              :class="{ active: por === 'projeto' }"
+              :class="{ active: FiltroTempoAtividade === 'projeto' }"
               size="md"
               secondary
-              @click="por = 'projeto'"
+              @click="handleChangeFiltroTempoAtividade('projeto')"
               >Projeto</OButton
             >
             <OButton
               class="text-neutral-70"
-              :class="{ active: por === 'subprojeto' }"
+              :class="{ active: FiltroTempoAtividade === 'subprojeto' }"
               size="md"
               secondary
-              @click="por = 'subprojeto'"
+              @click="handleChangeFiltroTempoAtividade('subprojeto')"
               >Subprojeto</OButton
             >
             <OButton
               class="text-neutral-70"
-              :class="{ active: por === 'usuario' }"
+              :class="{ active: FiltroTempoAtividade === 'usuario' }"
               size="md"
               secondary
-              @click="por = 'usuario'"
+              @click="handleChangeFiltroTempoAtividade('usuario')"
               >Usuário</OButton
             >
           </div>
@@ -303,7 +302,13 @@
                 <div
                   class="whitespace-nowrap text-paragraph-2 flex flex-nowrap gap-4"
                 >
-                  <OBadge
+                  <TagBase
+                    v-for="tag in props.row.tag.filter((i) => i.nome)"
+                    :key="tag.id"
+                    :cor="tag.cor_letra"
+                    :nome="tag.nome"
+                  ></TagBase>
+                  <!-- <OBadge
                     v-for="tag in props.row.tag.filter((i) => i.nome)"
                     size="sm"
                     :badge="true"
@@ -317,7 +322,7 @@
                         {{ tag?.nome }}
                       </p>
                     </template>
-                  </OBadge>
+                  </OBadge> -->
                 </div>
               </q-td>
             </q-tr>
@@ -353,13 +358,13 @@ import OSelect from 'src/components/Select/OSelect.vue'
 import OTable from 'src/components/Table/OTable.vue'
 import TextIcon from 'src/components/Text/TextIcon.vue'
 import { useChamadoStore } from 'src/stores/chamados/chamados.store'
-import { useClientesStore } from 'src/stores/clientes/clientes.store'
-import { useProjetoStore } from 'src/stores/projetos/projetos.store'
-import { useUsuarioStore } from 'src/stores/usuarios/usuarios.store'
 import GLOBAL from 'src/utils/GLOBAL'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch, inject } from 'vue'
 import { columns1 } from './columns'
 import stackedChartBar from 'src/utils/chart/stackedChartBar'
+import TagBase from 'src/components/Tag/TagBase.vue'
+import { deepUnref } from 'vue-deepunref'
+import OSelectAvatar from 'src/components/Select/OSelectAvatar.vue'
 const { URLS } = api.defaults
 
 const {
@@ -371,7 +376,17 @@ const {
   //
 } = GLOBAL
 //
-const por = ref('projeto')
+const FiltroInvestimentoPor = ref('projeto')
+const FiltroTempoAtividade = ref('projeto')
+
+function handleChangeFiltroInvestimento(tipo) {
+  FiltroInvestimentoPor.value = tipo
+  getTempoTask()
+}
+function handleChangeFiltroTempoAtividade(tipo) {
+  FiltroTempoAtividade.value = tipo
+  getChamadoTable()
+}
 
 // elementos
 const form = ref(null)
@@ -379,14 +394,11 @@ const chart = ref(null)
 const menu = ref(null)
 const filter = ref('')
 
-// stores
-const { getClientes } = useClientesStore()
-const { getProjetos } = useProjetoStore()
-const { getUsuariosFoto } = useUsuarioStore()
-
-const { usuariosFoto } = storeToRefs(useUsuarioStore())
-const { clientes } = storeToRefs(useClientesStore())
-const { projetos } = storeToRefs(useProjetoStore())
+const usuariosFoto = inject('usuarios')
+const clientes = inject('clientes')
+const projetos = inject('projetos')
+// const initialLoad = inject('initialLoad')
+const { getUsuariosFoto, getProjetos, getClientes } = inject('get')
 
 const { getChamado } = useChamadoStore()
 const { chamados, isLoading: chamadoLoading } = storeToRefs(useChamadoStore())
@@ -441,7 +453,7 @@ const filtrosDefault = {
     },
   },
 }
-const filtros = ref(filtrosDefault)
+const filtros = ref(deepUnref(filtrosDefault))
 
 const filtroOBJ = computed(() => ({
   [filtros.value.cliente.name]: filtros.value.cliente.model?.id,
@@ -490,9 +502,10 @@ watch(
 // tempoTask ----------------------------------
 
 const tempoTask = ref([])
+isLoading.value = true
 async function getTempoTask() {
-  isLoading.value = true
   menu.value.hide()
+  filtroOBJ.value.agrupamento = FiltroInvestimentoPor.value
 
   const { data, error } = await useAxios(
     URLS.tempoProjeto + '/' + generateStringFilterFromObject(filtroOBJ.value),
@@ -555,14 +568,24 @@ function populateChart(tempoProjetos) {
     },
     // secondsToHours(i.duracao)
   })
-
-  getChamado(`&projeto__id=${filtros.value.projeto.model.id}`)
+  if (filtros.value.projeto.model.id) getChamadoTable()
 
   // }
 }
 
+function getChamadoTable() {
+  const projeto = filtros.value.projeto.model.id
+  getChamado(
+    `${projeto ? `&projeto__id=${projeto}` : ''}` +
+      `&agrupamento=${FiltroInvestimentoPor.value}`
+  )
+}
+
 async function handleRemoveFilters() {
-  filtros.value = filtrosDefault
+  filtros.value.cliente.model = ''
+  filtros.value.projeto.model = ''
+  filtros.value.usuario.model = ''
+  filtros.value.data.days = { from: '', to: '' }
   getTempoTask()
 }
 
@@ -606,15 +629,30 @@ const exportTable = () => {
   }
 }
 
-onMounted(async () => {
-  await getProjetos()
-  filtros.value.projeto.options = projetos.value
-  getTempoTask()
-  getChamado()
-  await getClientes()
+async function initialRequests() {
+  await getChamado()
   await getUsuariosFoto()
+  await getTempoTask()
+  getProjetos()
+  getClientes()
+  filtros.value.projeto.options = projetos.value
   filtros.value.cliente.options = clientes.value
   filtros.value.usuario.options = usuariosFoto.value
+}
+
+onMounted(async () => {
+  initialRequests()
+  // if (initialLoad) {
+  //   initialRequests()
+  //   debugger
+  // } else {
+  //   const unwatch = watch(initialLoad, async () => {
+  //     initialRequests()
+  //     debugger
+
+  //     unwatch()
+  //   })
+  // }
 })
 </script>
 

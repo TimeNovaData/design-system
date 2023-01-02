@@ -1,5 +1,5 @@
 <template>
-  <q-card class="m-16 h-full overflow-hidden">
+  <q-card class="m-16 h-full overflow-hidden card-kanban-list">
     <div class="flex gap-8 items-center px-6 pt-6">
       <OButton
         secondary
@@ -29,6 +29,7 @@
       :rows="onlyCards"
       :filter="filter"
       class="mx-6 mt-6 h-auto max-h-full my-sticky-header-table"
+      :class="`${!onlyCards.length ? 'opacity-0' : ''}`"
       :pagination="{
         rowsPerPage: 100,
       }"
@@ -61,7 +62,9 @@
               />
 
               <TagBase
-                v-if="props.row.projeto.tem_subprojetos"
+                v-if="
+                  props.row.projeto.tem_subprojetos && props.row.sub_projeto
+                "
                 :tag="props.row.sub_projeto"
                 :nome="props.row.sub_projeto.nome"
                 type="projeto"
@@ -176,8 +179,14 @@
           </q-td> -->
         </q-tr>
       </template>
-      <template #bottom> </template>
     </OTable>
+    <div
+      v-show="!onlyCards.length"
+      class="flex flex-col items-center ml-8 -mt-16 gap-8 opacity-40 justify-center"
+    >
+      <q-icon class="block opacity-30" name="atr" size="2.5rem"></q-icon>
+      <p class="text-paragraph-2">Coluna vazia</p>
+    </div>
   </q-card>
 </template>
 
@@ -211,4 +220,8 @@ const onlyCards = computed(() =>
 // })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="sass" scoped>
+.my-sticky-header-table
+  :deep(.q-table__bottom)
+    display: none
+</style>

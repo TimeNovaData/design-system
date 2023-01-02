@@ -50,6 +50,20 @@
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:wght@200"
       rel="stylesheet"
     /> -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/console-colors"></script>
+
+    <script>
+      window.log = consoleColor()
+      window._red = (...params) => log.bgRed.black.log(...params)()
+      window._blue = (...params) => log.bgBlue.log(...params)()
+      window._yellow = (...params) => log.yellow.log(...params)()
+      window._silver = (...params) => log.silver.log(...params)()
+      window._green = (...params) => log.black.bgGreen.log(...params)()
+      window._big = (...params) => log.big.bold.log(...params)()
+      
+    </script>
+
   </head>
 
   <body>
