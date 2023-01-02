@@ -140,11 +140,10 @@ const deliveryDateComplete = computed(() => {
   return `${GLOBAL.FData(deliveryDateModel.value)} - ${deliveryTimeModel.value}`
 })
 
-const emit = defineEmits(['sendTitle'])
+const emit = defineEmits(['getTitle'])
 
 function sendTitle(e) {
-  emit()
-  console.log(e.target.value)
+  emit('getTitle', e.target.value)
 }
 </script>
 

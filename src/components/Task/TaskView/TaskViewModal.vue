@@ -9,7 +9,7 @@
       <header class="modal-header">
         <div class="pl-16">
           <span class="text-caps-3 text-neutral-100/50">TASK</span>
-          <h2 class="text-title-4 text-neutral-100">{{ data.nome_chamado }}</h2>
+          <h2 class="text-title-4 text-neutral-100">{{ data.titulo }}</h2>
         </div>
 
         <OButton
@@ -89,7 +89,11 @@
         <OButton primary icon="svguse:/icons.svg#icon_edit">
           Editar Task
         </OButton>
-        <OButton secondary icon="svguse:/icons.svg#icon_close">
+        <OButton
+          secondary
+          icon="svguse:/icons.svg#icon_close"
+          @click="closeDialog"
+        >
           Cancelar
         </OButton>
       </footer>
@@ -117,14 +121,18 @@ const props = defineProps({
   anexos: Array,
 })
 
+function showModal() {
+  dialogState.value = true
+}
+
 const closeDialog = () => {
   dialogState.value = false
 }
 
-defineExpose({ dialogRef })
+defineExpose({ dialogRef, showModal })
 
 const { isLoading, commentsReverse, getComments, sendComment } =
-  useComments(371)
+  useComments(167)
 
 getComments()
 </script>

@@ -9,7 +9,9 @@
       <header class="modal-header">
         <div class="pl-16">
           <span class="text-caps-3 text-neutral-100/50">ADICIONAR TASK</span>
-          <h2 class="text-title-4 text-neutral-100">Nova Task</h2>
+          <h2 class="text-title-4 text-neutral-100">
+            {{ taskTitle === '' ? 'Nova Task' : taskTitle }}
+          </h2>
         </div>
 
         <OButton
@@ -28,7 +30,7 @@
       <section
         class="flex-1 p-24 pb-2 grid grid-cols-2 gap-16 md:flex md:flex-col md:overflow-y-auto"
       >
-        <TaskCreateFieldsCard />
+        <TaskCreateFieldsCard @getTitle="updateTitle" />
 
         <div class="flex flex-col">
           <q-tabs v-model="tabs" active-color="neutral-100">
@@ -104,6 +106,7 @@ import TaskCreateDescriptionCard from './TaskCreateDescriptionCard.vue'
 import TaskCreateAttachmentCard from './TaskCreateAttachmentCard.vue'
 
 const tabs = ref('desc')
+const taskTitle = ref('')
 const dialogState = ref(false)
 const { dialogRef } = useDialogPluginComponent()
 
@@ -112,6 +115,10 @@ const closeDialog = () => {
 }
 
 defineExpose({ dialogRef })
+
+function updateTitle(value) {
+  taskTitle.value = value
+}
 </script>
 
 <style lang="sass" scoped>
