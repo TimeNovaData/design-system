@@ -70,7 +70,7 @@ export default function useKanban() {
     colunasWithCards.value = val
     await nextTick()
     commit()
-    console.log(history.value)
+    // console.log(history.value)
     await sendChamadoChange()
   }
 
@@ -89,31 +89,31 @@ export default function useKanban() {
     commitAltFront(value)
   }
 
-  watch(
-    () => history,
-    () => {
-      if (history.value.length < 2) return
+  // watch(
+  //   () => history,
+  //   () => {
+  //     if (history.value.length < 2) return
 
-      console.log(
-        convertInOnlyCardsOrCol(history.value[1]?.snapshot).reduce(
-          getItemPerID(cardAlterado.value.id),
-          {}
-        ).fase,
-        'OLD'
-      )
+  //     console.log(
+  //       convertInOnlyCardsOrCol(history.value[1]?.snapshot).reduce(
+  //         getItemPerID(cardAlterado.value.id),
+  //         {}
+  //       ).fase,
+  //       'OLD'
+  //     )
 
-      console.log(
-        convertInOnlyCardsOrCol(history.value[0]?.snapshot).reduce(
-          getItemPerID(cardAlterado.value.id),
-          {}
-        ).fase,
-        'NEW'
-      )
+  //     console.log(
+  //       convertInOnlyCardsOrCol(history.value[0]?.snapshot).reduce(
+  //         getItemPerID(cardAlterado.value.id),
+  //         {}
+  //       ).fase,
+  //       'NEW'
+  //     )
 
-      console.log(history.value, 'history.value')
-    },
-    { deep: true, flush: 'post' }
-  )
+  //     console.log(history.value, 'history.value')
+  //   },
+  //   { deep: true, flush: 'post' }
+  // )
 
   function historyAlt(history) {
     const timeStamp0 = history.value[0].snapshot

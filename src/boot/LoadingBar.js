@@ -5,7 +5,7 @@ LoadingBar.setDefaults({
   // "should this URL trigger LoadingBar?"
   size: '4px',
   hijackFilter(url) {
-    console.log('LoadingBar url', url)
+    window._yellow('URL', url)
     const list = [/no_loading/].filter((i) => i.test(url))
     const verif = Boolean(list.length)
     const deveAcionar = !verif

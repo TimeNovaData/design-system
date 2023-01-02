@@ -8,7 +8,10 @@
     </p>
 
     <div v-else class="flex place-content-center h-full">
-      <p>Sem Descrição</p>
+      <div class="flex flex-col gap-6 opacity-30 dark:opacity-40">
+        <q-icon class="block mx-auto" name="fluorescent" size="2.5rem"></q-icon>
+        <p>Sem Descrição</p>
+      </div>
     </div>
   </q-card>
 </template>

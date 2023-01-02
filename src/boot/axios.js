@@ -39,6 +39,7 @@ const api = axios.create({
     atualizar_fase_chamado: 'url_atualizar_fase_chamado/',
     atualizar_ordem_chamado: 'chamado/atualizar_ordem_chamado/',
     logAlteracoesChamado: 'logalteracoeschamado/',
+    profile: 'profile/',
   },
 })
 
@@ -48,11 +49,8 @@ api.interceptors.response.use(undefined, async function (error) {
   async function getToken() {
     if (error.response.status === 403) {
       console.warn(`TOKEN INVALIDO ou VAZIO ${error}`)
-
       const refresh = await authStore.refreshToken()
-
       error.config.headers.Authorization = `Bearer ${authStore.user.access}`
-
       return await axios.request(error.config)
     }
   }

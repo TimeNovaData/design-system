@@ -11,14 +11,16 @@
     <q-card class="kanban-modal q-dialog-plugin remove-styles">
       <header class="bg-neutral-30 dark:bg-d-neutral-10">
         <div>
-          <div class="px-24 pt-24 pb-6 flex items-center gap-12 group">
+          <div
+            class="px-24 pt-24 pb-6 flex items-center gap-12 group flex-nowrap"
+          >
             <q-icon
               class="w-24 h-24"
               name="svguse:/icons.svg#icon_screen"
             ></q-icon>
 
             <KanbanItemEditable
-              class="!text-title-2 !p-0 !bg-transparent !pl-4 relative -l-4 left !pr-32"
+              class="!text-title-2 !p-0 !bg-transparent !pl-4 relative -l-4 left !pr-32 !h-max"
               popup-class="!min-w-[300px]"
               :editable="true"
               :value="data.titulo"
@@ -484,7 +486,9 @@
                       Editar
                       <KanbanItemEditableEditor
                         :data="data.descricao"
-                        @updateValue="(v) => updateValue('descricao')(v)"
+                        @updateValue="
+                          (v) => updateValue('descricao')(sanitizeHTML(v))
+                        "
                         text="Descrição"
                       ></KanbanItemEditableEditor>
                     </OButton>
@@ -529,8 +533,8 @@
                       class="flex flex-col gap-16 w-full shrink-0 mt-16"
                       v-if="historicoAtividade && logAlt.length"
                     >
-                      <div v-for="item in logAlt" :key="item.id">
-                        <div class="flex items-start gap-4">
+                      <div v-for="item in logAltReverse" :key="item.id">
+                        <div class="flex items-start gap-4 flex-nowrap">
                           <OAvatar
                             size="2rem"
                             :foto="item.dados_usuario.foto"
@@ -542,7 +546,7 @@
                                 {{ item.dados_usuario.nome }}
                               </p>
                               <div class="opacity-70">
-                                {{ item.frase }}
+                                {{ removeHTMLFromString(item.frase) }}
                               </div>
                             </div>
 
@@ -559,9 +563,16 @@
                       "
                       class="w-full mt-16"
                     >
-                      <p class="text-paragraph-3 text-center opacity-70">
-                        Sem Alterações para exibir.
-                      </p>
+                      <div>
+                        <q-icon
+                          class="block opacity-30 mx-auto"
+                          name="fluorescent"
+                          size="2.5rem"
+                        ></q-icon>
+                        <p class="text-paragraph-2 text-center opacity-40">
+                          Sem Alterações para exibir.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </section>
@@ -612,9 +623,10 @@
                   </OBadge>
                 </div>
               </div>
+
               <Transition
-                :duration="100"
-                mode="in-out"
+                :duration="300"
+                mode="out-in"
                 enter-active-class="animated fadeIn"
                 leave-active-class="animated fadeOut"
               >
@@ -628,22 +640,19 @@
                       v-if="tasksChamadoPendente.length"
                       class="task-wrapper dark:border-transparent border rounded-generic mx-24 border-neutral-30"
                     >
-                      <q-virtual-scroll
-                        style="max-height: auto"
-                        :items="tasksChamadoPendente"
-                        v-slot="{ item }"
-                      >
-                        <KanbanTaskItem
-                          :key="item.id"
-                          :task="item"
-                        ></KanbanTaskItem>
-                      </q-virtual-scroll>
+                      <div v-for="item in tasksChamadoPendente" :key="item.id">
+                        <KanbanTaskItem :task="item"></KanbanTaskItem>
+                      </div>
                     </div>
-                    <div
-                      v-else
-                      class="text-neutral-60 text-paragraph-2 text-center mt-12"
-                    >
-                      Sem Tarefas para exibir.
+                    <div v-else class="text-paragraph-2 text-center mt-12">
+                      <div>
+                        <q-icon
+                          class="block mx-auto opacity-30"
+                          name="fluorescent"
+                          size="2.5rem"
+                        ></q-icon>
+                        <p class="opacity-40">Sem Tarefas para exibir.</p>
+                      </div>
                     </div>
                     <span class="block h-42"></span>
                   </q-scroll-area>
@@ -663,11 +672,15 @@
                         <KanbanTaskItem :task="task"></KanbanTaskItem>
                       </div>
                     </div>
-                    <div
-                      v-else
-                      class="text-neutral-60 text-paragraph-2 text-center mt-12"
-                    >
-                      Sem Tarefas para exibir.
+                    <div v-else class="text-paragraph-2 text-center mt-12">
+                      <div>
+                        <q-icon
+                          class="block mx-auto opacity-30"
+                          name="fluorescent"
+                          size="2.5rem"
+                        ></q-icon>
+                        <p class="opacity-40">Sem Tarefas para exibir.</p>
+                      </div>
                     </div>
                     <span class="block h-42"></span>
                   </q-scroll-area>
@@ -707,7 +720,14 @@ import KanbanItemEditableSelect from './KanbanItemEditableSelect.vue'
 import KanbanSectionHeader from './KanbanSectionHeader.vue'
 import KanbanTaskItem from './KanbanTaskItem.vue'
 
-const { returnRGB, FData, FTime, FDataAndTime } = GLOBAL
+const {
+  returnRGB,
+  FData,
+  FTime,
+  FDataAndTime,
+  sanitizeHTML,
+  removeHTMLFromString,
+} = GLOBAL
 
 const data = inject('chamado')
 const tagsList = inject('tagsList')
@@ -721,6 +741,8 @@ const logAlt = inject('logAlt')
 const getLogAlt = inject('getLogAlt')
 const historicoAtividade = ref(false)
 const logLoading = ref(false)
+
+const logAltReverse = computed(() => [...logAlt.value].reverse())
 
 const subProjetosProjetoAtivo = computed(() =>
   subProjetos.value.filter((p) => p.caso_pai === data.value.projeto.id)
@@ -745,6 +767,7 @@ function updateValue(type) {
   return function (value) {
     data.value[type] = value
     emit('changed')
+    getLogAlt(data.value.id)
   }
 }
 
@@ -780,6 +803,7 @@ const beforehide = (e) => {
   document.body.classList.remove('kanban-modal-show')
   tasksChamado.value = []
   historicoAtividade.value = false
+  logAlt.value = ''
 }
 
 function onShow() {

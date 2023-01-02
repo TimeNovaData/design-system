@@ -31,7 +31,7 @@ const columns1 = [
     name: 'Tags',
     label: 'Tags',
     field: (row) => row.tag.map((i) => i.nome).join(', '),
-    sortable: true,
+    sortable: false,
     align: 'left',
   },
 ]

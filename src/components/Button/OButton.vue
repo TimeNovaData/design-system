@@ -42,5 +42,5 @@ const setHeight = height[attrs.size]
   --icon-size: v-bind(iconSize)
 
   .q-icon
-    font-size: var(--icon-size)
+    font-size: var(--icon-size, 1.715em) !important
 </style>

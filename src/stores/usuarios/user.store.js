@@ -10,6 +10,7 @@ export const useUserStore = defineStore('userStore', () => {
   const user = ref([])
   const isLoading = ref(false)
   const usuarios = useUsuarioStore()
+  const userProfile = ref({})
 
   const userFoto = computed(() => {
     const item = usuarios.usuariosFoto.filter((u) => u.id === user.value.id)[0]
@@ -31,7 +32,7 @@ export const useUserStore = defineStore('userStore', () => {
       setUser(data.value)
       // necessario pois a foto do user
       // esta em usersFoto
-      await usuarios.getUsuariosFoto()
+      // await usuarios.getUsuariosFoto()
       return data.value
     } catch (e) {
       return error
@@ -40,18 +41,34 @@ export const useUserStore = defineStore('userStore', () => {
     }
   }
 
+  async function getProfile() {
+    try {
+      const { data } = await api.get(`${URLS.profile}${user.value.id}/`)
+      setProfile(data.value)
+      return data.value
+    } catch (e) {
+      return e
+    }
+  }
+
   function setUser(value) {
     user.value = value
+  }
+
+  function setProfile(value) {
+    userProfile.value = value
   }
   function $reset() {
     user.value = []
   }
 
   return {
+    $reset,
     getUser,
+    getProfile,
     setUser,
     user,
     userFoto,
-    $reset,
+    userProfile,
   }
 })

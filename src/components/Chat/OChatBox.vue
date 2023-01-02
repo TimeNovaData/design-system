@@ -10,7 +10,10 @@
     </div>
 
     <div v-else-if="!comments.length" class="flex place-content-center h-full">
-      <p>Sem mensagens no momento</p>
+      <div class="flex flex-col gap-6">
+        <q-icon class="block mx-auto" name="fluorescent" size="2.5rem"></q-icon>
+        <p>Sem mensagens no momento</p>
+      </div>
     </div>
 
     <q-scroll-area v-else>

@@ -124,7 +124,7 @@ const closeDialog = () => {
 defineExpose({ dialogRef })
 
 const { isLoading, commentsReverse, getComments, sendComment } =
-  useComments(370)
+  useComments(371)
 
 getComments()
 </script>

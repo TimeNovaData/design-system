@@ -12,7 +12,7 @@
     <q-editor
       ref="editor"
       v-model="scope.value"
-      min-height="5rem"
+      min-height="7rem"
       max-height="17.75rem"
       :toolbar="editorToobar()"
     />

@@ -21,11 +21,12 @@
       </li>
       <!-- Nv1 item  -->
       <q-item
+        v-for="Nv1 in haveSubmenu"
         clickable
         tag="li"
         class="submenu-li"
-        v-for="Nv1 in haveSubmenu"
         :key="Nv1.title"
+        :exact="false"
       >
         <!-- Nv1 Content  -->
         <q-item-section>

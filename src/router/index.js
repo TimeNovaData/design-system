@@ -46,7 +46,7 @@ export default route(function (/* { store, ssrContext } */) {
     const haveRefresh = auth.user.refresh
     const haveToken = auth.user.access
 
-    blur.isKanban = to.name === 'kanban_board'
+    blur.isKanban = ['kanban_board', 'kanban_list'].find((i) => i === to.name)
 
     if (paginasObrigatorias && !haveRefresh && !haveToken) {
       next({ path: '/login' })

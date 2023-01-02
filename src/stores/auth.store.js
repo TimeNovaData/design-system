@@ -80,7 +80,6 @@ export const useAuthStore = defineStore('auth', () => {
   async function logout() {
     const resetStore = useResetStore()
     user.value = {}
-    // axiosController.abort()
     LoadingBar.stop()
     Cookies.remove('NDT_REFRESH_TOKEN')
     Cookies.remove('NDT_TOKEN')

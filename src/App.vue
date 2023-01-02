@@ -18,7 +18,7 @@ import 'src/css/stores/blurMode.sass'
 import 'src/css/vendor/materialSymbolsRounded.sass'
 import 'src/css/vendor/apexCharts.sass'
 // script
-import { provide, watch, onMounted, ref } from 'vue'
+import { provide, watch, onMounted, ref, readonly } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import { useAuthStore } from 'src/stores/auth.store'
@@ -28,12 +28,12 @@ import { useProjetoStore } from 'src/stores/projetos/projetos.store'
 import useDarkMode from 'src/composables/useDarkMode'
 import { useClientesStore } from './stores/clientes/clientes.store'
 
-const { user, userFoto } = storeToRefs(useUserStore())
+const { user, userFoto, userProfile } = storeToRefs(useUserStore())
 const { usuariosFoto } = storeToRefs(useUsuarioStore())
 const { projetos, subProjetos } = storeToRefs(useProjetoStore())
 const { clientes } = storeToRefs(useClientesStore())
 
-const { getUser } = useUserStore()
+const { getUser, getProfile } = useUserStore()
 const { getUsuariosFoto } = useUsuarioStore()
 const { getProjetos, getSubProjetos } = useProjetoStore()
 const { getClientes } = useClientesStore()
@@ -49,26 +49,30 @@ async function requests() {
   await getProjetos()
   await getClientes()
   await getSubProjetos()
-  initialLoad.value = true
-}
-
-if (userAuthStore.value.access) {
-  watch(
-    () => userAuthStore.value.access,
-    () => requests()
-  )
+  // getProfile()
 }
 
 if (userAuthStore.value.access) requests()
 
-provide('user', user)
-provide('userFoto', userFoto)
-provide('usuarios', usuariosFoto)
-provide('clientes', clientes)
+watch(
+  () => userAuthStore.value.access,
+  (acess) => acess && requests()
+)
+
 provide('darkMode', darkMode)
-provide('projetos', projetos)
-provide('subProjetos', subProjetos)
-provide('initialLoad', initialLoad)
+provide('user', readonly(user))
+provide('userFoto', readonly(userFoto))
+provide('usuarios', readonly(usuariosFoto))
+provide('clientes', readonly(clientes))
+provide('projetos', readonly(projetos))
+provide('subProjetos', readonly(subProjetos))
+provide('userProfile', readonly(userProfile))
+// provide('initialLoad', readonly(initialLoad))
+provide('get', {
+  getUsuariosFoto,
+  getProjetos,
+  getClientes,
+})
 </script>
 
 <style lang="sass">

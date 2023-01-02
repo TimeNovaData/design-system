@@ -90,7 +90,7 @@ module.exports = configure(function (ctx) {
       // distDir
 
       extendViteConf(viteConf) {
-        console.log('⚡ Vamo q vamo')
+        console.log('⚡ Vamo q vamo  ⠂')
         const empty = '../src/assets/empty.js'
         viteConf.resolve.alias['quasar/dist/quasar.sass'] = empty
         viteConf.resolve.alias['quasar/dist/quasar.css'] = empty
@@ -148,7 +148,7 @@ module.exports = configure(function (ctx) {
 
     // animations: 'all', // --- includes all animations
     // https://v2.quasar.dev/options/animations
-    animations: ['fadeIn', 'fadeOut'],
+    animations: ['fadeIn', 'fadeOut', 'fadeOutLeft', 'fadeOutLeft'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#property-sourcefiles
     // sourceFiles: {
