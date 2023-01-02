@@ -86,7 +86,7 @@
         <OButton secondary icon="svguse:/icons.svg#icon_close">
           Cancelar
         </OButton>
-        <OButton primary icon="svguse:/icons.svg#icon_edit">
+        <OButton primary icon="svguse:/icons.svg#icon_check">
           Adicionar Nova Task
         </OButton>
       </footer>

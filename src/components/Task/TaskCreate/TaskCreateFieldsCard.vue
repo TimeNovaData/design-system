@@ -5,16 +5,17 @@
       label="Título"
       size="lg"
       class="bg-white dark:!bg-transparent"
+      @keyup="sendTitle"
     />
 
     <OSelectAvatar
       label="Cliente - Projeto / Subprojeto"
       size="lg"
       class="bg-white dark:!bg-transparent"
-      :options="userList"
-      :modelValue="clientModel"
-      :loading="!userList.length"
-      @update-value="(value) => (clientModel = value)"
+      :options="projectList"
+      :modelValue="ProjectModel"
+      :loading="!projectList.length"
+      @update-value="(value) => (ProjectModel = value)"
     />
 
     <OSelect
@@ -118,7 +119,7 @@ import OInputNumber from 'src/components/Input/OInputNumber.vue'
 import OSelectAvatar from 'src/components/Select/OSelectAvatar.vue'
 
 const titleModel = ref('')
-const clientModel = ref(null)
+const ProjectModel = ref(null)
 const groupModel = ref('')
 const respModel = ref(null)
 
@@ -138,6 +139,13 @@ const deliveryTimeModel = ref('12:00')
 const deliveryDateComplete = computed(() => {
   return `${GLOBAL.FData(deliveryDateModel.value)} - ${deliveryTimeModel.value}`
 })
+
+const emit = defineEmits(['sendTitle'])
+
+function sendTitle(e) {
+  emit()
+  console.log(e.target.value)
+}
 </script>
 
 <style lang="sass" scoped>
