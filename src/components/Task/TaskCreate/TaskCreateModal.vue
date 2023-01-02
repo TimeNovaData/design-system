@@ -57,11 +57,27 @@
                 <p class="text-paragraph-1">Comentários</p>
               </template>
             </q-tab>
+
+            <q-tab class="!flex-none md:!flex-1" name="attach">
+              <template
+                class="inline-flex items-center gap-8 text-neutral-70 dark:text-white/70"
+                :class="{
+                  'text-neutral-100 dark:!text-white': tabs == 'attach',
+                }"
+              >
+                <q-icon
+                  size="1.5rem"
+                  name="svguse:/icons.svg#icon_attachment"
+                ></q-icon>
+                <p class="text-paragraph-1">Anexos</p>
+              </template>
+            </q-tab>
           </q-tabs>
 
           <q-tab-panels v-model="tabs" animated swipeable class="flex-1">
             <TaskCreateDescriptionCard name="desc" description="" />
             <OChatBox name="chat" comments sendComment getComments isLoading />
+            <TaskCreateAttachmentCard name="attach" />
           </q-tab-panels>
         </div>
       </section>
@@ -85,6 +101,7 @@ import OButton from 'src/components/Button/OButton.vue'
 import OChatBox from 'src/components/Chat/OChatBox.vue'
 import TaskCreateFieldsCard from './TaskCreateFieldsCard.vue'
 import TaskCreateDescriptionCard from './TaskCreateDescriptionCard.vue'
+import TaskCreateAttachmentCard from './TaskCreateAttachmentCard.vue'
 
 const tabs = ref('desc')
 const dialogState = ref(false)

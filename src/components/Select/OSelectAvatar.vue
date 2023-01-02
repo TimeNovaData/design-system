@@ -15,7 +15,7 @@
     </template>
 
     <template #selected-item="{ itemProps, opt }">
-      <q-item v-bind="itemProps" class="translate-y-3 p-0">
+      <q-item v-bind="itemProps" class="translate-y-3 px-6">
         <OAvatar :nome="opt[nomeKey]" :foto="opt[fotoKey]" />
       </q-item>
     </template>
