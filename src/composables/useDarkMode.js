@@ -1,20 +1,29 @@
 import { onMounted, watch, ref } from 'vue'
 import { LocalStorage, Dark } from 'quasar'
+import { useUserStore } from 'src/stores/usuarios/user.store'
 
 export default function useDarkMode() {
-  const darkMode = ref(false)
+  const user = useUserStore()
+  const darkMode = ref(user.userProfile.dark_mode)
 
   onMounted(() => {
-    const auto = window.matchMedia('(prefers-color-scheme: dark)').matches
     const storage = LocalStorage.getItem('darkMode')
-    const mode = storage === null ? auto : storage // for auto darkmode
-    darkMode.value = mode
+    storage && (darkMode.value = storage)
   })
 
-  watch(darkMode, (newX) => {
-    LocalStorage.set('darkMode', darkMode.value)
+  watch(darkMode, (v) => {
     Dark.set(darkMode.value)
+    LocalStorage.set('darkMode', v)
+    if (v !== user.userProfile.dark_mode)
+      user.setProfile({ ...user.userProfile, dark_mode: v })
   })
+
+  watch(
+    () => user.userProfile.dark_mode, // fica de olho no profile
+    (v) => {
+      if (v !== darkMode.value) darkMode.value = v
+    }
+  )
 
   return { darkMode }
 }

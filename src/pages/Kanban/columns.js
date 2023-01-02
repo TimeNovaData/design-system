@@ -3,7 +3,7 @@ const columns1 = [
     name: 'titulo',
     field: (row) => row.titulo,
     label: 'Chamado',
-    style: 'width: 100%',
+    style: 'width: 100px;',
     align: 'left',
     sortable: true,
   },
@@ -25,7 +25,7 @@ const columns1 = [
 
   {
     name: 'quantidade_tasks',
-    label: 'Tarefas Concluídas',
+    label: 'Tarefas',
     field: (row) => row.quantidade_tasks,
     align: 'left',
     sortable: true,

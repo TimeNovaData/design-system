@@ -52,6 +52,8 @@ api.interceptors.response.use(undefined, async function (error) {
       const refresh = await authStore.refreshToken()
       error.config.headers.Authorization = `Bearer ${authStore.user.access}`
       return await axios.request(error.config)
+    } else {
+      throw new Error(error)
     }
   }
 

@@ -91,7 +91,7 @@ import { storeToRefs } from 'pinia'
 import KanbanCard from 'src/components/Kanban/KanbanCard.vue'
 import KanbanCol from 'src/components/Kanban/KanbanCol.vue'
 import KanbanModal from 'src/components/Kanban/KanbanModal.vue'
-import useKanban from 'src/composables/UseKanban'
+import useChamadosComposable from 'src/composables/useChamadosComposable'
 import useKanbanBG from 'src/composables/useKanbanBG'
 import useKanbanVisaoExpandida from 'src/composables/useKanbanVisaoExpandida'
 import GLOBAL from 'src/utils/GLOBAL'
@@ -156,7 +156,7 @@ const {
   applyFilters,
   atualizarOrdem,
   getLogAlt,
-} = useKanban()
+} = useChamadosComposable()
 
 // Store to refs
 const { getTags } = useTagStore()

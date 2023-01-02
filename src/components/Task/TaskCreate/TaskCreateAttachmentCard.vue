@@ -4,7 +4,7 @@
       name="attachments"
       ref="pond"
       label-idle="Arraste e jogue os arquivos aqui..."
-      accepted-file-types="image/jpeg, image/png"
+      acceptedFileTypes="image/jpeg, image/png"
       :files="myFiles"
       :allow-multiple="true"
       @init="handleFilePondInit"

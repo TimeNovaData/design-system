@@ -18,7 +18,7 @@ import 'src/css/stores/blurMode.sass'
 import 'src/css/vendor/materialSymbolsRounded.sass'
 import 'src/css/vendor/apexCharts.sass'
 // script
-import { provide, watch, onMounted, ref, readonly } from 'vue'
+import { provide, watch, onMounted, ref, readonly, nextTick } from 'vue'
 import { storeToRefs } from 'pinia'
 
 import { useAuthStore } from 'src/stores/auth.store'
@@ -33,7 +33,7 @@ const { usuariosFoto } = storeToRefs(useUsuarioStore())
 const { projetos, subProjetos } = storeToRefs(useProjetoStore())
 const { clientes } = storeToRefs(useClientesStore())
 
-const { getUser, getProfile } = useUserStore()
+const { getUser, getProfile, setProfile } = useUserStore()
 const { getUsuariosFoto } = useUsuarioStore()
 const { getProjetos, getSubProjetos } = useProjetoStore()
 const { getClientes } = useClientesStore()
@@ -45,7 +45,8 @@ const initialLoad = ref(false)
 
 async function requests() {
   await getUser()
-  getProfile()
+  await nextTick()
+  await getProfile()
   await getUsuariosFoto()
   await getProjetos()
   await getClientes()
@@ -60,14 +61,18 @@ watch(
 )
 
 provide('darkMode', darkMode)
+provide('userProfile', userProfile)
 provide('user', readonly(user))
 provide('userFoto', readonly(userFoto))
 provide('usuarios', readonly(usuariosFoto))
 provide('clientes', readonly(clientes))
 provide('projetos', readonly(projetos))
 provide('subProjetos', readonly(subProjetos))
-provide('userProfile', readonly(userProfile))
-// provide('initialLoad', readonly(initialLoad))
+
+provide('set', {
+  setProfile,
+})
+
 provide('get', {
   getUsuariosFoto,
   getProjetos,
