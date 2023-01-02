@@ -76,7 +76,16 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, provide, ref, toRaw, watch } from 'vue'
+import {
+  computed,
+  nextTick,
+  onMounted,
+  provide,
+  ref,
+  toRaw,
+  watch,
+  inject,
+} from 'vue'
 import { storeToRefs } from 'pinia'
 import KanbanCard from 'src/components/Kanban/KanbanCard.vue'
 import KanbanCol from 'src/components/Kanban/KanbanCol.vue'
@@ -141,8 +150,12 @@ const { getTags } = useTagStore()
 const { tags } = storeToRefs(useTagStore())
 
 const { createChamado } = useChamadoStore()
-const { getProjetos, getSubProjetos } = useProjetoStore()
-const { projetos, subProjetos } = storeToRefs(useProjetoStore())
+
+const projetos = inject('projetos')
+const subProjetos = inject('subProjetos')
+
+// const { getProjetos, getSubProjetos } = useProjetoStore()
+// const { projetos, subProjetos } = storeToRefs(useProjetoStore())
 
 // Drag
 const removeEventsWrapper = ref(false)
@@ -247,26 +260,26 @@ onMounted(() => {
   document
     .querySelector('.kanban-col--wrapper')
     ?.dispatchEvent(new Event('mousedown'))
-  getProjetos()
-  getSubProjetos()
-  getUsuariosFoto()
+  // getProjetos()
+  // getSubProjetos()
+  // getUsuariosFoto()
   getTags()
 })
 
 emitter.on('reloadDataKanban', async () => {
   await updateDados()
   await atualizarOrdem()
-  getProjetos()
-  getSubProjetos()
-  getUsuariosFoto()
+  // getProjetos()
+  // getSubProjetos()
+  // getUsuariosFoto()
   getTags()
 })
 
+// provide('usuarios', usuariosFoto)
+// provide('projetos', projetos)
+// provide('subProjetos', subProjetos)
 provide('chamado', chamadoAtivo)
 provide('tagsList', tags)
-provide('usuarios', usuariosFoto)
-provide('projetos', projetos)
-provide('subProjetos', subProjetos)
 provide('tabs', tabs)
 provide('colunasWithCards', colunasWithCards)
 provide('visaoExpandida', visaoExpandida)

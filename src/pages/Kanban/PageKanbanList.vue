@@ -61,7 +61,9 @@
               />
 
               <TagBase
-                v-if="props.row.projeto.tem_subprojetos"
+                v-if="
+                  props.row.projeto.tem_subprojetos && props.row.sub_projeto
+                "
                 :tag="props.row.sub_projeto"
                 :nome="props.row.sub_projeto.nome"
                 type="projeto"
@@ -208,4 +210,8 @@ const onlyCards = computed(() =>
 // })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="sass" scoped>
+.my-sticky-header-table
+  :deep(.q-table__bottom)
+    display: none
+</style>

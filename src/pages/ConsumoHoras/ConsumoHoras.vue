@@ -125,8 +125,8 @@
                     size="md"
                     icon="check"
                     primary
-                    @click="getTempoTask"
                     :loading="isLoading"
+                    @click="getTempoTask"
                     >Aplicar</OButton
                   >
                 </q-item>
@@ -353,11 +353,8 @@ import OSelect from 'src/components/Select/OSelect.vue'
 import OTable from 'src/components/Table/OTable.vue'
 import TextIcon from 'src/components/Text/TextIcon.vue'
 import { useChamadoStore } from 'src/stores/chamados/chamados.store'
-import { useClientesStore } from 'src/stores/clientes/clientes.store'
-import { useProjetoStore } from 'src/stores/projetos/projetos.store'
-import { useUsuarioStore } from 'src/stores/usuarios/usuarios.store'
 import GLOBAL from 'src/utils/GLOBAL'
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch, inject } from 'vue'
 import { columns1 } from './columns'
 import stackedChartBar from 'src/utils/chart/stackedChartBar'
 const { URLS } = api.defaults
@@ -379,14 +376,10 @@ const chart = ref(null)
 const menu = ref(null)
 const filter = ref('')
 
-// stores
-const { getClientes } = useClientesStore()
-const { getProjetos } = useProjetoStore()
-const { getUsuariosFoto } = useUsuarioStore()
-
-const { usuariosFoto } = storeToRefs(useUsuarioStore())
-const { clientes } = storeToRefs(useClientesStore())
-const { projetos } = storeToRefs(useProjetoStore())
+const usuariosFoto = inject('usuarios')
+const clientes = inject('clientes')
+const projetos = inject('projetos')
+const initialLoad = inject('initialLoad')
 
 const { getChamado } = useChamadoStore()
 const { chamados, isLoading: chamadoLoading } = storeToRefs(useChamadoStore())
@@ -490,8 +483,8 @@ watch(
 // tempoTask ----------------------------------
 
 const tempoTask = ref([])
+isLoading.value = true
 async function getTempoTask() {
-  isLoading.value = true
   menu.value.hide()
 
   const { data, error } = await useAxios(
@@ -555,15 +548,14 @@ function populateChart(tempoProjetos) {
     },
     // secondsToHours(i.duracao)
   })
-
-  getChamado(`&projeto__id=${filtros.value.projeto.model.id}`)
+  if (filtros.value.projeto.model.id)
+    getChamado(`&projeto__id=${filtros.value.projeto.model.id}`)
 
   // }
 }
 
 async function handleRemoveFilters() {
   filtros.value = filtrosDefault
-  getTempoTask()
 }
 
 // CHART
@@ -606,15 +598,22 @@ const exportTable = () => {
   }
 }
 
-onMounted(async () => {
-  await getProjetos()
+async function initialRequests() {
+  await getChamado()
+  await getTempoTask()
   filtros.value.projeto.options = projetos.value
-  getTempoTask()
-  getChamado()
-  await getClientes()
-  await getUsuariosFoto()
   filtros.value.cliente.options = clientes.value
   filtros.value.usuario.options = usuariosFoto.value
+}
+
+onMounted(async () => {
+  if (initialLoad) initialRequests()
+  else {
+    const unwatch = watch(initialLoad, async () => {
+      initialRequests()
+      unwatch()
+    })
+  }
 })
 </script>
 
