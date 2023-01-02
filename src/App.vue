@@ -45,11 +45,11 @@ const initialLoad = ref(false)
 
 async function requests() {
   await getUser()
+  getProfile()
   await getUsuariosFoto()
   await getProjetos()
   await getClientes()
   await getSubProjetos()
-  // getProfile()
 }
 
 if (userAuthStore.value.access) requests()

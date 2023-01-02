@@ -33,6 +33,8 @@ export const useUserStore = defineStore('userStore', () => {
       // necessario pois a foto do user
       // esta em usersFoto
       // await usuarios.getUsuariosFoto()
+      const id = data.value.id
+
       return data.value
     } catch (e) {
       return error
@@ -43,7 +45,12 @@ export const useUserStore = defineStore('userStore', () => {
 
   async function getProfile() {
     try {
-      const { data } = await api.get(`${URLS.profile}${user.value.id}/`)
+      const { data, error } = await useAxios(
+        `${URLS.profile}${user.value.id}/`,
+        { method: 'GET' },
+        api
+      )
+
       setProfile(data.value)
       return data.value
     } catch (e) {
