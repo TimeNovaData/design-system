@@ -5,23 +5,24 @@
       label="Título"
       size="lg"
       class="bg-white dark:!bg-transparent"
+      @keyup="sendTitle"
     />
 
     <OSelectAvatar
       label="Cliente - Projeto / Subprojeto"
       size="lg"
-      class="bg-white"
-      :options="userList"
-      :modelValue="clientModel"
-      :loading="!userList.length"
-      @update-value="(value) => (clientModel = value)"
+      class="bg-white dark:!bg-transparent"
+      :options="projectList"
+      :modelValue="ProjectModel"
+      :loading="!projectList.length"
+      @update-value="(value) => (ProjectModel = value)"
     />
 
     <OSelect
       use-input
       label="Grupo / Tipo"
       size="lg"
-      class="bg-white"
+      class="bg-white dark:!bg-transparent"
       :options="groupOptions"
       v-model="groupModel"
       option-value="val"
@@ -76,7 +77,7 @@
 
       <OInput
         size="lg"
-        class="w-full cursor-pointer"
+        class="bg-white dark:!bg-transparent w-full cursor-pointer"
         label="Data de entrega desejada"
         v-model="deliveryDateComplete"
         @keydown.prevent
@@ -98,7 +99,7 @@
       <OSelectAvatar
         label="Responsável"
         size="lg"
-        class="bg-white"
+        class="bg-white dark:!bg-transparent"
         :options="userList"
         :modelValue="respModel"
         :loading="!userList.length"
@@ -118,7 +119,7 @@ import OInputNumber from 'src/components/Input/OInputNumber.vue'
 import OSelectAvatar from 'src/components/Select/OSelectAvatar.vue'
 
 const titleModel = ref('')
-const clientModel = ref(null)
+const ProjectModel = ref(null)
 const groupModel = ref('')
 const respModel = ref(null)
 
@@ -130,15 +131,21 @@ const userList = inject('usuarios')
 
 const groupOptions = [{ val: 'Google' }, { val: 'Apple' }, { val: 'Oracle' }]
 
-const deliveryDateModel = ref('')
-const deliveryTimeModel = ref('')
-const deliveryDateComplete = computed(() => {
-  const today = new Date()
-  // const todayFormated = GLOBAL.FData(today)
+// Data de entrega desejada
+const today = new Date()
+const deliveryDateModel = ref(today.toDateString())
+const deliveryTimeModel = ref('12:00')
 
+const deliveryDateComplete = computed(() => {
   return `${GLOBAL.FData(deliveryDateModel.value)} - ${deliveryTimeModel.value}`
-  // return `${from && FData(from)} ${to && '  até  '} ${to && FData(to)}`
 })
+
+const emit = defineEmits(['sendTitle'])
+
+function sendTitle(e) {
+  emit()
+  console.log(e.target.value)
+}
 </script>
 
 <style lang="sass" scoped>
@@ -158,6 +165,6 @@ const deliveryDateComplete = computed(() => {
       max-width: none
 
 .body--light
-  .opaque-icon .q-icon
-    background: red
+  .opaque-icon :deep(.q-icon)
+    opacity: .4
 </style>

@@ -326,4 +326,9 @@
   </symbol>
 
 
+  <symbol id="icon_check" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18.3334 5.9585L8.25002 16.0418L3.66669 11.4585" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+
+
 </svg>

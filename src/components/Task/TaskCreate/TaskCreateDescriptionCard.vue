@@ -5,6 +5,7 @@
     height="90%"
     max-height="none"
     :toolbar="editorToobar()"
+    class="dark:bg-d-neutral-10"
   />
 </template>
 
