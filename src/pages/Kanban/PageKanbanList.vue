@@ -68,7 +68,11 @@
           :props="props"
           @click="() => $emit('openModal', props.row)"
         >
-          <q-td key="titulo" :auto-width="true" style="max-width: 350px">
+          <q-td
+            key="titulo"
+            :auto-width="true"
+            style="max-width: 350px; width: clamp(100px, 20vw, 350px)"
+          >
             <div class="one-line">
               {{ props.row.titulo }}
             </div>
