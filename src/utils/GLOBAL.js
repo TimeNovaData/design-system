@@ -234,6 +234,7 @@ export default {
       FORBID_TAGS: ['script'],
       FORBID_ATTR: ['onclick', 'style'],
     })
+
     return value
   },
 
