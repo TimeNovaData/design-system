@@ -22,6 +22,13 @@ const menuList = [
   },
 
   // {
+  //   title: 'Single Projeto',
+  //   nivel: 0,
+  //   icon: 'wysiwyg',
+  //   href: '/projeto',
+  // },
+
+  // {
   //   title: 'Financeiro',
   //   nivel: 0,
   //   icon: 'credit_score',

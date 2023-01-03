@@ -124,7 +124,8 @@ const tabs = ref(route.meta.tab)
 const modal = ref(null)
 const modalRight = ref(null)
 const chamadoAtivo = ref(null)
-
+// Refact essa function
+//
 watch(tabs, () => {
   tabs.value === 'board' && setTimeout(() => setHeightInCol(), 200)
   router.push(tabs.value)

@@ -8,7 +8,7 @@
     ref="componentRef"
     use-input
     @update:model-value="(value) => $emit('updateValue', value)"
-    popup-content-class="select-menu !min-w-[360px]"
+    :popup-content-class="popupClass"
   >
     <template #option="{ itemProps, opt }">
       <q-item v-bind="itemProps" class="px-4">
@@ -43,6 +43,10 @@ const emit = defineEmits(['updateValue'])
 const props = defineProps({
   modelValue: [String, Number, Object],
   classText: String,
+  popupClass: {
+    type: String,
+    default: 'select-menu',
+  },
   nomeKey: {
     type: String,
     default: 'nome',

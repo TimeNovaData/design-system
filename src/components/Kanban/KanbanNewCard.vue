@@ -157,6 +157,7 @@ async function handleChangeSelect() {
     setTimeout(() => input.value.componentRef.focus(), 100)
   }
 }
+
 function handleFocusOut() {
   if (chamadoValid.value) {
     newCardData.value.fase = props.colData.id

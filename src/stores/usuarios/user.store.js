@@ -46,7 +46,7 @@ export const useUserStore = defineStore('userStore', () => {
     if (!id) return
     try {
       const { data, error } = await useAxios(
-        `${URLS.profile}${id}/`,
+        `${URLS.profile}?user__id=${id}&no_loading`,
         { method: 'GET' },
         api
       )
@@ -68,7 +68,7 @@ export const useUserStore = defineStore('userStore', () => {
     const id = user.value.id
     if (!id) return
     try {
-      api.patch(`${URLS.profile}${id}/`, userProfile.value)
+      api.patch(`${URLS.profile}?user__id=${id}/&no_loading`, userProfile.value)
     } catch (e) {
       console.log(e)
     }

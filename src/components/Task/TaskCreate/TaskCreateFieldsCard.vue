@@ -13,9 +13,9 @@
       size="lg"
       class="bg-white dark:!bg-transparent"
       :options="projectList"
-      :modelValue="ProjectModel"
+      :modelValue="projectModel"
       :loading="!projectList.length"
-      @update-value="(value) => (ProjectModel = value)"
+      @update-value="(value) => (projectModel = value)"
     />
 
     <OSelect
@@ -23,11 +23,11 @@
       label="Grupo / Tipo"
       size="lg"
       class="bg-white dark:!bg-transparent"
-      :options="groupOptions"
+      :options="groupList"
       v-model="groupModel"
       option-value="val"
       option-label="val"
-      :loading="!groupOptions.length"
+      :loading="!groupList.length"
     ></OSelect>
 
     <div class="grid grid-cols-2 gap-16">
@@ -50,6 +50,7 @@
           mask="##h ##m"
           reverse-fill-mask
           placeholder="00h 00m"
+          maxlength="7"
         >
           <template v-slot:prepend>
             <q-icon size="1.5rem" name="svguse:/icons.svg#icon_clock"></q-icon>
@@ -118,33 +119,60 @@ import OButton from 'src/components/Button/OButton.vue'
 import OInputNumber from 'src/components/Input/OInputNumber.vue'
 import OSelectAvatar from 'src/components/Select/OSelectAvatar.vue'
 
-const titleModel = ref('')
-const ProjectModel = ref(null)
-const groupModel = ref('')
-const respModel = ref(null)
+const { FTime, FData } = GLOBAL
 
-const qtdModel = ref(1)
-const timeModel = ref('00:00')
-
-const projectList = inject('projetos')
-const userList = inject('usuarios')
-
-const groupOptions = [{ val: 'Google' }, { val: 'Apple' }, { val: 'Oracle' }]
-
-// Data de entrega desejada
-const today = new Date()
-const deliveryDateModel = ref(today.toDateString())
-const deliveryTimeModel = ref('12:00')
-
-const deliveryDateComplete = computed(() => {
-  return `${GLOBAL.FData(deliveryDateModel.value)} - ${deliveryTimeModel.value}`
+const props = defineProps({
+  taskValues: Object,
 })
 
-const emit = defineEmits(['sendTitle'])
+// Model Values Setters
+const setProjectModel = () => {
+  const selectedProject = projectList.value.filter(
+    (p) => p.nome === props.taskValues.nome_projeto
+  )
+  return selectedProject[0]
+}
+
+const setTimeModel = () => {
+  const formatedTime = FTime(props.taskValues.tempo_estimado)
+  return formatedTime === '-' ? '' : formatedTime
+}
+
+const setDeliveryTimeModel = () => {
+  const date = new Date(props.taskValues.entrega_data_desejada)
+  return `${date.getHours()}:${date.getMinutes()}`
+}
+
+const setDeliveryDateModel = () => {
+  const today = new Date()
+  const date = new Date(props.taskValues.entrega_data_desejada)
+  return FData(date.toDateString()) || today.toDateString()
+}
+
+// Options
+const projectList = inject('projetos')
+const userList = inject('usuarios')
+const groupList = [{ val: 'Google' }, { val: 'Apple' }, { val: 'Oracle' }]
+
+// Models
+const titleModel = ref(props.taskValues.titulo || '')
+const projectModel = ref(setProjectModel() || null)
+const groupModel = ref('')
+const respModel = ref(props.taskValues.responsavel || null)
+
+const qtdModel = ref(props.taskValues.quantidade || 1)
+const timeModel = ref(setTimeModel() || '00:00')
+
+const deliveryDateModel = ref(setDeliveryDateModel()) // Data de entrega desejada
+const deliveryTimeModel = ref(setDeliveryTimeModel() || '12:00')
+const deliveryDateComplete = computed(() => {
+  return `${deliveryDateModel.value} - ${deliveryTimeModel.value}`
+})
+
+const emit = defineEmits(['getTitle'])
 
 function sendTitle(e) {
-  emit()
-  console.log(e.target.value)
+  emit('getTitle', FTime(props.taskValues.tempo_estimado))
 }
 </script>
 
