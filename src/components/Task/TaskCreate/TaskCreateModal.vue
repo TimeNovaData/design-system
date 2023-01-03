@@ -8,8 +8,15 @@
     <q-card class="add-task-modal">
       <header class="modal-header">
         <div class="pl-16">
-          <span class="text-caps-3 text-neutral-100/50">ADICIONAR TASK</span>
-          <h2 class="text-title-4 text-neutral-100">Nova Task</h2>
+          <span class="text-caps-3 text-neutral-100/50" v-if="taskTitle">
+            EDITAR TASK
+          </span>
+          <span class="text-caps-3 text-neutral-100/50" v-else>
+            ADICIONAR TASK
+          </span>
+          <h2 class="text-title-4 text-neutral-100">
+            {{ taskTitle ? taskTitle : 'Nova Task' }}
+          </h2>
         </div>
 
         <OButton
@@ -28,7 +35,10 @@
       <section
         class="flex-1 p-24 pb-2 grid grid-cols-2 gap-16 md:flex md:flex-col md:overflow-y-auto"
       >
-        <TaskCreateFieldsCard />
+        <TaskCreateFieldsCard
+          @getTitle="updateTitle"
+          :taskValues="taskValues"
+        />
 
         <div class="flex flex-col">
           <q-tabs v-model="tabs" active-color="neutral-100">
@@ -45,7 +55,7 @@
               </template>
             </q-tab>
 
-            <q-tab class="!flex-none md:!flex-1" name="chat">
+            <q-tab class="!flex-none md:!flex-1" name="chat" v-if="taskTitle">
               <template
                 class="inline-flex items-center gap-8 text-neutral-70 dark:text-white/70"
                 :class="{ 'text-neutral-100 dark:!text-white': tabs == 'chat' }"
@@ -75,19 +85,35 @@
           </q-tabs>
 
           <q-tab-panels v-model="tabs" animated swipeable class="flex-1">
-            <TaskCreateDescriptionCard name="desc" description="" />
-            <OChatBox name="chat" comments sendComment getComments isLoading />
+            <TaskCreateDescriptionCard
+              name="desc"
+              :description="taskValues.value?.observacoes"
+            />
+            <OChatBox
+              v-if="taskTitle"
+              name="chat"
+              comments
+              sendComment
+              getComments
+              isLoading
+            />
             <TaskCreateAttachmentCard name="attach" />
           </q-tab-panels>
         </div>
       </section>
 
       <footer class="flex items-center justify-end gap-6 p-24 pt-14">
-        <OButton secondary icon="svguse:/icons.svg#icon_close">
+        <OButton
+          secondary
+          icon="svguse:/icons.svg#icon_close"
+          @click="closeDialog"
+        >
           Cancelar
         </OButton>
+
         <OButton primary icon="svguse:/icons.svg#icon_check">
-          Adicionar Nova Task
+          <span v-if="taskTitle">Salvar Alterações</span>
+          <span v-else>Adicionar Nova Task</span>
         </OButton>
       </footer>
     </q-card>
@@ -103,15 +129,31 @@ import TaskCreateFieldsCard from './TaskCreateFieldsCard.vue'
 import TaskCreateDescriptionCard from './TaskCreateDescriptionCard.vue'
 import TaskCreateAttachmentCard from './TaskCreateAttachmentCard.vue'
 
+const props = defineProps({
+  data: Object,
+})
+
 const tabs = ref('desc')
+const taskTitle = ref('')
+const taskValues = ref({})
 const dialogState = ref(false)
 const { dialogRef } = useDialogPluginComponent()
+
+function showModal(taskObj) {
+  dialogState.value = true
+  taskTitle.value = taskObj.titulo
+  taskValues.value = taskObj
+}
 
 const closeDialog = () => {
   dialogState.value = false
 }
 
-defineExpose({ dialogRef })
+defineExpose({ dialogRef, showModal })
+
+function updateTitle(value) {
+  taskTitle.value = value
+}
 </script>
 
 <style lang="sass" scoped>

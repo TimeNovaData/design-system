@@ -669,7 +669,10 @@
                       class="task-wrapper dark:border-transparent border rounded-generic mx-24 border-neutral-30"
                     >
                       <div v-for="task in tasksChamadoConcluido" :key="task.id">
-                        <KanbanTaskItem :task="task"></KanbanTaskItem>
+                        <KanbanTaskItem
+                          :task="task"
+                          :openTaskViewModal="openTaskViewModal"
+                        ></KanbanTaskItem>
                       </div>
                     </div>
                     <div v-else class="text-paragraph-2 text-center mt-12">
@@ -702,6 +705,9 @@
       </Transition>
     </q-card>
   </q-dialog>
+
+  <TaskViewModal ref="modalTaskRef" :editTask="openTaskEditModal" />
+  <TaskCreateModal ref="modalEditTaskRef" />
 </template>
 
 <script setup>
@@ -710,6 +716,8 @@ import { useDialogPluginComponent } from 'quasar'
 import AvatarSingle from 'src/components/Avatar/AvatarSingle.vue'
 import OBadge from 'src/components/Badge/OBadge.vue'
 import OButton from 'src/components/Button/OButton.vue'
+import TaskViewModal from 'src/components/Task/TaskView/TaskViewModal.vue'
+import TaskCreateModal from 'src/components/Task/TaskCreate/TaskCreateModal.vue'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import GLOBAL from 'src/utils/GLOBAL'
 import { inject, ref, unref, watch, computed } from 'vue'
@@ -719,6 +727,17 @@ import KanbanItemEditableEditor from './KanbanItemEditableEditor.vue'
 import KanbanItemEditableSelect from './KanbanItemEditableSelect.vue'
 import KanbanSectionHeader from './KanbanSectionHeader.vue'
 import KanbanTaskItem from './KanbanTaskItem.vue'
+
+const modalTaskRef = ref(null)
+const modalEditTaskRef = ref(null)
+
+const openTaskViewModal = (task) => {
+  modalTaskRef.value.showModal(task)
+}
+
+const openTaskEditModal = (task) => {
+  modalEditTaskRef.value.showModal(task)
+}
 
 const {
   returnRGB,

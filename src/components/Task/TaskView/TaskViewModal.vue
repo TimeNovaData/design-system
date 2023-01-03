@@ -9,7 +9,7 @@
       <header class="modal-header">
         <div class="pl-16">
           <span class="text-caps-3 text-neutral-100/50">TASK</span>
-          <h2 class="text-title-4 text-neutral-100">{{ data.nome_chamado }}</h2>
+          <h2 class="text-title-4 text-neutral-100">{{ task.titulo }}</h2>
         </div>
 
         <OButton
@@ -29,7 +29,7 @@
         class="flex-1 p-24 pb-2 grid grid-cols-2 gap-16 md:flex md:flex-col md:overflow-y-auto"
       >
         <div class="flex flex-col gap-16">
-          <TaskViewDetailCard :details="data" />
+          <TaskViewDetailCard :details="task" />
           <TaskViewAttachmentCard :anexos="anexos" />
         </div>
 
@@ -71,7 +71,7 @@
           <q-tab-panels v-model="tabs" animated swipeable class="flex-1">
             <TaskViewDescriptionCard
               name="desc"
-              :description="data.observacoes"
+              :description="task.observacoes"
             />
 
             <OChatBox
@@ -86,10 +86,18 @@
       </section>
 
       <footer class="flex items-center justify-end gap-6 p-24 pt-14">
-        <OButton primary icon="svguse:/icons.svg#icon_edit">
+        <OButton
+          primary
+          icon="svguse:/icons.svg#icon_edit"
+          @click="openEditModal"
+        >
           Editar Task
         </OButton>
-        <OButton secondary icon="svguse:/icons.svg#icon_close">
+        <OButton
+          secondary
+          icon="svguse:/icons.svg#icon_close"
+          @click="closeDialog"
+        >
           Cancelar
         </OButton>
       </footer>
@@ -100,6 +108,8 @@
 <script setup>
 import { ref } from 'vue'
 import { useDialogPluginComponent } from 'quasar'
+import { storeToRefs } from 'pinia'
+import { useAnexoStore } from 'src/stores/anexos/anexos.store'
 import useComments from 'src/composables/useComments'
 import OButton from 'src/components/Button/OButton.vue'
 import OCounter from 'src/components/Counter/OCounter.vue'
@@ -108,25 +118,46 @@ import TaskViewAttachmentCard from './TaskViewAttachmentCard.vue'
 import TaskViewDetailCard from './TaskViewDetailCard.vue'
 import TaskViewDescriptionCard from './TaskViewDescriptionCard.vue'
 
-const tabs = ref('desc')
-const dialogState = ref(false)
-const { dialogRef } = useDialogPluginComponent()
-
 const props = defineProps({
   data: Object,
-  anexos: Array,
+  editTask: Function,
 })
+
+// Variaveis do modal
+const dialogState = ref(false)
+const { dialogRef } = useDialogPluginComponent()
+const tabs = ref('desc')
+
+// Pegando os dados
+const anexos = ref([])
+const task = ref(null)
+
+const { getAnexos } = useAnexoStore()
+const { anexos: storeAnexos } = storeToRefs(useAnexoStore())
+
+// Metodos do modal
+const { isLoading, commentsReverse, getComments, sendComment } =
+  useComments(167)
+
+async function showModal(taskObj) {
+  await getAnexos(`?task__id=${taskObj.id}`)
+  await getComments()
+
+  task.value = taskObj || props.data
+  anexos.value = storeAnexos.value
+  dialogState.value = true
+}
 
 const closeDialog = () => {
   dialogState.value = false
 }
 
-defineExpose({ dialogRef })
+function openEditModal() {
+  console.log('Open edit')
+  props.editTask(task.value)
+}
 
-const { isLoading, commentsReverse, getComments, sendComment } =
-  useComments(371)
-
-getComments()
+defineExpose({ dialogRef, showModal })
 </script>
 
 <style lang="sass" scoped>

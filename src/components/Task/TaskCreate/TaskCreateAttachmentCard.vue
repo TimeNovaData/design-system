@@ -3,19 +3,107 @@
     <FilePond
       name="attachments"
       ref="pond"
-      label-idle="Arraste e jogue os arquivos aqui..."
       acceptedFileTypes="image/jpeg, image/png"
       :files="myFiles"
       :allow-multiple="true"
       @init="handleFilePondInit"
+      v-bind="filePondConfig"
     />
   </q-card>
 </template>
 
 <script setup>
+import { filePondConfig } from 'src/boot/filepond'
 const myFiles = []
 
 function handleFilePondInit() {
-  console.log('FilePond has initialized')
+  console.log('FilePond has initialized', filePondConfig)
 }
 </script>
+
+<!-- <style lang="sass">
+.filepond--root
+	background: yellow
+	margin-top: 8px
+
+
+.filepond--credits
+	display: none
+
+
+.filepond--drip
+	background: red !important
+	opacity: 0 !important
+
+
+.filepond--panel-root
+	background-color: pink
+
+
+.filepond--drop-label
+	border: 2px dashed #f8f9fa
+	margin-bottom: 1rem !important
+	border-radius: 8px
+	transition: background 0.3s ease
+	cursor: pointer
+
+	*
+		cursor: pointer
+
+
+	label
+		color: #495057
+		font-weight: 500
+
+
+	&:hover,
+	&:active
+		background: rgba(255, 255, 255, 0.1)
+
+
+
+.filepond--label-action
+	color: #339AF0
+	text-decoration: initial !important
+
+
+.filepond--list-scroller
+	margin-top: 1rem !important
+
+
+.filepond--list
+	margin-top: 1rem !important
+	left: 0 !important
+	right: 0 !important
+
+
+.filepond--item
+	height: 5rem !important
+	border-radius: 8px
+
+	.filepond--file-wrapper
+		height: 5rem !important
+		border-radius: 8px
+		background: linear-gradient(93.23deg, #339AF0 0%, rgb(117, 190, 250) 29.06%, #53affa 58.17%)
+
+
+	.filepond--file
+		align-items: center
+
+		.filepond--file-info-main
+			color: #f8f2fa !important
+			font-size: 0.75rem
+			margin-bottom: 4px
+			font-weight: 600
+
+
+		.filepond--file-info-sub
+			color: rgba(255, 255, 255, 0.87) !important
+			font-weight: 500
+			font-size: 0.75rem
+
+
+
+.filepond--file-action-button.filepond--action-remove-item
+	cursor: pointer
+</style> -->

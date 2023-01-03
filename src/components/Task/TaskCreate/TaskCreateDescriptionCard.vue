@@ -13,8 +13,12 @@
 import editorToobar from 'src/utils/editorToolbar'
 import { ref } from 'vue'
 
+const props = defineProps({
+  description: String,
+})
+
 const editor = ref(null)
-const descriptionModel = ref('')
+const descriptionModel = ref(props.description || '')
 </script>
 
 <style lang="sass" scoped></style>
