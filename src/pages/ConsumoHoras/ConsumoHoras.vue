@@ -52,6 +52,7 @@
                     :loading="!clientes"
                     clearable
                     @updateValue="(v) => (filtros.cliente.model = v)"
+                    fotoKey="logo"
                   >
                   </OSelectAvatar>
                 </q-item>
@@ -536,7 +537,7 @@ const getProjectName = (id) => (acc, i) => {
   return acc
 }
 
-const projectName = (id) => projetos.value.reduce(getProjectName(id), '')
+// const projectName = (id) => projetos.value.reduce(getProjectName(id), '')
 
 function populateChart(tempoProjetos) {
   const getDuracoes = (tempoProjeto) =>
@@ -544,9 +545,10 @@ function populateChart(tempoProjetos) {
   // projetos
   const duracoes = Object.values(tempoProjetos).map(getDuracoes)
 
-  const labels = Object.keys(tempoProjetos).map((projeto) =>
-    projectName(projeto)
-  )
+  // const labels = Object.keys(tempoProjetos).map((projeto) =>
+  //   projectName(projeto)
+  // )
+  const labels = Object.keys(tempoProjetos)
 
   const categories = Object.values(tempoProjetos).map((projeto) =>
     Object.keys(projeto)

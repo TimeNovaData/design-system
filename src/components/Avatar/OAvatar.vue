@@ -5,7 +5,7 @@
       class="!bg-neutral-20 dark:!bg-white/10"
       :class="classAvatar"
     >
-      <q-img v-if="foto" :src="foto" no-spinner />
+      <q-img no-transition v-if="foto" :src="foto" no-spinner />
     </q-avatar>
 
     <p class="text-paragraph-2 capitalize" :class="classText" v-if="nome">

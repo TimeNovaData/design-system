@@ -115,7 +115,7 @@
                 selectLabel="Projeto"
                 :selected="data.projeto"
               >
-                <template #option="scope">
+                <!-- <template #option="scope">
                   <q-item
                     v-bind="scope.itemProps"
                     class="items-center gap-8"
@@ -128,7 +128,7 @@
                     ></q-badge>
                     {{ scope.opt.nome }}
                   </q-item>
-                </template>
+                </template> -->
               </KanbanItemEditableSelect>
             </div>
           </div>

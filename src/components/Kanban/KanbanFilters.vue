@@ -33,6 +33,7 @@
             clearable
             @updateValue="(v) => (filtros.projeto.model = v) && handleApply()"
             @clear="handleApply"
+            fotoKey="logo"
           >
           </OSelectAvatar>
         </q-item>
@@ -43,6 +44,7 @@
             label="Usuário"
             size="md"
             class="w-full"
+            fotoKey="logo"
             :modelValue="filtros.usuario.model"
             :options="usuarios"
             :loading="!usuarios"

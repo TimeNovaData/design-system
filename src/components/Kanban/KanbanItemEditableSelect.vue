@@ -8,7 +8,24 @@
   >
     <p class="mb-16 text-title-5">{{ text }}</p>
 
-    <OSelect
+    <OSelectAvatar
+      v-bind="selectProps"
+      ref="select"
+      use-input
+      size="md"
+      class="w-full"
+      :modelValue="projetoSelected"
+      :loading="!options"
+      clearable
+      @updateValue="handleEmit"
+      @clear="handleEmit"
+      fotoKey="logo"
+      :options="options"
+      :label="selectLabel"
+    >
+    </OSelectAvatar>
+
+    <!-- <OSelect
       v-bind="selectProps"
       v-model="projetoSelected"
       use-input
@@ -47,13 +64,14 @@
           </q-item-section>
         </q-item>
       </template>
-    </OSelect>
+    </OSelect> -->
   </q-popup-edit>
 </template>
 
 <script setup>
 import { onUpdated, ref, watch, onMounted, useSlots } from 'vue'
 import OSelect from 'src/components/Select/OSelect.vue'
+import OSelectAvatar from 'src/components/Select/OSelectAvatar.vue'
 const slots = useSlots()
 
 const props = defineProps({
@@ -99,7 +117,7 @@ function handleEmit() {
 }
 
 function selectShow(e) {
-  select.value.componentRef.showPopup()
+  select.value.componentRef.componentRef.showPopup()
 }
 </script>
 <style lang="sass"></style>

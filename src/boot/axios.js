@@ -43,21 +43,21 @@ const api = axios.create({
   },
 })
 
-api.interceptors.response.use(undefined, async function (error) {
+async function getToken(error) {
   const authStore = useAuthStore()
 
-  async function getToken() {
-    if (error.response.status === 403) {
-      console.warn(`TOKEN INVALIDO ou VAZIO ${error}`)
-      const refresh = await authStore.refreshToken()
-      error.config.headers.Authorization = `Bearer ${authStore.user.access}`
-      return await axios.request(error.config)
-    } else {
-      throw new Error(error)
-    }
+  if (error.response.status === 403) {
+    console.warn(`TOKEN INVALIDO ou VAZIO ${error}`)
+    await authStore.refreshToken()
+    error.config.headers.Authorization = `Bearer ${authStore.user.access}`
+    return await axios.request(error.config)
+  } else {
+    throw new Error(error)
   }
+}
 
-  return await getToken()
+api.interceptors.response.use(undefined, async function (error) {
+  return await getToken(error)
 })
 
 export default boot(({ app }) => {
