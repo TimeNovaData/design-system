@@ -8,12 +8,12 @@ export default function useChamadosBG() {
   const user = useUserStore()
 
   onMounted(() => {
-    const storage = LocalStorage.getItem('kanbanBg')
+    const storage = LocalStorage.getItem('kanban.bg')
     storage && (kanbanBG.value = storage)
   })
 
   watch(kanbanBG, (v) => {
-    LocalStorage.set('kanbanBg', v)
+    LocalStorage.set('kanban.bg', v)
     if (v !== user.userProfile.background_url)
       user.setProfile({ ...user.userProfile, background_url: v })
   })
