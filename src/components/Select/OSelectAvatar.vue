@@ -54,12 +54,14 @@ const props = defineProps({
 })
 
 // Se resetar de fora reflete dentro do component
+
 watch(
   () => props.modelValue,
   (v) => (model.value = v)
 )
 
 const model = ref(props.modelValue)
+
 const attrs = useAttrs()
 const componentRef = ref(null)
 

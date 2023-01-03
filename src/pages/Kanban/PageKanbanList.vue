@@ -1,6 +1,34 @@
 <template>
-  <q-card class="m-16 h-full overflow-hidden card-kanban-list">
+  <q-card
+    class="m-16 h-full overflow-hidden card-kanban-list flex flex-col w-auto p-6 flex-nowrap"
+  >
     <div class="flex gap-8 items-center px-6 pt-6">
+      <OButton
+        secondary
+        size="md"
+        :class="`${active === 'todos' ? 'active' : ''}`"
+        @click="active = 'todos'"
+        class="text-neutral-100/70"
+      >
+        Todos
+        <q-badge
+          class="bg-neutral-100/10 text-neutral-100 w-20 h-20 shrink-0 dark:bg-white/10 dark:text-white/80 font-semibold"
+          :class="`${
+            active === 'todos' ? '!bg-primary-pure/10 !text-primary-pure' : ''
+          }`"
+          rounded
+        >
+          <p class="block m-auto">
+            {{
+              colunasWithCards.reduce((acc, i) => {
+                acc = [...acc, ...i.cards]
+                return acc
+              }, []).length
+            }}
+          </p>
+        </q-badge>
+      </OButton>
+
       <OButton
         secondary
         size="md"
@@ -28,7 +56,7 @@
       :columns="columns1"
       :rows="onlyCards"
       :filter="filter"
-      class="mx-6 mt-6 h-auto max-h-full my-sticky-header-table"
+      class="mt-6 my-sticky-header-table w-full flex-[0_1_max-content] !h-0"
       :class="`${!onlyCards.length ? 'opacity-0' : ''}`"
       :pagination="{
         rowsPerPage: 100,
@@ -40,15 +68,26 @@
           :props="props"
           @click="() => $emit('openModal', props.row)"
         >
-          <q-td key="titulo" :auto-width="false">
-            {{ props.row.titulo }}
+          <q-td
+            key="titulo"
+            :auto-width="true"
+            style="max-width: 350px; width: clamp(100px, 20vw, 350px)"
+          >
+            <div class="one-line">
+              {{ props.row.titulo }}
+            </div>
           </q-td>
 
           <q-td key="tag" :auto-width="true">
-            <div class="flex gap-4 flex-nowrap">
-              <div v-for="tag in props.row.tag" :key="tag.id">
-                <TagBase :tag="tag" :nome="tag.nome" :cor="tag.cor_letra" />
-              </div>
+            <div class="flex gap-4 max-w-[70px] w-max items-center">
+              <TagBase
+                :tag="tag"
+                :nome="tag.nome"
+                :cor="tag.cor_letra"
+                v-for="tag in props.row.tag"
+                :key="tag.id"
+                class="w-max h-8"
+              />
             </div>
           </q-td>
 
@@ -200,7 +239,7 @@ import { inject, ref, computed, watch } from 'vue'
 import { columns1 } from './columns.js'
 
 const { FData } = GLOBAL
-const active = ref(1)
+const active = ref('todos')
 const filter = ref('')
 const chamados = inject('chamados')
 const colunasWithCards = inject('colunasWithCards')
@@ -209,7 +248,10 @@ const emit = defineEmits(['openModal'])
 
 const onlyCards = computed(() =>
   colunasWithCards.value.reduce((acc, i) => {
-    const cards = i.cards.filter((i) => i.fase.id === active.value)
+    const cards = i.cards.filter((i) => {
+      if (active.value === 'todos') return i
+      return i.fase.id === active.value
+    })
     acc = [...acc, ...cards]
     return acc
   }, [])

@@ -33,8 +33,6 @@ export const useUserStore = defineStore('userStore', () => {
       // necessario pois a foto do user
       // esta em usersFoto
       // await usuarios.getUsuariosFoto()
-      const id = data.value.id
-
       return data.value
     } catch (e) {
       return error
@@ -44,16 +42,19 @@ export const useUserStore = defineStore('userStore', () => {
   }
 
   async function getProfile() {
+    const id = user.value.id
+    if (!id) return
     try {
       const { data, error } = await useAxios(
-        `${URLS.profile}${user.value.id}/`,
+        `${URLS.profile}${id}/`,
         { method: 'GET' },
         api
       )
 
-      setProfile(data.value)
+      userProfile.value = data.value
       return data.value
     } catch (e) {
+      console.log(e)
       return e
     }
   }
@@ -62,9 +63,17 @@ export const useUserStore = defineStore('userStore', () => {
     user.value = value
   }
 
-  function setProfile(value) {
+  async function setProfile(value) {
     userProfile.value = value
+    const id = user.value.id
+    if (!id) return
+    try {
+      api.patch(`${URLS.profile}${id}/`, userProfile.value)
+    } catch (e) {
+      console.log(e)
+    }
   }
+
   function $reset() {
     user.value = []
   }
@@ -74,6 +83,7 @@ export const useUserStore = defineStore('userStore', () => {
     getUser,
     getProfile,
     setUser,
+    setProfile,
     user,
     userFoto,
     userProfile,
