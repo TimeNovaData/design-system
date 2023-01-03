@@ -51,7 +51,7 @@ export const useUserStore = defineStore('userStore', () => {
         api
       )
 
-      userProfile.value = data.value
+      userProfile.value = data.value[0]
       return data.value
     } catch (e) {
       console.log(e)
@@ -65,10 +65,10 @@ export const useUserStore = defineStore('userStore', () => {
 
   async function setProfile(value) {
     userProfile.value = value
-    const id = user.value.id
+    const id = userProfile.value.id
     if (!id) return
     try {
-      api.patch(`${URLS.profile}?user__id=${id}/&no_loading`, userProfile.value)
+      api.patch(`${URLS.profile}${id}/?no_loading`, userProfile.value)
     } catch (e) {
       console.log(e)
     }

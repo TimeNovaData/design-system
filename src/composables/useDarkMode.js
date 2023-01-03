@@ -12,10 +12,11 @@ export default function useDarkMode() {
   })
 
   watch(darkMode, (v) => {
-    Dark.set(darkMode.value)
-    LocalStorage.set('darkMode', v)
-    if (v !== user.userProfile.dark_mode)
+    if (v !== user.userProfile.dark_mode) {
+      Dark.set(darkMode.value)
+      LocalStorage.set('darkMode', v)
       user.setProfile({ ...user.userProfile, dark_mode: v })
+    }
   })
 
   watch(
