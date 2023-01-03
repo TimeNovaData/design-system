@@ -1,7 +1,7 @@
 <template>
   <div
     class="flex py-12 px-16 border-b border-b-neutral-30 items-center gap-8 w-full flex-1 dark:border-b-white/5 cursor-pointer hover:bg-neutral-10 transition-colors"
-    @click="() => openModal(task)"
+    @click="() => openTaskViewModal(task)"
   >
     <AvatarSingle
       class="!relative !left-0 !h-48 !w-48"
@@ -37,11 +37,10 @@
 <script setup>
 import GLOBAL from 'src/utils/GLOBAL'
 import AvatarSingle from 'src/components/Avatar/AvatarSingle.vue'
-import useModalTask from 'src/composables/useModalTask'
 
 defineProps({
   task: Object,
-  openModal: Function,
+  openTaskViewModal: Function,
 })
 </script>
 

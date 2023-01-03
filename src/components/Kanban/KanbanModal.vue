@@ -671,7 +671,7 @@
                       <div v-for="task in tasksChamadoConcluido" :key="task.id">
                         <KanbanTaskItem
                           :task="task"
-                          :openModal="openViewTaskModal"
+                          :openTaskViewModal="openTaskViewModal"
                         ></KanbanTaskItem>
                       </div>
                     </div>
@@ -706,7 +706,8 @@
     </q-card>
   </q-dialog>
 
-  <TaskViewModal ref="modalTask" :data="taskModal" :anexos="anexos" />
+  <TaskViewModal ref="modalTaskRef" :editTask="openTaskEditModal" />
+  <TaskCreateModal ref="modalEditTaskRef" />
 </template>
 
 <script setup>
@@ -716,6 +717,7 @@ import AvatarSingle from 'src/components/Avatar/AvatarSingle.vue'
 import OBadge from 'src/components/Badge/OBadge.vue'
 import OButton from 'src/components/Button/OButton.vue'
 import TaskViewModal from 'src/components/Task/TaskView/TaskViewModal.vue'
+import TaskCreateModal from 'src/components/Task/TaskCreate/TaskCreateModal.vue'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import GLOBAL from 'src/utils/GLOBAL'
 import { inject, ref, unref, watch, computed } from 'vue'
@@ -725,10 +727,17 @@ import KanbanItemEditableEditor from './KanbanItemEditableEditor.vue'
 import KanbanItemEditableSelect from './KanbanItemEditableSelect.vue'
 import KanbanSectionHeader from './KanbanSectionHeader.vue'
 import KanbanTaskItem from './KanbanTaskItem.vue'
-import useModalTask from 'src/composables/useModalTask'
 
-const modalTask = ref(null)
-const { taskModal, anexos, openViewTaskModal } = useModalTask(modalTask)
+const modalTaskRef = ref(null)
+const modalEditTaskRef = ref(null)
+
+const openTaskViewModal = (task) => {
+  modalTaskRef.value.showModal(task)
+}
+
+const openTaskEditModal = (task) => {
+  modalEditTaskRef.value.showModal(task)
+}
 
 const {
   returnRGB,
