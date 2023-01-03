@@ -61,11 +61,9 @@ import { inject, ref, watch } from 'vue'
 import { useDialogPluginComponent } from 'quasar'
 import { storeToRefs } from 'pinia'
 import { useBlurMode } from 'src/stores/blurMode'
-import useKanbanBG from 'src/composables/useKanbanBG'
 import OInput from 'src/components/Input/OInput.vue'
 
 const blur = useBlurMode()
-const bg = useKanbanBG()
 const kanbanBG = inject('kanbanBG')
 const { blurMode } = storeToRefs(blur)
 
