@@ -158,7 +158,7 @@ export default function useChamadosComposable() {
   async function getLogAlt(id) {
     try {
       const { data } = await api.get(
-        `${URLS.logAlteracoesChamado}?chamado__id=${id}`
+        `${URLS.logAlteracoesChamado}?chamado__id=${id}&no_loading`
       )
 
       logAlt.value = data

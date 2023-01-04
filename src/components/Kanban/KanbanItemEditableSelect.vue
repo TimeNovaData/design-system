@@ -8,24 +8,8 @@
   >
     <p class="mb-16 text-title-5">{{ text }}</p>
 
-    <OSelectAvatar
-      v-bind="selectProps"
-      ref="select"
-      use-input
-      size="md"
-      class="w-full"
-      :modelValue="projetoSelected"
-      :loading="!options"
-      clearable
-      @updateValue="handleEmit"
-      @clear="handleEmit"
-      fotoKey="logo"
-      :options="options"
-      :label="selectLabel"
-    >
-    </OSelectAvatar>
-
-    <!-- <OSelect
+    <OSelect
+      v-if="type === 'tag'"
       v-bind="selectProps"
       v-model="projetoSelected"
       use-input
@@ -64,7 +48,25 @@
           </q-item-section>
         </q-item>
       </template>
-    </OSelect> -->
+    </OSelect>
+
+    <OSelectAvatar
+      v-else
+      v-bind="selectProps"
+      ref="select"
+      use-input
+      size="md"
+      class="w-full"
+      :modelValue="projetoSelected"
+      :loading="!options"
+      clearable
+      @updateValue="handleEmit"
+      @clear="handleEmit"
+      fotoKey="logo"
+      :options="options"
+      :label="selectLabel"
+    >
+    </OSelectAvatar>
   </q-popup-edit>
 </template>
 
@@ -78,6 +80,7 @@ const props = defineProps({
   value: String,
   text: String,
   options: Array,
+  type: String,
   closeOnSelect: {
     type: Boolean,
     default: true,
@@ -117,6 +120,10 @@ function handleEmit() {
 }
 
 function selectShow(e) {
+  if (props.type === 'tag') {
+    select.value.componentRef.showPopup()
+    return
+  }
   select.value.componentRef.componentRef.showPopup()
 }
 </script>

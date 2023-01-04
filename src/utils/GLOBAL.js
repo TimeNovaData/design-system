@@ -66,11 +66,11 @@ export default {
   },
 
   // compara dois objetos e retorna a diferença
-  compareAndReturnDiff: (valueA = {}, valueB = {}) => {
+  compareAndReturnDiff: (oldv = {}, newv = {}) => {
     const modificado = {}
-    Object.entries(unref(valueB)).forEach(([key, v]) => {
-      const a = valueA[key]
-      const b = valueB[key]
+    Object.entries(unref(newv)).forEach(([key, v]) => {
+      const a = oldv[key]
+      const b = newv[key]
       if (is.deepEqual(a, b)) return null
       else modificado[key] = v
     })

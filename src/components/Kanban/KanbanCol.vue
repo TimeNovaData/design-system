@@ -1,8 +1,8 @@
 <template>
   <div class="kanban-col">
-    <header class="px-6 pb-14 pt-6 w-full flex items-center">
+    <header class="px-6 pb-14 pt-6 w-full flex items-center flex-nowrap gap-8">
       <div class="inline-flex items-center gap-6">
-        <p class="text-headline-3">
+        <p class="text-headline-3 one-line">
           {{ colData.nome }}
           <span class="opacity-60">{{
             colData.fase_conclusao ? '(Ultimos 15 dias)' : ''

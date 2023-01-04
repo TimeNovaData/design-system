@@ -12,12 +12,12 @@ export const FilePond = vueFilePond(FilePondPluginFileValidateType)
 
 // Settings
 const labelTemplate = `
-    <div class="label--input"> 
-        <p class="text-neutral-70 text-14 ">Arraste e jogue os arquivos aqui</p>
-        <button class="bg-white p-6 rounded">
-            Selecione os arquivos
-        </button>
-    </div>
+  <div class="filepond--label-text">
+    <p>Arraste e jogue os arquivos aqui</p>
+    <button>
+      Selecione os arquivos
+    </button>
+  </div>
 `
 
 const filePondConfig = {
@@ -43,10 +43,18 @@ const filePondConfig = {
 
   labelFileTypeNotAllowed: 'Tipo de arquivo não é suportado',
   fileValidateTypeLabelExpectedTypes: 'Espera {allButLastType} ou {lastType}',
+  labelFileProcessingError: 'Erro durante o upload',
+  labelTapToRetry: 'Toque para tentar novamente',
+  labelTapToCancel: 'Toque para cancelar',
+  server: {
+    url: 'localhost:8000',
+    // headers: {
+    //   'X-CSRF-TOKEN': 'xxxxxxxx',
+    // },
+  },
 }
 
 export default boot(async ({ app }) => {
-  // app.use(FilePond)
   app.component('FilePond', FilePond)
   app.config.globalProperties.$filePondConfig = filePondConfig
 })
