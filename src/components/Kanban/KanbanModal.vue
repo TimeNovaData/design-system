@@ -707,7 +707,11 @@
   </q-dialog>
 
   <TaskViewModal ref="modalTaskRef" :editTask="openTaskEditModal" />
-  <TaskCreateModal ref="modalEditTaskRef" />
+  <TaskCreateModal
+    v-if="taskModalObj"
+    ref="modalEditTaskRef"
+    :taskObject="taskModalObj"
+  />
 </template>
 
 <script setup>
@@ -720,7 +724,7 @@ import TaskViewModal from 'src/components/Task/TaskView/TaskViewModal.vue'
 import TaskCreateModal from 'src/components/Task/TaskCreate/TaskCreateModal.vue'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import GLOBAL from 'src/utils/GLOBAL'
-import { inject, ref, unref, watch, computed } from 'vue'
+import { inject, ref, unref, watch, computed, nextTick } from 'vue'
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
 import KanbanItemEditable from './KanbanItemEditable.vue'
 import KanbanItemEditableEditor from './KanbanItemEditableEditor.vue'
@@ -728,6 +732,7 @@ import KanbanItemEditableSelect from './KanbanItemEditableSelect.vue'
 import KanbanSectionHeader from './KanbanSectionHeader.vue'
 import KanbanTaskItem from './KanbanTaskItem.vue'
 
+const taskModalObj = ref(null)
 const modalTaskRef = ref(null)
 const modalEditTaskRef = ref(null)
 
@@ -735,9 +740,21 @@ const openTaskViewModal = (task) => {
   modalTaskRef.value.showModal(task)
 }
 
-const openTaskEditModal = (task) => {
-  modalEditTaskRef.value.showModal(task)
+const openTaskEditModal = async (task) => {
+  taskModalObj.value = task
+  await nextTick()
+  modalEditTaskRef.value.showModal()
 }
+
+watch(
+  () => taskModalObj,
+  () => {
+    console.log(taskModalObj.value)
+  },
+  {
+    deep: true,
+  }
+)
 
 const {
   returnRGB,

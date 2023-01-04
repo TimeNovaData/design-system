@@ -36,8 +36,8 @@
         class="flex-1 p-24 pb-2 grid grid-cols-2 gap-16 md:flex md:flex-col md:overflow-y-auto"
       >
         <TaskCreateFieldsCard
-          @getTitle="updateTitle"
-          :taskValues="taskValues"
+          @update="(val) => handleUpdate(val)"
+          :taskValues="taskScope"
         />
 
         <div class="flex flex-col">
@@ -50,7 +50,7 @@
                 <q-icon
                   size="1.5rem"
                   name="svguse:/icons.svg#icon_description"
-                ></q-icon>
+                />
                 <p class="text-paragraph-1">Descrição</p>
               </template>
             </q-tab>
@@ -60,11 +60,13 @@
                 class="inline-flex items-center gap-8 text-neutral-70 dark:text-white/70"
                 :class="{ 'text-neutral-100 dark:!text-white': tabs == 'chat' }"
               >
-                <q-icon
-                  size="1.5rem"
-                  name="svguse:/icons.svg#icon_chat"
-                ></q-icon>
+                <q-icon size="1.5rem" name="svguse:/icons.svg#icon_chat" />
                 <p class="text-paragraph-1">Comentários</p>
+                <OCounter
+                  class="!w-20 !h-20 bg-neutral-100/10 text-neutral-100 dark:bg-white/10 dark:text-white"
+                >
+                  {{ commentsReverse.length }}
+                </OCounter>
               </template>
             </q-tab>
 
@@ -78,7 +80,7 @@
                 <q-icon
                   size="1.5rem"
                   name="svguse:/icons.svg#icon_attachment"
-                ></q-icon>
+                />
                 <p class="text-paragraph-1">Anexos</p>
               </template>
             </q-tab>
@@ -87,15 +89,15 @@
           <q-tab-panels v-model="tabs" animated swipeable class="flex-1">
             <TaskCreateDescriptionCard
               name="desc"
-              :description="taskValues.value?.observacoes"
+              :description="taskScope.value?.observacoes"
             />
             <OChatBox
               v-if="taskTitle"
               name="chat"
-              comments
-              sendComment
-              getComments
-              isLoading
+              :comments="commentsReverse"
+              :sendComment="sendComment"
+              :getComments="getComments"
+              :isLoading="isLoading"
             />
             <TaskCreateAttachmentCard name="attach" />
           </q-tab-panels>
@@ -111,7 +113,11 @@
           Cancelar
         </OButton>
 
-        <OButton primary icon="svguse:/icons.svg#icon_check">
+        <OButton
+          @click="handleSave"
+          primary
+          icon="svguse:/icons.svg#icon_check"
+        >
           <span v-if="taskTitle">Salvar Alterações</span>
           <span v-else>Adicionar Nova Task</span>
         </OButton>
@@ -121,39 +127,75 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useDialogPluginComponent } from 'quasar'
+import useComments from 'src/composables/useComments'
 import OButton from 'src/components/Button/OButton.vue'
 import OChatBox from 'src/components/Chat/OChatBox.vue'
 import TaskCreateFieldsCard from './TaskCreateFieldsCard.vue'
 import TaskCreateDescriptionCard from './TaskCreateDescriptionCard.vue'
 import TaskCreateAttachmentCard from './TaskCreateAttachmentCard.vue'
+import OCounter from 'src/components/Counter/OCounter.vue'
+import GLOBAL from 'src/utils/GLOBAL'
+import { deepUnref } from 'vue-deepunref'
+import { api } from 'src/boot/axios'
+
+const { URLS } = api.defaults
 
 const props = defineProps({
-  data: Object,
+  taskObject: Object,
 })
 
+const taskScope = ref(props.taskObject)
+watch(
+  () => props.taskObject,
+  () => {
+    window._yellow('Mudou taskScope')
+    taskScope.value = props.taskObject
+  }
+)
+
+watch(
+  () => taskScope,
+  () => {
+    window._yellow('Mudou taskTitle')
+    taskTitle.value = taskScope.value.titulo
+  },
+  { deep: true }
+)
+
 const tabs = ref('desc')
-const taskTitle = ref('')
-const taskValues = ref({})
+const taskTitle = ref(taskScope.value.titulo)
+
 const dialogState = ref(false)
 const { dialogRef } = useDialogPluginComponent()
 
-function showModal(taskObj) {
+function showModal() {
   dialogState.value = true
-  taskTitle.value = taskObj.titulo
-  taskValues.value = taskObj
 }
 
 const closeDialog = () => {
   dialogState.value = false
 }
 
-defineExpose({ dialogRef, showModal })
-
-function updateTitle(value) {
-  taskTitle.value = value
+function handleUpdate(val) {
+  taskScope.value = { ...taskScope.value, ...val }
+  console.log('handleUpdate', { ...taskScope.value, ...val })
 }
+
+async function handleSave() {
+  const diff = GLOBAL.compareAndReturnDiff(props.taskObject, taskScope.value)
+  const data = { ...deepUnref(diff) }
+
+  const req = await api.patch(URLS.task + props.taskObject.id + '/', data)
+  console.log(req)
+}
+
+const { isLoading, commentsReverse, getComments, sendComment } = useComments(
+  props.taskObject.id
+)
+
+defineExpose({ dialogRef, showModal })
 </script>
 
 <style lang="sass" scoped>

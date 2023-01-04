@@ -1,21 +1,33 @@
 <template>
   <div class="fields-cards flex flex-col gap-16">
     <OInput
-      v-model="titleModel"
+      v-model="model.titulo"
       label="Título"
       size="lg"
       class="bg-white dark:!bg-transparent"
-      @keyup="sendTitle"
     />
 
     <OSelectAvatar
-      label="Cliente - Projeto / Subprojeto"
+      label="Cliente - Projeto"
       size="lg"
       class="bg-white dark:!bg-transparent"
       :options="projectList"
-      :modelValue="projectModel"
+      :modelValue="model.projeto"
       :loading="!projectList.length"
-      @update-value="(value) => (projectModel = value)"
+      fotoKey="logo"
+      @update-value="(value) => updateProjectSelect(value)"
+    />
+
+    <OSelectAvatar
+      v-if="subProjectSelectList.length"
+      label="Subprojeto"
+      size="lg"
+      class="bg-white dark:!bg-transparent"
+      :options="subProjectSelectList"
+      :modelValue="model.sub_projeto"
+      :loading="!subProjectList.length"
+      fotoKey="logo"
+      @update-value="(value) => (model.sub_projeto = value)"
     />
 
     <OSelect
@@ -23,27 +35,27 @@
       label="Grupo / Tipo"
       size="lg"
       class="bg-white dark:!bg-transparent"
-      :options="groupList"
-      v-model="groupModel"
-      option-value="val"
-      option-label="val"
-      :loading="!groupList.length"
+      :options="taskTypes"
+      v-model="model.tipo_task"
+      option-value="nome"
+      option-label="nome"
+      :loading="!taskTypes.length"
     ></OSelect>
 
     <div class="grid grid-cols-2 gap-16">
       <div class="grid grid-cols-2 gap-16">
         <div>
           <OInputNumber
-            :modelValue="qtdModel"
+            :modelValue="model.quantidade"
             label="Quantidade"
             size="lg"
             class="bg-white dark:!bg-transparent"
-            @update-value="(value) => (qtdModel = value)"
+            @update-value="(value) => (model.quantidade = value)"
           ></OInputNumber>
         </div>
 
         <OInput
-          v-model="timeModel"
+          v-model="model.tempo_estimado"
           label="Tempo estimado"
           size="lg"
           class="bg-white dark:!bg-transparent"
@@ -84,8 +96,12 @@
         @keydown.prevent
       >
         <q-popup-proxy cover transition-show="scale" transition-hide="scale">
-          <q-date v-model="deliveryDateModel" landscape>
-            <OInput size="md" type="time" v-model="deliveryTimeModel" />
+          <q-date v-model="model.entrega_data_desejada_data" landscape>
+            <OInput
+              size="md"
+              type="time"
+              v-model="model.entrega_data_desejada_hora"
+            />
           </q-date>
         </q-popup-proxy>
 
@@ -102,78 +118,146 @@
         size="lg"
         class="bg-white dark:!bg-transparent"
         :options="userList"
-        :modelValue="respModel"
+        :modelValue="model.responsavel"
         :loading="!userList.length"
-        @update-value="(value) => (respModel = value)"
+        @update-value="(value) => (model.responsavel = value)"
       />
     </div>
   </div>
 </template>
 
 <script setup>
-import OInput from 'src/components/Input/OInput.vue'
-import { ref, computed, inject } from 'vue'
+import { date } from 'quasar'
+import { ref, computed, inject, watch } from 'vue'
 import GLOBAL from 'src/utils/GLOBAL'
+import OInput from 'src/components/Input/OInput.vue'
 import OSelect from 'src/components/Select/OSelect.vue'
 import OButton from 'src/components/Button/OButton.vue'
 import OInputNumber from 'src/components/Input/OInputNumber.vue'
 import OSelectAvatar from 'src/components/Select/OSelectAvatar.vue'
-
+import { deepUnref } from 'vue-deepunref'
+window.data = date
 const { FTime, FData } = GLOBAL
+
+const emit = defineEmits(['update'])
 
 const props = defineProps({
   taskValues: Object,
 })
 
-// Model Values Setters
-const setProjectModel = () => {
+const projectList = inject('projetos')
+const subProjectList = inject('subProjetos')
+const userList = inject('usuarios')
+const taskTypes = inject('taskTypes')
+const subProjectSelectList = ref([])
+
+// Model Value Setters
+const setProjectModel = computed(() => {
   const selectedProject = projectList.value.filter(
-    (p) => p.nome === props.taskValues.nome_projeto
+    (p) => p.id === props.taskValues.projeto
   )
   return selectedProject[0]
-}
-
-const setTimeModel = () => {
-  const formatedTime = FTime(props.taskValues.tempo_estimado)
-  return formatedTime === '-' ? '' : formatedTime
-}
-
-const setDeliveryTimeModel = () => {
-  const date = new Date(props.taskValues.entrega_data_desejada)
-  return `${date.getHours()}:${date.getMinutes()}`
-}
-
-const setDeliveryDateModel = () => {
-  const today = new Date()
-  const date = new Date(props.taskValues.entrega_data_desejada)
-  return FData(date.toDateString()) || today.toDateString()
-}
-
-// Options
-const projectList = inject('projetos')
-const userList = inject('usuarios')
-const groupList = [{ val: 'Google' }, { val: 'Apple' }, { val: 'Oracle' }]
-
-// Models
-const titleModel = ref(props.taskValues.titulo || '')
-const projectModel = ref(setProjectModel() || null)
-const groupModel = ref('')
-const respModel = ref(props.taskValues.responsavel || null)
-
-const qtdModel = ref(props.taskValues.quantidade || 1)
-const timeModel = ref(setTimeModel() || '00:00')
-
-const deliveryDateModel = ref(setDeliveryDateModel()) // Data de entrega desejada
-const deliveryTimeModel = ref(setDeliveryTimeModel() || '12:00')
-const deliveryDateComplete = computed(() => {
-  return `${deliveryDateModel.value} - ${deliveryTimeModel.value}`
 })
 
-const emit = defineEmits(['getTitle'])
+const setSubProjectModel = computed(() => {
+  const selectedSubProject = subProjectList.value.filter(
+    (p) => p.id === props.taskValues.sub_projeto
+  )
+  return selectedSubProject[0]
+})
 
-function sendTitle(e) {
-  emit('getTitle', FTime(props.taskValues.tempo_estimado))
+const setDeliveryTimeModel = computed(() => {
+  const prop = props.taskValues.entrega_data_desejada
+  const date = new Date(prop)
+
+  return prop ? `${date.getHours()}:${date.getMinutes()}` : '12:00'
+})
+
+const setTimeModel = computed(() => {
+  const formatedTime = FTime(props.taskValues.tempo_estimado)
+  return formatedTime === '-' ? '' : formatedTime
+})
+
+const setTaskTypes = computed(() => {
+  const selectedTaskType = taskTypes.value.filter(
+    (p) => p.id === props.taskValues.tipo_task
+  )
+  return selectedTaskType[0]
+})
+
+const setDeliveryDateModel = computed(() => {
+  const prop = props.taskValues.entrega_data_desejada
+  const today = new Date()
+  const myDate = date.formatDate(prop, 'YYYY/MM/DD')
+  const result = prop ? myDate : today.toDateString()
+  return result
+})
+
+// Models
+const model = ref({
+  titulo: props.taskValues.titulo || '',
+  projeto: setProjectModel.value || null,
+  sub_projeto: setSubProjectModel.value || null,
+  tipo_task: setTaskTypes.value || null,
+  responsavel: props.taskValues.responsavel || null,
+  quantidade: props.taskValues.quantidade || 1,
+  entrega_data_desejada_data: setDeliveryDateModel.value,
+  entrega_data_desejada_hora: setDeliveryTimeModel.value,
+  tempo_estimado: setTimeModel.value || '00:00',
+})
+
+function FTimeLong(vl) {
+  const timeReplaced = vl.replace('h ', ':').replace('m', ':00')
+  return timeReplaced
 }
+
+watch(
+  () => model,
+  (v) => {
+    const vl = v.value
+    const date_entrega = new Date(
+      `${vl.entrega_data_desejada_data} ${vl.entrega_data_desejada_hora}`
+    )
+    const entrega_data_desejada = date.formatDate(date_entrega)
+    const tempo_estimado = FTimeLong(vl.tempo_estimado)
+
+    const dadosAdicionais = {
+      entrega_data_desejada,
+      tempo_estimado,
+    }
+
+    const dataObj = {
+      ...deepUnref(vl),
+      ...deepUnref(dadosAdicionais),
+    }
+
+    emit('update', dataObj)
+  },
+  { deep: true }
+)
+
+// VISUALIZAÇAO NO INPUT
+const deliveryDateComplete = computed(() => {
+  return `${FData(model.value.entrega_data_desejada_data)} - ${
+    model.value.entrega_data_desejada_hora
+  }`
+})
+
+// Sub project logic
+const setSubProjectList = () => {
+  const list = subProjectList.value.filter(
+    (subProj) => subProj.caso_pai === model.value.projeto?.id
+  )
+
+  subProjectSelectList.value = list
+}
+
+function updateProjectSelect(val) {
+  model.value.projeto = val
+  setSubProjectList()
+}
+
+setSubProjectList()
 </script>
 
 <style lang="sass" scoped>

@@ -27,16 +27,19 @@ import { useUsuarioStore } from 'src/stores/usuarios/usuarios.store'
 import { useProjetoStore } from 'src/stores/projetos/projetos.store'
 import useDarkMode from 'src/composables/useDarkMode'
 import { useClientesStore } from './stores/clientes/clientes.store'
+import { useTaskStore } from './stores/tasks/tasks.store'
 
 const { user, userFoto, userProfile } = storeToRefs(useUserStore())
 const { usuariosFoto } = storeToRefs(useUsuarioStore())
 const { projetos, subProjetos } = storeToRefs(useProjetoStore())
 const { clientes } = storeToRefs(useClientesStore())
+const { taskTypes } = storeToRefs(useTaskStore())
 
 const { getUser, getProfile, setProfile } = useUserStore()
 const { getUsuariosFoto } = useUsuarioStore()
 const { getProjetos, getSubProjetos } = useProjetoStore()
 const { getClientes } = useClientesStore()
+const { getTaskTypes } = useTaskStore()
 const { darkMode } = useDarkMode()
 
 const { user: userAuthStore } = storeToRefs(useAuthStore())
@@ -51,6 +54,7 @@ async function requests() {
   await getProjetos()
   await getClientes()
   await getSubProjetos()
+  getTaskTypes()
 }
 
 if (userAuthStore.value.access) requests()
@@ -68,6 +72,7 @@ provide('usuarios', readonly(usuariosFoto))
 provide('clientes', readonly(clientes))
 provide('projetos', readonly(projetos))
 provide('subProjetos', readonly(subProjetos))
+provide('taskTypes', readonly(taskTypes))
 
 provide('set', {
   setProfile,

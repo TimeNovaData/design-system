@@ -10,6 +10,7 @@ export const useTaskStore = defineStore('taskstore', () => {
   const tasks = ref([])
   const task = ref({})
   const tasksChamado = ref([])
+  const taskTypes = ref([])
 
   const tasksChamadoConcluido = computed(() =>
     tasksChamado.value.filter((t) => t.status === 'Concluído')
@@ -59,6 +60,24 @@ export const useTaskStore = defineStore('taskstore', () => {
     }
   }
 
+  async function getTaskTypes() {
+    isLoading.value = true
+
+    const { data, error } = await useAxios(
+      URLS.tipotask + '?no_loading',
+      { method: 'GET' },
+      api
+    )
+    try {
+      setTaskTypes(data.value)
+      return data.value
+    } catch (e) {
+      return error
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   function setTasks(value) {
     tasks.value = value
   }
@@ -68,13 +87,18 @@ export const useTaskStore = defineStore('taskstore', () => {
   function setTask(value) {
     task.value = value
   }
+  function setTaskTypes(value) {
+    taskTypes.value = value
+  }
 
   return {
     task,
     tasks,
+    taskTypes,
     getTasks,
     getTask,
     setTasks,
+    getTaskTypes,
     tasksChamado,
     tasksChamadoConcluido,
     tasksChamadoPendente,
