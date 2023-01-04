@@ -115,20 +115,6 @@
                 selectLabel="Projeto"
                 :selected="data.projeto"
               >
-                <template #option="scope">
-                  <q-item
-                    v-bind="scope.itemProps"
-                    class="items-center gap-8"
-                    :key="scope.opt.id"
-                  >
-                    <q-badge
-                      rounded
-                      class="shrink-0 w-8 h-8"
-                      :style="{ background: scope.opt.cor }"
-                    ></q-badge>
-                    {{ scope.opt.nome }}
-                  </q-item>
-                </template>
               </KanbanItemEditableSelect>
             </div>
           </div>
@@ -214,6 +200,7 @@
                         name="svguse:/icons.svg#icon_edit"
                       ></q-icon>
                       <KanbanItemEditableSelect
+                        type="tag"
                         :options="tagsList"
                         text="Selecione uma Tag"
                         @updateValue="(v) => updateValue('tag')(unref(v))"

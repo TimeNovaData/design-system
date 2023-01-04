@@ -3,25 +3,26 @@ import { LocalStorage } from 'quasar'
 // import img from 'src/assets/image/kanban-bg.jpg'
 import { useUserStore } from 'src/stores/usuarios/user.store'
 
-export default function useChamadosBG() {
+export default function useKanbanBG() {
   const kanbanBG = ref('')
   const user = useUserStore()
 
   onMounted(() => {
-    const storage = LocalStorage.getItem('kanbanBg')
-    storage && (kanbanBG.value = storage)
+    const bg = user.userProfile.background_url
+    const storage = LocalStorage.getItem('BGkanban')
+    if (storage) kanbanBG.value = storage
+    if (bg) kanbanBG.value = bg
   })
 
   watch(kanbanBG, (v) => {
-    LocalStorage.set('kanbanBg', v)
-    if (v !== user.userProfile.background_url)
-      user.setProfile({ ...user.userProfile, background_url: v })
+    LocalStorage.set('BGkanban', v)
+    user.setProfile({ ...user.userProfile, background_url: v })
   })
 
   watch(
     () => user.userProfile.background_url, // fica de olho no profile
     (v) => {
-      if (v !== kanbanBG.value) kanbanBG.value = v
+      kanbanBG.value = v
     }
   )
 

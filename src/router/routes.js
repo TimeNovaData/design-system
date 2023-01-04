@@ -9,6 +9,8 @@ import ConsumoHoras from 'src/pages/ConsumoHoras/ConsumoHoras.vue'
 import PageKanbanList from 'src/pages/Kanban/PageKanbanList.vue'
 import PageHome from 'src/pages/Home/PageHome.vue'
 import PageSvgs from 'src/pages/svg/PageSvgs.vue'
+import PageSingleProjeto from 'src/pages/SingleProjeto/PageSingleProjeto.vue'
+
 const routes = [
   {
     path: '/design-system',
@@ -46,6 +48,20 @@ const routes = [
         component: PageSvgs,
         meta: {
           breadcrumbs: [{ label: 'Svgs', name: 'svgs' }],
+        },
+      },
+      {
+        name: 'projeto',
+        path: '/projeto',
+        redirect: '/projeto/0',
+      },
+
+      {
+        name: 'singleProjeto',
+        path: '/projeto/:id',
+        component: PageSingleProjeto,
+        meta: {
+          breadcrumbs: [{ label: 'Home', name: 'Single Projeto' }],
         },
       },
     ],
