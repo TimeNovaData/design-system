@@ -17,7 +17,7 @@ export default function useChamadosVisaoExpandida() {
   watch(visaoExpandida, (v) => {
     if (v !== user.userProfile.visao_expandida)
       user.setProfile({
-        ...user.userProfile.value,
+        ...user.userProfile,
         visao_expandida: visaoExpandida.value,
       })
   })
