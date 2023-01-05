@@ -167,6 +167,11 @@ export default {
     }
   },
 
+  FTimeLong(value) {
+    const timeReplaced = value.replace('h ', ':').replace('m', ':00')
+    return timeReplaced
+  },
+
   imgSrc(url) {
     if (!url) return ''
     const haveMedia = url.includes('/media')

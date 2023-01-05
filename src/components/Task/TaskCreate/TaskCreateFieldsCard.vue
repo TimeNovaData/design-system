@@ -129,22 +129,22 @@
 <script setup>
 import { date } from 'quasar'
 import { ref, computed, inject, watch } from 'vue'
+import { deepUnref } from 'vue-deepunref'
 import GLOBAL from 'src/utils/GLOBAL'
 import OInput from 'src/components/Input/OInput.vue'
-import OSelect from 'src/components/Select/OSelect.vue'
-import OButton from 'src/components/Button/OButton.vue'
-import OInputNumber from 'src/components/Input/OInputNumber.vue'
 import OSelectAvatar from 'src/components/Select/OSelectAvatar.vue'
-import { deepUnref } from 'vue-deepunref'
-window.data = date
-const { FTime, FData } = GLOBAL
+import OSelect from 'src/components/Select/OSelect.vue'
+import OInputNumber from 'src/components/Input/OInputNumber.vue'
+import OButton from 'src/components/Button/OButton.vue'
 
+const { FTime, FData, FTimeLong } = GLOBAL
 const emit = defineEmits(['update'])
 
 const props = defineProps({
   taskValues: Object,
 })
 
+// Provider lists
 const projectList = inject('projetos')
 const subProjectList = inject('subProjetos')
 const userList = inject('usuarios')
@@ -154,63 +154,58 @@ const subProjectSelectList = ref([])
 // Model Value Setters
 const setProjectModel = computed(() => {
   const selectedProject = projectList.value.filter(
-    (p) => p.id === props.taskValues.projeto
+    (p) => p.id === props.taskValues?.projeto
   )
   return selectedProject[0]
 })
 
 const setSubProjectModel = computed(() => {
   const selectedSubProject = subProjectList.value.filter(
-    (p) => p.id === props.taskValues.sub_projeto
+    (p) => p.id === props.taskValues?.sub_projeto
   )
   return selectedSubProject[0]
 })
 
-const setDeliveryTimeModel = computed(() => {
-  const prop = props.taskValues.entrega_data_desejada
-  const date = new Date(prop)
-
-  return prop ? `${date.getHours()}:${date.getMinutes()}` : '12:00'
-})
-
-const setTimeModel = computed(() => {
-  const formatedTime = FTime(props.taskValues.tempo_estimado)
-  return formatedTime === '-' ? '' : formatedTime
-})
-
 const setTaskTypes = computed(() => {
   const selectedTaskType = taskTypes.value.filter(
-    (p) => p.id === props.taskValues.tipo_task
+    (p) => p.id === props.taskValues?.tipo_task
   )
   return selectedTaskType[0]
 })
 
 const setDeliveryDateModel = computed(() => {
-  const prop = props.taskValues.entrega_data_desejada
+  const prop = props.taskValues?.entrega_data_desejada
   const today = new Date()
   const myDate = date.formatDate(prop, 'YYYY/MM/DD')
   const result = prop ? myDate : today.toDateString()
   return result
 })
 
-// Models
+const setDeliveryTimeModel = computed(() => {
+  const prop = props.taskValues?.entrega_data_desejada
+  const date = new Date(prop)
+
+  return prop ? `${date.getHours()}:${date.getMinutes()}` : '12:00'
+})
+
+const setTimeModel = computed(() => {
+  const formatedTime = FTime(props.taskValues?.tempo_estimado)
+  return formatedTime === '-' ? '' : formatedTime
+})
+
 const model = ref({
-  titulo: props.taskValues.titulo || '',
+  titulo: props.taskValues?.titulo || '',
   projeto: setProjectModel.value || null,
   sub_projeto: setSubProjectModel.value || null,
   tipo_task: setTaskTypes.value || null,
-  responsavel: props.taskValues.responsavel || null,
-  quantidade: props.taskValues.quantidade || 1,
+  responsavel: props.taskValues?.responsavel || null,
+  quantidade: props.taskValues?.quantidade || 1,
   entrega_data_desejada_data: setDeliveryDateModel.value,
   entrega_data_desejada_hora: setDeliveryTimeModel.value,
   tempo_estimado: setTimeModel.value || '00:00',
 })
 
-function FTimeLong(vl) {
-  const timeReplaced = vl.replace('h ', ':').replace('m', ':00')
-  return timeReplaced
-}
-
+// Formatando os dados da model para enviar pro back
 watch(
   () => model,
   (v) => {
@@ -218,12 +213,15 @@ watch(
     const date_entrega = new Date(
       `${vl.entrega_data_desejada_data} ${vl.entrega_data_desejada_hora}`
     )
-    const entrega_data_desejada = date.formatDate(date_entrega)
+
     const tempo_estimado = FTimeLong(vl.tempo_estimado)
+    const entrega_data_desejada = date
+      .formatDate(date_entrega)
+      .replace('.000-', '-')
 
     const dadosAdicionais = {
-      entrega_data_desejada,
       tempo_estimado,
+      entrega_data_desejada,
     }
 
     const dataObj = {
@@ -236,19 +234,18 @@ watch(
   { deep: true }
 )
 
-// VISUALIZAÇAO NO INPUT
+// Visualizaçao do input de entrega desejada
 const deliveryDateComplete = computed(() => {
   return `${FData(model.value.entrega_data_desejada_data)} - ${
     model.value.entrega_data_desejada_hora
   }`
 })
 
-// Sub project logic
+// Subprojeto select
 const setSubProjectList = () => {
   const list = subProjectList.value.filter(
     (subProj) => subProj.caso_pai === model.value.projeto?.id
   )
-
   subProjectSelectList.value = list
 }
 

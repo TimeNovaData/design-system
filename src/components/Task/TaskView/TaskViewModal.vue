@@ -1,22 +1,25 @@
 <template>
   <q-dialog
     class="!border-0"
-    v-model="dialogState"
+    v-model="modalTaskState"
     ref="dialogRef"
     transition-hide="slide-down"
+    @hide="closeTaskViewModal"
   >
     <q-card class="task-modal">
       <header class="modal-header">
         <div class="pl-16">
           <span class="text-caps-3 text-neutral-100/50">TASK</span>
-          <h2 class="text-title-4 text-neutral-100">{{ task.titulo }}</h2>
+          <h2 class="text-title-4 text-neutral-100">
+            {{ taskModalObj.titulo }}
+          </h2>
         </div>
 
         <OButton
           class="!w-max !h-max !p-0"
           size="lg"
           tertiary
-          @click="closeDialog"
+          @click="closeTaskViewModal"
         >
           <q-icon
             class="w-48 h-48 dark:text-neutral-100"
@@ -29,8 +32,8 @@
         class="flex-1 p-24 pb-2 grid grid-cols-2 gap-16 md:flex md:flex-col md:overflow-y-auto"
       >
         <div class="flex flex-col gap-16">
-          <TaskViewDetailCard :details="task" />
-          <TaskViewAttachmentCard :anexos="anexos" />
+          <TaskViewDetailCard :details="taskModalObj" />
+          <TaskViewAttachmentCard :anexos="taskModalAnexos" />
         </div>
 
         <div class="flex flex-col">
@@ -59,10 +62,10 @@
                 ></q-icon>
                 <p class="text-paragraph-1">Comentários</p>
                 <OCounter
-                  v-if="commentsReverse.length"
+                  v-if="taskModalCommentObj?.comments.length"
                   class="!w-20 !h-20 bg-neutral-100/10 text-neutral-100 dark:bg-white/10 dark:text-white"
                 >
-                  {{ commentsReverse.length }}
+                  {{ taskModalCommentObj.comments.length }}
                 </OCounter>
               </template>
             </q-tab>
@@ -71,15 +74,15 @@
           <q-tab-panels v-model="tabs" animated swipeable class="flex-1">
             <TaskViewDescriptionCard
               name="desc"
-              :description="task.observacoes"
+              :description="taskModalObj.observacoes"
             />
 
             <OChatBox
               name="chat"
-              :comments="commentsReverse"
-              :sendComment="sendComment"
-              :getComments="getComments"
-              :isLoading="isLoading"
+              :comments="taskModalCommentObj?.comments"
+              :sendComment="taskModalCommentObj?.sendComment"
+              :getComments="taskModalCommentObj?.getComments"
+              :isLoading="taskModalCommentObj?.isLoading"
             />
           </q-tab-panels>
         </div>
@@ -89,14 +92,14 @@
         <OButton
           primary
           icon="svguse:/icons.svg#icon_edit"
-          @click="openEditModal"
+          @click="openTaskEditModal"
         >
           Editar Task
         </OButton>
         <OButton
           secondary
           icon="svguse:/icons.svg#icon_close"
-          @click="closeDialog"
+          @click="closeTaskViewModal"
         >
           Cancelar
         </OButton>
@@ -109,8 +112,7 @@
 import { ref } from 'vue'
 import { useDialogPluginComponent } from 'quasar'
 import { storeToRefs } from 'pinia'
-import { useAnexoStore } from 'src/stores/anexos/anexos.store'
-import useComments from 'src/composables/useComments'
+import { useModalStore } from 'src/stores/modal/modal.store'
 import OButton from 'src/components/Button/OButton.vue'
 import OCounter from 'src/components/Counter/OCounter.vue'
 import OChatBox from 'src/components/Chat/OChatBox.vue'
@@ -118,46 +120,14 @@ import TaskViewAttachmentCard from './TaskViewAttachmentCard.vue'
 import TaskViewDetailCard from './TaskViewDetailCard.vue'
 import TaskViewDescriptionCard from './TaskViewDescriptionCard.vue'
 
-const props = defineProps({
-  data: Object,
-  editTask: Function,
-})
-
-// Variaveis do modal
-const dialogState = ref(false)
 const { dialogRef } = useDialogPluginComponent()
+const { closeTaskViewModal, openTaskEditModal } = useModalStore()
+const { modalTaskState, taskModalObj, taskModalAnexos, taskModalCommentObj } =
+  storeToRefs(useModalStore())
+
 const tabs = ref('desc')
 
-// Pegando os dados
-const anexos = ref([])
-const task = ref(null)
-
-const { getAnexos } = useAnexoStore()
-const { anexos: storeAnexos } = storeToRefs(useAnexoStore())
-
-// Metodos do modal
-const { isLoading, commentsReverse, getComments, sendComment } =
-  useComments(167)
-
-async function showModal(taskObj) {
-  await getAnexos(`?task__id=${taskObj.id}`)
-  await getComments()
-
-  task.value = taskObj || props.data
-  anexos.value = storeAnexos.value
-  dialogState.value = true
-}
-
-const closeDialog = () => {
-  dialogState.value = false
-}
-
-function openEditModal() {
-  console.log('Open edit')
-  props.editTask(task.value)
-}
-
-defineExpose({ dialogRef, showModal })
+defineExpose({ dialogRef })
 </script>
 
 <style lang="sass" scoped>
