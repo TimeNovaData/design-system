@@ -690,15 +690,12 @@
           </q-tab-panel>
         </q-tab-panels>
       </Transition>
+      <button @click="openTaskEditModal">CRIAR TASK</button>
     </q-card>
   </q-dialog>
 
-  <TaskViewModal ref="modalTaskRef" :editTask="openTaskEditModal" />
-  <TaskCreateModal
-    v-if="taskModalObj"
-    ref="modalEditTaskRef"
-    :taskObject="taskModalObj"
-  />
+  <TaskViewModal />
+  <TaskCreateModal />
 </template>
 
 <script setup>
@@ -718,30 +715,9 @@ import KanbanItemEditableEditor from './KanbanItemEditableEditor.vue'
 import KanbanItemEditableSelect from './KanbanItemEditableSelect.vue'
 import KanbanSectionHeader from './KanbanSectionHeader.vue'
 import KanbanTaskItem from './KanbanTaskItem.vue'
+import { useModalStore } from 'src/stores/modal/modal.store'
 
-const taskModalObj = ref(null)
-const modalTaskRef = ref(null)
-const modalEditTaskRef = ref(null)
-
-const openTaskViewModal = (task) => {
-  modalTaskRef.value.showModal(task)
-}
-
-const openTaskEditModal = async (task) => {
-  taskModalObj.value = task
-  await nextTick()
-  modalEditTaskRef.value.showModal()
-}
-
-watch(
-  () => taskModalObj,
-  () => {
-    console.log(taskModalObj.value)
-  },
-  {
-    deep: true,
-  }
-)
+const { openTaskViewModal, openTaskEditModal } = useModalStore()
 
 const {
   returnRGB,
