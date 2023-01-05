@@ -628,7 +628,7 @@
                       class="task-wrapper dark:border-transparent border rounded-generic mx-24 border-neutral-30"
                     >
                       <div v-for="item in tasksChamadoPendente" :key="item.id">
-                        <KanbanTaskItem :task="item"></KanbanTaskItem>
+                        <!-- <KanbanTaskItem :task="item"></KanbanTaskItem> -->
                       </div>
                     </div>
                     <div v-else class="text-paragraph-2 text-center mt-12">
@@ -656,10 +656,10 @@
                       class="task-wrapper dark:border-transparent border rounded-generic mx-24 border-neutral-30"
                     >
                       <div v-for="task in tasksChamadoConcluido" :key="task.id">
-                        <KanbanTaskItem
+                        <!-- <KanbanTaskItem
                           :task="task"
                           :openTaskViewModal="openTaskViewModal"
-                        ></KanbanTaskItem>
+                        ></KanbanTaskItem> -->
                       </div>
                     </div>
                     <div v-else class="text-paragraph-2 text-center mt-12">

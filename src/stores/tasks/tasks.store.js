@@ -96,13 +96,15 @@ export const useTaskStore = defineStore('taskstore', () => {
 
     if (objIsEmpty(oldTaskUnref)) {
       window._yellow('CADASTRAR')
-      console.log(newTaskUnref)
+      // console.log(newTaskUnref)
+      const data = newTaskUnref
+      api.post(URLS.task, data)
     } else {
       const data = GLOBAL.compareAndReturnDiff(oldTaskUnref, newTaskUnref)
 
       window._yellow('ALTERAR')
       console.log(data)
-      // api.patch(URLS.task + task.value.id + '/', data)
+      api.patch(URLS.task + task.value.id + '/', data)
     }
   }
 
