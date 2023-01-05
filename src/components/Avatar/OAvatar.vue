@@ -4,6 +4,7 @@
       :size="size"
       class="!bg-neutral-20 dark:!bg-white/10"
       :class="classAvatar"
+      v-bind="attrs"
     >
       <q-img no-transition v-if="foto" :src="foto" no-spinner />
     </q-avatar>
@@ -18,6 +19,9 @@ export default { inheritAttrs: false }
 </script>
 
 <script setup>
+import { useAttrs } from 'vue'
+
+const attrs = useAttrs()
 defineProps({
   foto: String,
   nome: String,

@@ -21,7 +21,11 @@
     </template>
 
     <template #selected-item="{ itemProps, opt }">
-      <q-item v-bind="itemProps" class="translate-y-2 p-0 min-h-0" v-show="opt">
+      <q-item
+        v-bind="itemProps"
+        class="translate-y-2 p-0 min-h-0"
+        v-show="opt.length"
+      >
         <OAvatar
           classAvatar="!w-[0.74em] !h-[0.74em]"
           :nome="opt[nomeKey]"
