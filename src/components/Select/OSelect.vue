@@ -4,10 +4,10 @@
     :class="'size-' + attrs.size"
     popup-content-class="select-menu"
     v-bind="attrs"
-    :size="null"
     options-selected-class="option-selecionada"
-    @filter="filterFn"
+    :size="null"
     :options="options"
+    @filter="filterFn"
   >
     <template v-for="slot in Object.keys(slots)" #[slot]="slotProps">
       <slot :name="slot" v-bind="slotProps"></slot>
@@ -30,8 +30,7 @@ export default { inheritAttrs: false }
 </script>
 
 <script setup>
-import { useSlots, useAttrs, ref, onMounted } from 'vue'
-import OInput from 'src/components/Input/OInput.vue'
+import { useSlots, useAttrs, ref, onMounted, watch, nextTick } from 'vue'
 
 const val = ref('')
 const slots = useSlots()
@@ -39,12 +38,24 @@ const attrs = useAttrs()
 const componentRef = ref(null)
 const options = ref(attrs.options)
 
-const stringOptions = attrs.options
+// eslint-disable-next-line prefer-const
+let stringOptions = attrs.options
+
+watch(
+  () => attrs.options,
+  async (v) => {
+    await nextTick()
+    options.value = attrs.options
+    stringOptions = attrs.options
+  },
+  { deep: true }
+)
 
 defineExpose({ componentRef })
 
 function filterFn(val, update, abort) {
   update(() => {
+    if (!val) return
     const needle = val.toLowerCase()
     options.value = stringOptions.filter((v) => {
       const option = v[attrs['option-label']]

@@ -1,8 +1,9 @@
 <template>
   <q-avatar
+    v-if="index < limit"
     size="32px"
     class="overlapping !w-32 !h-32 absolute border-white border-2 dark:border-d-neutral-10 overflow-hidden avatar"
-    :style="`${side}: ${index * 15}px;  'z-index':-${index}`"
+    :style="`${side}: ${index * 20}px;  'z-index':-${index}`"
     :class="{ '!static': estatic }"
   >
     <q-img
@@ -33,6 +34,11 @@ defineProps({
   href: String,
   nome: String,
   estatic: Boolean,
+  length: Number,
+  limit: {
+    type: Number,
+    default: 3,
+  },
   side: {
     type: String,
     default: 'right',

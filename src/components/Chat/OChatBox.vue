@@ -86,6 +86,7 @@ async function updateChatInterval(container) {
   // console.log(getVerticalScrollPosition(el), 'getVerticalScrollPosition')
   // console.log(getScrollHeight(el), 'getScrollHeight')
   // console.log(el.clientHeight, 'clientHeight')
+  console.log(newComments)
   newComments?.length && scrollChatToBottom(chatContainer)
 
   timeout = setTimeout(() => updateChatInterval(container), 15000)
