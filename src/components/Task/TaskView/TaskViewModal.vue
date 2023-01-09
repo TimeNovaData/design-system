@@ -83,6 +83,7 @@
               :sendComment="taskModalCommentObj?.sendComment"
               :getComments="taskModalCommentObj?.getComments"
               :isLoading="taskModalCommentObj?.isLoading"
+              tipo="task"
             />
           </q-tab-panels>
         </div>

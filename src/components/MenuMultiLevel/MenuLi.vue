@@ -1,6 +1,8 @@
 <template>
   <!-- Nv0 li  -->
-  <q-item class="Nv0-li" tag="li" clickable @click="$emit('Nv0Click')">
+  <div v-if="data.separator" class="flex-[99999]"></div>
+
+  <q-item v-else class="Nv0-li" tag="li" clickable @click="$emit('Nv0Click')">
     <slot>
       <!-- Nv0 Slot onde entra  o conteudo da li  -->
     </slot>

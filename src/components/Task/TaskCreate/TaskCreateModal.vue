@@ -172,8 +172,8 @@ function handleUpdate(val) {
   }
 }
 
+// Limpa o estado da task ao abrir o modal
 watch(modalEditTaskState, () =>
-  // Limpa o estado da task ao abrir o modal
   modalEditTaskState.value ? (newTaskScope.value = null) : ''
 )
 

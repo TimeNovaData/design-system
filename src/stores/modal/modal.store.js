@@ -32,10 +32,12 @@ export const useModalStore = defineStore('modalStore', () => {
     taskModalAnexos.value = anexosRes
     modalTaskState.value = true
 
-    const { isLoading, commentsReverse, getComments, sendComment } =
-      useComments(taskId)
+    const { isLoading, commentsReverse, getComments, sendComment, setID } =
+      useComments()
 
-    await getComments()
+    setID(taskId)
+
+    await getComments('task')
 
     taskModalCommentObj.value = {
       isLoading: isLoading.value,

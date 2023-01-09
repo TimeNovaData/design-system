@@ -29,8 +29,8 @@
                 selectLabel="Projeto"
                 :options="projetos"
                 :selected="projeto !== {} ? projeto : null"
-                :clearable="false"
                 @updateValue="(v) => $emit('updateSelect', v)"
+                :selectProps="{ clearable: false }"
                 ref="itemEditableSelect"
               ></KanbanItemEditableSelect>
             </p>
@@ -115,6 +115,7 @@
   <SingleProjetoHeaderMinify
     :class="{ 'opacity-0': !headerMinify }"
     :projeto="projeto"
+    @updateSelect="(v) => $emit('updateSelect', v)"
   ></SingleProjetoHeaderMinify>
 </template>
 
@@ -146,20 +147,11 @@ function show() {
 }
 
 function onScroll(position) {
-  console.log(position)
   if (position > 250) {
-    // header.value.classList.add('fixa')
     headerMinify.value = true
   } else {
     headerMinify.value = false
-
-    // header.value.classList.remove('fixa')
   }
-  // when this method is invoked then it means user
-  // has scrolled the page to `position`
-  //
-  // `position` is an Integer designating the current
-  // scroll position in pixels.
 }
 
 defineExpose({ itemEditableSelect, show })

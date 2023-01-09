@@ -30,7 +30,6 @@
             <KanbanNewCard
               v-if="novoCard.id === col.coluna.id"
               :colData="col.coluna"
-              @digitandoNome="() => setHeightInCol()"
               @invalid="closeNewCard"
               @create="handleCreateChamado"
             ></KanbanNewCard>
@@ -124,8 +123,7 @@ const tabs = ref(route.meta.tab)
 const modal = ref(null)
 const modalRight = ref(null)
 const chamadoAtivo = ref(null)
-// Refact essa function
-//
+
 watch(tabs, () => {
   tabs.value === 'board' && setTimeout(() => setHeightInCol(), 200)
   router.push(tabs.value)
@@ -159,14 +157,10 @@ const {
   getLogAlt,
 } = useChamadosComposable()
 
-// Store to refs
 const { getTags } = useTagStore()
 const { tags } = storeToRefs(useTagStore())
 
 const { createChamado } = useChamadoStore()
-
-const removeEventsWrapper = ref(false)
-const enableDragScroll = GLOBAL.enableDragScroll(removeEventsWrapper)
 
 watch(drag, () => setHeightInCol())
 watch(visaoExpandida, () => setTimeout(() => setHeightInCol(), 300))
@@ -178,6 +172,9 @@ function handleCardClick(element) {
   cardAlterado.value = chamadoAtivo.value
   modal.value.dialogRef.show()
 }
+
+const removeEventsWrapper = ref(false)
+const enableDragScroll = GLOBAL.enableDragScroll(removeEventsWrapper)
 
 function handleColClick(e) {
   e.stopImmediatePropagation()
@@ -202,7 +199,7 @@ function closeNewCard() {
 async function handleCreateChamado(v) {
   novoCard.value.id = null
   const newCard = await createChamado(v)
-  emitter.emit('reloadDataKanban')
+  setTimeout(() => emitter.emit('reloadDataKanban'), 300)
 }
 
 const dragOptions = computed(() => ({

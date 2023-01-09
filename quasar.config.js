@@ -90,11 +90,14 @@ module.exports = configure(function (ctx) {
       // distDir
 
       extendViteConf(viteConf) {
-        console.log('⚡ Vamo q vamo  ⠂')
+        const url = viteConf.define['process.env.API_URL'].replaceAll('"', '')
+        console.log('⚡ ⠂ DEV')
+        console.log('🟢 ⠂ API', url)
         const empty = '../src/assets/empty.js'
         viteConf.resolve.alias['quasar/dist/quasar.sass'] = empty
         viteConf.resolve.alias['quasar/dist/quasar.css'] = empty
       },
+
       // viteVuePluginOptions: {},
 
       vitePlugins: [

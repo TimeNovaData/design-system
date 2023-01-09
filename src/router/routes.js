@@ -61,7 +61,10 @@ const routes = [
         path: '/projeto/:id',
         component: PageSingleProjeto,
         meta: {
-          breadcrumbs: [{ label: 'Home', name: 'Single Projeto' }],
+          breadcrumbs: [
+            { label: 'Home', name: 'home' },
+            { label: 'Single Projeto', name: 'projeto' },
+          ],
         },
       },
     ],

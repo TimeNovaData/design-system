@@ -10,7 +10,7 @@ const menuList = [
   {
     title: 'Kanban',
     nivel: 0,
-    icon: 'space_dashboard',
+    icon: 'view_kanban',
     href: '/kanban/',
   },
 
@@ -21,12 +21,12 @@ const menuList = [
     href: '/consumo_horas',
   },
 
-  // {
-  //   title: 'Single Projeto',
-  //   nivel: 0,
-  //   icon: 'wysiwyg',
-  //   href: '/projeto',
-  // },
+  {
+    title: 'Single Projeto',
+    nivel: 0,
+    icon: 'web',
+    href: '/projeto',
+  },
 
   // {
   //   title: 'Financeiro',
@@ -86,22 +86,30 @@ const menuList = [
 if (dev)
   menuList.push(
     {
+      separator: true,
+      title: 'a',
+      type: 'dev',
+    },
+    {
       title: 'Design System',
       nivel: 0,
       icon: 'design_services',
       href: '/design-system',
+      type: 'dev',
     },
     {
       title: "Svg's",
       nivel: 0,
       icon: 'auto_awesome_motion',
       href: '/svgs',
+      type: 'dev',
     },
     {
       title: 'Testes',
       nivel: 0,
       icon: 'bug_report',
       href: '/testes',
+      type: 'dev',
     }
   )
 

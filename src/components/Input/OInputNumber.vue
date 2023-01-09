@@ -2,7 +2,7 @@
   <OInput
     v-bind="attrs"
     v-model="model"
-    class="text-center"
+    class="text-center select-none"
     ref="componentRef"
     @update:model-value="(value) => $emit('updateValue', value)"
   >
@@ -10,7 +10,7 @@
       <q-icon
         size="1.5rem"
         name="svguse:/icons.svg#icon_minus_circle"
-        class="cursor-pointer hover:opacity-70 transition-opacity"
+        class="cursor-pointer hover:opacity-70 transition-opacity select-none"
         :class="{ 'cursor-not-allowed !opacity-30': model === 1 }"
         @click="model > 1 ? model-- : (model = 1)"
       ></q-icon>
@@ -20,7 +20,7 @@
       <q-icon
         size="1.5rem"
         name="svguse:/icons.svg#icon_plus_circle"
-        class="cursor-pointer hover:opacity-70 transition-opacity"
+        class="cursor-pointer hover:opacity-70 transition-opacity select-none"
         @click="model++"
       ></q-icon>
     </template>

@@ -6,7 +6,8 @@
     <AvatarSingle
       class="!relative !left-0 !h-48 !w-48"
       :index="1"
-      :item="task.responsavel"
+      :nome="task.responsavel_task.get_full_name"
+      :href="task.responsavel_task.profile.foto"
     />
     <p class="flex-[3]">{{ task.titulo }}</p>
     <div v-if="task.entrega_data_desejada" class="mx-12">

@@ -1,6 +1,5 @@
 <template>
   <q-avatar
-    v-if="index < limit"
     size="32px"
     class="overlapping !w-32 !h-32 absolute border-white border-2 dark:border-d-neutral-10 overflow-hidden avatar"
     :style="`${side}: ${index * 20}px;  'z-index':-${index}`"
@@ -28,6 +27,8 @@
 
 <script setup>
 import GLOBAL from 'src/utils/GLOBAL'
+import { onUnmounted } from 'vue'
+
 defineProps({
   item: Object,
   index: Number,
@@ -35,10 +36,6 @@ defineProps({
   nome: String,
   estatic: Boolean,
   length: Number,
-  limit: {
-    type: Number,
-    default: 3,
-  },
   side: {
     type: String,
     default: 'right',

@@ -2,7 +2,7 @@
   <header
     v-scroll="onScroll"
     ref="header"
-    class="header-single bg-neutral-10 border-b border-neutral-100/10"
+    class="header-single bg-neutral-10 border-b border-neutral-100/10 dark:bg-d-neutral-10 dark:border-b-white/10"
   >
     <div
       class="flex relative gap-32 flex-nowrap justify-between w-full max-w-[1448px] mx-auto py-10 items-center"
@@ -21,8 +21,17 @@
             <p class="text-caps-3 !font-medium text-primary-pure">
               {{ projeto.nome_cliente || '' }}
             </p>
-            <p class="text-title-4">
+            <p class="text-title-4 item-editavel !p-0">
               {{ projeto.nome || 'Selecione um projeto' }}
+
+              <KanbanItemEditableSelect
+                text="Selecione um Projeto"
+                selectLabel="Projeto"
+                :options="projetos"
+                :selected="projeto !== {} ? projeto : null"
+                :clearable="false"
+                @updateValue="(v) => $emit('updateSelect', v)"
+              ></KanbanItemEditableSelect>
             </p>
           </div>
 
@@ -116,17 +125,11 @@ function show() {
 }
 
 function onScroll(position) {
-  console.log(position)
   if (position > 200) {
     header.value.classList.add('fixa')
   } else {
     header.value.classList.remove('fixa')
   }
-  // when this method is invoked then it means user
-  // has scrolled the page to `position`
-  //
-  // `position` is an Integer designating the current
-  // scroll position in pixels.
 }
 
 defineExpose({ itemEditableSelect, show })
@@ -135,6 +138,19 @@ defineExpose({ itemEditableSelect, show })
 <style lang="sass" scoped>
 
 
+.item-editavel
+  display: flex
+  align-items: center
+  gap:.5rem
+  cursor: pointer
+  border-radius: 3px
+  border: 1px solid transparent
+  transition: .3s ease
+  &:hover
+    border-color: rgba(var(--neutral-100),0.1)
+  .body--dark &
+    &:hover
+      border-color: rgba(var(--white),0.2)
 
 .btn-header
   flex: 1 1 100%

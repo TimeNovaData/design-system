@@ -28,6 +28,7 @@ const api = axios.create({
     tipotask: 'tipotask/',
     anexo: 'anexo/',
     comentario: 'comentario/',
+    comentarioprojeto: 'comentarioprojeto/',
     colunakanban: 'colunakanban/',
     usuario: 'usuario/',
     user: 'usuario/usuario_logado/',
@@ -56,9 +57,18 @@ async function getToken(error) {
   }
 }
 
-api.interceptors.response.use(undefined, async function (error) {
-  return await getToken(error)
-})
+api.interceptors.response.use(undefined, async (error) => await getToken(error))
+
+// Add a request interceptor
+api.interceptors.request.use(
+  function (config) {
+    window._url_method = config.method
+    return config
+  },
+  function (error) {
+    return Promise.reject(error)
+  }
+)
 
 export default boot(({ app }) => {
   app.config.globalProperties.$axios = api

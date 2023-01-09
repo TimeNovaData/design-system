@@ -44,8 +44,6 @@ const { darkMode } = useDarkMode()
 
 const { user: userAuthStore } = storeToRefs(useAuthStore())
 
-const initialLoad = ref(false)
-
 async function requests() {
   await getUser()
   await nextTick()
@@ -54,14 +52,15 @@ async function requests() {
   await getProjetos()
   await getClientes()
   await getSubProjetos()
-  getTaskTypes()
+  await getTaskTypes()
 }
 
 if (userAuthStore.value.access) requests()
 
 watch(
   () => userAuthStore.value.access,
-  (acess) => acess && requests()
+  (acess) => acess && requests(),
+  { deep: true }
 )
 
 provide('darkMode', darkMode)

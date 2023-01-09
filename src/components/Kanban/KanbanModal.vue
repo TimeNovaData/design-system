@@ -3,9 +3,9 @@
     v-model="dialogState"
     ref="dialogRef"
     transition-hide="slide-down"
+    @before-hide="beforehide"
     @hide="onDialogHide"
     @before-show="beforeshow"
-    @before-hide="beforehide"
     @show="onShow"
   >
     <q-card class="kanban-modal q-dialog-plugin remove-styles">
@@ -299,6 +299,7 @@
                           :selectProps="{
                             multiple: true,
                             'use-chips': true,
+                            fotoKey: 'foto',
                           }"
                           :selected="data.responsaveis"
                           :closeOnSelect="false"
@@ -517,10 +518,15 @@
                     >
 
                     <div
-                      class="flex flex-col gap-16 w-full shrink-0 mt-16"
+                      class="w-full shrink-0 mt-16"
                       v-if="historicoAtividade && logAlt.length"
                     >
-                      <div v-for="item in logAltReverse" :key="item.id">
+                      <q-virtual-scroll
+                        style="max-height: 100%"
+                        :items="logAltReverse"
+                        v-slot="{ item }"
+                        class="flex flex-col gap-16 w-full virtual-scroll"
+                      >
                         <div class="flex items-start gap-4 flex-nowrap">
                           <OAvatar
                             size="2rem"
@@ -542,7 +548,7 @@
                             </p>
                           </div>
                         </div>
-                      </div>
+                      </q-virtual-scroll>
                     </div>
                     <div
                       v-else-if="
@@ -766,7 +772,7 @@ function updateValue(type) {
   return function (value) {
     data.value[type] = value
     emit('changed')
-    getLogAlt(data.value.id)
+    setTimeout(() => getLogAlt(data.value.id), 500)
   }
 }
 
@@ -932,4 +938,12 @@ defineExpose({ dialogRef })
         text-decoration: underline
       :deep(hr)
         border-color: rgba(var(--white),0.1)
+
+
+    .virtual-scroll
+      :deep(.q-virtual-scroll__content)
+        display: flex
+        flex-direction: column
+        gap:1rem
+        widt:100%
 </style>

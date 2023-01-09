@@ -52,7 +52,6 @@
 
     <OSelectAvatar
       v-else
-      v-bind="selectProps"
       ref="select"
       use-input
       size="md"
@@ -65,13 +64,22 @@
       fotoKey="logo"
       :options="opt"
       :label="selectLabel"
+      v-bind="selectProps"
     >
     </OSelectAvatar>
   </q-popup-edit>
 </template>
 
 <script setup>
-import { onUpdated, ref, watch, onMounted, useSlots, nextTick } from 'vue'
+import {
+  onUpdated,
+  ref,
+  watch,
+  onMounted,
+  useSlots,
+  nextTick,
+  computed,
+} from 'vue'
 import OSelect from 'src/components/Select/OSelect.vue'
 import OSelectAvatar from 'src/components/Select/OSelectAvatar.vue'
 const slots = useSlots()
@@ -108,11 +116,19 @@ watch(
   },
   { deep: true }
 )
+watch(
+  () => props.selected,
+  (v) => {
+    projetoSelected.value = v
+  },
+  { deep: true }
+)
 
 const popupUpProjeto = ref(null)
 
 const emit = defineEmits(['updateValue'])
 const select = ref(null)
+
 const projetoSelected = ref(props.selected)
 
 function handleEmit(v) {
