@@ -94,7 +94,9 @@
             <TaskCreateDescriptionCard
               name="desc"
               :description="taskModalObj?.observacoes"
-              @update="(val) => handleUpdate({ observacoes: val })"
+              @update="
+                (val) => handleUpdate({ ...newTaskScope, observacoes: val })
+              "
             />
             <OChatBox
               v-if="taskModalObj"
