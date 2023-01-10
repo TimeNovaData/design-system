@@ -7,7 +7,7 @@
           .filter((n) => n.type !== 'dev')"
         :key="item.href"
         :to="item.href"
-        class="hover:text-primary-pure rounded-generic justify-center inline-flex flex-col p-16 border border-neutral-100/10 dark:border-white/5 h-[92px] cursor-pointer"
+        class="dark:bg-d-neutral-30 hover:text-primary-pure rounded-generic justify-center inline-flex flex-col p-16 border border-neutral-100/10 dark:border-white/5 h-[92px] cursor-pointer"
       >
         <div class="flex flex-col gap-4 opacity-80">
           <q-icon :name="item.icon"> </q-icon>

@@ -28,6 +28,7 @@ import { useProjetoStore } from 'src/stores/projetos/projetos.store'
 import useDarkMode from 'src/composables/useDarkMode'
 import { useClientesStore } from './stores/clientes/clientes.store'
 import { useTaskStore } from './stores/tasks/tasks.store'
+import { useRoute } from 'vue-router'
 
 const { user, userFoto, userProfile } = storeToRefs(useUserStore())
 const { usuariosFoto } = storeToRefs(useUsuarioStore())
@@ -55,7 +56,7 @@ async function requests() {
   await getTaskTypes()
 }
 
-if (userAuthStore.value.access) requests()
+if (!window.location.href.includes('login')) requests()
 
 watch(
   () => userAuthStore.value.access,

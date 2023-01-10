@@ -141,6 +141,7 @@ onBeforeRouteLeave(() => {
     passive: true,
   }
 })
+
 onBeforeRouteUpdate(() => {
   state.value = {
     hover: false,

@@ -97,43 +97,47 @@
             <div class="p-16 text-headline-3 flex items-center">Anexos</div>
           </header>
           <article>
-            <draggable
-              v-bind="dragOptions"
-              :list="chamadosList"
-              :component-data="{
-                tag: 'div',
-                type: 'transition-group',
-                name: !drag ? 'flip-list' : null,
-                class: `transition-div `,
-              }"
-              group="a"
-              itemKey="name"
-              @end="(e) => startAndEndDrag(e, false)"
-              @start="(e) => startAndEndDrag(e, true)"
-            >
-              <template #item="{ element: i }">
-                <div
-                  @click="() => handleClickChamado(i.id)"
-                  class="grid-chamados h-52 cursor-pointer hover:bg-neutral-10 relative"
-                >
-                  <div></div>
+            <q-scroll-area class="!h-[400px]">
+              <draggable
+                v-bind="dragOptions"
+                :list="chamadosList"
+                :component-data="{
+                  tag: 'div',
+                  type: 'transition-group',
+                  name: !drag ? 'flip-list' : null,
+                  class: `transition-div `,
+                }"
+                group="a"
+                itemKey="name"
+                @end="(e) => startAndEndDrag(e, false)"
+                @start="(e) => startAndEndDrag(e, true)"
+              >
+                <template #item="{ element: i }">
                   <div
-                    class="flex items-center gap-4 px-16 py-6 border-neutral-100/10 border-b"
+                    @click="() => handleClickChamado(i.id)"
+                    class="grid-chamados h-52 cursor-pointer hover:bg-neutral-10 relative"
                   >
-                    <OAvatar size="32px" :foto="i.user_criacao.foto"></OAvatar>
-                    <div class="flex flex-col">
-                      <p class="text-paragraph-2 one-line">
-                        {{ i.titulo }}
-                      </p>
-                      <span class="text-neutral-60 text-paragraph-3">{{
-                        i.user_criacao.nome
-                      }}</span>
+                    <div></div>
+                    <div
+                      class="flex items-center gap-4 px-16 py-6 border-neutral-100/10 border-b"
+                    >
+                      <OAvatar
+                        size="32px"
+                        :foto="i.user_criacao.foto"
+                      ></OAvatar>
+                      <div class="flex flex-col">
+                        <p class="text-paragraph-2 one-line">
+                          {{ i.titulo }}
+                        </p>
+                        <span class="text-neutral-60 text-paragraph-3">{{
+                          i.user_criacao.nome
+                        }}</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-              </template>
+                </template>
 
-              <!-- 
+                <!-- 
 {
   id: 70,
   projeto: {
@@ -241,8 +245,9 @@
 
                -->
 
-              <!--  -->
-            </draggable>
+                <!--  -->
+              </draggable>
+            </q-scroll-area>
           </article>
         </div>
       </q-card>

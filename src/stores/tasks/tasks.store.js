@@ -4,6 +4,8 @@ import { api } from 'src/boot/axios'
 import { useAxios } from '@vueuse/integrations/useAxios'
 import { deepUnref } from 'vue-deepunref'
 import GLOBAL from 'src/utils/GLOBAL'
+import { NotifySucess } from 'src/boot/Notify'
+import emitter from 'src/boot/emitter'
 
 const { URLS } = api.defaults
 
@@ -96,15 +98,24 @@ export const useTaskStore = defineStore('taskstore', () => {
 
     if (objIsEmpty(oldTaskUnref)) {
       window._yellow('CADASTRAR')
-      // console.log(newTaskUnref)
+
       const data = newTaskUnref
-      api.post(URLS.task, data)
+      const newTask = await api.post(URLS.task, data)
+
+      NotifySucess('Task Criada com sucesso')
+      emitter.emit('taskCreate')
+      return newTask
+      //
     } else {
       const data = GLOBAL.compareAndReturnDiff(oldTaskUnref, newTaskUnref)
-
       window._yellow('ALTERAR')
       console.log(data)
-      api.patch(URLS.task + task.value.id + '/', data)
+      const taskEditada = await api.patch(URLS.task + task.value.id + '/', data)
+
+      NotifySucess('Task Alterada com sucesso')
+      emitter.emit('taskEdit')
+
+      return taskEditada
     }
   }
 

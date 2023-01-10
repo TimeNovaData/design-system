@@ -1,14 +1,14 @@
 <template>
   <OSelect
+    v-model="model"
     class="select-avatar"
     option-value="id"
     option-label="nome"
-    v-bind="attrs"
-    v-model="model"
     ref="componentRef"
     use-input
     @update:model-value="(value) => $emit('updateValue', value)"
     :popup-content-class="popupClass"
+    v-bind="attrs"
   >
     <template #option="{ itemProps, opt }">
       <q-item v-bind="itemProps" class="px-4">

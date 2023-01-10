@@ -12,26 +12,36 @@
         CLIENTE - PROJETO / SUBPROJETO
       </span>
 
-      <OAvatar :nome="details.nome_cliente" :foto="details.logo_cliente" />
+      <OAvatar
+        v-if="details.projeto.nome_cliente"
+        :nome="details.projeto.nome_cliente"
+        :foto="details.projeto.logo"
+      />
 
       <div class="grid grid-cols-2 items-center mt-10 gap-16">
-        <OBadge size="sm" square class="bg-primary-pure-dark/40 w-max">
+        <OBadge
+          :color="GLOBAL.returnRGB(details.projeto.cor)"
+          size="sm"
+          square
+          class="w-max"
+        >
           <template #content>
             <p class="text-center mx-auto one-line">
-              {{ details.nome_projeto }}
+              {{ details.projeto.nome }}
             </p>
           </template>
         </OBadge>
 
         <OBadge
           v-if="details.sub_projeto"
+          :color="GLOBAL.returnRGB(details.sub_projeto.cor)"
           size="sm"
           square
-          class="bg-primary-pure-dark/40 w-max"
+          class="w-max"
         >
           <template #content>
             <p class="text-center mx-auto one-line">
-              {{ details.sub_projeto }}
+              {{ details.sub_projeto.nome }}
             </p>
           </template>
         </OBadge>

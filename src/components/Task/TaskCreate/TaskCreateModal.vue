@@ -36,6 +36,7 @@
         class="flex-1 p-24 pb-2 grid grid-cols-2 gap-16 md:flex md:flex-col md:overflow-y-auto"
       >
         <TaskCreateFieldsCard
+          ref="taskFields"
           @update="(val) => handleUpdate(val)"
           :taskValues="taskModalObj"
         />
@@ -122,7 +123,7 @@
 
         <OButton
           v-if="taskModalObj"
-          @click="() => handleSaveTask(taskModalObj, newTaskScope)"
+          @click="() => validateOnEdit()"
           primary
           icon="svguse:/icons.svg#icon_check"
         >
@@ -131,7 +132,7 @@
 
         <OButton
           v-else
-          @click="() => handleSaveTask({}, newTaskScope)"
+          @click="() => validateOnCreate()"
           primary
           icon="svguse:/icons.svg#icon_check"
         >
@@ -154,6 +155,7 @@ import OCounter from 'src/components/Counter/OCounter.vue'
 import { storeToRefs } from 'pinia'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import { useModalStore } from 'src/stores/modal/modal.store'
+import { onBeforeRouteUpdate } from 'vue-router'
 
 const { dialogRef } = useDialogPluginComponent()
 const { handleSaveTask } = useTaskStore()
@@ -164,6 +166,23 @@ const { modalEditTaskState, taskModalObj, taskModalCommentObj } = storeToRefs(
 
 const tabs = ref('desc')
 const newTaskScope = ref(null)
+const taskFields = ref(null)
+
+async function validateOnCreate() {
+  const valid = await taskFields.value.form.validate(true)
+  if (valid) {
+    await handleSaveTask({}, newTaskScope.value)
+    dialogRef.value.hide()
+  }
+}
+
+async function validateOnEdit() {
+  const valid = await taskFields.value.form.validate(true)
+  if (valid) {
+    await handleSaveTask(taskModalObj.value, newTaskScope.value)
+    dialogRef.value.hide()
+  }
+}
 
 // Função chamada quando qualquer dado do modal for alterado
 function handleUpdate(val) {
@@ -178,6 +197,10 @@ function handleUpdate(val) {
 watch(modalEditTaskState, () =>
   modalEditTaskState.value ? (newTaskScope.value = null) : ''
 )
+
+onBeforeRouteUpdate(() => {
+  modalEditTaskState.value = false
+})
 
 defineExpose({ dialogRef })
 </script>

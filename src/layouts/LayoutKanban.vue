@@ -43,10 +43,13 @@
       <router-view />
     </q-page-container>
   </q-layout>
+
+  <TaskViewModal />
+  <TaskCreateModal />
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, provide } from 'vue'
 import BaseHeader from 'src/components/Header/BaseHeader.vue'
 import KanbanHeader from 'src/components/Kanban/KanbanHeader.vue'
 import MenuMultiLevel from 'src/components/MenuMultiLevel/MenuMultiLevel.vue'
@@ -55,6 +58,15 @@ import KanbanModalRight from 'src/components/Kanban/KanbanModalRight.vue'
 import OInput from 'src/components/Input/OInput.vue'
 import OButton from 'src/components/Button/OButton.vue'
 import emitter from 'src/boot/emitter'
+import TaskViewModal from 'src/components/Task/TaskView/TaskViewModal.vue'
+import TaskCreateModal from 'src/components/Task/TaskCreate/TaskCreateModal.vue'
+import { useModalStore } from 'src/stores/modal/modal.store'
+
+const { openTaskViewModal, openTaskEditModal } = useModalStore()
+
+provide('openTaskViewModal', openTaskViewModal)
+provide('openTaskEditModal', openTaskEditModal)
+
 const dev = process.env.dev
 const searchKanban = ref('')
 // const kanbanHeader = ref(null)
