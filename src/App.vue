@@ -47,6 +47,7 @@ const { user: userAuthStore } = storeToRefs(useAuthStore())
 async function requests() {
   await getUser()
   await nextTick()
+  console.log(user)
   await getProfile()
   await getUsuariosFoto()
   await getProjetos()
@@ -65,7 +66,7 @@ watch(
 
 provide('darkMode', darkMode)
 provide('userProfile', userProfile)
-provide('user', readonly(user))
+provide('user', user)
 provide('userFoto', readonly(userFoto))
 provide('usuarios', readonly(usuariosFoto))
 provide('clientes', readonly(clientes))

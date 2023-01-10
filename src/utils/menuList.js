@@ -27,6 +27,13 @@ const menuList = [
     icon: 'web',
     href: '/projeto',
   },
+  {
+    title: 'Single Colaborador',
+    nivel: 0,
+    icon: 'svguse:/icons.svg#icon_users',
+    href: '/colaborador/1',
+    userId: 0,
+  },
 
   // {
   //   title: 'Financeiro',
