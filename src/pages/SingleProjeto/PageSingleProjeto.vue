@@ -7,10 +7,9 @@
         :projeto="projeto"
         ref="header"
       />
-
       <q-card class="mt-32">
         <TextIcon
-          class="pt-24 mx-16 mb-24 text-title-4"
+          class="pt-24 mx-16 mb-24"
           icon="svguse:/icons.svg#icon_date_time"
           text="Investimento Diário"
           Diário
@@ -27,12 +26,12 @@
         ></apexchart>
       </q-card>
 
-      <div class="grid grid-cols-[1fr_1fr] grid-rows-[24.5rem] gap-32 mt-32">
+      <div class="grid grid-cols-2 gap-32 mt-32">
         <q-card class="p-16">
           <TextIcon
-            class="text-title-4"
+            class=""
             icon="svguse:/icons.svg#icon_tasks"
-            text="Checkpoints"
+            text="Atualização dos acompanhamentos"
             Diário
           ></TextIcon>
           <div class="mt-16 grid grid-cols-2">
@@ -46,32 +45,19 @@
           </div>
         </q-card>
 
-        <q-card class="p-16 flex flex-col">
-          <div class="flex justify-between gap-32 mb-16 items-center">
-            <TextIcon
-              class="text-title-4"
-              icon="svguse:/icons.svg#icon_chat"
-              text="Atualização dos acompanhamentos"
-            ></TextIcon>
-            <OButton type="sm" secondary>Ver todos</OButton>
+        <q-card class="p-16">
+          <TextIcon
+            class=""
+            icon="svguse:/icons.svg#icon_chat"
+            text="Checkpoints"
+            Diário
+          ></TextIcon>
+          <div class="mt-16 grid grid-cols-2">
+            <!-- <OChatBox></OChatBox> -->
           </div>
-          <OChatBox
-            class="h-full w-full flex-1 mb-16"
-            style="box-shadow: initial"
-            :comments="comments"
-            :sendComment="sendComment"
-            :getComments="getComments"
-            :isLoading="isLoading"
-            tipo="projeto"
-            :showInput="false"
-          ></OChatBox>
-          <p class="text-paragraph-2">
-            Você tem
-            <span class="text-primary-pure">{{ comments.length }}</span>
-            acompanhamentos registrados.
-          </p>
         </q-card>
       </div>
+
       <q-card class="p-16 mt-32">
         <TextIcon
           class="text-title-4"
@@ -251,14 +237,9 @@
           </article>
         </div>
       </q-card>
-    </div>
-    <div class="p-64"></div>
-  </q-scroll-area>
 
-  <KanbanModal
-    ref="modalChamado"
-    @changed="commitAlt(colunasWithCards)"
-  ></KanbanModal>
+    </div>
+  </q-scroll-area>
 </template>
 
 <script setup>
@@ -267,101 +248,32 @@ import bg from 'src/assets/image/bg-single-projeto.png'
 import TextIcon from 'src/components/Text/TextIcon.vue'
 
 import { useProjetoStore } from 'src/stores/projetos/projetos.store'
-import {
-  onMounted,
-  ref,
-  nextTick,
-  watch,
-  computed,
-  provide,
-  onUnmounted,
-} from 'vue'
+import { onMounted, ref, nextTick } from 'vue'
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
 import SingleProjetoHeader from './SingleProjetoHeader.vue'
 import stackedChartBar from 'src/utils/chart/stackedChartBar'
 import { date } from 'quasar'
 import OChatBox from 'src/components/Chat/OChatBox.vue'
-import useSingleProjeto from 'src/composables/useSingleProjeto'
-import useComments from 'src/composables/useComments'
-import OButton from 'src/components/Button/OButton.vue'
-import draggable from 'vuedraggable'
-import useChamadosComposable from 'src/composables/useChamadosComposable'
-import KanbanModal from 'src/components/Kanban/KanbanModal.vue'
-import { api } from 'src/boot/axios'
-import { useTagStore } from 'src/stores/tags/tags.store'
-import OAvatar from 'src/components/Avatar/OAvatar.vue'
-const { URLS } = api.defaults
 
 const { getProjeto, getTempoProjeto } = useProjetoStore()
 const { projeto, tempoProjeto } = storeToRefs(useProjetoStore())
-
 const dataAtual = ref(date.formatDate(new Date(), 'YYYY/MM/DD'))
-const chamadoAtivo = ref({})
 
 const header = ref(null)
 const seriesChart = ref([])
 const chart = ref(null)
 const route = useRoute()
 const router = useRouter()
-const modalChamado = ref(null)
-
-const chamadosList = ref([])
-
-const { getTags } = useTagStore()
-const { tags } = storeToRefs(useTagStore())
-
-const {
-  colunasWithCards,
-  cardAlterado,
-  drag,
-  // chamados,
-  logAlt,
-  commitAlt,
-  returnCardPerID,
-  startAndEndDrag,
-  // updateDados,
-  // applyFilters,
-  // atualizarOrdem,
-  getLogAlt,
-} = useChamadosComposable()
-
-const getChamados = async (id) => api.get(`${URLS.chamado}?projeto__id=${id}`)
-
 const optionsChart = {
   ...stackedChartBar,
   dataLabels: {
     enabled: false,
   },
 }
-function handleClickChamado(id) {
-  chamadoAtivo.value = returnCardPerID(id)
-  cardAlterado.value = chamadoAtivo.value
-  modalChamado.value.dialogRef.show()
-}
-
-// const chamadosList = computed(() => chamados.value.filter(i => {}))
-
-const { populateChart } = useSingleProjeto()
-
-const {
-  isLoading,
-  commentsReverse,
-  getComments,
-  sendComment,
-  setID: setIDComments,
-  comments,
-} = useComments()
-
-watch(
-  () => projeto,
-  (v) => {
-    setIDComments(v.value.id)
-  },
-  { deep: true }
-)
 
 function handleChangeProjeto(projeto) {
   requests(projeto.id)
+  console.log(route.params.id, router)
   router.push({ params: { id: projeto.id } })
 }
 const routeIsZero = Number(route.params.id) === 0
@@ -370,39 +282,50 @@ onMounted(() => {
   if (routeIsZero) {
     header.value.show()
   }
-  getTags()
 })
 
+function populateChart(tempoProjetos) {
+  debugger
+  const getDuracoes = (tempoProjeto) =>
+    Object.values(tempoProjeto).map((i) => i.duracao)
+  const duracoes = Object.values(tempoProjetos).map(getDuracoes)
+
+  // const labels = Object.keys(tempoProjetos).map((projeto) =>
+  //   projectName(projeto)
+  // )
+  const labels = Object.keys(tempoProjetos)
+
+  const categories = Object.values(tempoProjetos).map((projeto) =>
+    Object.keys(projeto)
+  )[0]
+
+  const generateSeriesApex = (item, index) => ({
+    name: labels[index],
+    data: duracoes[index],
+  })
+
+  const seriesApex = Object.values(tempoProjetos).map(generateSeriesApex)
+  console.log(seriesApex)
+
+  // if (categories && seriesApex !== {}) {
+  chart.value.updateOptions({
+    series: seriesApex,
+    xaxis: {
+      categories: categories || [],
+    },
+    // secondsToHours(i.duracao)
+  })
+}
 async function requests(id) {
   await getProjeto(id)
   await getTempoProjeto(id)
   await nextTick()
-  getComments('projeto')
-  const req = await getChamados(id)
-  chamadosList.value = req.data
-  seriesChart.value = populateChart(tempoProjeto.value, chart)
+  populateChart(tempoProjeto.value)
 }
 
 if (!routeIsZero) {
   requests(route.params.id)
 }
-const dragOptions = computed(() => ({
-  animation: 400,
-  group: 'description',
-  disabled: false,
-  ghostClass: 'ghost',
-}))
-
-onUnmounted(() => {
-  projeto.value = {}
-  tempoProjeto.value = {}
-})
-
-provide('chamado', chamadoAtivo)
-provide('tagsList', tags)
-provide('colunasWithCards', colunasWithCards)
-provide('logAlt', logAlt)
-provide('getLogAlt', getLogAlt)
 </script>
 
 <style lang="sass" scoped>
@@ -427,7 +350,4 @@ provide('getLogAlt', getLogAlt)
     min-height: 282px
     .q-date__calendar-days-container
       min-height: initial
-
-.grid-chamados
-  grid-template-columns: 3.25rem auto 162px 162px 162px 100px
 </style>

@@ -18,7 +18,7 @@
         :key="Nv0.title + index"
         :data="Nv0"
         :sidebar="sidebar"
-        :to="Nv0.href"
+        :to="Nv0.userId ? `${Nv0.href}/${Nv0.userId}` : Nv0.href"
         @Nv0Click="() => handleClick(true)"
         @click="(e) => Nv0HandleClick(e, Nv0)"
         :showHeader="showHeader"
