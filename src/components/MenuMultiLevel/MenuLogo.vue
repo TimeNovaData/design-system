@@ -68,12 +68,9 @@
       style="transform-origin: 0px 0px"
     ></path>
   </svg>
-
 </template>
 
-<script setup>
-
-</script>
+<script setup></script>
 
 <style lang="sass">
 
@@ -88,6 +85,7 @@
     width: 168px
     transition: .2s ease
     margin: 0 auto
+    height: 36px
 
 .sidebar-active,
 .sidebar-open

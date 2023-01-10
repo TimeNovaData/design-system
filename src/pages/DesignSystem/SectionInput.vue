@@ -4,14 +4,14 @@
       <div class="flex items-center justify-between">
         <h1 class="text-title-2 mb-18">Inputs</h1>
 
-        <o-button
+        <OButton
           secondary
           type="a"
           href="https://quasar.dev/vue-components/input#introduction"
           target="_blank"
           >QDocs
-          <q-icon class="!text-20" name="sym_r_arrow_outward"></q-icon>
-        </o-button>
+          <q-icon class="!text-20" name="arrow_outward"></q-icon>
+        </OButton>
       </div>
 
       <q-form ref="form">
@@ -33,7 +33,7 @@
             ]"
           >
             <template #prepend>
-              <q-icon name="sym_r_mail_outline"></q-icon>
+              <q-icon name="mail_outline"></q-icon>
             </template>
           </o-input>
 
@@ -65,8 +65,8 @@
             append-size="32px"
           >
             <template v-slot:append>
-              <o-button rounded>
-                <q-icon name="sym_r_calendar_today" class="cursor-pointer">
+              <OButton rounded>
+                <q-icon name="calendar_today" class="cursor-pointer">
                   <q-popup-proxy
                     cover
                     transition-show="scale"
@@ -74,7 +74,7 @@
                   >
                     <q-date v-model="dateValue" mask="YYYY-MM-DD">
                       <div class="row items-center justify-end">
-                        <o-button
+                        <OButton
                           v-close-popup
                           label="Close"
                           color="primary"
@@ -84,7 +84,7 @@
                     </q-date>
                   </q-popup-proxy>
                 </q-icon>
-              </o-button>
+              </OButton>
             </template>
           </o-input>
 
@@ -97,7 +97,7 @@
             name="name"
           >
             <template v-slot:prepend>
-              <q-icon size="1.5rem" name="sym_r_person"></q-icon>
+              <q-icon size="1.5rem" name="person"></q-icon>
             </template>
           </o-input>
 
@@ -123,16 +123,16 @@
           </o-input>
 
           <div class="flex gap-8">
-            <o-button
+            <OButton
               quarternary
               class="text-neutral-60"
               size="sm"
-              icon-right="sym_r_close"
+              icon-right="close"
               @click="form.resetValidation()"
-              >Limpar validação</o-button
+              >Limpar validação</OButton
             >
-            <o-button @click="form.submit()" secondary size="sm"
-              >Enviar Form</o-button
+            <OButton @click="form.submit()" secondary size="sm"
+              >Enviar Form</OButton
             >
           </div>
         </div>
@@ -145,7 +145,8 @@
 
 <script setup>
 import SyntaxHighlight from 'src/components/DesignSystem/SyntaxHighlight.vue'
-import oButton from 'src/components/Button/OButton.vue'
+import OButton from 'src/components/Button/OButton.vue'
+
 import { ref } from 'vue'
 import OInput from 'src/components/Input/OInput.vue'
 
@@ -177,4 +178,4 @@ const code = `import OInput from "../../components/OInput.vue";
 </script>
 
 <style lang="sass"></style>
-import { ref }                      from 'vue'
+import { ref } from 'vue'

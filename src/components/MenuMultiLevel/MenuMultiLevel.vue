@@ -1,45 +1,63 @@
 <template>
-  <aside class="OSidebar" ref="sidebar" level="0" @mouseenter="GLOBAL.debounce(100, handleMouseEnter, 'sideTime')()"
-    @mouseleave="GLOBAL.debounce(50, handleMouseLeave, 'sideTime')()">
+  <aside
+    class="OSidebar"
+    ref="sidebar"
+    level="0"
+    @mouseenter="GLOBAL.debounce(50, handleMouseEnter, 'sideTime')()"
+    @mouseleave="GLOBAL.debounce(10, handleMouseLeave, 'sideTime')()"
+  >
     <header class="OSidebar-header" v-if="showHeader">
-      <MenuLogo />
+      <RouterLink :to="{ name: 'home' }">
+        <MenuLogo />
+      </RouterLink>
     </header>
 
-    <section>
-      <q-list class="Nv0-ul" tag="ul">
-        <MenuLi v-for="(Nv0, index) in props.menu" :key="Nv0.title + index" :data="Nv0" :sidebar="sidebar" :to="Nv0.href"
-          @Nv0Click="() => handleClick(true)" @click="(e) => Nv0HandleClick(e, Nv0)" :showHeader="showHeader">
-          <q-item-section v-if="Nv0.icon" avatar class="min-w-32 pl-10">
-            <q-icon size="24px" :name="Nv0.icon"></q-icon>
-          </q-item-section>
-        
-          <q-item-section class="Nv0-text">
-            <p class="one-line">{{ Nv0.title }}</p>
-          </q-item-section>
-        
-          <q-item-section v-if="Nv0.submenu" avatar class="opacity-50">
-            <q-icon size="1rem" name="sym_r_navigate_next"></q-icon>
-          </q-item-section>
-        </MenuLi>
-        </q-list>
-        </section>
-        </aside>
-        <Teleport to="body">
-          <span v-if="state.open" class="OSidebar-deep" @click="() => handleClick(false)"></span>
-        </Teleport>
+    <q-list class="Nv0-ul flex flex-col h-full" tag="ul">
+      <MenuLi
+        v-for="(Nv0, index) in props.menu"
+        :key="Nv0.title + index"
+        :data="Nv0"
+        :sidebar="sidebar"
+        :to="Nv0.userId ? `${Nv0.href}/${Nv0.userId}` : Nv0.href"
+        @Nv0Click="() => handleClick(true)"
+        @click="(e) => Nv0HandleClick(e, Nv0)"
+        :showHeader="showHeader"
+        :exact="true"
+      >
+        <q-item-section v-if="Nv0.icon" avatar class="min-w-32 pl-10">
+          <q-icon size="24px" :name="Nv0.icon"></q-icon>
+        </q-item-section>
 
+        <q-item-section class="Nv0-text">
+          <p class="one-line">{{ Nv0.title }}</p>
+        </q-item-section>
+
+        <q-item-section v-if="Nv0.submenu" avatar class="opacity-50">
+          <q-icon size="1rem" name="navigate_next"></q-icon>
+        </q-item-section>
+      </MenuLi>
+    </q-list>
+  </aside>
+  <Teleport to="body">
+    <span
+      v-if="state.open"
+      class="OSidebar-deep"
+      @click="() => handleClick(false)"
+    ></span>
+  </Teleport>
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
 import MenuLogo from './MenuLogo.vue'
 import MenuLi from './MenuLi.vue'
+
+import { onMounted, onUnmounted, ref, watch, onBeforeUnmount } from 'vue'
+import { useRoute, onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
 
 import GLOBAL from 'src/utils/GLOBAL'
 import logoAnimation from 'src/utils/animation/logo'
 
-const route = useRoute()
+const router = useRoute()
 
 const props = defineProps({
   menu: Array,
@@ -48,10 +66,13 @@ const props = defineProps({
 const state = ref({
   open: false,
   hover: false,
+  passive: true,
 })
+
 const showHeader = ref(true)
 
 const sidebar = ref(null)
+
 let $ = {}
 let animate
 
@@ -62,6 +83,11 @@ onMounted(() => {
   }
   animate = logoAnimation('.OSidebar')
   animate.logoAnimationToNDT.play().progress(1)
+  setTimeout(() => {
+    state.value.passive = false
+  }, 300)
+
+  window.animaa = animate
 })
 
 watch(showHeader, () => {
@@ -99,24 +125,53 @@ watch(
     }
   }
 )
-// Fecha menu ao mudar a rota
-watch(
-  () => route.path,
-  () => {
-    state.value.open = false
+
+// watch(
+//   () => state,
+//   (v) => {
+//     console.log('MENU passive', v.value.passive)
+//   },
+//   { deep: true }
+// )
+
+onBeforeRouteLeave(() => {
+  state.value = {
+    hover: false,
+    open: false,
+    passive: true,
   }
-)
+})
+onBeforeRouteUpdate(() => {
+  state.value = {
+    hover: false,
+    open: false,
+  }
+})
+
+onUnmounted(() => {
+  state.value = {
+    hover: false,
+    open: false,
+    passive: true,
+  }
+  // console.log('desmontou')
+  animate.logoAnimationToNDT.seek()
+  animate.logoAnimationToNovadata.seek(0)
+})
 
 function handleMouseEnter() {
+  if (state.value.passive) return
   state.value.hover = true
 }
 
 function handleMouseLeave() {
-  if (state.value.open) return
+  if (state.value.open || state.value.passive) return
   state.value.hover = false
 }
 
 function handleClick(val) {
+  if (state.value.passive) return
+
   state.value.open = val
 }
 
@@ -139,7 +194,8 @@ function toggleActiveOnLis(current) {
 :root
   --Nv0-sidebar-width: 5rem
   --Nv0-sidebar-width-open: 21.25rem
-  --Nv0-sidebar-transition: cubic-bezier(.4,0,.2,1)
+  --Nv0-sidebar-transition: ease-out
+  // cubic-bezier(.4,0,.2,1)
   --Nv0-sidebar-border:1px solid rgba(var(--neutral-100),0.1)
   --Nv0-sidebar-z-index: 9010
   --Nv0-sidebar-overflow: hidden
@@ -202,9 +258,11 @@ function toggleActiveOnLis(current) {
   opacity: 0
   transition: opacity .2s ease
 
-.sidebar-active .OSidebar
-  .Nv0-text
-    opacity: 1
+.sidebar-active,
+.sidebar-open
+  .OSidebar
+    .Nv0-text
+      opacity: 1
 
 // Fundo
 .OSidebar-deep

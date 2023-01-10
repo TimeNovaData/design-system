@@ -11,10 +11,10 @@
 const { configure } = require('quasar/wrappers')
 const path = require('path')
 
-module.exports = configure(function (/* ctx */) {
+module.exports = configure(function (ctx) {
   return {
     eslint: {
-      // fix: true,
+      fix: true,
       // include = [],
       // exclude = [],
       // rawOptions = {},
@@ -28,7 +28,15 @@ module.exports = configure(function (/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://v2.quasar.dev/quasar-cli/boot-files
-    boot: ['i18n', 'axios'],
+    boot: [
+      'i18n',
+      'axios',
+      'emitter',
+      'LoadingBar',
+      'apexCharts',
+      'filepond',
+      'Notify',
+    ],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
     css: ['app.sass'],
@@ -43,7 +51,6 @@ module.exports = configure(function (/* ctx */) {
       // 'themify',
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
-
       //  'roboto-font', // optional, you are not bound to it
       // 'material-icons-round' // optional, you are not bound to it
       // 'svg-mdi-v6'
@@ -52,41 +59,45 @@ module.exports = configure(function (/* ctx */) {
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
     build: {
       target: {
-        browser: [
-          'es2019',
-          'edge88',
-          'firefox78',
-          'chrome87',
-          'safari13.1',
-        ],
+        browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
         node: 'node16',
       },
       showProgress: true,
 
       vueRouterMode: 'history', // available values: 'hash', 'history'
+      rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
 
-      // rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
-
       // publicPath: 'dist/spa',
       // analyze: true,
-      // env: {},
+      env: {
+        API_URL: ctx.dev
+          ? 'http://localhost:8000/api/'
+          : 'https://hub.novadata.com.br/api/',
+        BACKEND_URL: ctx.dev
+          ? 'http://localhost:8000/'
+          : 'https://hub.novadata.com.br/',
+
+        HTTPS_MODE: !ctx.dev,
+        development: ctx.dev,
+      },
       // rawDefine: {}
       // ignorePublicFolder: true,
       // minify: false,
       // polyfillModulePreload: true,
       // distDir
 
-      // extendViteConf (viteConf) {},dev
       extendViteConf(viteConf) {
-        console.log('.novadata 🟢 ')
-        viteConf.resolve.alias['quasar/dist/quasar.sass'] =
-          '../src/assets/empty.js'
-        viteConf.resolve.alias['quasar/dist/quasar.css'] =
-          '../src/assets/empty.js'
+        const url = viteConf.define['process.env.API_URL'].replaceAll('"', '')
+        console.log('⚡ ⠂ DEV')
+        console.log('🟢 ⠂ API', url)
+        const empty = '../src/assets/empty.js'
+        viteConf.resolve.alias['quasar/dist/quasar.sass'] = empty
+        viteConf.resolve.alias['quasar/dist/quasar.css'] = empty
       },
+
       // viteVuePluginOptions: {},
 
       vitePlugins: [
@@ -106,36 +117,41 @@ module.exports = configure(function (/* ctx */) {
     // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
     devServer: {
       // https: true
+      vueDevtools: true,
       open: false, // opens browser window automatically,
-      // options: {
-      //   usePolling: true
-      // }
+      options: {
+        usePolling: true,
+      },
     },
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
     framework: {
-      config: {},
+      config: {
+        // loadingBar: {
+        //   size: '4px',
+        // },
+        // dark: 'auto' // or Boolean true/false
+      },
 
       // iconSet: 'material-icons', // Quasar icon set
       lang: 'pt-BR', // Quasar language pack
-
+      ripple: {
+        early: true,
+      },
       // For special cases outside of where the auto-import strategy can have an impact
       // (like functional components as one of the examples),
       // you can manually specify Quasar components/directives to be available everywhere:
       //
       // components: [],
       // directives: [],
-      iconSet: 'svg-mdi-v6',
+      // iconSet: 'material-symbols-rounded',
       // Quasar plugins
-      plugins: ['Notify', 'Dialog'],
+      plugins: ['Notify', 'Dialog', 'LoadingBar'],
     },
 
     // animations: 'all', // --- includes all animations
     // https://v2.quasar.dev/options/animations
-    animations: [
-      'fadeIn',
-      'fadeOut',
-    ],
+    animations: ['fadeIn', 'fadeOut', 'fadeOutLeft', 'fadeOutLeft'],
 
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#property-sourcefiles
     // sourceFiles: {
@@ -172,7 +188,7 @@ module.exports = configure(function (/* ctx */) {
 
     // https://v2.quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
-      workboxMode: 'generateSW', // or 'injectManifest'
+      workboxMode: 'injectManifest', // or 'injectManifest'
       injectPwaMetaTags: true,
       swFilename: 'sw.js',
       manifestFilename: 'manifest.json',
@@ -182,6 +198,13 @@ module.exports = configure(function (/* ctx */) {
       // extendInjectManifestOptions (cfg) {},
       // extendManifestJson (json) {}
       // extendPWACustomSWConf (esbuildConf) {}
+
+      workboxOptions: {
+        // swSrc is required in InjectManifest mode.
+        swSrc: 'sw.js',
+        // ...other Workbox options...
+        exclude: [/\.map$/, /_redirects/], // this fixed it.
+      },
     },
 
     // Full list of options: https://v2.quasar.dev/quasar-cli/developing-cordova-apps/configuring-cordova
@@ -235,7 +258,6 @@ module.exports = configure(function (/* ctx */) {
         appId: 'design.system.novadata',
         win: {
           target: 'portable',
-
         },
 
         linux: {

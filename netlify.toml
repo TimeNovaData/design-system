@@ -1,0 +1,27 @@
+# The following redirect is intended for use with most SPA's that handles routing internally.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/index.html"
+  [headers.values]
+  cache-control = '''
+  max-age=0,
+  no-cache,
+  no-store,
+  must-revalidate'''
+
+[[headers]]
+   for = "**/*.@(jpg|jpeg|gif|png|svg|webp|js|css|eot|otf|ttf|ttc|woff|woff2|font.css)"
+  [headers.values]
+  cache-control = '''
+  max-age=604800'''
+ 
+[[headers]]
+   for = "*.@(jpg|jpeg|gif|png|svg|webp|js|css|eot|otf|ttf|ttc|woff|woff2|font.css)"
+  [headers.values]
+  cache-control = '''
+  max-age=604800'''
+ 

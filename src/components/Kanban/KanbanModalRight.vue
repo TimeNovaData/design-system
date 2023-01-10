@@ -21,7 +21,7 @@
           class="flex-row items-center !h-40 rounded-generic user-select-none px-8"
         >
           <div class="flex items-center gap-4">
-            <q-icon size="1.5rem" name="sym_r_visibility"></q-icon>
+            <q-icon size="1.5rem" name="visibility"></q-icon>
             <p class="text-paragraph-2">Visao Expandida</p>
           </div>
           <q-space></q-space>
@@ -34,7 +34,7 @@
           class="flex-row items-center !h-40 rounded-generic user-select-none px-8"
         >
           <div class="flex items-center gap-4">
-            <q-icon size="1.5rem" name="sym_r_blur_on"></q-icon>
+            <q-icon size="1.5rem" name="blur_on"></q-icon>
             <div>
               <p class="text-paragraph-2">Blur Mode</p>
             </div>
@@ -57,24 +57,20 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { inject, ref, watch } from 'vue'
 import { useDialogPluginComponent } from 'quasar'
 import { storeToRefs } from 'pinia'
-import { useVisaoExpandida } from 'src/stores/visaoExpandida'
 import { useBlurMode } from 'src/stores/blurMode'
-import { useKanbanBG } from 'src/stores/kanbanBG'
 import OInput from 'src/components/Input/OInput.vue'
 
 const blur = useBlurMode()
-const bg = useKanbanBG()
-const { kanbanBG } = storeToRefs(bg)
+const kanbanBG = inject('kanbanBG')
 const { blurMode } = storeToRefs(blur)
 
 const dialogState = ref(false)
 const props = defineProps({})
 
-const visao = useVisaoExpandida()
-const { visaoExpandida } = storeToRefs(visao)
+const visaoExpandida = inject('visaoExpandida')
 
 defineEmits([...useDialogPluginComponent.emits])
 

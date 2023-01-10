@@ -1,25 +1,34 @@
 import { defineStore } from 'pinia'
-import { onMounted, watch, ref } from 'vue'
+import { ref, watch } from 'vue'
 import { LocalStorage } from 'quasar'
+import { useUserStore } from './usuarios/user.store'
 
 export const useBlurMode = defineStore('blurMode', () => {
   const blurMode = ref(false)
+  const pageWithBlur = ref(false)
 
-  onMounted(() => {
-    if (LocalStorage.has('blurMode')) {
-      const mode = LocalStorage.getItem('blurMode')
-      blurMode.value = mode
-    } else {
-      LocalStorage.set('blurMode', blurMode.value)
+  const user = useUserStore()
+
+  watch(
+    () => user.userProfile.blur_mode, // fica de olho no profile
+    (v) => {
+      if (v !== blurMode.value) blurMode.value = v
     }
+  )
+
+  watch(blurMode, (v) => {
+    toggleClassBody()
+    if (v !== user.userProfile.blur_mode)
+      user.setProfile({ ...user.userProfile, blur_mode: v })
   })
 
-  watch(blurMode, (newX) => {
-    LocalStorage.set('blurMode', blurMode.value)
-    blurMode.value
-      ? document.body.classList.add("blur--mode")
-      : document.body.classList.remove("blur--mode")
-  })
+  watch(pageWithBlur, () => toggleClassBody())
 
-  return { blurMode }
+  function toggleClassBody() {
+    blurMode.value && pageWithBlur.value
+      ? document.body.classList.add('blur--mode')
+      : document.body.classList.remove('blur--mode')
+  }
+
+  return { blurMode, pageWithBlur }
 })

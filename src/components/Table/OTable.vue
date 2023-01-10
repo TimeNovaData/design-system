@@ -1,5 +1,5 @@
 <template>
-  <q-table ref="componentRef" v-bind="attrs">
+  <q-table ref="componentRef" v-bind="attrs" class="OTable">
     <template v-for="slot in Object.keys(slots)" #[slot]="slotProps">
       <slot :name="slot" v-bind="slotProps"></slot>
     </template>
@@ -21,6 +21,9 @@ defineExpose({ componentRef })
 </script>
 
 <style lang="sass">
+.OTable
+  .q-select .q-field__native span
+    padding: 4px
 
 .sticky-header-table
   /* height or max-height is important */

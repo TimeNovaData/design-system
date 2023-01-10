@@ -4,13 +4,9 @@
       <div class="flex items-center justify-between">
         <h1 class="text-title-2 mb-18">Paginacao</h1>
 
-        <o-button
-          secondary
-          type="a"
-          href="#"
-          target="_blank"
+        <o-button secondary type="a" href="#" target="_blank"
           >QDocs
-          <q-icon class="!text-20" name="sym_r_arrow_outward"></q-icon>
+          <q-icon class="!text-20" name="arrow_outward"></q-icon>
         </o-button>
       </div>
 
@@ -22,12 +18,12 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import oButton from "src/components/Button/OButton.vue";
-import SyntaxHighlight from "src/components/DesignSystem/SyntaxHighlight.vue";
+import { ref } from 'vue'
+import oButton from 'src/components/Button/OButton.vue'
+import SyntaxHighlight from 'src/components/DesignSystem/SyntaxHighlight.vue'
 
-const code = ``;
+const code = ``
 </script>
 
 <style lang="sass"></style>
-import { ref }         from 'vue'import oButton         from 'src/components/Button/OButton.vue'
+import { ref } from 'vue'import oButton from 'src/components/Button/OButton.vue'

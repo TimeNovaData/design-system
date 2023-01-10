@@ -20,16 +20,16 @@ body
       font-family: map-get($value, "family"), sans-serif
       text-transform: map-get($value, "transform")
 
-:root
-  @each $heading, $value in $headings
-    #{--$heading}
-      font-size: map-get($value, "size")
-      font-weight: map-get($value, "weight")
-      line-height: map-get($value, "line-height")
-      letter-spacing: map-get($value, "letter-spacing")
-      font-family: map-get($value, "family"), sans-serif
-      @if map-get($value, "transform")
-        text-transform: map-get($value, "transform")
+// :root
+//   @each $heading, $value in $headings
+//     #{--$heading}
+//       font-size: map-get($value, "size")
+//       font-weight: map-get($value, "weight")
+//       line-height: map-get($value, "line-height")
+//       letter-spacing: map-get($value, "letter-spacing")
+//       font-family: map-get($value, "family"), sans-serif
+//       @if map-get($value, "transform")
+//         text-transform: map-get($value, "transform")
 
 .text-
   @each $heading, $value in $headings

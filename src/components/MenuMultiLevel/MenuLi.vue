@@ -1,6 +1,8 @@
 <template>
   <!-- Nv0 li  -->
-  <q-item class="Nv0-li" tag="li" clickable @click="$emit('Nv0Click')">
+  <div v-if="data.separator" class="flex-[99999]"></div>
+
+  <q-item v-else class="Nv0-li" tag="li" clickable @click="$emit('Nv0Click')">
     <slot>
       <!-- Nv0 Slot onde entra  o conteudo da li  -->
     </slot>
@@ -21,11 +23,12 @@
       </li>
       <!-- Nv1 item  -->
       <q-item
+        v-for="Nv1 in haveSubmenu"
         clickable
         tag="li"
         class="submenu-li"
-        v-for="Nv1 in haveSubmenu"
         :key="Nv1.title"
+        :exact="false"
       >
         <!-- Nv1 Content  -->
         <q-item-section>
@@ -65,7 +68,7 @@
 
         <!-- Arrow  -->
         <q-item-section v-if="Nv1.submenu" avatar class="opacity-50">
-          <q-icon size="1rem" name="sym_r_navigate_next"></q-icon>
+          <q-icon size="1rem" name="navigate_next"></q-icon>
         </q-item-section>
 
         <!-- Submenu Nv2 -->
