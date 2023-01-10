@@ -77,7 +77,7 @@
             <p class="text-title-4">Minhas Tasks</p>
           </div>
           <div class="item-2">
-            <OButton size="md" primary>
+            <OButton size="md" primary @click="openTaskEditModal">
               <q-icon
                 name="svguse:/icons.svg#icon_add_task"
                 size="1.5rem"
@@ -160,6 +160,7 @@
                 v-if="index <= 25"
                 :task="task"
                 :hideDragIcon="true"
+                :completed="true"
               />
             </template>
           </ul>
@@ -185,11 +186,14 @@ import TaskColaborador from 'src/components/TaskColaborador/TaskColaborador.vue'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import { storeToRefs } from 'pinia'
 import draggable from 'vuedraggable'
+import emitter from 'src/boot/emitter'
+
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 
 const user = inject('user')
+const openTaskEditModal = inject('openTaskEditModal')
 
 const { getTasks } = useTaskStore()
 const { tasks } = storeToRefs(useTaskStore())
@@ -217,10 +221,17 @@ const listAvatar = ref([
   },
 ])
 
+const userId = ref(null)
+
+emitter.on('taskCreate', () => {
+  // atualizar a lista
+  console.log('CRIOU')
+  getTasksPaged(userId.value)
+})
+
 const tasksTodo = computed(() =>
   tasks.value.filter((t) => t.status !== 'Concluído')
 )
-console.log('AAAAAAAAAA')
 
 const tasksfinished = computed(() =>
   tasks.value.filter((t) => t.status === 'Concluído')
@@ -237,10 +248,8 @@ const getTasksPaged = async (userId) => {
   return await getTasks(`&=responsavel_task__id=${userId}&?page_size=100`)
 }
 onMounted(async () => {
-  const userId = route.params.id ? route.params.id : user.id
+  userId.value = route.params.id ? route.params.id : user.id
   await getTasksPaged(userId)
-
-  console.log(route.params.id)
 })
 </script>
 
