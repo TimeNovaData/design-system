@@ -9,13 +9,27 @@
       <router-view />
       <!--  MOVI PARA LAYOUTTEST /testes  -->
     </q-page-container>
+    <ButtonFloat></ButtonFloat>
   </q-layout>
+
+  <TaskViewModal />
+  <TaskCreateModal />
 </template>
 
 <script setup>
+import ButtonFloat from 'src/components/Button/ButtonFloat.vue'
 import BaseHeader from 'src/components/Header/BaseHeader.vue'
 import MenuMultiLevel from 'src/components/MenuMultiLevel/MenuMultiLevel.vue'
 import menuList from 'src/utils/menuList.js'
+import TaskViewModal from 'src/components/Task/TaskView/TaskViewModal.vue'
+import TaskCreateModal from 'src/components/Task/TaskCreate/TaskCreateModal.vue'
+import { useModalStore } from 'src/stores/modal/modal.store'
+import { provide } from 'vue'
+
+const { openTaskViewModal, openTaskEditModal } = useModalStore()
+
+provide('openTaskViewModal', openTaskViewModal)
+provide('openTaskEditModal', openTaskEditModal)
 </script>
 
 <style lang="sass">

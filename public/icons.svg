@@ -458,6 +458,11 @@
   <rect x="0.5" y="0.5" width="27" height="27" rx="13.5" stroke="currentColor"/>
 </symbol>
 
+<symbol id="icon_star" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M19.9898 7.90365C22.1725 13.4199 26.5724 17.8178 32.0908 19.9999C26.5721 22.182 22.172 26.5801 19.9893 32.0966C17.8066 26.5802 13.4066 22.1822 7.88804 20.0001C13.4067 17.818 17.8069 13.4201 19.9898 7.90365Z" stroke="currentColor" stroke-width="3"/>
+</symbol>
+
+
 
 
 

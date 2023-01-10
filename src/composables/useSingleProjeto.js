@@ -10,6 +10,7 @@ export default function useSingleProjeto() {
         })
         .filter((i) => i !== null)
     }
+
     const duracoes = Object.values(tempoProjetos).map(getDuracoes)
 
     const labelsA = Object.values(tempoProjetos).map((projeto) =>

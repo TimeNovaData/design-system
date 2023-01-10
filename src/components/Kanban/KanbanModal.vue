@@ -2,11 +2,12 @@
   <q-dialog
     v-model="dialogState"
     ref="dialogRef"
-    transition-hide="slide-down"
+    transition-hide="fade"
     @before-hide="beforehide"
     @hide="onDialogHide"
     @before-show="beforeshow"
     @show="onShow"
+    transition-duration="200"
   >
     <q-card class="kanban-modal q-dialog-plugin remove-styles">
       <header class="bg-neutral-30 dark:bg-d-neutral-10">
@@ -633,9 +634,12 @@
                       v-if="tasksChamadoPendente.length"
                       class="task-wrapper dark:border-transparent border rounded-generic mx-24 border-neutral-30"
                     >
-                      <div v-for="item in tasksChamadoPendente" :key="item.id">
-                        <!-- <KanbanTaskItem :task="item"></KanbanTaskItem> -->
-                      </div>
+                      <KanbanTaskItem
+                        v-for="item in tasksChamadoPendente"
+                        :key="item.id"
+                        :task="item"
+                        :openTaskViewModal="openTaskViewModal"
+                      ></KanbanTaskItem>
                     </div>
                     <div v-else class="text-paragraph-2 text-center mt-12">
                       <div>
@@ -661,12 +665,12 @@
                       v-if="tasksChamadoConcluido.length"
                       class="task-wrapper dark:border-transparent border rounded-generic mx-24 border-neutral-30"
                     >
-                      <div v-for="task in tasksChamadoConcluido" :key="task.id">
-                        <!-- <KanbanTaskItem
-                          :task="task"
-                          :openTaskViewModal="openTaskViewModal"
-                        ></KanbanTaskItem> -->
-                      </div>
+                      <KanbanTaskItem
+                        v-for="task in tasksChamadoConcluido"
+                        :key="task.id"
+                        :task="task"
+                        :openTaskViewModal="openTaskViewModal"
+                      ></KanbanTaskItem>
                     </div>
                     <div v-else class="text-paragraph-2 text-center mt-12">
                       <div>
@@ -699,9 +703,6 @@
       <button @click="openTaskEditModal">CRIAR TASK</button>
     </q-card>
   </q-dialog>
-
-  <TaskViewModal />
-  <TaskCreateModal />
 </template>
 
 <script setup>
@@ -710,8 +711,7 @@ import { useDialogPluginComponent } from 'quasar'
 import AvatarSingle from 'src/components/Avatar/AvatarSingle.vue'
 import OBadge from 'src/components/Badge/OBadge.vue'
 import OButton from 'src/components/Button/OButton.vue'
-import TaskViewModal from 'src/components/Task/TaskView/TaskViewModal.vue'
-import TaskCreateModal from 'src/components/Task/TaskCreate/TaskCreateModal.vue'
+
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import GLOBAL from 'src/utils/GLOBAL'
 import { inject, ref, unref, watch, computed, nextTick } from 'vue'
@@ -721,9 +721,10 @@ import KanbanItemEditableEditor from './KanbanItemEditableEditor.vue'
 import KanbanItemEditableSelect from './KanbanItemEditableSelect.vue'
 import KanbanSectionHeader from './KanbanSectionHeader.vue'
 import KanbanTaskItem from './KanbanTaskItem.vue'
-import { useModalStore } from 'src/stores/modal/modal.store'
+// import emitter from 'src/boot/emitter'
 
-const { openTaskViewModal, openTaskEditModal } = useModalStore()
+// emitter.on('createTask', () => {})
+const openTaskViewModal = inject('openTaskViewModal')
 
 const {
   returnRGB,
@@ -811,8 +812,12 @@ const beforehide = (e) => {
   logAlt.value = []
 }
 
-function onShow() {
+function handleGetTasks() {
   getTasks(`&chamado__id=${data.value.id}`)
+}
+
+function onShow() {
+  handleGetTasks()
 }
 
 async function handleHistorico() {
@@ -861,8 +866,8 @@ defineExpose({ dialogRef })
     color: white !important
     border-color: rgba(var(--white),0.05)
 
-.q-dialog__backdrop
-  backdrop-filter: blur(5px)
+// .q-dialog__backdrop
+//   backdrop-filter: blur(5px)
 </style>
 
 <style lang="sass" scoped>

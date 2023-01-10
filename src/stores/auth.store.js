@@ -79,12 +79,13 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function logout() {
     const resetStore = useResetStore()
+
     user.value = {}
     LoadingBar.stop()
     Cookies.remove('NDT_REFRESH_TOKEN')
     Cookies.remove('NDT_TOKEN')
-    resetStore.usuarioStore()
     resetStore.userStore()
+    resetStore.usuarioStore()
   }
 
   return { user, returnUrl, login, logout, refreshToken, TOKEN }

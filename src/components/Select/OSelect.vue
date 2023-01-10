@@ -8,6 +8,8 @@
     :size="null"
     :options="options"
     @filter="filterFn"
+    @focus="handleFocus"
+    dropdown-icon="expand_more"
   >
     <template v-for="slot in Object.keys(slots)" #[slot]="slotProps">
       <slot :name="slot" v-bind="slotProps"></slot>
@@ -40,7 +42,10 @@ const options = ref(attrs.options)
 
 // eslint-disable-next-line prefer-const
 let stringOptions = attrs.options
-
+function handleFocus() {
+  componentRef.value.hidePopup()
+  // componentRef.value.showPopup()
+}
 watch(
   () => attrs.options,
   async (v) => {
