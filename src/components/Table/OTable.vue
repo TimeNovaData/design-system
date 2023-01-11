@@ -1,5 +1,10 @@
 <template>
-  <q-table ref="componentRef" v-bind="attrs" class="OTable">
+  <q-table
+    ref="componentRef"
+    v-bind="attrs"
+    class="OTable"
+    :pagination="{ rowsPerPage }"
+  >
     <template v-for="slot in Object.keys(slots)" #[slot]="slotProps">
       <slot :name="slot" v-bind="slotProps"></slot>
     </template>
@@ -11,11 +16,21 @@ export default { inheritAttrs: false }
 </script>
 
 <script setup>
-import { useSlots, useAttrs, ref, onMounted } from 'vue'
+import { useSlots, useAttrs, ref, watch, onMounted } from 'vue'
 
 const slots = useSlots()
 const attrs = useAttrs()
 const componentRef = ref(null)
+const rowsPerPage = ref(attrs.pagination.rowsPerPage)
+
+watch(
+  () => attrs.pagination.rowsPerPage,
+  (v) => {
+    rowsPerPage.value = v
+    console.log(attrs.pagination)
+  },
+  { deep: true }
+)
 
 defineExpose({ componentRef })
 </script>
