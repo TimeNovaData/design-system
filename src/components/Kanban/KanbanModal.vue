@@ -758,6 +758,7 @@ const tab = ref('info')
 const dialogState = ref(false)
 
 const { getTasks } = useTaskStore()
+
 const { tasksChamado, tasksChamadoPendente, tasksChamadoConcluido } =
   storeToRefs(useTaskStore())
 

@@ -54,6 +54,7 @@ export const useTaskStore = defineStore('taskstore', () => {
       { method: 'GET' },
       api
     )
+
     try {
       setTask(data.value)
       return data.value

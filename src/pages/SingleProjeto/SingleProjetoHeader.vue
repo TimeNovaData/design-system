@@ -44,6 +44,7 @@
                 <AvatarMultiple :list="projeto.responsaveis"></AvatarMultiple>
               </div>
             </div>
+
             <div class="flex flex-col" v-if="projeto.atendimento">
               <p class="text-caps-3 text-neutral-70">Atendimento</p>
               <div class="relative max-w-[128px] h-32">
