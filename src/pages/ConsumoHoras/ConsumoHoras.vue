@@ -260,12 +260,20 @@
           </template>
 
           <template v-slot:body="props">
-            <q-tr :props="props">
-              <q-td key="titulo" :auto-width="false">
+            <q-tr :props="props" class="cursor-pointer">
+              <q-td
+                @click="() => handleClickChamado(props.row.id)"
+                key="titulo"
+                :auto-width="false"
+              >
                 {{ props.row.titulo }}
               </q-td>
 
-              <q-td :auto-width="false" key="user_criacao">
+              <q-td
+                @click="() => handleClickChamado(props.row.id)"
+                :auto-width="false"
+                key="user_criacao"
+              >
                 <div class="inline-flex items-center">
                   <AvatarSingle
                     class="!w-32 !h-32 overflow-hidden mr-2 ajuste-img"
@@ -276,7 +284,11 @@
                 </div>
               </q-td>
 
-              <q-td :auto-width="false" key="projeto">
+              <q-td
+                @click="() => handleClickChamado(props.row.id)"
+                :auto-width="false"
+                key="projeto"
+              >
                 <div class="projeto-td">
                   <q-badge
                     rounded
@@ -287,7 +299,11 @@
                 </div>
               </q-td>
 
-              <q-td :auto-width="false" key="tempo_estimado">
+              <q-td
+                @click="() => handleClickChamado(props.row.id)"
+                :auto-width="false"
+                key="tempo_estimado"
+              >
                 <p class="whitespace-nowrap text-paragraph-2">
                   {{ GLOBAL.FTime(props.row.tempo_estimado) }}
                 </p>
@@ -299,7 +315,11 @@
                 </p>
               </q-td>
 
-              <q-td :auto-width="true" key="tag">
+              <q-td
+                @click="() => handleClickChamado(props.row.id)"
+                :auto-width="true"
+                key="tag"
+              >
                 <div
                   class="whitespace-nowrap text-paragraph-2 flex flex-nowrap gap-4"
                 >
@@ -394,6 +414,7 @@ const form = ref(null)
 const chart = ref(null)
 const menu = ref(null)
 const filter = ref('')
+const handleClickChamado = inject('handleClickChamado')
 
 const usuariosFoto = inject('usuarios')
 const clientes = inject('clientes')

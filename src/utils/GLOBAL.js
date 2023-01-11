@@ -123,10 +123,20 @@ export default {
   // return ex: '255, 255,255'
   returnRGB: (v) => (v ? `${Object.values(colors.hexToRgb(v))}` : ''),
 
-  FData(value) {
+  FData(value, format = 'DD/MM/YYYY') {
     if (date.isValid(value)) {
       const dataFormatted = value.length > 10 ? value : value.replace('-', '/')
-      const data = date.formatDate(dataFormatted, 'DD/MM/YYYY')
+      const data = date.formatDate(dataFormatted, format, {
+        days: [
+          'Domingo',
+          'Segunda',
+          'Terça',
+          'Quarta',
+          'Quinta',
+          'Sexta',
+          'Sábado',
+        ],
+      })
       return data
     } else {
       return '-'
@@ -165,6 +175,11 @@ export default {
     } else {
       return '-'
     }
+  },
+
+  FTimeLong(value) {
+    const timeReplaced = value.replace('h ', ':').replace('m', ':00')
+    return timeReplaced
   },
 
   imgSrc(url) {

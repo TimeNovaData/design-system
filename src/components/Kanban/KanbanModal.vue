@@ -2,10 +2,11 @@
   <q-dialog
     v-model="dialogState"
     ref="dialogRef"
-    transition-hide="slide-down"
+    transition-hide="fade"
+    transition-duration="200"
+    @before-hide="beforehide"
     @hide="onDialogHide"
     @before-show="beforeshow"
-    @before-hide="beforehide"
     @show="onShow"
   >
     <q-card class="kanban-modal q-dialog-plugin remove-styles">
@@ -259,11 +260,9 @@
                       text="Responsaveis"
                       icon="svguse:/icons.svg#icon_user"
                     />
-                    <div
-                      class="mt-4 flex items-center justify-between flex-nowrap"
-                    >
+                    <div class="mt-4 flex items-center justify-end flex-nowrap">
                       <div class="flex relative h-32 w-[6.25rem]">
-                        <div
+                        <!-- <div
                           v-for="(item, index) in data.responsaveis"
                           :key="item.id"
                         >
@@ -274,7 +273,12 @@
                               >{{ item.nome }}</q-tooltip
                             >
                           </AvatarSingle>
-                        </div>
+                        </div> -->
+
+                        <AvatarMultiple
+                          side="right"
+                          :list="data.responsaveis"
+                        ></AvatarMultiple>
                       </div>
 
                       <OButton
@@ -299,6 +303,7 @@
                           :selectProps="{
                             multiple: true,
                             'use-chips': true,
+                            fotoKey: 'foto',
                           }"
                           :selected="data.responsaveis"
                           :closeOnSelect="false"
@@ -517,10 +522,15 @@
                     >
 
                     <div
-                      class="flex flex-col gap-16 w-full shrink-0 mt-16"
+                      class="w-full shrink-0 mt-16"
                       v-if="historicoAtividade && logAlt.length"
                     >
-                      <div v-for="item in logAltReverse" :key="item.id">
+                      <q-virtual-scroll
+                        style="max-height: 100%"
+                        :items="logAltReverse"
+                        v-slot="{ item }"
+                        class="flex flex-col gap-16 w-full virtual-scroll"
+                      >
                         <div class="flex items-start gap-4 flex-nowrap">
                           <OAvatar
                             size="2rem"
@@ -542,7 +552,7 @@
                             </p>
                           </div>
                         </div>
-                      </div>
+                      </q-virtual-scroll>
                     </div>
                     <div
                       v-else-if="
@@ -612,7 +622,7 @@
               </div>
 
               <Transition
-                :duration="300"
+                :duration="100"
                 mode="out-in"
                 enter-active-class="animated fadeIn"
                 leave-active-class="animated fadeOut"
@@ -623,15 +633,16 @@
                   key="andamento"
                 >
                   <q-scroll-area>
-                    <div
-                      v-if="tasksChamadoPendente.length"
-                      class="task-wrapper dark:border-transparent border rounded-generic mx-24 border-neutral-30"
-                    >
-                      <div v-for="item in tasksChamadoPendente" :key="item.id">
-                        <KanbanTaskItem :task="item"></KanbanTaskItem>
-                      </div>
+                    <div v-if="taskLoading" class="flex flex-col gap-4 mx-24">
+                      <q-skeleton type="rect" class="h-[4rem]" />
+                      <q-skeleton type="rect" class="h-[4rem]" />
+                      <q-skeleton type="rect" class="h-[4rem]" />
+                      <q-skeleton type="rect" class="h-[4rem]" />
                     </div>
-                    <div v-else class="text-paragraph-2 text-center mt-12">
+                    <div
+                      v-else-if="!taskLoading && !tasksChamadoPendente.length"
+                      class="text-paragraph-2 text-center mt-12"
+                    >
                       <div>
                         <q-icon
                           class="block mx-auto opacity-30"
@@ -641,6 +652,19 @@
                         <p class="opacity-40">Sem Tarefas para exibir.</p>
                       </div>
                     </div>
+
+                    <div
+                      v-else
+                      class="task-wrapper dark:border-transparent border rounded-generic mx-24 border-neutral-30"
+                    >
+                      <KanbanTaskItem
+                        v-for="item in tasksChamadoPendente"
+                        :key="item.id"
+                        :task="item"
+                        :openTaskViewModal="openTaskViewModal"
+                      ></KanbanTaskItem>
+                    </div>
+
                     <span class="block h-42"></span>
                   </q-scroll-area>
                 </section>
@@ -651,18 +675,17 @@
                   key="concluidas"
                 >
                   <q-scroll-area>
-                    <div
-                      v-if="tasksChamadoConcluido.length"
-                      class="task-wrapper dark:border-transparent border rounded-generic mx-24 border-neutral-30"
-                    >
-                      <div v-for="task in tasksChamadoConcluido" :key="task.id">
-                        <KanbanTaskItem
-                          :task="task"
-                          :openTaskViewModal="openTaskViewModal"
-                        ></KanbanTaskItem>
-                      </div>
+                    <div v-if="taskLoading" class="flex flex-col gap-4 mx-24">
+                      <q-skeleton type="rect" class="h-[4rem]" />
+                      <q-skeleton type="rect" class="h-[4rem]" />
+                      <q-skeleton type="rect" class="h-[4rem]" />
+                      <q-skeleton type="rect" class="h-[4rem]" />
                     </div>
-                    <div v-else class="text-paragraph-2 text-center mt-12">
+
+                    <div
+                      v-else-if="!taskLoading && !tasksChamadoPendente.length"
+                      class="text-paragraph-2 text-center mt-12"
+                    >
                       <div>
                         <q-icon
                           class="block mx-auto opacity-30"
@@ -672,6 +695,19 @@
                         <p class="opacity-40">Sem Tarefas para exibir.</p>
                       </div>
                     </div>
+
+                    <div
+                      v-else
+                      class="task-wrapper dark:border-transparent border rounded-generic mx-24 border-neutral-30"
+                    >
+                      <KanbanTaskItem
+                        v-for="task in tasksChamadoConcluido"
+                        :key="task.id"
+                        :task="task"
+                        :openTaskViewModal="openTaskViewModal"
+                      ></KanbanTaskItem>
+                    </div>
+
                     <span class="block h-42"></span>
                   </q-scroll-area>
                 </section>
@@ -692,13 +728,6 @@
       </Transition>
     </q-card>
   </q-dialog>
-
-  <TaskViewModal ref="modalTaskRef" :editTask="openTaskEditModal" />
-  <TaskCreateModal
-    v-if="taskModalObj"
-    ref="modalEditTaskRef"
-    :taskObject="taskModalObj"
-  />
 </template>
 
 <script setup>
@@ -707,8 +736,7 @@ import { useDialogPluginComponent } from 'quasar'
 import AvatarSingle from 'src/components/Avatar/AvatarSingle.vue'
 import OBadge from 'src/components/Badge/OBadge.vue'
 import OButton from 'src/components/Button/OButton.vue'
-import TaskViewModal from 'src/components/Task/TaskView/TaskViewModal.vue'
-import TaskCreateModal from 'src/components/Task/TaskCreate/TaskCreateModal.vue'
+
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import GLOBAL from 'src/utils/GLOBAL'
 import { inject, ref, unref, watch, computed, nextTick } from 'vue'
@@ -718,30 +746,11 @@ import KanbanItemEditableEditor from './KanbanItemEditableEditor.vue'
 import KanbanItemEditableSelect from './KanbanItemEditableSelect.vue'
 import KanbanSectionHeader from './KanbanSectionHeader.vue'
 import KanbanTaskItem from './KanbanTaskItem.vue'
+import AvatarMultiple from 'src/components/Avatar/AvatarMultiple.vue'
+// import emitter from 'src/boot/emitter'
 
-const taskModalObj = ref(null)
-const modalTaskRef = ref(null)
-const modalEditTaskRef = ref(null)
-
-const openTaskViewModal = (task) => {
-  modalTaskRef.value.showModal(task)
-}
-
-const openTaskEditModal = async (task) => {
-  taskModalObj.value = task
-  await nextTick()
-  modalEditTaskRef.value.showModal()
-}
-
-watch(
-  () => taskModalObj,
-  () => {
-    console.log(taskModalObj.value)
-  },
-  {
-    deep: true,
-  }
-)
+// emitter.on('createTask', () => {})
+const openTaskViewModal = inject('openTaskViewModal')
 
 const {
   returnRGB,
@@ -775,6 +784,7 @@ const tab = ref('info')
 const dialogState = ref(false)
 
 const { getTasks } = useTaskStore()
+
 const { tasksChamado, tasksChamadoPendente, tasksChamadoConcluido } =
   storeToRefs(useTaskStore())
 
@@ -790,7 +800,7 @@ function updateValue(type) {
   return function (value) {
     data.value[type] = value
     emit('changed')
-    getLogAlt(data.value.id)
+    setTimeout(() => getLogAlt(data.value.id), 500)
   }
 }
 
@@ -829,8 +839,15 @@ const beforehide = (e) => {
   logAlt.value = []
 }
 
+const taskLoading = ref(true)
+async function handleGetTasks() {
+  taskLoading.value = true
+  await getTasks(`&chamado__id=${data.value.id}`)
+  taskLoading.value = false
+}
+
 function onShow() {
-  getTasks(`&chamado__id=${data.value.id}`)
+  handleGetTasks()
 }
 
 async function handleHistorico() {
@@ -879,8 +896,8 @@ defineExpose({ dialogRef })
     color: white !important
     border-color: rgba(var(--white),0.05)
 
-.q-dialog__backdrop
-  backdrop-filter: blur(5px)
+// .q-dialog__backdrop
+//   backdrop-filter: blur(5px)
 </style>
 
 <style lang="sass" scoped>
@@ -956,4 +973,12 @@ defineExpose({ dialogRef })
         text-decoration: underline
       :deep(hr)
         border-color: rgba(var(--white),0.1)
+
+
+.virtual-scroll
+  :deep(.q-virtual-scroll__content)
+    display: flex
+    flex-direction: column
+    gap:0.5rem
+    widt:100%
 </style>

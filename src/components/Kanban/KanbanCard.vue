@@ -1,6 +1,6 @@
 <template>
   <q-card
-    class="kanban-card shadow-md p-6 dark:bg-d-neutral-40 hover:cursor-pointer overflow-hidden"
+    class="kanban-card shadow-md p-6 dark:bg-d-neutral-40 hover:cursor-pointer overflow-hidden hover:bg-neutral-10 dark:hover:bg-d-neutral-30"
     @click="(e) => handleEmit(e, item)"
     @keyup.enter="(e) => handleEmit(e, item)"
     tabindex="0"
@@ -90,9 +90,7 @@
         </div>
       </div>
       <div class="h-32 ml-auto w-[150px] relative">
-        <div v-for="(item, index) in item.responsaveis" :key="item.id">
-          <AvatarSingle :index="index" :item="item"></AvatarSingle>
-        </div>
+        <AvatarMultiple side="right" :list="item.responsaveis"></AvatarMultiple>
       </div>
     </section>
 
@@ -152,6 +150,7 @@ import GLOBAL from 'src/utils/GLOBAL'
 import { colors } from 'quasar'
 import { onMounted } from 'vue'
 import AvatarSingle from 'src/components/Avatar/AvatarSingle.vue'
+import AvatarMultiple from 'src/components/Avatar/AvatarMultiple.vue'
 
 const { FData, FTime } = GLOBAL
 const { returnRGB } = GLOBAL

@@ -37,18 +37,16 @@
 </template>
 
 <script setup>
-import useDarkMode from 'src/composables/useDarkMode'
 import { useAuthStore } from 'src/stores/auth.store'
-import OInput from 'src/components/Input/OInput.vue'
 import { useRouter } from 'vue-router'
 import { inject } from 'vue'
 
 const user = inject('user')
 
 const auth = useAuthStore()
-const dark = useDarkMode()
 
 const darkMode = inject('darkMode')
+
 const router = useRouter()
 async function logout() {
   auth.logout()

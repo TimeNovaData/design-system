@@ -18,7 +18,7 @@
       behavior="menu"
       :option-value="optionValue"
       :option-label="optionLabel"
-      :options="options"
+      :options="opt"
       :label="selectLabel"
       :auto-save="true"
       @update:model-value="handleEmit"
@@ -52,26 +52,34 @@
 
     <OSelectAvatar
       v-else
-      v-bind="selectProps"
       ref="select"
       use-input
       size="md"
       class="w-full"
       :modelValue="projetoSelected"
-      :loading="!options"
+      :loading="!opt"
       clearable
       @updateValue="handleEmit"
       @clear="handleEmit"
       fotoKey="logo"
-      :options="options"
+      :options="opt"
       :label="selectLabel"
+      v-bind="selectProps"
     >
     </OSelectAvatar>
   </q-popup-edit>
 </template>
 
 <script setup>
-import { onUpdated, ref, watch, onMounted, useSlots } from 'vue'
+import {
+  onUpdated,
+  ref,
+  watch,
+  onMounted,
+  useSlots,
+  nextTick,
+  computed,
+} from 'vue'
 import OSelect from 'src/components/Select/OSelect.vue'
 import OSelectAvatar from 'src/components/Select/OSelectAvatar.vue'
 const slots = useSlots()
@@ -99,24 +107,41 @@ const props = defineProps({
   selectProps: Object,
 })
 
-// watch(
-//   () => props.options,
-//   () => {
-//     console.log(props.options, 'props.options')
-//     console.log(typeof props.options)
-//   },
-//   { deep: true }
-// )
+const opt = ref(props.options)
+
+watch(
+  () => props.options,
+  (v) => {
+    opt.value = v
+  },
+  { deep: true }
+)
+watch(
+  () => props.selected,
+  (v) => {
+    projetoSelected.value = v
+  },
+  { deep: true }
+)
 
 const popupUpProjeto = ref(null)
 
 const emit = defineEmits(['updateValue'])
 const select = ref(null)
+
 const projetoSelected = ref(props.selected)
 
-function handleEmit() {
-  emit('updateValue', projetoSelected)
+function handleEmit(v) {
+  emit('updateValue', v)
   props.closeOnSelect && popupUpProjeto.value.hide()
+}
+
+async function showPopup() {
+  setTimeout(async () => {
+    popupUpProjeto.value.show()
+    await nextTick()
+    select.value.componentRef.componentRef.showPopup()
+  }, 100)
 }
 
 function selectShow(e) {
@@ -126,6 +151,8 @@ function selectShow(e) {
   }
   select.value.componentRef.componentRef.showPopup()
 }
+
+defineExpose({ showPopup })
 </script>
 <style lang="sass"></style>
 <style lang="sass" scoped></style>

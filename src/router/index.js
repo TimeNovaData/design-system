@@ -37,6 +37,7 @@ export default route(function (/* { store, ssrContext } */) {
   })
 
   Router.beforeEach(async (to, from, next) => {
+    console.log(to)
     emitter.emit('loader', 'stop')
     // redirect to login page if not logged in and trying to access a restricted page
     const auth = useAuthStore()

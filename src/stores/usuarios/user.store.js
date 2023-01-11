@@ -75,7 +75,7 @@ export const useUserStore = defineStore('userStore', () => {
   }
 
   function $reset() {
-    user.value = []
+    user.value = {}
   }
 
   return {

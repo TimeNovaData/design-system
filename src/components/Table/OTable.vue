@@ -12,7 +12,6 @@ export default { inheritAttrs: false }
 
 <script setup>
 import { useSlots, useAttrs, ref, onMounted } from 'vue'
-
 const slots = useSlots()
 const attrs = useAttrs()
 const componentRef = ref(null)

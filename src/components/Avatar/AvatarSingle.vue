@@ -2,7 +2,7 @@
   <q-avatar
     size="32px"
     class="overlapping !w-32 !h-32 absolute border-white border-2 dark:border-d-neutral-10 overflow-hidden avatar"
-    :style="`${side}: ${index * 15}px;  'z-index':-${index}`"
+    :style="`${side}: ${index * 20}px;  'z-index':-${index}`"
     :class="{ '!static': estatic }"
   >
     <q-img
@@ -27,12 +27,15 @@
 
 <script setup>
 import GLOBAL from 'src/utils/GLOBAL'
+import { onUnmounted } from 'vue'
+
 defineProps({
   item: Object,
   index: Number,
   href: String,
   nome: String,
   estatic: Boolean,
+  length: Number,
   side: {
     type: String,
     default: 'right',

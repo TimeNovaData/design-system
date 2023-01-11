@@ -1,21 +1,22 @@
 <template>
   <q-dialog
     class="!border-0"
-    v-model="dialogState"
+    v-model="modalEditTaskState"
     ref="dialogRef"
-    transition-hide="slide-down"
+    transition-hide="fade"
+    transition-duration="200"
   >
     <q-card class="add-task-modal">
       <header class="modal-header">
         <div class="pl-16">
-          <span class="text-caps-3 text-neutral-100/50" v-if="taskTitle">
+          <span class="text-caps-3 text-neutral-100/50" v-if="taskModalObj">
             EDITAR TASK
           </span>
           <span class="text-caps-3 text-neutral-100/50" v-else>
             ADICIONAR TASK
           </span>
           <h2 class="text-title-4 text-neutral-100">
-            {{ taskTitle ? taskTitle : 'Nova Task' }}
+            {{ taskModalObj ? taskModalObj.titulo : 'Nova Task' }}
           </h2>
         </div>
 
@@ -23,7 +24,7 @@
           class="!w-max !h-max !p-0"
           size="lg"
           tertiary
-          @click="closeDialog"
+          @click="closeTaskEditModal"
         >
           <q-icon
             class="w-48 h-48 dark:text-neutral-100"
@@ -36,8 +37,9 @@
         class="flex-1 p-24 pb-2 grid grid-cols-2 gap-16 md:flex md:flex-col md:overflow-y-auto"
       >
         <TaskCreateFieldsCard
+          ref="taskFields"
           @update="(val) => handleUpdate(val)"
-          :taskValues="taskScope"
+          :taskValues="taskModalObj"
         />
 
         <div class="flex flex-col">
@@ -55,7 +57,11 @@
               </template>
             </q-tab>
 
-            <q-tab class="!flex-none md:!flex-1" name="chat" v-if="taskTitle">
+            <q-tab
+              class="!flex-none md:!flex-1"
+              name="chat"
+              v-if="taskModalObj"
+            >
               <template
                 class="inline-flex items-center gap-8 text-neutral-70 dark:text-white/70"
                 :class="{ 'text-neutral-100 dark:!text-white': tabs == 'chat' }"
@@ -65,7 +71,7 @@
                 <OCounter
                   class="!w-20 !h-20 bg-neutral-100/10 text-neutral-100 dark:bg-white/10 dark:text-white"
                 >
-                  {{ commentsReverse.length }}
+                  {{ taskModalCommentObj?.comments.length }}
                 </OCounter>
               </template>
             </q-tab>
@@ -89,15 +95,18 @@
           <q-tab-panels v-model="tabs" animated swipeable class="flex-1">
             <TaskCreateDescriptionCard
               name="desc"
-              :description="taskScope.value?.observacoes"
+              :description="taskModalObj?.observacoes"
+              @update="
+                (val) => handleUpdate({ ...newTaskScope, observacoes: val })
+              "
             />
             <OChatBox
-              v-if="taskTitle"
+              v-if="taskModalObj"
               name="chat"
-              :comments="commentsReverse"
-              :sendComment="sendComment"
-              :getComments="getComments"
-              :isLoading="isLoading"
+              :comments="taskModalCommentObj?.comments"
+              :sendComment="taskModalCommentObj?.sendComment"
+              :getComments="taskModalCommentObj?.getComments"
+              :isLoading="taskModalCommentObj?.isLoading"
             />
             <TaskCreateAttachmentCard name="attach" />
           </q-tab-panels>
@@ -108,18 +117,27 @@
         <OButton
           secondary
           icon="svguse:/icons.svg#icon_close"
-          @click="closeDialog"
+          @click="closeTaskEditModal"
         >
           Cancelar
         </OButton>
 
         <OButton
-          @click="handleSave"
+          v-if="taskModalObj"
+          @click="() => validateOnEdit()"
           primary
           icon="svguse:/icons.svg#icon_check"
         >
-          <span v-if="taskTitle">Salvar Alterações</span>
-          <span v-else>Adicionar Nova Task</span>
+          Salvar Alterações
+        </OButton>
+
+        <OButton
+          v-else
+          @click="() => validateOnCreate()"
+          primary
+          icon="svguse:/icons.svg#icon_check"
+        >
+          Adicionar Nova Task
         </OButton>
       </footer>
     </q-card>
@@ -129,73 +147,63 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { useDialogPluginComponent } from 'quasar'
-import useComments from 'src/composables/useComments'
 import OButton from 'src/components/Button/OButton.vue'
 import OChatBox from 'src/components/Chat/OChatBox.vue'
 import TaskCreateFieldsCard from './TaskCreateFieldsCard.vue'
 import TaskCreateDescriptionCard from './TaskCreateDescriptionCard.vue'
 import TaskCreateAttachmentCard from './TaskCreateAttachmentCard.vue'
 import OCounter from 'src/components/Counter/OCounter.vue'
-import GLOBAL from 'src/utils/GLOBAL'
-import { deepUnref } from 'vue-deepunref'
-import { api } from 'src/boot/axios'
+import { storeToRefs } from 'pinia'
+import { useTaskStore } from 'src/stores/tasks/tasks.store'
+import { useModalStore } from 'src/stores/modal/modal.store'
+import { onBeforeRouteUpdate } from 'vue-router'
 
-const { URLS } = api.defaults
-
-const props = defineProps({
-  taskObject: Object,
-})
-
-const taskScope = ref(props.taskObject)
-watch(
-  () => props.taskObject,
-  () => {
-    window._yellow('Mudou taskScope')
-    taskScope.value = props.taskObject
-  }
-)
-
-watch(
-  () => taskScope,
-  () => {
-    window._yellow('Mudou taskTitle')
-    taskTitle.value = taskScope.value.titulo
-  },
-  { deep: true }
+const { dialogRef } = useDialogPluginComponent()
+const { handleSaveTask } = useTaskStore()
+const { closeTaskEditModal } = useModalStore()
+const { modalEditTaskState, taskModalObj, taskModalCommentObj } = storeToRefs(
+  useModalStore()
 )
 
 const tabs = ref('desc')
-const taskTitle = ref(taskScope.value.titulo)
+const newTaskScope = ref(null)
+const taskFields = ref(null)
 
-const dialogState = ref(false)
-const { dialogRef } = useDialogPluginComponent()
-
-function showModal() {
-  dialogState.value = true
+async function validateOnCreate() {
+  const valid = await taskFields.value.form.validate(true)
+  if (valid) {
+    await handleSaveTask({}, newTaskScope.value)
+    dialogRef.value.hide()
+  }
 }
 
-const closeDialog = () => {
-  dialogState.value = false
+async function validateOnEdit() {
+  const valid = await taskFields.value.form.validate(true)
+  if (valid) {
+    await handleSaveTask(taskModalObj.value, newTaskScope.value)
+    dialogRef.value.hide()
+  }
 }
 
+// Função chamada quando qualquer dado do modal for alterado
 function handleUpdate(val) {
-  taskScope.value = { ...taskScope.value, ...val }
-  console.log('handleUpdate', { ...taskScope.value, ...val })
+  window._blue('UPDATE')
+  newTaskScope.value = {
+    ...taskModalObj.value,
+    ...val,
+  }
 }
 
-async function handleSave() {
-  const diff = GLOBAL.compareAndReturnDiff(props.taskObject, taskScope.value)
-  const data = { ...deepUnref(diff) }
-
-  const req = await api.patch(URLS.task + props.taskObject.id + '/', data)
-  console.log(req)
-}
-
-const { isLoading, commentsReverse, getComments, sendComment } = useComments(
-  props.taskObject.id
+// Limpa o estado da task ao abrir o modal
+watch(modalEditTaskState, () =>
+  modalEditTaskState.value ? (newTaskScope.value = null) : ''
 )
 
-defineExpose({ dialogRef, showModal })
+onBeforeRouteUpdate(() => {
+  modalEditTaskState.value = false
+})
+
+defineExpose({ dialogRef })
 </script>
 
 <style lang="sass" scoped>

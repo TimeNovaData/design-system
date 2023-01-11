@@ -100,11 +100,15 @@ export default function useChamadosComposable() {
     return GLOBAL.compareAndReturnDiff(OLD, NEW)
   }
 
+  let cacheOrder
   async function atualizarOrdem() {
     // atualiza a ordem
-    await api.post(`${URLS.atualizar_ordem_chamado}?no_loading`, {
-      id_chamados: listIDSInOrder.value,
-    })
+    if (cacheOrder !== listIDSInOrder.value) {
+      cacheOrder = listIDSInOrder.value
+      await api.post(`${URLS.atualizar_ordem_chamado}?no_loading`, {
+        id_chamados: listIDSInOrder.value,
+      })
+    }
   }
 
   async function sendChamadoChange() {

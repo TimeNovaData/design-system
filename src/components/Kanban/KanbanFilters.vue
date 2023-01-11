@@ -44,7 +44,7 @@
             label="Usuário"
             size="md"
             class="w-full"
-            fotoKey="logo"
+            fotoKey="foto"
             :modelValue="filtros.usuario.model"
             :options="usuarios"
             :loading="!usuarios"

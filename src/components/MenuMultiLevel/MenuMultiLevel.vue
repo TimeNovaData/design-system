@@ -3,8 +3,8 @@
     class="OSidebar"
     ref="sidebar"
     level="0"
-    @mouseenter="GLOBAL.debounce(100, handleMouseEnter, 'sideTime')()"
-    @mouseleave="GLOBAL.debounce(50, handleMouseLeave, 'sideTime')()"
+    @mouseenter="GLOBAL.debounce(50, handleMouseEnter, 'sideTime')()"
+    @mouseleave="GLOBAL.debounce(10, handleMouseLeave, 'sideTime')()"
   >
     <header class="OSidebar-header" v-if="showHeader">
       <RouterLink :to="{ name: 'home' }">
@@ -12,33 +12,31 @@
       </RouterLink>
     </header>
 
-    <section class="">
-      <q-list class="Nv0-ul" tag="ul">
-        <MenuLi
-          v-for="(Nv0, index) in props.menu"
-          :key="Nv0.title + index"
-          :data="Nv0"
-          :sidebar="sidebar"
-          :to="Nv0.href"
-          @Nv0Click="() => handleClick(true)"
-          @click="(e) => Nv0HandleClick(e, Nv0)"
-          :showHeader="showHeader"
-          :exact="true"
-        >
-          <q-item-section v-if="Nv0.icon" avatar class="min-w-32 pl-10">
-            <q-icon size="24px" :name="Nv0.icon"></q-icon>
-          </q-item-section>
+    <q-list class="Nv0-ul flex flex-col h-full" tag="ul">
+      <MenuLi
+        v-for="(Nv0, index) in props.menu"
+        :key="Nv0.title + index"
+        :data="Nv0"
+        :sidebar="sidebar"
+        :to="Nv0.userId ? `${Nv0.href}/${Nv0.userId}` : Nv0.href"
+        @Nv0Click="() => handleClick(true)"
+        @click="(e) => Nv0HandleClick(e, Nv0)"
+        :showHeader="showHeader"
+        :exact="true"
+      >
+        <q-item-section v-if="Nv0.icon" avatar class="min-w-32 pl-10">
+          <q-icon size="24px" :name="Nv0.icon"></q-icon>
+        </q-item-section>
 
-          <q-item-section class="Nv0-text">
-            <p class="one-line">{{ Nv0.title }}</p>
-          </q-item-section>
+        <q-item-section class="Nv0-text">
+          <p class="one-line">{{ Nv0.title }}</p>
+        </q-item-section>
 
-          <q-item-section v-if="Nv0.submenu" avatar class="opacity-50">
-            <q-icon size="1rem" name="navigate_next"></q-icon>
-          </q-item-section>
-        </MenuLi>
-      </q-list>
-    </section>
+        <q-item-section v-if="Nv0.submenu" avatar class="opacity-50">
+          <q-icon size="1rem" name="navigate_next"></q-icon>
+        </q-item-section>
+      </MenuLi>
+    </q-list>
   </aside>
   <Teleport to="body">
     <span
@@ -141,6 +139,13 @@ onBeforeRouteLeave(() => {
     hover: false,
     open: false,
     passive: true,
+  }
+})
+
+onBeforeRouteUpdate(() => {
+  state.value = {
+    hover: false,
+    open: false,
   }
 })
 

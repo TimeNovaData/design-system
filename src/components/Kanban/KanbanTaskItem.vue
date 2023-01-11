@@ -1,12 +1,13 @@
 <template>
   <div
     class="flex py-12 px-16 border-b border-b-neutral-30 items-center gap-8 w-full flex-1 dark:border-b-white/5 cursor-pointer hover:bg-neutral-10 dark:hover:bg-d-neutral-20 transition-colors"
-    @click="() => openTaskViewModal(task)"
+    @click="() => openTaskViewModal(task.id)"
   >
     <AvatarSingle
       class="!relative !left-0 !h-48 !w-48"
       :index="1"
-      :item="task.responsavel"
+      :nome="task.responsavel_task.get_full_name"
+      :href="task.responsavel_task.profile.foto"
     />
     <p class="flex-[3]">{{ task.titulo }}</p>
     <div v-if="task.entrega_data_desejada" class="mx-12">
