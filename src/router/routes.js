@@ -11,6 +11,7 @@ import PageHome from 'src/pages/Home/PageHome.vue'
 import PageSvgs from 'src/pages/svg/PageSvgs.vue'
 import PageSingleProjeto from 'src/pages/SingleProjeto/PageSingleProjeto.vue'
 import PageSingleUsuario from 'src/pages/SingleUsuario/PageSingleUsuario.vue'
+import PageVisaoGeral from 'src/pages/VisaoGeral/PageVisaoGeral.vue'
 
 const routes = [
   {
@@ -74,6 +75,17 @@ const routes = [
         component: PageSingleUsuario,
         meta: {
           breadcrumbs: [{ label: 'Home', name: 'Single Usuário' }],
+        },
+      },
+      {
+        name: 'visao_geral',
+        path: '/visao_geral',
+        component: PageVisaoGeral,
+        meta: {
+          breadcrumbs: [
+            { label: 'Home', name: 'home' },
+            { label: 'Visão Geral', name: 'visao_geral' },
+          ],
         },
       },
     ],
