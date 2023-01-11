@@ -2,7 +2,7 @@
   <div
     class="relative task-group"
     :class="{ 'show-restore': completed }"
-    @click="openTaskViewModal(+task.id)"
+    @click="handleView($event, task.id)"
   >
     <li
       class="task-item list-none cursor-pointer bg-white border border-neutral-100/10 rounded-[3px] dark:border-white/10 overflow-hidden px-16 py-[7px] mb-2"
@@ -11,19 +11,23 @@
       }"
     >
       <div class="base-grid">
-        <div class="flex justify-between items-center">
-          <q-icon
-            id="drag-id"
-            class="cursor-grab"
-            :class="{ 'opacity-0 , cursor-auto': hideDragIcon }"
-            name="svguse:/icons.svg#icon_drag"
-            size="22px"
-          ></q-icon>
+        <div class="icons-wrapper flex justify-between items-center">
+          <div class="move_task">
+            <q-icon
+              id="drag-id"
+              class="cursor-grab"
+              :class="{ 'opacity-0 , cursor-auto': hideDragIcon }"
+              name="svguse:/icons.svg#icon_drag"
+              size="22px"
+            ></q-icon>
+          </div>
 
-          <q-icon
-            name="svguse:/icons.svg#icon_check_circle"
-            size="22px"
-          ></q-icon>
+          <div class="concluir_task">
+            <q-icon
+              name="svguse:/icons.svg#icon_check_circle"
+              size="22px"
+            ></q-icon>
+          </div>
         </div>
 
         <div class="pl-16">
@@ -120,7 +124,7 @@
             </div>
           </div>
         </div>
-        <div class="pl-16">
+        <div class="timer-wrapper pl-16">
           <TimerTask />
         </div>
       </div>
@@ -130,11 +134,7 @@
       <div
         class="btn-wrapper flex items-center rounded-[3px] border border-neutral-100/10 absolute right-16 top-2 bottom-2"
       >
-        <OButton
-          size="md"
-          @click="openTaskEditModal"
-          class="relative blurzin h-full"
-        >
+        <OButton size="md" class="relative blurzin h-full">
           <q-icon
             name="svguse:/icons.svg#icon_back"
             size="24px"
@@ -175,6 +175,14 @@ const dataPrevista = computed(() => {
 const dataPrevistadaDia = computed(() => {
   return GLOBAL.FData(props.task.data_final_previsto, 'dddd')
 })
+
+const handleView = (event, id) => {
+  const timerWrapper = event.target.closest('.timer-wrapper')
+  const iconsWrapper = event.target.closest('.icons-wrapper')
+
+  if (timerWrapper || iconsWrapper) return
+  openTaskViewModal(+id)
+}
 </script>
 
 <style lang="sass" scoped>
@@ -212,4 +220,25 @@ const dataPrevistadaDia = computed(() => {
 .blurzin
   backdrop-filter: blur(4px)
   background: rgba(1, 7, 27, 0.05)
+
+.concluir_task
+  position: relative
+  &::after
+    content: ""
+    display: block
+    width: 18px
+    height: 18px
+    border-radius: 50%
+    background: rgba(var(--primary-pure),0.2)
+    transform: scale(1)
+    position: absolute
+    inset: 0
+    margin: auto
+    opacity: 0
+    transition: .3s ease
+
+
+  &:hover::after
+    transform: scale(2.1)
+    opacity: 1
 </style>

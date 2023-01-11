@@ -9,7 +9,7 @@
       <div class="flex items-end mt-[-255px] mb-32">
         <div class="mr-24">
           <OAvatar
-            :foto="avatar"
+            :foto="userFoto"
             size="160px"
             class-avatar="border-2 border-white"
             style="box-sizing: initial"
@@ -157,7 +157,7 @@
           <ul class="overflow-hidden relative">
             <template v-for="(task, index) in tasks" :key="task.id">
               <TaskColaborador
-                v-if="index <= 25"
+                v-if="index <= 5"
                 :task="task"
                 :hideDragIcon="true"
                 :completed="true"
@@ -193,6 +193,7 @@ import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 
 const user = inject('user')
+const userFoto = inject('userFoto')
 const openTaskEditModal = inject('openTaskEditModal')
 
 const { getTasks } = useTaskStore()
@@ -259,6 +260,6 @@ onMounted(async () => {
 
 .base-grid
   display: grid
-  grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 230px) repeat(3, 100px) minmax(120px, 130px)
+  grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 230px) minmax(120px, 130px)  repeat(2, 100px) minmax(120px, 130px)
   align-items: center
 </style>
