@@ -211,23 +211,21 @@
   </symbol>
 
   <symbol id="icon_excel" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <g opacity="0.4">
-      <path d="M5.83157 5.83155V4.16419C5.83157 3.24333 6.57808 2.49683 7.49893 2.49683H15.8357C16.7566 2.49683 17.5031 3.24333 17.5031 4.16419V15.8357C17.5031 16.7566 16.7566 17.5031 15.8357 17.5031H7.49893C6.57808 17.5031 5.83157 16.7566 5.83157 15.8357V14.1684" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-      <rect x="3.33054" y="5.83154" width="8.33681" height="8.33681" rx="2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M17.5031 7.56577H11.6674" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M17.5031 12.5011H11.6674" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M11.6674 2.49683V17.5031" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M8.80533 11.4589L6.30429 8.54102" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M6.30429 11.4589L8.80533 8.54102" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-    </g>
+    <path d="M5.83157 5.83155V4.16419C5.83157 3.24333 6.57808 2.49683 7.49893 2.49683H15.8357C16.7566 2.49683 17.5031 3.24333 17.5031 4.16419V15.8357C17.5031 16.7566 16.7566 17.5031 15.8357 17.5031H7.49893C6.57808 17.5031 5.83157 16.7566 5.83157 15.8357V14.1684" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="3.33054" y="5.83154" width="8.33681" height="8.33681" rx="2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M17.5031 7.56577H11.6674" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M17.5031 12.5011H11.6674" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M11.6674 2.49683V17.5031" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M8.80533 11.4589L6.30429 8.54102" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6.30429 11.4589L8.80533 8.54102" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
   </symbol>
-
 
 
   <symbol id="icon_close" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M16 16L32 32" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
     <path d="M32 16L16 32" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
   </symbol>
+
 
   <symbol id='icon_table' viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path fill-rule="evenodd" clip-rule="evenodd" d="M3 6V18C3 19.6569 4.34315 21 6 21H18C19.6569 21 21 19.6569 21 18V6C21 4.34315 19.6569 3 18 3H6C4.34315 3 3 4.34315 3 6Z" stroke="currentColor" stroke-opacity="0.7" stroke-linecap="round" stroke-linejoin="round" />
