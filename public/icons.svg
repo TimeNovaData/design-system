@@ -467,10 +467,16 @@
 </symbol>
 
 
+
+<symbol id="icon_back" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M8 5L5 8L8 11" stroke="#01071B" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M5 8H14C17.314 8 20 10.462 20 13.5V13.5C20 16.538 17.314 19 14 19H6" stroke="#01071B" stroke-linecap="round" stroke-linejoin="round"/>
+
 <symbol id="icon_file_cursor" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path fill-rule="evenodd" clip-rule="evenodd" d="M20.3874 17.3939L18.6536 18.1226C18.4154 18.2227 18.2258 18.4122 18.1256 18.6504L17.3947 20.3878C17.2307 20.7775 16.8393 21.022 16.4171 20.9984C15.9949 20.9747 15.6332 20.688 15.5137 20.2824L14.042 15.2837C13.9387 14.9326 14.0354 14.5531 14.2942 14.2943C14.5529 14.0355 14.9324 13.9387 15.2835 14.042L20.2822 15.5128C20.6879 15.6322 20.9747 15.994 20.9983 16.4163C21.0219 16.8385 20.7773 17.23 20.3874 17.3939Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M20 8.5H16.5C15.3954 8.5 14.5 7.60457 14.5 6.5V3" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
   <path d="M20 12V8.50931C20 7.71366 19.6839 6.95061 19.1213 6.388L16.612 3.87868C16.0494 3.31607 15.2863 3 14.4907 3H7C5.34315 3 4 4.34315 4 6V18C4 19.6569 5.34315 21 7 21H12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+
 </symbol>
 
 

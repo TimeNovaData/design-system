@@ -9,7 +9,7 @@
       <div class="flex items-end mt-[-255px] mb-32">
         <div class="mr-24">
           <OAvatar
-            :foto="avatar"
+            :foto="userFoto"
             size="160px"
             class-avatar="border-2 border-white"
             style="box-sizing: initial"
@@ -77,7 +77,7 @@
             <p class="text-title-4">Minhas Tasks</p>
           </div>
           <div class="item-2">
-            <OButton size="md" primary>
+            <OButton size="md" primary @click="openTaskEditModal">
               <q-icon
                 name="svguse:/icons.svg#icon_add_task"
                 size="1.5rem"
@@ -157,9 +157,10 @@
           <ul class="overflow-hidden relative">
             <template v-for="(task, index) in tasks" :key="task.id">
               <TaskColaborador
-                v-if="index <= 25"
+                v-if="index <= 5"
                 :task="task"
                 :hideDragIcon="true"
+                :completed="true"
               />
             </template>
           </ul>
@@ -185,11 +186,15 @@ import TaskColaborador from 'src/components/TaskColaborador/TaskColaborador.vue'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import { storeToRefs } from 'pinia'
 import draggable from 'vuedraggable'
+import emitter from 'src/boot/emitter'
+
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 
 const user = inject('user')
+const userFoto = inject('userFoto')
+const openTaskEditModal = inject('openTaskEditModal')
 
 const { getTasks } = useTaskStore()
 const { tasks } = storeToRefs(useTaskStore())
@@ -217,10 +222,17 @@ const listAvatar = ref([
   },
 ])
 
+const userId = ref(null)
+
+emitter.on('taskCreate', () => {
+  // atualizar a lista
+  console.log('CRIOU')
+  getTasksPaged(userId.value)
+})
+
 const tasksTodo = computed(() =>
   tasks.value.filter((t) => t.status !== 'Concluído')
 )
-console.log('AAAAAAAAAA')
 
 const tasksfinished = computed(() =>
   tasks.value.filter((t) => t.status === 'Concluído')
@@ -237,10 +249,8 @@ const getTasksPaged = async (userId) => {
   return await getTasks(`&=responsavel_task__id=${userId}&?page_size=100`)
 }
 onMounted(async () => {
-  const userId = route.params.id ? route.params.id : user.id
+  userId.value = route.params.id ? route.params.id : user.id
   await getTasksPaged(userId)
-
-  console.log(route.params.id)
 })
 </script>
 
@@ -250,6 +260,6 @@ onMounted(async () => {
 
 .base-grid
   display: grid
-  grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 230px) repeat(3, 100px) minmax(120px, 130px)
+  grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 230px) minmax(120px, 130px)  repeat(2, 100px) minmax(120px, 130px)
   align-items: center
 </style>
