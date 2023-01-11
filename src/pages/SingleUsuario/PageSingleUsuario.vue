@@ -271,7 +271,7 @@ const getTasksPaged = async (userId) => {
 }
 
 onMounted(async () => {
-  userActiveID.value = route.params.id
+  userActiveID.value = route.params.id ? route.params.id : user.id
   await getTasksPaged(userActiveID)
   // await getUsuarios()
   loading.value = false

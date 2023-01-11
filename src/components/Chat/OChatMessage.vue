@@ -1,5 +1,5 @@
 <template>
-  <div class="o-chat-message">
+  <div class="o-chat-message mt-16">
     <q-chat-message
       :avatar="data.usuario.foto"
       :text="[data.comentario]"
