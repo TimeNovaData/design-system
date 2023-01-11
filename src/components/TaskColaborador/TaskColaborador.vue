@@ -238,7 +238,7 @@ const handleView = (event, id) => {
     transition: .3s ease
 
 
-  &:hover::after
-    transform: scale(2.1)
-    opacity: 1
+  // &:hover::after
+  //   transform: scale(2.1)
+  //   opacity: 1
 </style>

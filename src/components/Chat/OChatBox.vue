@@ -10,7 +10,7 @@
     </div>
 
     <div v-else-if="!comments.length" class="flex place-content-center h-full">
-      <div class="flex flex-col gap-6">
+      <div class="flex flex-col gap-6 opacity-40">
         <q-icon class="block mx-auto" name="fluorescent" size="2.5rem"></q-icon>
         <p>Sem mensagens no momento</p>
       </div>

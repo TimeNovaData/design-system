@@ -9,7 +9,7 @@
       <div class="flex items-end mt-[-255px] mb-32">
         <div class="mr-24">
           <OAvatar
-            :foto="userFoto"
+            :foto="userActive.foto"
             size="160px"
             class-avatar="border-2 border-white"
             style="box-sizing: initial"
@@ -85,13 +85,15 @@
               ></q-icon>
               Nova Task
             </OButton>
-            <OButton class="ml-8" size="md" secondary>
+            <OButton class="ml-8" disable size="md" secondary>
               <q-icon name="svguse:/icons.svg#icon_filtros"></q-icon>
 
               Filtrar
             </OButton>
           </div>
         </div>
+
+        <!-- 🟡 TASK PENDENTES -->
 
         <div class="tasks-grid">
           <div class="flex w-full">
@@ -108,8 +110,16 @@
                       <p class="text-headline-3 pl-16">Desejada</p>
                       <p class="text-headline-3 pl-16">Prevista</p>
                     </div>
-
-                    <ul class="overflow-hidden relative">
+                    <div
+                      v-if="!tasksTodo.length & loading"
+                      class="flex flex-col gap-4 mt-10"
+                    >
+                      <q-skeleton type="rect" class="h-[3.75rem]" />
+                      <q-skeleton type="rect" class="h-[3.75rem]" />
+                      <q-skeleton type="rect" class="h-[3.75rem]" />
+                      <q-skeleton type="rect" class="h-[3.75rem]" />
+                    </div>
+                    <ul class="overflow-hidden relative" v-else>
                       <!-- <template v-for="(task, index) in tasks" :key="task.id"> -->
                       <draggable
                         v-bind="dragOptions"
@@ -127,8 +137,6 @@
                           <TaskColaborador :task="element" />
                         </template>
                       </draggable>
-                      <!-- <TaskColaborador v-if="index <= 25" :task="task" /> -->
-                      <!-- </template> -->
                     </ul>
                   </div>
                 </div>
@@ -138,6 +146,7 @@
         </div>
       </section>
 
+      <!-- ✅ TASK FINALIZADAS -->
       <section id="tasks-finalizadas" class="bg-white">
         <o-accordion
           class="border border-neutral-100/10 rounded-[3px] dark:border-white/10 overflow-hidden"
@@ -154,18 +163,20 @@
               <q-item-section>Tasks Finalizadas </q-item-section>
             </div>
           </template>
-          <q-scroll-area style="height: 450px">
-            <ul class="overflow-hidden relative">
-              <template v-for="(task, index) in tasks" :key="task.id">
-                <TaskColaborador
-                  v-if="index <= 5"
-                  :task="task"
-                  :hideDragIcon="true"
-                  :completed="true"
-                />
-              </template>
-            </ul>
-          </q-scroll-area>
+
+          <q-virtual-scroll
+            style="max-height: 450px"
+            :items="tasks"
+            separator
+            v-slot="{ item: task }"
+            class="relative"
+          >
+            <TaskColaborador
+              :task="task"
+              :hideDragIcon="true"
+              :completed="true"
+            />
+          </q-virtual-scroll>
         </o-accordion>
       </section>
 
@@ -191,15 +202,25 @@ import draggable from 'vuedraggable'
 import emitter from 'src/boot/emitter'
 
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
+import { useUsuarioStore } from 'src/stores/usuarios/usuarios.store'
 
 const route = useRoute()
 
 const user = inject('user')
-const userFoto = inject('userFoto')
+const { usuarios } = storeToRefs(useUsuarioStore())
+const { getUsuarios } = useUsuarioStore()
+const userFoto = inject('usuarios')
+const loading = ref(true)
+
 const openTaskEditModal = inject('openTaskEditModal')
+const userActiveID = ref(null)
 
 const { getTasks } = useTaskStore()
 const { tasks } = storeToRefs(useTaskStore())
+
+const userActive = computed(() =>
+  usuarios.value.filter((i) => i.id === Number(userActiveID.value))
+)
 
 const listAvatar = ref([
   {
@@ -224,12 +245,10 @@ const listAvatar = ref([
   },
 ])
 
-const userId = ref(null)
-
 emitter.on('taskCreate', () => {
   // atualizar a lista
   console.log('CRIOU')
-  getTasksPaged(userId.value)
+  getTasksPaged(userActiveID.value)
 })
 
 const tasksTodo = computed(() =>
@@ -252,8 +271,10 @@ const getTasksPaged = async (userId) => {
 }
 
 onMounted(async () => {
-  userId.value = route.params.id ? route.params.id : user.id
-  await getTasksPaged(userId)
+  userActiveID.value = route.params.id
+  await getTasksPaged(userActiveID)
+  // await getUsuarios()
+  loading.value = false
 })
 </script>
 

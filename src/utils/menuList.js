@@ -21,20 +21,6 @@ const menuList = [
     href: '/consumo_horas',
   },
 
-  {
-    title: 'Single Projeto',
-    nivel: 0,
-    icon: 'web',
-    href: '/projeto',
-  },
-  {
-    title: 'Single Colaborador',
-    nivel: 0,
-    icon: 'svguse:/icons.svg#icon_users',
-    href: '/colaborador/1',
-    userId: 0,
-  },
-
   // {
   //   title: 'Financeiro',
   //   nivel: 0,
@@ -117,6 +103,21 @@ if (dev)
       icon: 'bug_report',
       href: '/testes',
       type: 'dev',
+    },
+    /* temporario */
+
+    {
+      title: 'Single Projeto',
+      nivel: 0,
+      icon: 'web',
+      href: '/projeto',
+    },
+    {
+      title: 'Single Colaborador',
+      nivel: 0,
+      icon: 'svguse:/icons.svg#icon_users',
+      href: '/colaborador/1',
+      userId: 0,
     }
   )
 

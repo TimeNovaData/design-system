@@ -123,6 +123,7 @@ const tabs = ref(route.meta.tab)
 const modal = ref(null)
 const modalRight = ref(null)
 const chamadoAtivo = ref(null)
+const projetos = inject('projetos')
 
 watch(tabs, () => {
   tabs.value === 'board' && setTimeout(() => setHeightInCol(), 200)
@@ -199,6 +200,12 @@ function closeNewCard() {
 async function handleCreateChamado(v) {
   novoCard.value.id = null
   const newCard = await createChamado(v)
+  const fase = newCard.fase
+
+  colunasWithCards.value = colunasWithCards.value.map((c) => {
+    if (c.coluna.id === fase) c.cards.unshift(newCard)
+    return c
+  })
   setTimeout(() => emitter.emit('reloadDataKanban'), 300)
 }
 

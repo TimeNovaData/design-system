@@ -260,11 +260,9 @@
                       text="Responsaveis"
                       icon="svguse:/icons.svg#icon_user"
                     />
-                    <div
-                      class="mt-4 flex items-center justify-between flex-nowrap"
-                    >
+                    <div class="mt-4 flex items-center justify-end flex-nowrap">
                       <div class="flex relative h-32 w-[6.25rem]">
-                        <div
+                        <!-- <div
                           v-for="(item, index) in data.responsaveis"
                           :key="item.id"
                         >
@@ -275,7 +273,12 @@
                               >{{ item.nome }}</q-tooltip
                             >
                           </AvatarSingle>
-                        </div>
+                        </div> -->
+
+                        <AvatarMultiple
+                          side="right"
+                          :list="data.responsaveis"
+                        ></AvatarMultiple>
                       </div>
 
                       <OButton
@@ -619,7 +622,7 @@
               </div>
 
               <Transition
-                :duration="300"
+                :duration="100"
                 mode="out-in"
                 enter-active-class="animated fadeIn"
                 leave-active-class="animated fadeOut"
@@ -630,18 +633,16 @@
                   key="andamento"
                 >
                   <q-scroll-area>
-                    <div
-                      v-if="tasksChamadoPendente.length"
-                      class="task-wrapper dark:border-transparent border rounded-generic mx-24 border-neutral-30"
-                    >
-                      <KanbanTaskItem
-                        v-for="item in tasksChamadoPendente"
-                        :key="item.id"
-                        :task="item"
-                        :openTaskViewModal="openTaskViewModal"
-                      ></KanbanTaskItem>
+                    <div v-if="taskLoading" class="flex flex-col gap-4 mx-24">
+                      <q-skeleton type="rect" class="h-[4rem]" />
+                      <q-skeleton type="rect" class="h-[4rem]" />
+                      <q-skeleton type="rect" class="h-[4rem]" />
+                      <q-skeleton type="rect" class="h-[4rem]" />
                     </div>
-                    <div v-else class="text-paragraph-2 text-center mt-12">
+                    <div
+                      v-else-if="!taskLoading && !tasksChamadoPendente.length"
+                      class="text-paragraph-2 text-center mt-12"
+                    >
                       <div>
                         <q-icon
                           class="block mx-auto opacity-30"
@@ -651,6 +652,19 @@
                         <p class="opacity-40">Sem Tarefas para exibir.</p>
                       </div>
                     </div>
+
+                    <div
+                      v-else
+                      class="task-wrapper dark:border-transparent border rounded-generic mx-24 border-neutral-30"
+                    >
+                      <KanbanTaskItem
+                        v-for="item in tasksChamadoPendente"
+                        :key="item.id"
+                        :task="item"
+                        :openTaskViewModal="openTaskViewModal"
+                      ></KanbanTaskItem>
+                    </div>
+
                     <span class="block h-42"></span>
                   </q-scroll-area>
                 </section>
@@ -661,18 +675,17 @@
                   key="concluidas"
                 >
                   <q-scroll-area>
-                    <div
-                      v-if="tasksChamadoConcluido.length"
-                      class="task-wrapper dark:border-transparent border rounded-generic mx-24 border-neutral-30"
-                    >
-                      <KanbanTaskItem
-                        v-for="task in tasksChamadoConcluido"
-                        :key="task.id"
-                        :task="task"
-                        :openTaskViewModal="openTaskViewModal"
-                      ></KanbanTaskItem>
+                    <div v-if="taskLoading" class="flex flex-col gap-4 mx-24">
+                      <q-skeleton type="rect" class="h-[4rem]" />
+                      <q-skeleton type="rect" class="h-[4rem]" />
+                      <q-skeleton type="rect" class="h-[4rem]" />
+                      <q-skeleton type="rect" class="h-[4rem]" />
                     </div>
-                    <div v-else class="text-paragraph-2 text-center mt-12">
+
+                    <div
+                      v-else-if="!taskLoading && !tasksChamadoPendente.length"
+                      class="text-paragraph-2 text-center mt-12"
+                    >
                       <div>
                         <q-icon
                           class="block mx-auto opacity-30"
@@ -682,6 +695,19 @@
                         <p class="opacity-40">Sem Tarefas para exibir.</p>
                       </div>
                     </div>
+
+                    <div
+                      v-else
+                      class="task-wrapper dark:border-transparent border rounded-generic mx-24 border-neutral-30"
+                    >
+                      <KanbanTaskItem
+                        v-for="task in tasksChamadoConcluido"
+                        :key="task.id"
+                        :task="task"
+                        :openTaskViewModal="openTaskViewModal"
+                      ></KanbanTaskItem>
+                    </div>
+
                     <span class="block h-42"></span>
                   </q-scroll-area>
                 </section>
@@ -700,7 +726,6 @@
           </q-tab-panel>
         </q-tab-panels>
       </Transition>
-      <button @click="openTaskEditModal">CRIAR TASK</button>
     </q-card>
   </q-dialog>
 </template>
@@ -721,6 +746,7 @@ import KanbanItemEditableEditor from './KanbanItemEditableEditor.vue'
 import KanbanItemEditableSelect from './KanbanItemEditableSelect.vue'
 import KanbanSectionHeader from './KanbanSectionHeader.vue'
 import KanbanTaskItem from './KanbanTaskItem.vue'
+import AvatarMultiple from 'src/components/Avatar/AvatarMultiple.vue'
 // import emitter from 'src/boot/emitter'
 
 // emitter.on('createTask', () => {})
@@ -813,8 +839,11 @@ const beforehide = (e) => {
   logAlt.value = []
 }
 
-function handleGetTasks() {
-  getTasks(`&chamado__id=${data.value.id}`)
+const taskLoading = ref(true)
+async function handleGetTasks() {
+  taskLoading.value = true
+  await getTasks(`&chamado__id=${data.value.id}`)
+  taskLoading.value = false
 }
 
 function onShow() {
@@ -946,10 +975,10 @@ defineExpose({ dialogRef })
         border-color: rgba(var(--white),0.1)
 
 
-    .virtual-scroll
-      :deep(.q-virtual-scroll__content)
-        display: flex
-        flex-direction: column
-        gap:1rem
-        widt:100%
+.virtual-scroll
+  :deep(.q-virtual-scroll__content)
+    display: flex
+    flex-direction: column
+    gap:0.5rem
+    widt:100%
 </style>

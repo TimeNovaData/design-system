@@ -81,7 +81,7 @@
       <div class="flex flex-col py-20">
         <span class="text-caps-3 dark:text-white/40 mb-6">RESPONSÁVEL</span>
         <OAvatar
-          :nome="details.responsavel_task.nome"
+          :nome="details.responsavel_task.get_full_name"
           :foto="details.responsavel_task.profile.foto"
         />
       </div>
