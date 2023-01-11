@@ -3,8 +3,9 @@
     :rows="rows"
     :columns="columns"
     primary
-    class="px-16 py-8 visao-geral-table"
+    class="px-16 py-8 dark:bg-d-neutral-20 visao-geral-table"
     :pagination="pagination"
+    :filter="filter"
   >
     <template v-slot:top-left>
       <OInput
@@ -18,34 +19,28 @@
 
     <template v-slot:top-right>
       <div class="flex gap-8 items-center">
-        <span class="text-paragraph-2 text-neutral-70">Mostrar</span>
+        <span class="text-paragraph-2 text-neutral-70 dark:text-white/70">
+          Mostrar
+        </span>
         <OSelect
           class="w-72 h-40"
           size="md"
           v-model="rowsPerPage"
           :options="[2, 3, 5]"
         />
-        <span class="text-paragraph-2 text-neutral-70">Linhas por página</span>
+        <span class="text-paragraph-2 text-neutral-70 dark:text-white/70">
+          Linhas por página
+        </span>
       </div>
     </template>
 
     <template v-slot:body="props">
       <q-tr :props="props">
-        <q-td
-          key="projeto"
-          :auto-width="false"
-          class="!border-r w-full"
-          :class="{ 'w-1/2': props.row.cliente }"
-        >
+        <q-td key="projeto" :auto-width="false" class="!border-r w-1/2">
           {{ props.row.projeto }}
         </q-td>
 
-        <q-td
-          v-if="props.row.cliente"
-          key="cliente"
-          :auto-width="false"
-          class="!border-r w-1/2"
-        >
+        <q-td key="cliente" :auto-width="false" class="!border-r w-1/2">
           {{ props.row.cliente }}
         </q-td>
 
@@ -76,7 +71,6 @@
         </q-td>
 
         <q-td
-          v-if="props.row.data_entrega"
           key="data_entrega"
           :auto-width="false"
           class="text-right !border-r"
@@ -115,30 +109,41 @@
         </q-td>
 
         <q-td class="text-center !px-6">
-          <OButton secondary icon="svguse:/icons.svg#icon_config" size="sm" />
-          <OButton secondary icon="search" size="sm" class="ml-6" />
+          <a :href="adminUrl(props.row.id)" target="_blank">
+            <OButton
+              secondary
+              icon="svguse:/icons.svg#icon_config"
+              size="sm"
+              class="w-[2.375rem] h-[2.375rem] icon-opacity"
+            />
+          </a>
+          <a :href="'/projeto/' + props.row.id">
+            <OButton
+              secondary
+              icon="search"
+              size="sm"
+              class="w-[2.375rem] h-[2.375rem] icon-opacity ml-6"
+            />
+          </a>
         </q-td>
       </q-tr>
     </template>
 
     <template v-slot:bottom="scope">
       <footer class="flex items-center justify-between w-full mt-12">
-        <OButton icon="svguse:/icons.svg#icon_excel" size="sm" secondary>
+        <OButton
+          icon="svguse:/icons.svg#icon_excel"
+          size="sm"
+          class="dark:bg-white/10 dark:!border-transparent icon-opacity"
+          secondary
+        >
           Baixar tabela
         </OButton>
 
         <div class="flex items-center gap-8">
-          <!-- <OButton
-            v-if="scope.pagesNumber > 2"
-            :disable="scope.isFirstPage"
-            @click="scope.firstPage"
-            >Primeira</OButton
-          > -->
-
           <OButton
             icon="chevron_left"
             :disable="scope.isFirstPage"
-            :class="{ '!bg-neutral-100/10': scope.isFirstPage }"
             @click="scope.prevPage"
             primary
             size="sm"
@@ -149,13 +154,13 @@
           <q-pagination
             v-model="pagination.page"
             :max="scope.pagesNumber"
-            size="sm"
+            size="lg"
           />
 
           <OButton
             v-if="scope.pagesNumber > 2"
             :disable="scope.isLastPage"
-            class="w-[2.375rem] h-[2.375rem]"
+            class="w-[2.375rem] h-[2.375rem] dark:bg-white/5"
             @click="scope.lastPage"
             secondary
             size="sm"
@@ -166,7 +171,6 @@
           <OButton
             icon-right="chevron_right"
             :disable="scope.isLastPage"
-            :class="{ '!bg-neutral-100/10': scope.isLastPage }"
             @click="scope.nextPage"
             primary
             size="sm"
@@ -193,8 +197,11 @@ const props = defineProps({
   columns: Array,
 })
 
+const adminUrl = (id) =>
+  `${process.env.BACKEND_URL}admin/control/caso/${id}/change/`
+
 const filter = ref('')
-const rowsPerPage = ref(2)
+const rowsPerPage = ref(5)
 const pagination = ref({
   sortBy: 'desc',
   descending: false,
@@ -212,4 +219,23 @@ const pagesNumber = computed(() => {
 .visao-geral-table
   .q-chip :deep(.q-chip__content)
     justify-content: center
+
+.body--light
+  .visao-geral-table
+    :deep(.icon-opacity .q-icon)
+      color: #999ca4
+    :deep(.q-btn.disabled)
+      opacity: 1 !important
+      background: rgba(var(--neutral-100), 0.1)
+      color: rgba(var(--neutral-100), 0.4)
+
+.body--dark
+  .visao-geral-table
+    :deep(.q-table__middle)
+      background: rgb(var(--d-neutral-40))
+      border-bottom: 1px solid rgba(var(--white), 0.1)
+    :deep(.q-btn.disabled)
+      opacity: 1 !important
+      background: rgba(var(--white), 0.05)
+      color: rgba(var(--white), 0.2)
 </style>
