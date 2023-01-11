@@ -3,7 +3,8 @@
     class="!border-0"
     v-model="modalEditTaskState"
     ref="dialogRef"
-    transition-hide="slide-down"
+    transition-hide="fade"
+    transition-duration="200"
   >
     <q-card class="add-task-modal">
       <header class="modal-header">

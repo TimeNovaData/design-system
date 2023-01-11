@@ -154,16 +154,18 @@
               <q-item-section>Tasks Finalizadas </q-item-section>
             </div>
           </template>
-          <ul class="overflow-hidden relative">
-            <template v-for="(task, index) in tasks" :key="task.id">
-              <TaskColaborador
-                v-if="index <= 5"
-                :task="task"
-                :hideDragIcon="true"
-                :completed="true"
-              />
-            </template>
-          </ul>
+          <q-scroll-area style="height: 450px">
+            <ul class="overflow-hidden relative">
+              <template v-for="(task, index) in tasks" :key="task.id">
+                <TaskColaborador
+                  v-if="index <= 5"
+                  :task="task"
+                  :hideDragIcon="true"
+                  :completed="true"
+                />
+              </template>
+            </ul>
+          </q-scroll-area>
         </o-accordion>
       </section>
 
@@ -246,8 +248,9 @@ const dragOptions = computed(() => ({
 }))
 
 const getTasksPaged = async (userId) => {
-  return await getTasks(`&=responsavel_task__id=${userId}&?page_size=100`)
+  return await getTasks(`&=responsavel_task__id=${userId}&?page_size=10`)
 }
+
 onMounted(async () => {
   userId.value = route.params.id ? route.params.id : user.id
   await getTasksPaged(userId)

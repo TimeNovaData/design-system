@@ -142,9 +142,9 @@
         size="lg"
         class="bg-white dark:!bg-transparent"
         :options="userList"
-        :modelValue="model.responsavel"
+        :modelValue="model.responsavel_task"
         :loading="!userList.length"
-        @update-value="(value) => (model.responsavel = value)"
+        @update-value="(value) => (model.responsavel_task = value)"
         :rules="[(val) => val || '']"
       />
     </div>
@@ -225,7 +225,7 @@ const model = ref({
   projeto: props.taskValues?.projeto || null,
   sub_projeto: props.taskValues?.sub_projeto || null,
   tipo_task: props.taskValues?.tipo_task || null,
-  responsavel: props.taskValues?.responsavel || null,
+  responsavel_task: props.taskValues?.responsavel_task || null,
   quantidade: props.taskValues?.quantidade || 1,
   entrega_data_desejada_data: setDeliveryDateModel.value,
   entrega_data_desejada_hora: setDeliveryTimeModel.value,
@@ -248,12 +248,9 @@ watch(
       ?.formatDate(date_entrega)
       ?.replace('.000-', '-')
 
-    const responsavel_task = vl.responsavel?.id
-
     const dadosAdicionais = {
       tempo_estimado,
       entrega_data_desejada,
-      responsavel_task,
     }
 
     const dataObj = {

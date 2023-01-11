@@ -15,6 +15,7 @@ function logURLS(url) {
 
   window[type](key) // window._green
 }
+
 LoadingBar.setDefaults({
   // return a Boolean which has the meaning of
   // "should this URL trigger LoadingBar?"

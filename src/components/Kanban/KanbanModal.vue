@@ -3,11 +3,11 @@
     v-model="dialogState"
     ref="dialogRef"
     transition-hide="fade"
+    transition-duration="200"
     @before-hide="beforehide"
     @hide="onDialogHide"
     @before-show="beforeshow"
     @show="onShow"
-    transition-duration="200"
   >
     <q-card class="kanban-modal q-dialog-plugin remove-styles">
       <header class="bg-neutral-30 dark:bg-d-neutral-10">
