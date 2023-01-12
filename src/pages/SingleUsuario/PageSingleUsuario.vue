@@ -269,7 +269,7 @@ const dragOptions = computed(() => ({
 }))
 
 const getTasksPaged = async (userId) => {
-  return await getTasks(`&=responsavel_task__id=${userId}&?page_size=10`)
+  return await getTasks(`&=responsavel_task__id=${userId}&page_size=10`)
 }
 
 onMounted(async () => {
