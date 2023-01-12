@@ -7,139 +7,138 @@
         :projeto="projeto"
         ref="header"
       />
-      <q-card class="mt-32">
-        <TextIcon
-          class="pt-24 mx-16 mb-24"
-          icon="svguse:/icons.svg#icon_date_time"
-          text="Investimento Diário"
-          Diário
-        ></TextIcon>
-
-        <!--  ❌ SO PRA NAO DAR ERRO -->
-        <apexchart
-          v-if="false"
-          ref="chart"
-          width="100%"
-          height="250px"
-          type="bar"
-          :options="optionsChart"
-          :series="seriesChart"
-          :class="{ 'opacity-0': !seriesChart.length }"
-        ></apexchart>
-      </q-card>
-
-      <div class="grid grid-cols-2 gap-32 mt-32">
-        <q-card class="p-16">
+      <div v-if="projeto.id">
+        <q-card class="mt-32">
           <TextIcon
-            class=""
-            icon="svguse:/icons.svg#icon_tasks"
-            text="Atualização dos acompanhamentos"
-            Diário
+            class="pt-24 mx-16 mb-24 text-title-4"
+            icon="svguse:/icons.svg#icon_date_time"
+            text="Investimento Diário"
           ></TextIcon>
-          <div class="mt-16 grid grid-cols-2">
-            <q-date
-              minimal
-              :years-in-month-view="false"
-              class="projeto-date"
-              v-model="dataAtual"
-              today-btn
-            />
-          </div>
+
+          <!--  ❌ SO PRA NAO DAR ERRO -->
+          <apexchart
+            v-if="false"
+            ref="chart"
+            width="100%"
+            height="250px"
+            type="bar"
+            :options="optionsChart"
+            :series="seriesChart"
+            :class="{ 'opacity-0': !seriesChart.length }"
+          ></apexchart>
         </q-card>
 
-        <q-card class="p-16 flex flex-col">
-          <div class="flex justify-between gap-32 mb-16 items-center">
+        <div class="grid grid-cols-2 gap-32 mt-32">
+          <q-card class="p-16">
             <TextIcon
               class="text-title-4"
-              icon="svguse:/icons.svg#icon_chat"
+              icon="svguse:/icons.svg#icon_tasks"
               text="Atualização dos acompanhamentos"
             ></TextIcon>
-            <OButton type="sm" secondary>Ver todos</OButton>
-          </div>
-          <OChatBox
-            class="h-full w-full flex-1 mb-16"
-            style="box-shadow: initial"
-            :comments="comments"
-            :sendComment="sendComment"
-            :getComments="getComments"
-            :isLoading="isLoading"
-            tipo="projeto"
-            :showInput="false"
-          ></OChatBox>
-          <p class="text-paragraph-2">
-            Você tem
-            <span class="text-primary-pure">{{ comments.length }}</span>
-            acompanhamentos registrados.
-          </p>
-        </q-card>
-      </div>
+            <div class="mt-16 grid grid-cols-2">
+              <q-date
+                minimal
+                :years-in-month-view="false"
+                class="projeto-date"
+                v-model="dataAtual"
+                today-btn
+              />
+            </div>
+          </q-card>
 
-      <q-card class="p-16 mt-32">
-        <TextIcon
-          class="text-title-4"
-          icon="svguse:/icons.svg#icon_file_add"
-          text="Chamados"
-        ></TextIcon>
+          <q-card class="p-16 flex flex-col">
+            <div class="flex justify-between gap-32 mb-16 items-center">
+              <TextIcon
+                class="text-title-4"
+                icon="svguse:/icons.svg#icon_chat"
+                text="Atualização dos acompanhamentos"
+              ></TextIcon>
+              <OButton type="sm" secondary>Ver todos</OButton>
+            </div>
+            <OChatBox
+              class="h-full w-full flex-1 mb-16"
+              style="box-shadow: initial"
+              :comments="comments"
+              :sendComment="sendComment"
+              :getComments="getComments"
+              :isLoading="isLoading"
+              tipo="projeto"
+              :showInput="false"
+            ></OChatBox>
+            <p class="text-paragraph-2">
+              Você tem
+              <span class="text-primary-pure">{{ comments.length }}</span>
+              acompanhamentos registrados.
+            </p>
+          </q-card>
+        </div>
 
-        <div
-          class="table-container border border-neutral-100/10 rounded-generic mt-16"
-        >
-          <header class="grid grid-chamados border-neutral-100/10 border-b">
-            <div></div>
-            <div class="p-16 text-headline-3 flex items-center">Task</div>
-            <div class="p-16 text-headline-3 flex items-center">
-              Data de Criação
-            </div>
-            <div class="p-16 text-headline-3 flex items-center">
-              Data Desejada
-            </div>
-            <div class="p-16 text-headline-3 flex items-center">
-              Última Atualização
-            </div>
-            <div class="p-16 text-headline-3 flex items-center">Anexos</div>
-          </header>
-          <article>
-            <q-scroll-area class="!h-[400px]">
-              <draggable
-                v-bind="dragOptions"
-                :list="chamadosList"
-                :component-data="{
-                  tag: 'div',
-                  type: 'transition-group',
-                  name: !drag ? 'flip-list' : null,
-                  class: `transition-div `,
-                }"
-                group="a"
-                itemKey="name"
-                @end="(e) => startAndEndDrag(e, false)"
-                @start="(e) => startAndEndDrag(e, true)"
-              >
-                <template #item="{ element: i }">
-                  <div
-                    @click="() => handleClickChamado(i.id)"
-                    class="grid-chamados h-52 cursor-pointer hover:bg-neutral-10 relative"
-                  >
-                    <div></div>
+        <q-card class="p-16 mt-32">
+          <TextIcon
+            class="text-title-4"
+            icon="svguse:/icons.svg#icon_file_add"
+            text="Chamados"
+          ></TextIcon>
+
+          <div
+            class="table-container border border-neutral-100/10 rounded-generic mt-16"
+          >
+            <header class="grid grid-chamados border-neutral-100/10 border-b">
+              <div></div>
+              <div class="p-16 text-headline-3 flex items-center">Task</div>
+              <div class="p-16 text-headline-3 flex items-center">
+                Data de Criação
+              </div>
+              <div class="p-16 text-headline-3 flex items-center">
+                Data Desejada
+              </div>
+              <div class="p-16 text-headline-3 flex items-center">
+                Última Atualização
+              </div>
+              <div class="p-16 text-headline-3 flex items-center">Anexos</div>
+            </header>
+            <article>
+              <q-scroll-area class="!h-[400px]">
+                <draggable
+                  v-bind="dragOptions"
+                  :list="chamadosList"
+                  :component-data="{
+                    tag: 'div',
+                    type: 'transition-group',
+                    name: !drag ? 'flip-list' : null,
+                    class: `transition-div `,
+                  }"
+                  group="a"
+                  itemKey="name"
+                  @end="(e) => startAndEndDrag(e, false)"
+                  @start="(e) => startAndEndDrag(e, true)"
+                >
+                  <template #item="{ element: i }">
                     <div
-                      class="flex items-center gap-4 px-16 py-6 border-neutral-100/10 border-b"
+                      @click="() => handleClickChamado(i.id)"
+                      class="grid-chamados h-52 cursor-pointer hover:bg-neutral-10 relative"
                     >
-                      <OAvatar
-                        size="32px"
-                        :foto="i.user_criacao.foto"
-                      ></OAvatar>
-                      <div class="flex flex-col">
-                        <p class="text-paragraph-2 one-line">
-                          {{ i.titulo }}
-                        </p>
-                        <span class="text-neutral-60 text-paragraph-3">{{
-                          i.user_criacao.nome
-                        }}</span>
+                      <div></div>
+                      <div
+                        class="flex items-center gap-4 px-16 py-6 border-neutral-100/10 border-b"
+                      >
+                        <OAvatar
+                          size="32px"
+                          :foto="i.user_criacao.foto"
+                        ></OAvatar>
+                        <div class="flex flex-col">
+                          <p class="text-paragraph-2 one-line">
+                            {{ i.titulo }}
+                          </p>
+                          <span class="text-neutral-60 text-paragraph-3">{{
+                            i.user_criacao.nome
+                          }}</span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </template>
+                  </template>
 
-                <!-- 
+                  <!-- 
 {
   id: 70,
   projeto: {
@@ -246,12 +245,25 @@
 
 
                -->
-                <!--  -->
-              </draggable>
-            </q-scroll-area>
-          </article>
+                  <!--  -->
+                </draggable>
+              </q-scroll-area>
+            </article>
+          </div>
+        </q-card>
+      </div>
+      <div v-else>
+        <div class="text-paragraph-2 text-center mt-12">
+          <div>
+            <q-icon
+              class="block mx-auto opacity-30"
+              name="fluorescent"
+              size="2.5rem"
+            ></q-icon>
+            <p class="opacity-40">Sem Dados para exibir.</p>
+          </div>
         </div>
-      </q-card>
+      </div>
     </div>
   </q-scroll-area>
 </template>

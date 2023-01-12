@@ -82,6 +82,7 @@ import OSelectAvatar from 'src/components/Select/OSelectAvatar.vue'
 const emit = defineEmits(['applyFilters'])
 
 const { returnRGB } = GLOBAL
+
 const filtrosDefault = {
   projeto: {
     model: '',

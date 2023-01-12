@@ -1,8 +1,9 @@
 <template>
   <q-layout view="hHh Lpr fFf" class="home-layout">
-    <KeepAlive>
+    <!--  <KeepAlive>
       <component :is="MenuMultiLevel" :menu="menuList" />
-    </KeepAlive>
+    </KeepAlive> -->
+    <MenuMultiLevel :menu="menuList"></MenuMultiLevel>
 
     <BaseHeader></BaseHeader>
     <q-page-container class="home-page-container bg-neutral-10">

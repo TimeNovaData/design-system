@@ -3,16 +3,31 @@
     ref="componentRef"
     :class="'size-' + attrs.size"
     popup-content-class="select-menu"
+    input-debounce="300"
+    transition-duration="150"
     v-bind="attrs"
     options-selected-class="option-selecionada"
     :size="null"
     :options="options"
     @filter="filterFn"
-    @focus="handleFocus"
     dropdown-icon="expand_more"
   >
+    <!-- @focus="handleFocus" -->
     <template v-for="slot in Object.keys(slots)" #[slot]="slotProps">
       <slot :name="slot" v-bind="slotProps"></slot>
+    </template>
+
+    <template #no-option>
+      <q-item>
+        <div class="flex items-center gap-8">
+          <q-icon
+            class="block mx-auto opacity-30"
+            name="fluorescent"
+            size="2rem"
+          ></q-icon>
+          <p class="opacity-40">Sem Dados para exibir.</p>
+        </div></q-item
+      >
     </template>
 
     <!-- <template #before-options>
@@ -50,6 +65,8 @@ watch(
   () => attrs.options,
   async (v) => {
     await nextTick()
+    window._red('asas')
+    console.log(attrs.options)
     options.value = attrs.options
     stringOptions = attrs.options
   },
@@ -60,7 +77,7 @@ defineExpose({ componentRef })
 
 function filterFn(val, update, abort) {
   update(() => {
-    if (!val) return
+    if (!val) return (options.value = stringOptions)
     const needle = val.toLowerCase()
     options.value = stringOptions.filter((v) => {
       const option = v[attrs['option-label']]

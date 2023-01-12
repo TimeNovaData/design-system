@@ -117,8 +117,7 @@ if (dev)
       title: 'Single Colaborador',
       nivel: 0,
       icon: 'svguse:/icons.svg#icon_users',
-      href: '/colaborador/1',
-      userId: 0,
+      href: '/colaborador/user',
     },
     {
       title: 'Visão Geral',

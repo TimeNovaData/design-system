@@ -1,10 +1,13 @@
 <template>
-  <!-- <router-view v-slot="{ Component }">
-    <transition :name="$route.meta.transitionName || 'fade'">
-      <component :is="Component" />
-    </transition>
-  </router-view> -->
-  <RouterView></RouterView>
+  <router-view v-slot="{ Component }">
+    <!-- <transition :name="$route.meta.transitionName || 'fade'"> -->
+    <!-- </transition> -->
+
+    <component
+      v-if="($route.name === 'login' && !user) || user?.id"
+      :is="Component"
+    />
+  </router-view>
 </template>
 
 <script setup>
@@ -48,7 +51,6 @@ const { user: userAuthStore } = storeToRefs(useAuthStore())
 async function requests() {
   await getUser()
   await nextTick()
-  console.log(user)
   await getProfile()
   await getUsuariosFoto()
   await getProjetos()

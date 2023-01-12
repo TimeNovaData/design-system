@@ -23,7 +23,7 @@
       class="three-lines card-descicao inline-block text-paragraph-2"
       style="word-break: break-word"
     >
-      <div class="card-id inline-block mr-4">(Nº{{ item.id }})</div>
+      <div class="card-id inline-block mr-4 three-lines">(Nº{{ item.id }})</div>
       {{ item.titulo }}
     </div>
     <slot></slot>

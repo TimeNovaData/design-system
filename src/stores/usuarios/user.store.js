@@ -7,7 +7,7 @@ import { useUsuarioStore } from './usuarios.store'
 const { URLS } = api.defaults
 
 export const useUserStore = defineStore('userStore', () => {
-  const user = ref([])
+  const user = ref()
   const isLoading = ref(false)
   const usuarios = useUsuarioStore()
   const userProfile = ref({})
