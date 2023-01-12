@@ -200,12 +200,15 @@ function closeNewCard() {
 async function handleCreateChamado(v) {
   novoCard.value.id = null
   const newCard = await createChamado(v)
-  const fase = newCard.fase
-
-  colunasWithCards.value = colunasWithCards.value.map((c) => {
-    if (c.coluna.id === fase) c.cards.unshift(newCard)
+  const fase = newCard.fase.id
+  const newArr = deepUnref(colunasWithCards.value).map((c) => {
+    if (c.coluna.id === fase) {
+      c.cards.unshift(newCard)
+    }
     return c
   })
+  colunasWithCards.value = newArr
+
   setTimeout(() => emitter.emit('reloadDataKanban'), 300)
 }
 
