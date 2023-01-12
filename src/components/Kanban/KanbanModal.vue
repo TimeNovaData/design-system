@@ -685,7 +685,7 @@
                     </div>
 
                     <div
-                      v-else-if="!taskLoading && !tasksChamadoPendente.length"
+                      v-else-if="!taskLoading && !tasksChamadoConcluido.length"
                       class="text-paragraph-2 text-center mt-12"
                     >
                       <div>
@@ -844,7 +844,7 @@ const beforehide = (e) => {
 const taskLoading = ref(true)
 async function handleGetTasks() {
   taskLoading.value = true
-  await getTasks(`&chamado__id=${data.value.id}`)
+  await getTasks(`&chamado__id=${data.value.id}&ordering=entrega_data_desejada`)
   taskLoading.value = false
 }
 
