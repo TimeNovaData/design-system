@@ -66,12 +66,14 @@
 import { ref, inject, computed, onMounted } from 'vue'
 import { useAxios } from '@vueuse/integrations/useAxios'
 import { api } from 'src/boot/axios'
+import GLOBAL from 'src/utils/GLOBAL'
 import OButton from 'src/components/Button/OButton.vue'
 import TextIcon from 'src/components/Text/TextIcon.vue'
 import VisaoGeralCard from 'src/components/VisaoGeral/VisaoGeralCard.vue'
 import VisaoGeralTable from 'src/components/VisaoGeral/VisaoGeralTable.vue'
 
 const { URLS } = api.defaults
+const { FData } = GLOBAL
 const projetos = inject('projetos')
 
 const bigNumbers = ref({})
@@ -101,24 +103,19 @@ function setRowData(item) {
     id: item.id,
     projeto: item.nome,
     cliente: item.nome_cliente || '-',
-    responsavel: {
-      nome: 'Marlon',
-      foto: 'https://avatars.githubusercontent.com/u/62356988?v=4',
-    },
-    responsavel_atendimento: {
-      nome: 'Marlon Victor',
-      foto: 'https://avatars.githubusercontent.com/u/62356988?v=4',
-    },
-    data_entrega: '10/10/2022 - 17h 21m',
-    ultimo_acompanhamento: '10/10/2022 - 17h 21m',
-    status: 'Atrasado',
-    chamado_pendentes: item.id * 2,
-    tasks_pendentes: item.id * 3,
+    responsaveis: item.responsaveis,
+    responsaveis_atendimento: item.atendimento,
+    data_entrega: FData(item.fim_contrato),
+    ultimo_acompanhamento: FData(item.ultimo_acompanhamento),
+    status_andamento: item.status_andamento,
+    chamado_pendentes: item.chamados_nao_concluidos,
+    tasks_pendentes: item.tasks_nao_concluidas,
   }
 }
 
 const rowsRecorrente = computed(() => {
   const filtered = projetos.value.filter((item) => item.status === 'Recorrente')
+  console.log(projetos.value)
   return filtered.map(setRowData)
 })
 
@@ -143,16 +140,16 @@ const columns = [
     sortable: true,
   },
   {
-    name: 'responsavel',
-    field: 'responsavel',
-    label: 'Responsável',
+    name: 'responsaveis',
+    field: 'responsaveis',
+    label: 'Responsáveis',
     align: 'left',
     sortable: true,
   },
   {
-    name: 'responsavel_atendimento',
-    field: 'responsavel_atendimento',
-    label: 'Responsável Atendimento',
+    name: 'responsaveis_atendimento',
+    field: 'responsaveis_atendimento',
+    label: 'Atendimento',
     align: 'left',
     sortable: true,
   },
@@ -171,8 +168,8 @@ const columns = [
     sortable: true,
   },
   {
-    name: 'status',
-    field: 'status',
+    name: 'status_andamento',
+    field: 'status_andamento',
     label: 'Status',
     align: 'left',
     sortable: true,

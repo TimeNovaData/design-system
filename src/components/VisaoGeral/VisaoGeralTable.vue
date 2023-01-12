@@ -44,29 +44,29 @@
           {{ props.row.cliente }}
         </q-td>
 
-        <q-td key="responsavel" :auto-width="false" class="!border-r">
-          <div class="inline-flex items-center h-full gap-6">
-            <AvatarSingle
-              class="!w-32 !h-32 overflow-hidden ajuste-img"
-              :estatic="true"
-              :item="props.row.responsavel"
-            ></AvatarSingle>
-            <p class="">{{ props.row.responsavel?.nome }}</p>
+        <q-td key="responsaveis" :auto-width="false" class="px-6 !border-r">
+          <div class="grid h-full items-center relative">
+            <AvatarMultiple
+              v-if="props.row.responsaveis"
+              :list="props.row.responsaveis"
+            ></AvatarMultiple>
+            <span class="pl-2">-</span>
           </div>
         </q-td>
 
         <q-td
-          key="responsavel_atendimento"
+          key="responsaveis_atendimento"
           :auto-width="false"
           class="!border-r"
         >
           <div class="inline-flex items-center h-full gap-6">
-            <AvatarSingle
-              class="!w-32 !h-32 overflow-hidden ajuste-img"
-              :estatic="true"
-              :item="props.row.responsavel_atendimento"
-            ></AvatarSingle>
-            <p class="">{{ props.row.responsavel_atendimento?.nome }}</p>
+            <div class="grid h-full items-center relative">
+              <AvatarMultiple
+                v-if="props.row.responsaveis_atendimento"
+                :list="props.row.responsaveis_atendimento"
+              ></AvatarMultiple>
+              <span class="pl-2">-</span>
+            </div>
           </div>
         </q-td>
 
@@ -86,10 +86,17 @@
           {{ props.row.ultimo_acompanhamento }}
         </q-td>
 
-        <q-td key="status" :auto-width="false" class="!border-r">
-          <o-badge size="lg" color="var(--alert-error)" square class="w-[8rem]">
-            <template v-slot:content>{{ props.row.status }}</template>
-          </o-badge>
+        <q-td key="status_andamento" :auto-width="false" class="!border-r">
+          <OBadge
+            size="lg"
+            :color="returnRGB(props.row.status_andamento.cor)"
+            square
+            class="w-[8rem]"
+          >
+            <template v-slot:content>{{
+              props.row.status_andamento.status
+            }}</template>
+          </OBadge>
         </q-td>
 
         <q-td
@@ -186,9 +193,9 @@ import OInput from 'src/components/Input/OInput.vue'
 import OBadge from 'src/components/Badge/OBadge.vue'
 import OButton from 'src/components/Button/OButton.vue'
 import OSelect from 'src/components/Select/OSelect.vue'
-import AvatarSingle from 'src/components/Avatar/AvatarSingle.vue'
+import AvatarMultiple from 'src/components/Avatar/AvatarMultiple.vue'
 
-const { wrapCsvValue } = GLOBAL
+const { wrapCsvValue, returnRGB } = GLOBAL
 
 const props = defineProps({
   rows: Array,
