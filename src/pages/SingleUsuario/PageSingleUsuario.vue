@@ -285,7 +285,7 @@ onMounted(async () => {
 
   userActiveID.value = userRoute ? user.value.id : routeID
 
-  await getTasksPaged(routeID)
+  await getTasksPaged(userRoute ? userID : routeID)
   // await getUsuarios()
   loading.value = false
 })
