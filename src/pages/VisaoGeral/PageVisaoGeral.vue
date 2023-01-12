@@ -80,7 +80,7 @@ function setRowData(item) {
   return {
     id: item.id,
     projeto: item.nome,
-    cliente: item.nome_cliente,
+    cliente: item.nome_cliente || '-',
     responsavel: {
       nome: 'Marlon',
       foto: 'https://avatars.githubusercontent.com/u/62356988?v=4',
@@ -92,8 +92,8 @@ function setRowData(item) {
     data_entrega: '10/10/2022 - 17h 21m',
     ultimo_acompanhamento: '10/10/2022 - 17h 21m',
     status: 'Atrasado',
-    chamado_pendentes: 10,
-    tasks_pendentes: 11,
+    chamado_pendentes: item.id * 2,
+    tasks_pendentes: item.id * 3,
   }
 }
 
