@@ -35,17 +35,20 @@
         >
           <VisaoGeralCard
             cardTitle="Total de projetos abertos"
-            cardValue="120"
+            :cardValue="bigNumbers.projetos_abertos"
           />
-          <VisaoGeralCard cardTitle="Meus Projetos Abertos" cardValue="25" />
+          <VisaoGeralCard
+            cardTitle="Meus Projetos Abertos"
+            :cardValue="bigNumbers.meus_projetos_abertos"
+          />
           <VisaoGeralCard
             cardTitle="Meus projetos atrasados"
-            cardValue="30"
+            :cardValue="bigNumbers.meus_projetos_atrasados"
             cardType="error"
           />
           <VisaoGeralCard
             cardTitle="Meus projetos desuatualizados"
-            cardValue="30"
+            :cardValue="bigNumbers.meus_projetos_desatualizados"
             cardType="error"
           />
         </div>
@@ -60,21 +63,38 @@
 </template>
 
 <script setup>
-import { ref, inject, computed } from 'vue'
+import { ref, inject, computed, onMounted } from 'vue'
+import { useAxios } from '@vueuse/integrations/useAxios'
+import { api } from 'src/boot/axios'
 import OButton from 'src/components/Button/OButton.vue'
 import TextIcon from 'src/components/Text/TextIcon.vue'
 import VisaoGeralCard from 'src/components/VisaoGeral/VisaoGeralCard.vue'
 import VisaoGeralTable from 'src/components/VisaoGeral/VisaoGeralTable.vue'
 
+const { URLS } = api.defaults
 const projetos = inject('projetos')
 
+const bigNumbers = ref({})
 const projectFilter = ref('recorrente')
 
 function handleChangeprojectFilter(type) {
   projectFilter.value = type
 }
 
-console.log(projetos)
+async function getBigNumbers() {
+  const { data, error } = await useAxios(
+    URLS.visao_geral_big_numbers,
+    { method: 'GET' },
+    api
+  )
+
+  try {
+    bigNumbers.value = data.value
+    return data.value
+  } catch (e) {
+    return error
+  }
+}
 
 function setRowData(item) {
   return {
@@ -173,6 +193,10 @@ const columns = [
   },
   { name: 'acoes', field: 'acoes', label: 'Ações', align: 'center' },
 ]
+
+onMounted(() => {
+  getBigNumbers()
+})
 </script>
 
 <style lang="sass" scoped></style>
