@@ -170,8 +170,10 @@
             separator
             v-slot="{ item: task }"
             class="relative"
+            virtual-scroll-item-size="58px"
           >
             <TaskColaborador
+              :key="task.id"
               :task="task"
               :hideDragIcon="true"
               :completed="true"
@@ -188,7 +190,7 @@
 </template>
 
 <script setup>
-import { ref, inject, onMounted, computed } from 'vue'
+import { ref, inject, onMounted, computed, unref, nextTick } from 'vue'
 import bg from 'src/assets/image/bg-single-usuario.png'
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
 import avatar from 'src/assets/image/gravatar.jpg'
@@ -271,8 +273,19 @@ const getTasksPaged = async (userId) => {
 }
 
 onMounted(async () => {
-  userActiveID.value = route.params.id
-  await getTasksPaged(userActiveID)
+  const router = useRouter()
+  const routeID = route.params.id
+  const userID = user.value.id
+  const userRoute = routeID === 'user'
+
+  await nextTick()
+
+  console.log(user.value.id)
+  userRoute && router.push({ params: { id: userID } })
+
+  userActiveID.value = userRoute ? user.value.id : routeID
+
+  await getTasksPaged(routeID)
   // await getUsuarios()
   loading.value = false
 })

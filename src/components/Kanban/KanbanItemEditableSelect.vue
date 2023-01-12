@@ -89,6 +89,7 @@ const props = defineProps({
   text: String,
   options: Array,
   type: String,
+
   closeOnSelect: {
     type: Boolean,
     default: true,

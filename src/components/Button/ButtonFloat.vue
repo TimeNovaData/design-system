@@ -2,8 +2,9 @@
   <q-page-sticky
     position="bottom-right"
     :offset="[0, 0]"
-    class="z-[9999999999]"
+    class="z-[888]"
     id="floatbutton-sticky"
+    v-if="user.is_staff"
   >
     <div class="!w-[5rem] !h-[5rem] !p-0 relative">
       <q-btn
@@ -11,7 +12,10 @@
         class="bg-primary-pure !w-[60px] !h-[60px] shadow-md"
         @click="handleClick"
       >
-        <q-tooltip v-if="!state" v-bind="tooltipProps"
+        <q-tooltip
+          class="text-paragraph-1 font-medium"
+          v-if="!state"
+          v-bind="tooltipProps"
           >⚡ Ações Rapidas</q-tooltip
         >
         <q-icon
@@ -26,24 +30,15 @@
         <q-btn
           class="shadow-md botoes dark:!bg-d-neutral-30 bg-white"
           rounded=""
-        >
-          <q-icon
-            name="svguse:/icons.svg#icon_file_add"
-            class="text-primary-pure"
-          ></q-icon>
-          <q-tooltip v-bind="tooltipProps">Criar Task</q-tooltip>
-        </q-btn>
-
-        <q-btn
-          class="shadow-md botoes dark:!bg-d-neutral-30 bg-white"
-          rounded=""
           @click="openTaskEditModal"
         >
           <q-icon
             name="svguse:/icons.svg#icon_file_add"
             class="text-primary-pure"
           ></q-icon>
-          <q-tooltip v-bind="tooltipProps">Nova Tarefa</q-tooltip>
+          <q-tooltip class="text-paragraph-1 font-medium" v-bind="tooltipProps"
+            >Nova Tarefa</q-tooltip
+          >
         </q-btn>
       </div>
     </div>
@@ -55,6 +50,8 @@ import gsap from 'gsap/dist/gsap'
 import { onMounted, ref, watch, watchEffect, inject } from 'vue'
 
 const openTaskEditModal = inject('openTaskEditModal')
+const user = inject('user')
+
 function tl() {
   const icon = document.getElementById('icon-button-floatbutton')
   const buttonsContainer = document.getElementById('buttons-floatbutton')
