@@ -119,6 +119,12 @@ if (dev)
       icon: 'svguse:/icons.svg#icon_users',
       href: '/colaborador/1',
       userId: 0,
+    },
+    {
+      title: 'Visão Geral',
+      nivel: 0,
+      icon: 'svguse:/icons.svg#icon_config',
+      href: '/visao_geral',
     }
   )
 
