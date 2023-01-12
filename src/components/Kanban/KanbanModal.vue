@@ -260,7 +260,9 @@
                       text="Responsaveis"
                       icon="svguse:/icons.svg#icon_user"
                     />
-                    <div class="mt-4 flex items-center justify-end flex-nowrap">
+                    <div
+                      class="mt-4 flex items-center justify-start flex-nowrap"
+                    >
                       <div class="flex relative h-32 w-[6.25rem]">
                         <!-- <div
                           v-for="(item, index) in data.responsaveis"
@@ -276,7 +278,7 @@
                         </div> -->
 
                         <AvatarMultiple
-                          side="right"
+                          side="left"
                           :list="data.responsaveis"
                         ></AvatarMultiple>
                       </div>

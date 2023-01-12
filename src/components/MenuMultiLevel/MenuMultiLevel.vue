@@ -13,12 +13,13 @@
     </header>
 
     <q-list class="Nv0-ul flex flex-col h-full" tag="ul">
+      <!-- :to="Nv0.userId ? `${Nv0.href}/${Nv0.userId}` : Nv0.href" -->
       <MenuLi
         v-for="(Nv0, index) in props.menu"
         :key="Nv0.title + index"
         :data="Nv0"
         :sidebar="sidebar"
-        :to="Nv0.userId ? `${Nv0.href}/${Nv0.userId}` : Nv0.href"
+        :to="pathTo(Nv0)"
         @Nv0Click="() => handleClick(true)"
         @click="(e) => Nv0HandleClick(e, Nv0)"
         :showHeader="showHeader"
@@ -51,7 +52,14 @@
 import MenuLogo from './MenuLogo.vue'
 import MenuLi from './MenuLi.vue'
 
-import { onMounted, onUnmounted, ref, watch, onBeforeUnmount } from 'vue'
+import {
+  onMounted,
+  onUnmounted,
+  ref,
+  watch,
+  onBeforeUnmount,
+  inject,
+} from 'vue'
 import { useRoute, onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
 
 import GLOBAL from 'src/utils/GLOBAL'
@@ -62,7 +70,15 @@ const router = useRoute()
 const props = defineProps({
   menu: Array,
 })
+const user = inject('user')
 
+const pathTo = (i) => {
+  const params = i.params || {}
+  return {
+    path: i.href,
+    ...params,
+  }
+}
 const state = ref({
   open: false,
   hover: false,
@@ -198,7 +214,7 @@ function toggleActiveOnLis(current) {
   --Nv0-sidebar-transition: ease-out
   // cubic-bezier(.4,0,.2,1)
   --Nv0-sidebar-border:1px solid rgba(var(--neutral-100),0.1)
-  --Nv0-sidebar-z-index: 9010
+  --Nv0-sidebar-z-index: 5010
   --Nv0-sidebar-overflow: hidden
   --Nv1-sidebar-width: 21.25rem
   --Nv1-sidebar-z-index: 9019

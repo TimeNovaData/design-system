@@ -11,18 +11,37 @@
           :foto="avatar"
           size="160px"
           class-avatar="border-2 border-white"
+          class="shadow-lg"
           style="box-sizing: initial"
         ></OAvatar>
 
         <!-- mt pra compensar o relative -->
         <section class="flex flex-col gap-16 mt-32 pt-24 pl-24 shrink-0 flex-1">
           <div class="flex flex-col">
-            <p class="text-caps-2 !font-medium text-primary-pure">
-              {{ projeto.nome_cliente || '' }}
-            </p>
-            <p class="item-editavel text-title-3">
-              {{ projeto.nome || 'Selecione um projeto' }}
-              <q-icon name="expand_more"></q-icon>
+            <div class="text-caps-2 !font-medium text-primary-pure">
+              <div
+                class="h-16"
+                :class="{ 'opacity-100': projeto.nome_cliente }"
+              >
+                {{ projeto.nome_cliente }}
+              </div>
+            </div>
+            <div class="item-editavel text-title-3">
+              <div v-if="$route.params.id === '0'">
+                Selecione um projeto
+
+                <q-icon name="expand_more"></q-icon>
+              </div>
+              <q-skeleton
+                v-else-if="!projeto.id"
+                type="text"
+                width="100%"
+                height="2.3rem"
+              >
+              </q-skeleton>
+              <div v-else>
+                {{ projeto.nome }}
+              </div>
 
               <KanbanItemEditableSelect
                 text="Selecione um Projeto"
@@ -30,41 +49,59 @@
                 :options="projetos"
                 :selected="projeto !== {} ? projeto : null"
                 @updateValue="(v) => $emit('updateSelect', v)"
-                :selectProps="{ clearable: false }"
+                :selectProps="{
+                  clearable: false,
+                  loading: !projetos.length,
+                }"
                 ref="itemEditableSelect"
               ></KanbanItemEditableSelect>
-            </p>
+            </div>
           </div>
 
           <section class="flex gap-32 flex-nowrap">
-            <div class="flex flex-col" v-if="projeto.responsaveis">
+            <div class="flex flex-col">
               <p class="text-caps-3 text-neutral-70">Responsáveis</p>
               <div class="relative max-w-[128px] h-32">
                 <!--   <AvatarSingle :index="index" :item="item"></AvatarSingle> -->
-                <AvatarMultiple :list="projeto.responsaveis"></AvatarMultiple>
+                <AvatarMultiple
+                  v-if="projeto.responsaveis"
+                  :list="projeto.responsaveis"
+                ></AvatarMultiple>
+                <q-skeleton v-else type="circle" size="32px" />
               </div>
             </div>
 
-            <div class="flex flex-col" v-if="projeto.atendimento">
+            <div class="flex flex-col">
               <p class="text-caps-3 text-neutral-70">Atendimento</p>
               <div class="relative max-w-[128px] h-32">
                 <!--   <AvatarSingle :index="index" :item="item"></AvatarSingle> -->
-                <AvatarMultiple :list="projeto.atendimento"></AvatarMultiple>
+                <AvatarMultiple
+                  v-if="projeto.atendimento"
+                  :list="projeto.atendimento"
+                ></AvatarMultiple>
+                <q-skeleton v-else type="circle" size="32px" />
               </div>
             </div>
 
-            <div class="flex flex-col min-w-[83px]" v-if="projeto.atendimento">
+            <div class="flex flex-col min-w-[83px]">
               <p class="text-caps-3 text-neutral-70">Prazo</p>
 
-              <OBadge size="lg" square color="var(--alert-success)">
+              <OBadge
+                size="lg"
+                square
+                color="var(--alert-success)"
+                v-if="projeto.atendimento"
+              >
                 <template v-slot:content>{{ FData(projeto) }}</template>
               </OBadge>
+              <q-skeleton v-else type="rect" height="24px" width="100%" />
             </div>
 
-            <div class="flex flex-col min-w-[83px]" v-if="projeto.status">
+            <div class="flex flex-col min-w-[83px]">
               <p class="text-caps-3 text-neutral-70">Status</p>
 
               <OBadge
+                v-if="projeto.status"
                 size="lg"
                 square
                 color="var(--neutral-100)"
@@ -72,12 +109,17 @@
               >
                 <template v-slot:content>{{ projeto.status }}</template>
               </OBadge>
+
+              <q-skeleton v-else type="rect" height="24px" width="100%" />
             </div>
           </section>
         </section>
       </div>
 
-      <div class="flex items-center gap-6 ml-auto flex-nowrap w-full mt-32">
+      <div
+        class="flex items-center gap-6 ml-auto flex-nowrap w-full !mt-64 h-max"
+        :class="{ 'pointer-events-none': !projeto.id }"
+      >
         <OButton
           class="dark:!bg-white/10 dark:shadow-[initial] dark:!border-0 !h-40 btn-header bg-white"
           size="md"

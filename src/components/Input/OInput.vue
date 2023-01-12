@@ -38,6 +38,8 @@ defineExpose({ componentRef })
 
   .q-field__prepend
     width: v-bind(prependsize) !important
+
+
 //remove browser autocomplete background
 .body--dark
   .o-input
