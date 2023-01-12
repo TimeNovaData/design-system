@@ -71,6 +71,7 @@ import OButton from 'src/components/Button/OButton.vue'
 import TextIcon from 'src/components/Text/TextIcon.vue'
 import VisaoGeralCard from 'src/components/VisaoGeral/VisaoGeralCard.vue'
 import VisaoGeralTable from 'src/components/VisaoGeral/VisaoGeralTable.vue'
+import { deepUnref } from 'vue-deepunref'
 
 const { URLS } = api.defaults
 const { FData } = GLOBAL
@@ -115,7 +116,6 @@ function setRowData(item) {
 
 const rowsRecorrente = computed(() => {
   const filtered = projetos.value.filter((item) => item.status === 'Recorrente')
-  console.log(projetos.value)
   return filtered.map(setRowData)
 })
 
@@ -141,14 +141,20 @@ const columns = [
   },
   {
     name: 'responsaveis',
-    field: 'responsaveis',
+    field: (row) =>
+      deepUnref(row.responsaveis)
+        .map((resp) => resp.nome)
+        .join(', '),
     label: 'Responsáveis',
     align: 'left',
     sortable: true,
   },
   {
     name: 'responsaveis_atendimento',
-    field: 'responsaveis_atendimento',
+    field: (row) =>
+      deepUnref(row.responsaveis_atendimento)
+        .map((resp) => resp.nome)
+        .join(', '),
     label: 'Atendimento',
     align: 'left',
     sortable: true,
@@ -169,7 +175,7 @@ const columns = [
   },
   {
     name: 'status_andamento',
-    field: 'status_andamento',
+    field: (row) => deepUnref(row.status_andamento.status),
     label: 'Status',
     align: 'left',
     sortable: true,
