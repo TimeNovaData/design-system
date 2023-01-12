@@ -1,7 +1,10 @@
 import gsap from 'gsap/dist/gsap'
-import { date, is, colors } from 'quasar'
+import { date, is, colors, exportFile } from 'quasar'
 import { unref } from 'vue'
 import DOMPurify from 'dompurify'
+import { NotifyError } from 'src/boot/Notify'
+import GLOBAL from 'src/utils/GLOBAL'
+import { deepUnref } from 'vue-deepunref'
 
 export default {
   debounce: (time, fn, name) => {
@@ -223,6 +226,33 @@ export default {
     // .split('\r').join('\\r')
 
     return `"${formatted}"`
+  },
+
+  exportTable(columns, rows) {
+    // naive encoding to csv format
+    const content = [columns.map((col) => GLOBAL.wrapCsvValue(col.label))]
+      .concat(
+        deepUnref(rows).map((row) =>
+          columns
+            .map((col) =>
+              GLOBAL.wrapCsvValue(
+                typeof col.field === 'function'
+                  ? col.field(row)
+                  : row[col.field === void 0 ? col.name : col.field],
+                col.format,
+                row
+              )
+            )
+            .join(',')
+        )
+      )
+      .join('\r\n')
+
+    const status = exportFile('table-export.csv', content, 'text/csv')
+
+    if (status !== true) {
+      NotifyError('Erro ao baixar')
+    }
   },
 
   async blobDownloadFile(url, fileName) {

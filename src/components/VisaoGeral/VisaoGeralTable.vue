@@ -1,5 +1,6 @@
 <template>
   <OTable
+    v-show="rows.length"
     :rows="rows"
     :columns="columns"
     v-model:pagination="pagination"
@@ -24,8 +25,8 @@
           <OSelect
             class="w-72 h-40"
             size="md"
-            v-model="rowsPerPage"
-            :options="[2, 3, 5]"
+            v-model="pagination.rowsPerPage"
+            :options="[10, 20, 30, 50]"
           />
           <span class="text-paragraph-2 text-neutral-70 dark:text-white/70">
             Linhas por página
@@ -143,7 +144,7 @@
           size="sm"
           class="dark:bg-white/10 dark:!border-transparent icon-opacity"
           secondary
-          @click="exportTable"
+          @click="() => exportTable(columns, rows)"
         >
           Baixar tabela
         </OButton>
@@ -181,12 +182,57 @@
     </template>
   </OTable>
 
-  <div class="row justify-center q-mt-md"></div>
+  <q-markup-table v-show="!rows.length" class="mt-20 px-16">
+    <thead>
+      <tr>
+        <th class="text-left" style="width: 150px">
+          <q-skeleton animation="blink" type="text" />
+        </th>
+        <th class="text-right">
+          <q-skeleton animation="blink" type="text" />
+        </th>
+        <th class="text-right">
+          <q-skeleton animation="blink" type="text" />
+        </th>
+        <th class="text-right">
+          <q-skeleton animation="blink" type="text" />
+        </th>
+        <th class="text-right">
+          <q-skeleton animation="blink" type="text" />
+        </th>
+        <th class="text-right">
+          <q-skeleton animation="blink" type="text" />
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr v-for="n in 5" :key="n">
+        <td class="text-left">
+          <q-skeleton animation="blink" type="text" width="85px" />
+        </td>
+        <td class="text-right">
+          <q-skeleton animation="blink" type="text" width="50px" />
+        </td>
+        <td class="text-right">
+          <q-skeleton animation="blink" type="text" width="35px" />
+        </td>
+        <td class="text-right">
+          <q-skeleton animation="blink" type="text" width="65px" />
+        </td>
+        <td class="text-right">
+          <q-skeleton animation="blink" type="text" width="25px" />
+        </td>
+        <td class="text-right">
+          <q-skeleton animation="blink" type="text" width="85px" />
+        </td>
+      </tr>
+    </tbody>
+  </q-markup-table>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
-import { useQuasar, exportFile } from 'quasar'
 import GLOBAL from 'src/utils/GLOBAL'
 import OTable from 'src/components/Table/OTable.vue'
 import OInput from 'src/components/Input/OInput.vue'
@@ -195,7 +241,7 @@ import OButton from 'src/components/Button/OButton.vue'
 import OSelect from 'src/components/Select/OSelect.vue'
 import AvatarMultiple from 'src/components/Avatar/AvatarMultiple.vue'
 
-const { wrapCsvValue, returnRGB } = GLOBAL
+const { returnRGB, exportTable } = GLOBAL
 
 const props = defineProps({
   rows: Array,
@@ -206,58 +252,32 @@ const adminUrl = (id) =>
   `${process.env.BACKEND_URL}admin/control/caso/${id}/change/`
 
 const filter = ref('')
-const rowsPerPage = ref(5)
 
 const pagination = ref({
   sortBy: 'desc',
   descending: false,
   page: 1,
-  rowsPerPage: rowsPerPage.value,
+  rowsPerPage: 10,
 })
 
 const pagesNumber = computed(() =>
   Math.ceil(props.rows.length / pagination.value.rowsPerPage)
 )
-
-// exportar tabela ----------------------------------
-const $q = useQuasar()
-
-const exportTable = () => {
-  // naive encoding to csv format
-  const content = [props.columns.map((col) => wrapCsvValue(col.label))]
-    .concat(
-      props.rows.map((row) =>
-        props.columns
-          .map((col) =>
-            wrapCsvValue(
-              typeof col.field === 'function'
-                ? col.field(row)
-                : row[col.field === void 0 ? col.name : col.field],
-              col.format,
-              row
-            )
-          )
-          .join(',')
-      )
-    )
-    .join('\r\n')
-
-  const status = exportFile('table-export.csv', content, 'text/csv')
-
-  if (status !== true) {
-    $q.notify({
-      message: 'Browser denied file download...',
-      color: 'negative',
-      icon: 'warning',
-    })
-  }
-}
 </script>
 
 <style lang="sass" scoped>
 .visao-geral-table
   .q-chip :deep(.q-chip__content)
     justify-content: center
+
+  :deep(.q-table__middle)
+    max-height: 37rem
+
+    thead
+      position: sticky
+      top: 0
+      background: rgb(var(--white))
+      z-index: 10
 
   .q-pagination
     :deep(.q-btn)
@@ -269,8 +289,6 @@ const exportTable = () => {
 
       &:before
         box-shadow: initial !important
-      span
-        transform: translateY(1px)
 
     :deep(.q-pagination__middle),
     :deep(.q-pagination__content)
