@@ -94,6 +94,7 @@
           primary
           icon="svguse:/icons.svg#icon_edit"
           @click="openTaskEditModal"
+          v-if="user.is_staff"
         >
           Editar Task
         </OButton>
@@ -110,7 +111,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import { useDialogPluginComponent } from 'quasar'
 import { storeToRefs } from 'pinia'
 import { useModalStore } from 'src/stores/modal/modal.store'
@@ -127,6 +128,7 @@ const { modalTaskState, taskModalObj, taskModalAnexos, taskModalCommentObj } =
   storeToRefs(useModalStore())
 
 const tabs = ref('desc')
+const user = inject('user')
 
 defineExpose({ dialogRef })
 </script>
