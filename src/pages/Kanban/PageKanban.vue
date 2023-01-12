@@ -199,7 +199,7 @@ function closeNewCard() {
 
 async function handleCreateChamado(v) {
   novoCard.value.id = null
-  const newCard = await createChamado(v)
+  const newCard = await createChamado({ ...v, ordem: 0 })
   const fase = newCard.fase.id
   const newArr = deepUnref(colunasWithCards.value).map((c) => {
     if (c.coluna.id === fase) {
@@ -209,7 +209,7 @@ async function handleCreateChamado(v) {
   })
   colunasWithCards.value = newArr
 
-  setTimeout(() => emitter.emit('reloadDataKanban'), 300)
+  // setTimeout(() => emitter.emit('reloadDataKanban'), 300)
 }
 
 const dragOptions = computed(() => ({
