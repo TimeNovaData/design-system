@@ -25,15 +25,14 @@
           @mouseup="handleColClick"
           @mousedown="handleColClick"
           @newCards="clickNewCard"
+          :newCardActive="novoCard"
         >
-          <Transition name="fade" duration="150">
-            <KanbanNewCard
-              v-if="novoCard.id === col.coluna.id"
-              :colData="col.coluna"
-              @invalid="closeNewCard"
-              @create="handleCreateChamado"
-            ></KanbanNewCard>
-          </Transition>
+          <KanbanNewCard
+            v-if="novoCard.id === col.coluna.id"
+            :colData="col.coluna"
+            @invalid="closeNewCard"
+            @create="handleCreateChamado"
+          ></KanbanNewCard>
 
           <draggable
             v-bind="dragOptions"
@@ -200,6 +199,7 @@ function closeNewCard() {
 async function handleCreateChamado(v) {
   novoCard.value.id = null
   const newCard = await createChamado({ ...v, ordem: 0 })
+  const newCardID = newCard.id
   const fase = newCard.fase.id
   const newArr = deepUnref(colunasWithCards.value).map((c) => {
     if (c.coluna.id === fase) {

@@ -10,8 +10,8 @@ const { URLS } = api.defaults
 export default function useComments() {
   const id = ref(null)
   const isLoading = ref(false)
-  const comments = ref([])
-  const commentsReverse = computed(() => comments.value.reverse())
+  const comments = ref({ results: [] })
+  // const commentsReverse = computed(() => comments.value.results.reverse())
 
   const { user } = storeToRefs(useUserStore())
 
@@ -35,9 +35,9 @@ export default function useComments() {
     },
   
   */
-  const URLReq = (id) => ({
+  const URLReq = (id, filters) => ({
     task: {
-      get: URLS.comentario + `?task=${id}&no_loading`,
+      get: URLS.comentario + `?task=${id}&no_loading${filters}`,
       post: URLS.comentario,
       data: (message) => ({
         comentario: message,
@@ -46,7 +46,7 @@ export default function useComments() {
     },
 
     projeto: {
-      get: URLS.comentarioprojeto + `?projeto__id=${id}&no_loading`,
+      get: URLS.comentarioprojeto + `?projeto__id=${id}&no_loading${filters}`,
       post: URLS.comentarioprojeto,
       data: (message) => ({
         comentario: message,
@@ -56,18 +56,19 @@ export default function useComments() {
     },
   })
 
-  async function getComments(tipo) {
+  async function getComments(tipo, filters) {
     if (!id.value) return
     isLoading.value = true
     const { data, error } = await useAxios(
-      URLReq(id.value)[tipo].get,
+      URLReq(id.value, filters)[tipo].get,
       { method: 'GET' },
       api
     )
 
     try {
-      if (data.value.length !== comments.value.length) {
+      if (data.value.results.length !== comments.value.length) {
         setComments(data.value)
+
         return data.value
       }
 
@@ -106,7 +107,6 @@ export default function useComments() {
     id,
     isLoading,
     comments,
-    commentsReverse,
     getComments,
     sendComment,
     setID,

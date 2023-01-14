@@ -4,7 +4,7 @@
     <!-- </transition> -->
 
     <component
-      v-if="($route.name === 'login' && !user) || user?.id"
+      v-if="($route.name === 'login' && !user?.id) || user?.id"
       :is="Component"
     />
   </router-view>

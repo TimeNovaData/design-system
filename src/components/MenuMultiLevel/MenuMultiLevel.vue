@@ -214,7 +214,7 @@ function toggleActiveOnLis(current) {
   --Nv0-sidebar-transition: ease-out
   // cubic-bezier(.4,0,.2,1)
   --Nv0-sidebar-border:1px solid rgba(var(--neutral-100),0.1)
-  --Nv0-sidebar-z-index: 9010
+  --Nv0-sidebar-z-index: 5010
   --Nv0-sidebar-overflow: hidden
   --Nv1-sidebar-width: 21.25rem
   --Nv1-sidebar-z-index: 9019

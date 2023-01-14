@@ -140,6 +140,7 @@
           secondary
           icon="svguse:/icons.svg#icon_attach"
           icon-size="1.25rem"
+          @click="$emit('anexoClick')"
         >
           Anexos</OButton
         >
@@ -159,6 +160,7 @@
     :class="{ 'opacity-0': !headerMinify }"
     :projeto="projeto"
     @updateSelect="(v) => $emit('updateSelect', v)"
+    @anexoClick="$emit('anexoClick')"
   ></SingleProjetoHeaderMinify>
 </template>
 

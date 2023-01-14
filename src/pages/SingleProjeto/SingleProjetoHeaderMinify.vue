@@ -81,6 +81,7 @@
           secondary
           icon="svguse:/icons.svg#icon_attach"
           icon-size="1.25rem"
+          @click="$emit('anexoClick')"
         >
           Anexos</OButton
         >

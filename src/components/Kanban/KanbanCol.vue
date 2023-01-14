@@ -20,7 +20,13 @@
         class="!p-0 !w-32 !h-32 ml-auto"
         @click="$emit('newCards', colData)"
       >
-        <q-icon size="1.25rem" name="add_circle" tertiary></q-icon>
+        <q-icon
+          size="1.25rem"
+          :name="
+            newCardActive.id === colData.id ? 'remove_circle' : 'add_circle'
+          "
+          tertiary
+        ></q-icon>
       </OButton>
     </header>
 
@@ -39,6 +45,7 @@ import OCounter from 'src/components/Counter/OCounter.vue'
 const props = defineProps({
   cards: Array,
   colData: Object,
+  newCardActive: Object,
 })
 </script>
 
