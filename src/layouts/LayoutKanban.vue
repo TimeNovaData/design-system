@@ -41,6 +41,7 @@
       style="padding-top: var(--top-size)"
     >
       <router-view />
+      <ButtonFloat />
     </q-page-container>
   </q-layout>
 
@@ -51,33 +52,21 @@
 <script setup>
 import { ref, provide } from 'vue'
 import BaseHeader from 'src/components/Header/BaseHeader.vue'
-import KanbanHeader from 'src/components/Kanban/KanbanHeader.vue'
 import MenuMultiLevel from 'src/components/MenuMultiLevel/MenuMultiLevel.vue'
 import menuList from 'src/utils/menuList.js'
-import KanbanModalRight from 'src/components/Kanban/KanbanModalRight.vue'
 import OInput from 'src/components/Input/OInput.vue'
 import OButton from 'src/components/Button/OButton.vue'
 import emitter from 'src/boot/emitter'
 import TaskViewModal from 'src/components/Task/TaskView/TaskViewModal.vue'
 import TaskCreateModal from 'src/components/Task/TaskCreate/TaskCreateModal.vue'
 import { useModalStore } from 'src/stores/modal/modal.store'
-
+import ButtonFloat from 'src/components/Button/ButtonFloat.vue'
 const { openTaskViewModal, openTaskEditModal } = useModalStore()
 
 provide('openTaskViewModal', openTaskViewModal)
 provide('openTaskEditModal', openTaskEditModal)
 
-const dev = process.env.dev
 const searchKanban = ref('')
-// const kanbanHeader = ref(null)
-
-// function openModalRight() {
-//   modalRight.value.dialogRef.show()
-// }
-
-// function reloadData() {
-//   emitter.emit('reloadDataKanban')
-// }
 
 function handleSearch() {
   emitter.emit('searchKanban', searchKanban.value)
@@ -98,7 +87,6 @@ function handleSearch() {
 
 
 .kanban-page-container
-
   margin-left: var(--Nv0-sidebar-width)
   height: calc(100vh - var(--top-size))
 </style>

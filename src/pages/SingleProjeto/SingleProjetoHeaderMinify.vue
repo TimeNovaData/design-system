@@ -111,7 +111,7 @@ import { inject, ref, onMounted } from 'vue'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 const { FData } = GLOBAL
 
-const emit = defineEmits(['updateSelect'])
+const emit = defineEmits(['updateSelect', 'anexoClick'])
 const header = ref(null)
 
 const itemEditableSelect = ref(null)

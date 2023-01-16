@@ -34,13 +34,13 @@ import { useTaskStore } from './stores/tasks/tasks.store'
 import { useRoute } from 'vue-router'
 
 const { user, userFoto, userProfile } = storeToRefs(useUserStore())
-const { usuariosFoto } = storeToRefs(useUsuarioStore())
+const { usuarios } = storeToRefs(useUsuarioStore())
 const { projetos, subProjetos } = storeToRefs(useProjetoStore())
 const { clientes } = storeToRefs(useClientesStore())
 const { taskTypes } = storeToRefs(useTaskStore())
 
 const { getUser, getProfile, setProfile } = useUserStore()
-const { getUsuariosFoto } = useUsuarioStore()
+const { getUsuarios } = useUsuarioStore()
 const { getProjetos, getSubProjetos } = useProjetoStore()
 const { getClientes } = useClientesStore()
 const { getTaskTypes } = useTaskStore()
@@ -52,7 +52,8 @@ async function requests() {
   await getUser()
   await nextTick()
   await getProfile()
-  await getUsuariosFoto()
+  await getUsuarios()
+
   await getProjetos()
   await getClientes()
   await getSubProjetos()
@@ -71,7 +72,7 @@ provide('darkMode', darkMode)
 provide('userProfile', userProfile)
 provide('user', user)
 provide('userFoto', readonly(userFoto))
-provide('usuarios', readonly(usuariosFoto))
+provide('usuarios', readonly(usuarios))
 provide('clientes', readonly(clientes))
 provide('projetos', readonly(projetos))
 provide('subProjetos', readonly(subProjetos))
@@ -82,7 +83,7 @@ provide('set', {
 })
 
 provide('get', {
-  getUsuariosFoto,
+  getUsuarios,
   getProjetos,
   getClientes,
 })
@@ -93,7 +94,7 @@ provide('get', {
 
 .fade-enter-active,
 .fade-leave-active
-  transition: opacity 0.5s ease
+  transition: opacity .3s ease
 
 .fade-enter-from,
 .fade-leave-to

@@ -9,16 +9,13 @@ export const useTagStore = defineStore('tagStore', () => {
   const tags = ref([])
 
   async function getTags() {
-    const { data, error } = await useAxios(
-      URLS.tagchamado + '?no_loading',
-      { method: 'GET' },
-      api
-    )
     try {
-      setTags(data.value)
-      return data.value
+      const { data } = await api.get(URLS.tagchamado + '?no_loading')
+      setTags(data)
+      return data
     } catch (e) {
-      return error
+      console.log(e)
+      return e
     }
   }
 

@@ -33,6 +33,7 @@ const bgDynamically = computed(() => {
   }
   return bg
 })
+
 </script>
 
 <style lang="sass">
@@ -43,4 +44,6 @@ const bgDynamically = computed(() => {
 
 .custom-warning-color
  color: rgba(133, 111, 0, 1)
+
+ 
 </style>

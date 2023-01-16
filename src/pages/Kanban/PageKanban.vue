@@ -274,24 +274,16 @@ onMounted(() => {
   document
     .querySelector('.kanban-col--wrapper')
     ?.dispatchEvent(new Event('mousedown'))
-  // getProjetos()
-  // getSubProjetos()
-  // getUsuariosFoto()
+
   getTags()
 })
 
 emitter.on('reloadDataKanban', async () => {
   await updateDados()
   await atualizarOrdem()
-  // getProjetos()
-  // getSubProjetos()
-  // getUsuariosFoto()
   getTags()
 })
 
-// provide('usuarios', usuariosFoto)
-// provide('projetos', projetos)
-// provide('subProjetos', subProjetos)
 provide('chamado', chamadoAtivo)
 provide('tagsList', tags)
 provide('tabs', tabs)
@@ -319,6 +311,7 @@ provide('getLogAlt', getLogAlt)
   height: 100vh
   pointer-events: none
   user-select: none
+  background-color: rgba(var(--d-neutral-40), 0.6)
 
 
 .kanban

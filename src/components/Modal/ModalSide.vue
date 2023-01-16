@@ -16,12 +16,12 @@
         <TextIcon
           v-bind="{ icon, text }"
           icon-class="text-neutral-100"
-          class="text-neutral-100"
+          class="text-neutral-100 dark:text-neutral-100"
         ></TextIcon>
         <q-space></q-space>
         <OButton
           tertiary
-          class="!p-0 place-items-center grid"
+          class="!p-0 place-items-center grid dark:text-neutral-100"
           icon-size="48px"
           @click="dialogState = false"
         >

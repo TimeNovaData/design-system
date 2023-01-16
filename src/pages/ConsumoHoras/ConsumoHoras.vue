@@ -79,8 +79,8 @@
                     size="md"
                     class="w-full"
                     :modelValue="filtros.usuario.model"
-                    :options="usuariosFoto"
-                    :loading="!usuariosFoto"
+                    :options="usuarios"
+                    :loading="!usuarios"
                     clearable
                     @updateValue="(v) => (filtros.usuario.model = v)"
                   >
@@ -417,11 +417,11 @@ const menu = ref(null)
 const filter = ref('')
 const handleClickChamado = inject('handleClickChamado')
 
-const usuariosFoto = inject('usuarios')
+const usuarios = inject('usuarios')
 const clientes = inject('clientes')
 const projetos = inject('projetos')
 // const initialLoad = inject('initialLoad')
-const { getUsuariosFoto, getProjetos, getClientes } = inject('get')
+const { getUsuarios, getProjetos, getClientes } = inject('get')
 
 const { getChamado } = useChamadoStore()
 const { chamados, isLoading: chamadoLoading } = storeToRefs(useChamadoStore())
@@ -622,13 +622,13 @@ const series = [{ name: '', data: [] }]
 
 async function initialRequests() {
   await getChamado()
-  await getUsuariosFoto()
+  await getUsuarios()
   await getTempoTask()
   getProjetos()
   getClientes()
   filtros.value.projeto.options = projetos.value
   filtros.value.cliente.options = clientes.value
-  filtros.value.usuario.options = usuariosFoto.value
+  filtros.value.usuario.options = usuarios.value
 }
 
 onMounted(async () => {

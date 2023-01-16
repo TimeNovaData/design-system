@@ -116,13 +116,13 @@ if (dev)
     {
       title: 'Single Colaborador',
       nivel: 0,
-      icon: 'svguse:/icons.svg#icon_users',
+      icon: 'emoji_people',
       href: '/colaborador/user',
     },
     {
       title: 'Visão Geral',
       nivel: 0,
-      icon: 'svguse:/icons.svg#icon_config',
+      icon: 'monitor_heart',
       href: '/visao_geral',
     }
   )

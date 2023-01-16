@@ -11,31 +11,10 @@ export default function useComments() {
   const id = ref(null)
   const isLoading = ref(false)
   const comments = ref({ results: [] })
-  // const commentsReverse = computed(() => comments.value.results.reverse())
 
   const { user } = storeToRefs(useUserStore())
 
-  /* 
-      {
-        "id": 1,
-        "dados_usuario": {
-            "id": 2,
-            "nome": "emanuel morais",
-            "foto": "http://localhost:8000/media/avatars/emanuel2/resized/100/arara-azul.jpg"
-        },
-        "data_amigavel": "9 meses atrás",
-        "titulo": "Teste",
-        "comentario": "testeeeee",
-        "data_criacao": "2022-03-21T16:47:20.647946-03:00",
-        "data_atualizacao": "2022-03-21T16:58:14.076872-03:00",
-        "projeto": 4,
-        "criador": 2,
-        "usuario_atualizacao": 2,
-        "tipo_etapa": null
-    },
-  
-  */
-  const URLReq = (id, filters) => ({
+  const URLReq = (id, filters = '') => ({
     task: {
       get: URLS.comentario + `?task=${id}&no_loading${filters}`,
       post: URLS.comentario,
@@ -59,22 +38,18 @@ export default function useComments() {
   async function getComments(tipo, filters) {
     if (!id.value) return
     isLoading.value = true
-    const { data, error } = await useAxios(
-      URLReq(id.value, filters)[tipo].get,
-      { method: 'GET' },
-      api
-    )
 
     try {
-      if (data.value.results.length !== comments.value.length) {
-        setComments(data.value)
-
-        return data.value
+      const { data } = await api.get(URLReq(id.value, filters)[tipo].get)
+      // API nao esta vindo paginada
+      if (data.results.length !== comments.value.length) {
+        setComments(data)
+        return data
       }
-
       return null
     } catch (e) {
-      return error
+      console.log(e)
+      return e
     } finally {
       isLoading.value = false
     }

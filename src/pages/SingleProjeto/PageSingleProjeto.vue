@@ -8,7 +8,7 @@
         @updateSelect="handleChangeProjeto"
         @anexoClick="modalAnexo.dialogRef.show()"
       />
-      <Transiton name="fade">
+      <Transition name="fade" mode="out-in">
         <div v-if="projeto.id">
           <q-card class="mt-32">
             <TextIcon
@@ -30,19 +30,53 @@
 
           <div class="grid grid-cols-2 gap-32 mt-32">
             <q-card class="p-16">
-              <TextIcon
-                class="text-title-4"
-                icon="svguse:/icons.svg#icon_tasks"
-                text="Atualização dos acompanhamentos"
-              ></TextIcon>
-              <div class="mt-16 grid grid-cols-2">
-                <q-date
-                  minimal
-                  :years-in-month-view="false"
-                  class="projeto-date"
-                  v-model="dataAtual"
-                  today-btn
-                />
+              <div class="flex items-center gap-8">
+                <TextIcon
+                  class="text-title-4"
+                  icon="svguse:/icons.svg#icon_tasks"
+                  text="Checkpoints"
+                ></TextIcon>
+                <p class="text-neutral-100/60 dark:text-white/60 text-caps-2">
+                  ( Em Breve )
+                </p>
+              </div>
+              <div class="grid grid-cols-2 gap-16">
+                <div class="mt-16 grid grid-cols-2 gap-2">
+                  <q-date
+                    minimal
+                    :years-in-month-view="false"
+                    class="projeto-date"
+                    v-model="dataAtual"
+                    today-btn
+                  />
+                </div>
+                <div class="flex flex-col gap-2">
+                  <p
+                    class="text-headline-5 text-neutral-100/70 dark:text-white/70 mt-16"
+                  >
+                    Sáb, 24 Dez
+                  </p>
+                  <div
+                    class="text-paragraph-2 rounded-generic p-8 two-lines bg-neutral-20 dark:bg-white/10"
+                  >
+                    Véspera de Natal
+                  </div>
+                  <div
+                    class="text-paragraph-2 rounded-generic p-8 two-lines bg-neutral-20 dark:bg-white/10"
+                  >
+                    Reunião às 14h
+                  </div>
+                  <p
+                    class="text-headline-5 text-neutral-100/70 dark:text-white/70 mt-16"
+                  >
+                    Sáb, 25 Dez
+                  </p>
+                  <div
+                    class="text-paragraph-2 rounded-generic p-8 two-lines bg-neutral-20 dark:bg-white/10"
+                  >
+                    Natal
+                  </div>
+                </div>
               </div>
             </q-card>
 
@@ -92,18 +126,26 @@
             ></TextIcon>
 
             <div
-              class="table-container border border-neutral-100/10 rounded-generic mt-16"
+              class="table-container border border-neutral-100/10 rounded-generic mt-16 dark:border-white/10"
             >
-              <header class="grid grid-chamados border-neutral-100/10 border-b">
+              <header
+                class="grid grid-chamados border-neutral-100/10 border-b dark:border-white/10"
+              >
                 <div></div>
                 <div class="p-16 text-headline-3 flex items-center">Task</div>
-                <div class="p-16 text-headline-3 flex items-center">
+                <div
+                  class="p-16 text-headline-3 flex items-center text-end justify-end"
+                >
                   Data de Criação
                 </div>
-                <div class="p-16 text-headline-3 flex items-center">
+                <div
+                  class="p-16 text-headline-3 flex items-center text-end justify-end"
+                >
                   Data Desejada
                 </div>
-                <div class="p-16 text-headline-3 flex items-center">
+                <div
+                  class="p-16 text-headline-3 flex items-center text-end justify-end"
+                >
                   Última Atualização
                 </div>
                 <div class="p-16 text-headline-3 flex items-center">Anexos</div>
@@ -127,12 +169,12 @@
                     <template #item="{ element: i }">
                       <div
                         @click="() => handleClickChamado(i.id)"
-                        class="grid-chamados h-52 cursor-pointer hover:bg-neutral-10 relative"
+                        class="grid-chamados h-52 cursor-pointer hover:bg-neutral-10 relative dark:hover:bg-white/5 border-neutral-100/10 border-b"
                       >
-                        <div></div>
-                        <div
-                          class="flex items-center gap-4 px-16 py-6 border-neutral-100/10 border-b"
-                        >
+                        <div>
+                          <q-icon name="svguse:/icons.svg#icon_drag"></q-icon>
+                        </div>
+                        <div class="flex items-center gap-4 px-16 py-6">
                           <OAvatar
                             size="32px"
                             :foto="i.user_criacao.foto"
@@ -141,15 +183,93 @@
                             <p class="text-paragraph-2 one-line">
                               {{ i.titulo }}
                             </p>
-                            <span class="text-neutral-60 text-paragraph-3">{{
-                              i.user_criacao.nome
-                            }}</span>
+                            <span
+                              class="text-neutral-60 text-paragraph-3 dark:text-white/60"
+                              >{{ i.user_criacao.nome }}</span
+                            >
+                          </div>
+                        </div>
+
+                        <div
+                          class="flex items-center text-paragraph-2 border-l border-neutral-100/10 p-16 text-end justify-end"
+                        >
+                          {{ GLOBAL.FData(i.data_criacao) }}
+                        </div>
+
+                        <div
+                          class="flex items-center text-paragraph-2 border-l border-neutral-100/10 p-16 !text-end justify-end"
+                        >
+                          {{ GLOBAL.FData(i.data_desejada) }}
+                        </div>
+
+                        <div
+                          class="flex items-center text-paragraph-2 border-l border-neutral-100/10 p-16 !text-end justify-end"
+                        >
+                          {{ GLOBAL.FData(i.data_atualizacao) }}
+                        </div>
+
+                        <div
+                          class="flex items-center text-paragraph-2 border-l border-neutral-100/10 p-10"
+                        >
+                          <div
+                            class="bg-neutral-100/10 w-full h-full justify-center flex text-center items-center rounded-generic"
+                          >
+                            {{ i.anexo || '-' }}
                           </div>
                         </div>
                       </div>
                     </template>
 
-                    <!--  -->
+                    <!-- 
+{
+  "id": 154,
+  "projeto": {
+    "id": 17,
+    "nome": "projeto teste",
+    "cor": "#11D276",
+    "tem_subprojetos": false
+  },
+  "tag": [],
+  "titulo": "❌asdasd",
+  "descricao": "",
+  "fase": {
+    "id": 9,
+    "ultima_atualizacao": "2021-06-17T18:17:04.816826Z",
+    "nome": "Standby",
+    "ordem": 10,
+    "fase_conclusao": false
+  },
+  "anexo": null,
+  "data_prevista": null,
+  "data_desejada": null,
+  "tempo_estimado": "00:00:00",
+  "orcado": "00:00:00",
+  "data_conclusao": null,
+  "responsaveis": [
+    {
+      "id": 2,
+      "nome": "emanuel morais",
+      "foto": "http://localhost:8000/media/avatars/emanuel2/resized/100/arara-azul.jpg"
+    }
+  ],
+  "data_criacao": "2023-01-12T10:22:26.906468-03:00",
+  "data_atualizacao": "2023-01-12T10:22:26.906546-03:00",
+  "user_criacao": {
+    "id": 2,
+    "nome": "emanuel morais",
+    "foto": "http://localhost:8000/media/avatars/emanuel2/resized/100/arara-azul.jpg"
+  },
+  "arquivado": false,
+  "sub_projeto": null,
+  "ordem": 22,
+  "tempo_decorrido": "00:00:00",
+  "quantidade_tasks": 0,
+  "quantidade_tasks_concluidas": 0,
+  "quantidade_tasks_pendentes": 0,
+  "quantidade_anexos": 0
+}
+
+                     -->
                   </draggable>
                 </q-scroll-area>
               </article>
@@ -167,7 +287,7 @@
               <p class="opacity-40">Sem Dados para exibir.</p>
             </div>
           </div>
-        </div></Transiton
+        </div></Transition
       >
     </div>
   </q-scroll-area>
@@ -195,38 +315,65 @@
   <!-- Modal Anexos -->
   <ModalSide ref="modalAnexo" text="Anexos" icon="svguse:/icons.svg#icon_chat">
     <section class="flex flex-col p-24 gap-8">
-      <article
-        class="p-8 border border-neutral-100/10 rounded-generic flex gap-8"
-      >
-        <div class="w-72 h-72 relative grid place-items-center">
-          <p
-            class="text-caps-1 absolute m-auto text-neutral-100 z-10 inset-0 w-max h-max"
-          >
-            ai
-          </p>
-          <q-icon
-            name="svguse:/icons.svg#icon_file"
-            class="w-full h-full text-primary-pure"
+      <AnexoItem ext="ai" />
+    </section>
+  </ModalSide>
+
+  <!-- Modal Acessos -->
+  <ModalSide
+    ref="modalAcessos"
+    text="Acessos"
+    icon="svguse:/icons.svg#icon_lock"
+  >
+    <section class="flex flex-col p-24 gap-8">
+      <AcessoItem
+        name="Google Drive"
+        type="acess"
+        login="Instagram@novadata.com.br"
+        senha="google"
+      />
+      <AcessoItem
+        name="Instagram"
+        link="https://drive.google.com/drive/u/0/my-drives"
+        type="link"
+      />
+    </section>
+  </ModalSide>
+
+  <ModalSide
+    ref="modalContatos"
+    text="Contatos"
+    icon="svguse:/icons.svg#icon_users"
+  >
+    <section class="flex flex-col p-24 gap-8">
+      <q-list class="-mx-16" :padding="false">
+        <q-item class="flex gap-8 items-center" clickable
+          ><q-icon
+            class="text-primary-pure h-24 w-24"
+            name="svguse:/icons.svg#icon_users"
           ></q-icon>
-        </div>
+          <p class="text-paragraph-1">Andrei Muniz</p>
+        </q-item>
+        <q-item class="flex gap-8 items-center" clickable
+          ><q-icon
+            class="text-primary-pure h-24 w-24"
+            name="svguse:/icons.svg#icon_mala"
+          ></q-icon>
+          <p class="text-paragraph-1">Gerente de Projetos</p>
+        </q-item>
+        <q-item class="flex gap-8 items-center" clickable
+          ><q-icon
+            class="text-primary-pure h-24 w-24"
+            name="svguse:/icons.svg#ico_tel"
+          ></q-icon>
+          <p class="text-paragraph-1">(00) 99882 8029</p>
+        </q-item>
 
-        <div class="flex flex-gap flex-col flex-1">
-          <p class="text-headline-3 one-line">Foto do Adriano bem meiga</p>
-          <div class="mt-auto">
-            <p class="text-headline-4 text-neutral-70">Manual.jpg</p>
-            <p class="text-headline-4 text-neutral-60">132KB</p>
-          </div>
-        </div>
-
-        <div class="flex gap-6 h-full items-center self-center">
-          <OButton secondary class="!p-0 w-32 h-32">
-            <q-icon name="svguse:/icons.svg#icon_eye"></q-icon>
-          </OButton>
-          <OButton secondary class="!p-0 w-32 h-32">
-            <q-icon name="svguse:/icons.svg#icon_download"></q-icon>
-          </OButton>
-        </div>
-      </article>
+        <q-item class="flex gap-8 items-center" clickable
+          ><q-icon class="text-primary-pure h-24 w-24" name="mail"></q-icon>
+          <p class="text-paragraph-1">andrei.muniz@novadata.com.br</p>
+        </q-item>
+      </q-list>
     </section>
   </ModalSide>
 </template>
@@ -256,6 +403,10 @@ import OChatBox from 'src/components/Chat/OChatBox.vue'
 import { api } from 'src/boot/axios'
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
 import useComments from 'src/composables/useComments'
+import AnexoIcon from 'src/components/Anexo/AnexoIcon.vue'
+import AnexoItem from 'src/components/Anexo/AnexoItem.vue'
+import AcessoItem from 'src/components/Acesso/AcessoItem.vue'
+import GLOBAL from 'src/utils/GLOBAL'
 
 const { URLS } = api.defaults
 
@@ -264,6 +415,8 @@ const { projeto, tempoProjeto } = storeToRefs(useProjetoStore())
 const dataAtual = ref(date.formatDate(new Date(), 'YYYY/MM/DD'))
 const modalChat = ref(null)
 const modalAnexo = ref(null)
+const modalAcessos = ref(null)
+const modalContatos = ref(null)
 
 const {
   commentsReverse,
@@ -285,14 +438,16 @@ const handleClickChamado = inject('handleClickChamado')
 
 const getChamados = async (id) => api.get(`${URLS.chamado}?projeto__id=${id}`)
 
-function handleChangeProjeto(projeto) {
-  requests(projeto.id)
-  console.log(route.params.id, router)
-  router.push({ params: { id: projeto.id } })
+async function handleChangeProjeto(p) {
+  projeto.value = {}
+  await requests(p.id)
+  router.push({ params: { id: p.id } })
 }
 const routeIsZero = Number(route.params.id) === 0
 
 onMounted(() => {
+  modalAcessos.value.dialogRef.show()
+  modalContatos.value.dialogRef.show()
   if (routeIsZero) {
     header.value.show()
   }
@@ -389,6 +544,7 @@ const dragOptions = computed(() => ({
   box-shadow: initial
   border: 1px solid rgba(var(--neutral-100),0.1)
 
+
   :deep(.q-date__navigation)
 
     div:nth-of-type(4),
@@ -402,8 +558,13 @@ const dragOptions = computed(() => ({
     .q-date__calendar-days-container
       min-height: initial
 
+  .body--dark &
+    border: 1px solid rgba(var(--white),0.1)
+
 .grid-chamados
   grid-template-columns: 3.25rem auto 162px 162px 162px 100px
+  display: grid
+  width: 100%
 </style>
 
 <!-- 

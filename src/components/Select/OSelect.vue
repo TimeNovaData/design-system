@@ -55,25 +55,20 @@ const attrs = useAttrs()
 const componentRef = ref(null)
 const options = ref(attrs.options)
 
-// eslint-disable-next-line prefer-const
 let stringOptions = attrs.options
-function handleFocus() {
-  componentRef.value.hidePopup()
-  // componentRef.value.showPopup()
-}
+
+// function handleFocus() {
+//   componentRef.value.showPopup()
+// }
 watch(
   () => attrs.options,
   async (v) => {
     await nextTick()
-    window._red('asas')
-    console.log(attrs.options)
     options.value = attrs.options
     stringOptions = attrs.options
   },
   { deep: true }
 )
-
-defineExpose({ componentRef })
 
 function filterFn(val, update, abort) {
   update(() => {
@@ -87,13 +82,7 @@ function filterFn(val, update, abort) {
   })
 }
 
-// function handleInputChange() {
-//   componentRef.value.updateInputValue(val.value)
-// }
-
-onMounted(() => {
-  // componentRef.value.querySelector()
-})
+defineExpose({ componentRef })
 </script>
 
 <style lang="sass">

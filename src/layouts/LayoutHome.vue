@@ -1,8 +1,5 @@
 <template>
   <q-layout view="hHh Lpr fFf" class="home-layout">
-    <!--  <KeepAlive>
-      <component :is="MenuMultiLevel" :menu="menuList" />
-    </KeepAlive> -->
     <MenuMultiLevel :menu="menuList"></MenuMultiLevel>
 
     <BaseHeader></BaseHeader>
@@ -14,8 +11,9 @@
     <ButtonFloat></ButtonFloat>
   </q-layout>
 
-  <TaskViewModal />
   <TaskCreateModal />
+
+  <TaskViewModal />
   <KanbanModal
     ref="modalChamado"
     @changed="commitAlt(colunasWithCards)"
@@ -39,7 +37,7 @@ import { storeToRefs } from 'pinia'
 const { openTaskViewModal, openTaskEditModal } = useModalStore()
 
 const modalChamado = ref(null)
-const chamadosList = ref([])
+
 const chamadoAtivo = ref({})
 
 const { getTags } = useTagStore()
@@ -48,15 +46,10 @@ const { tags } = storeToRefs(useTagStore())
 const {
   colunasWithCards,
   cardAlterado,
-  drag,
-  // chamados,
   logAlt,
   commitAlt,
   returnCardPerID,
   startAndEndDrag,
-  // updateDados,
-  // applyFilters,
-  // atualizarOrdem,
   getLogAlt,
 } = useChamadosComposable()
 
@@ -65,6 +58,7 @@ function handleClickChamado(id) {
   cardAlterado.value = chamadoAtivo.value
   modalChamado.value.dialogRef.show()
 }
+
 onMounted(() => {
   getTags()
 })

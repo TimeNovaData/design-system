@@ -117,22 +117,21 @@
         </q-td>
 
         <q-td class="text-center !px-6">
-          <a :href="adminUrl(props.row.id)" target="_blank">
-            <OButton
-              secondary
-              icon="svguse:/icons.svg#icon_config"
-              size="sm"
-              class="w-[2.375rem] h-[2.375rem] icon-opacity"
-            />
-          </a>
-          <a :href="'/projeto/' + props.row.id">
-            <OButton
-              secondary
-              icon="search"
-              size="sm"
-              class="w-[2.375rem] h-[2.375rem] icon-opacity ml-6"
-            />
-          </a>
+          <OButton
+            :href="adminUrl(props.row.id)"
+            target="_blank"
+            secondary
+            icon="svguse:/icons.svg#icon_config"
+            size="sm"
+            class="w-[2.375rem] h-[2.375rem] icon-opacity"
+          />
+          <OButton
+            :to="{ name: 'singleProjeto', params: { id: props.row.id } }"
+            secondary
+            icon="search"
+            size="sm"
+            class="w-[2.375rem] h-[2.375rem] icon-opacity ml-6"
+          />
         </q-td>
       </q-tr>
     </template>

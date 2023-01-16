@@ -144,6 +144,7 @@
         :options="userList"
         :modelValue="model.responsavel_task"
         :loading="!userList.length"
+        nome-key="get_full_name"
         @update-value="(value) => (model.responsavel_task = value)"
         :rules="[(val) => val || '']"
       />
@@ -178,27 +179,6 @@ const userList = inject('usuarios')
 const taskTypes = inject('taskTypes')
 const subProjectSelectList = ref([])
 const popUpDate = ref(null)
-// Model Value Setters
-// const setProjectModel = computed(() => {
-//   const selectedProject = projectList.value.filter(
-//     (p) => p.id === props.taskValues.projeto
-//   )
-//   return selectedProject[0]
-// })
-
-// const setSubProjectModel = computed(() => {
-//   const selectedSubProject = subProjectList.value.filter(
-//     (p) => p.id === props.taskValues?.sub_projeto
-//   )
-//   return selectedSubProject[0]
-// })
-
-// const setTaskTypes = computed(() => {
-//   const selectedTaskType = taskTypes.value.filter(
-//     (p) => p.id === props.taskValues?.tipo_task
-//   )
-//   return selectedTaskType[0]
-// })
 
 const setDeliveryDateModel = computed(() => {
   const prop = props.taskValues?.entrega_data_desejada
@@ -236,17 +216,13 @@ const model = ref({
 watch(
   () => model,
   (v) => {
-    window.testes = form
-
     const vl = v.value
     const date_entrega = new Date(
       `${vl.entrega_data_desejada_data} ${vl.entrega_data_desejada_hora}`
     )
 
     const tempo_estimado = FTimeLong(vl.tempo_estimado)
-    const entrega_data_desejada = date
-      ?.formatDate(date_entrega)
-      ?.replace('.000-', '-')
+    const entrega_data_desejada = date?.formatDate(date_entrega)
 
     const dadosAdicionais = {
       tempo_estimado,
