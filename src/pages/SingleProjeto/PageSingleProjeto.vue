@@ -131,7 +131,6 @@
               <header
                 class="grid grid-chamados border-neutral-100/10 border-b dark:border-white/10"
               >
-                <div></div>
                 <div class="p-16 text-headline-3 flex items-center">Task</div>
                 <div
                   class="p-16 text-headline-3 flex items-center text-end justify-end"
@@ -171,9 +170,6 @@
                         @click="() => handleClickChamado(i.id)"
                         class="grid-chamados h-52 cursor-pointer hover:bg-neutral-10 relative dark:hover:bg-white/5 border-neutral-100/10 border-b"
                       >
-                        <div>
-                          <q-icon name="svguse:/icons.svg#icon_drag"></q-icon>
-                        </div>
                         <div class="flex items-center gap-4 px-16 py-6">
                           <OAvatar
                             size="32px"
@@ -311,6 +307,7 @@
     >
     </OChatBox>
   </ModalSide>
+  {{ acessos }}
 
   <!-- Modal Anexos -->
   <ModalSide ref="modalAnexo" text="Anexos" icon="svguse:/icons.svg#icon_chat">
@@ -386,6 +383,8 @@ import draggable from 'vuedraggable'
 import OButton from 'src/components/Button/OButton.vue'
 import ModalSide from 'src/components/Modal/ModalSide.vue'
 import { useProjetoStore } from 'src/stores/projetos/projetos.store'
+import { useAcessoStore } from 'src/stores/acessos/acessos.store'
+
 import {
   onMounted,
   ref,
@@ -407,11 +406,14 @@ import AnexoIcon from 'src/components/Anexo/AnexoIcon.vue'
 import AnexoItem from 'src/components/Anexo/AnexoItem.vue'
 import AcessoItem from 'src/components/Acesso/AcessoItem.vue'
 import GLOBAL from 'src/utils/GLOBAL'
+import emitter from 'src/boot/emitter'
 
 const { URLS } = api.defaults
 
 const { getProjeto, getTempoProjeto } = useProjetoStore()
 const { projeto, tempoProjeto } = storeToRefs(useProjetoStore())
+const { getAcessos } = useAcessoStore()
+const { acessos } = storeToRefs(useAcessoStore())
 const dataAtual = ref(date.formatDate(new Date(), 'YYYY/MM/DD'))
 const modalChat = ref(null)
 const modalAnexo = ref(null)
@@ -503,12 +505,21 @@ async function requests(id) {
   await getProjeto(id)
   await getTempoProjeto(id)
   await nextTick()
+  await handleGetChamado(id)
+  await getAcessos('&projeto__id=' + id)
 
-  const req = await getChamados(id)
-  chamadosList.value = req.data
   // 🟢
   // seriesChart.value = populateChart(tempoProjeto.value, chart)
 }
+async function handleGetChamado(id) {
+  const req = await getChamados(id)
+  chamadosList.value = req.data
+}
+
+// Atualiza chamados ao alterar algo no modal
+emitter.on('chamadoAlterado', () => {
+  handleGetChamado(projeto.value.id)
+})
 
 if (!routeIsZero) {
   requests(route.params.id)
@@ -562,7 +573,7 @@ const dragOptions = computed(() => ({
     border: 1px solid rgba(var(--white),0.1)
 
 .grid-chamados
-  grid-template-columns: 3.25rem auto 162px 162px 162px 100px
+  grid-template-columns: auto 162px 162px 162px 100px
   display: grid
   width: 100%
 </style>
