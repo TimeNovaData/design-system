@@ -403,8 +403,7 @@ async function handleGetChamado(id) {
 }
 
 async function handleChangeProjeto(p) {
-  pageID.value = p.id
-  projeto.value = {}
+  resetDados()
   await nextTick()
   await requests(pageID.value)
   router.push({ params: { id: pageID.value } })
@@ -471,7 +470,7 @@ onUnmounted(() => {
   tempoProjeto.value = {}
 })
 
-const optionsChart = computed(() => ({
+const optionsChart = ref({
   ...stackedChartBar,
   dataLabels: { enabled: false },
   chart: {
@@ -490,9 +489,8 @@ const optionsChart = computed(() => ({
       enabled: false,
     },
   },
-
   xaxis: {
-    categories: categoriasChart.value,
+    categories: categoriasChart,
     labels: {
       rotateAlways: true,
       style: {
@@ -504,7 +502,7 @@ const optionsChart = computed(() => ({
       },
     },
   },
-}))
+})
 </script>
 
 <style lang="sass" scoped>
