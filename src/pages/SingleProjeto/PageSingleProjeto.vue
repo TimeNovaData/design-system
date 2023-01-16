@@ -474,6 +474,23 @@ onUnmounted(() => {
 const optionsChart = computed(() => ({
   ...stackedChartBar,
   dataLabels: { enabled: false },
+  chart: {
+    id: 'chart1',
+    type: 'bar',
+    height: 250,
+    width: '100%',
+    stacked: true,
+    toolbar: {
+      show: false,
+    },
+    zoom: {
+      enabled: false,
+    },
+    animations: {
+      enabled: false,
+    },
+  },
+
   xaxis: {
     categories: categoriasChart.value,
     labels: {
