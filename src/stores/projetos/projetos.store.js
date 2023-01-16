@@ -52,7 +52,658 @@ export const useProjetoStore = defineStore('projetoStore', () => {
       const { data } = await api.get(
         URLS.projeto + id + '/tempo_projeto/?x=' + filters
       )
-      setTempoProjeto(data)
+      setTempoProjeto([
+        {
+          item: 'Andrei Muniz',
+          agrupamento: 'usuario',
+          datas: [
+            {
+              data: '17/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '18/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '19/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '20/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '21/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '22/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '23/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '24/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '25/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '26/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '27/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '28/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '29/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '30/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '31/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '01/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '02/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '03/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '04/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '05/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '06/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '07/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '08/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '09/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '10/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '11/01/2023',
+              duracao: 24724,
+            },
+            {
+              data: '12/01/2023',
+              duracao: 8315,
+            },
+            {
+              data: '13/01/2023',
+              duracao: 3010,
+            },
+            {
+              data: '14/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '15/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '16/01/2023',
+              duracao: 0,
+            },
+          ],
+        },
+        {
+          item: 'Edson Junior',
+          agrupamento: 'usuario',
+          datas: [
+            {
+              data: '17/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '18/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '19/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '20/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '21/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '22/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '23/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '24/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '25/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '26/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '27/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '28/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '29/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '30/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '31/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '01/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '02/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '03/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '04/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '05/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '06/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '07/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '08/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '09/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '10/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '11/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '12/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '13/01/2023',
+              duracao: 1488,
+            },
+            {
+              data: '14/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '15/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '16/01/2023',
+              duracao: 1599,
+            },
+          ],
+        },
+        {
+          item: 'Priscila Martins',
+          agrupamento: 'usuario',
+          datas: [
+            {
+              data: '17/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '18/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '19/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '20/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '21/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '22/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '23/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '24/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '25/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '26/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '27/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '28/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '29/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '30/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '31/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '01/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '02/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '03/01/2023',
+              duracao: 25635,
+            },
+            {
+              data: '04/01/2023',
+              duracao: 18175,
+            },
+            {
+              data: '05/01/2023',
+              duracao: 19713,
+            },
+            {
+              data: '06/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '07/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '08/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '09/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '10/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '11/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '12/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '13/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '14/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '15/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '16/01/2023',
+              duracao: 0,
+            },
+          ],
+        },
+        {
+          item: 'Marlon Victor',
+          agrupamento: 'usuario',
+          datas: [
+            {
+              data: '17/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '18/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '19/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '20/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '21/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '22/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '23/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '24/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '25/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '26/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '27/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '28/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '29/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '30/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '31/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '01/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '02/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '03/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '04/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '05/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '06/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '07/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '08/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '09/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '10/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '11/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '12/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '13/01/2023',
+              duracao: 24037,
+            },
+            {
+              data: '14/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '15/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '16/01/2023',
+              duracao: 0,
+            },
+          ],
+        },
+        {
+          item: 'Joel Junior',
+          agrupamento: 'usuario',
+          datas: [
+            {
+              data: '17/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '18/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '19/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '20/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '21/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '22/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '23/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '24/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '25/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '26/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '27/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '28/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '29/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '30/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '31/12/2022',
+              duracao: 0,
+            },
+            {
+              data: '01/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '02/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '03/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '04/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '05/01/2023',
+              duracao: 18144,
+            },
+            {
+              data: '06/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '07/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '08/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '09/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '10/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '11/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '12/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '13/01/2023',
+              duracao: 6624,
+            },
+            {
+              data: '14/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '15/01/2023',
+              duracao: 0,
+            },
+            {
+              data: '16/01/2023',
+              duracao: 7948,
+            },
+          ],
+        },
+      ])
       return data
     } catch (e) {
       console.log(e)
