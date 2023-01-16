@@ -535,7 +535,6 @@ async function getTempoTask() {
     { method: 'GET' },
     api
   )
-  debugger
 
   try {
     setTempoTask(data.value)
