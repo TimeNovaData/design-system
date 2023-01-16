@@ -344,8 +344,9 @@ const {
 
 const pageID = ref(null)
 const header = ref(null)
-const seriesChart = ref([])
 const chart = ref(null)
+const seriesChart = ref([])
+const categoriasChart = ref([])
 const route = useRoute()
 const router = useRouter()
 const drag = ref(false)
@@ -420,13 +421,7 @@ function populateChart(tempoProjetos) {
 
   const categorias = tempoProjetos[0]?.datas.map((i) => i.data)
 
-  chart.value.updateOptions({
-    series: data,
-    xaxis: {
-      categories: categorias || [],
-    },
-  })
-
+  categoriasChart.value = categorias
   seriesChart.value = data
 }
 
@@ -476,22 +471,23 @@ onUnmounted(() => {
   tempoProjeto.value = {}
 })
 
-const optionsChart = {
+const optionsChart = computed(() => ({
   ...stackedChartBar,
   dataLabels: { enabled: false },
   xaxis: {
+    categories: categoriasChart.value,
     labels: {
       rotateAlways: true,
       style: {
         fontSize: '12px',
         fontFamily: 'Inter',
       },
-      formatter: function (value, timestamp, opts) {
-        return value.slice(0, -5)
+      formatter: function (value) {
+        return value ? value.slice(0, -5) : value
       },
     },
   },
-}
+}))
 </script>
 
 <style lang="sass" scoped>

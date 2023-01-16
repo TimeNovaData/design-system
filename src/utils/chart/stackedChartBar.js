@@ -77,7 +77,8 @@ export default {
   plotOptions: {
     bar: {
       horizontal: false,
-      borderRadius: 0,
+      borderRadius: 4,
+      borderRadiusApplication: 'end',
     },
   },
 
