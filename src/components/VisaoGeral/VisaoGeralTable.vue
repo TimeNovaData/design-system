@@ -231,48 +231,8 @@ function updatePagination(val) {
       background: rgb(var(--white))
       z-index: 10
 
-  .q-pagination
-    :deep(.q-btn)
-      width: 2.375rem
-      height: 2.375rem
-      border: 1px solid rgba(var(--neutral-100),0.1)
-      font-size: .75rem
-      margin: 0
-
-      &:before
-        box-shadow: initial !important
-
-    :deep(.q-pagination__middle),
-    :deep(.q-pagination__content)
-      gap: .375rem
-
 .body--light
   .visao-geral-table
     :deep(.icon-opacity .q-icon)
       color: #999ca4
-    :deep(.q-btn.disabled)
-      opacity: 1 !important
-      background: rgba(var(--neutral-100), 0.1)
-      color: rgba(var(--neutral-100), 0.4)
-    .q-pagination :deep(.q-btn)
-      color: rgb(var(--neutral-70)) !important
-      &.bg-primary
-        color: rgb(var(--neutral-100)) !important
-        border: transparent
-
-.body--dark
-  .visao-geral-table
-    :deep(.q-table__middle)
-      background: rgb(var(--d-neutral-40))
-      border-bottom: 1px solid rgba(var(--white), 0.1)
-    :deep(.q-btn.disabled)
-      opacity: 1 !important
-      background: rgba(var(--white), 0.05)
-      color: rgba(var(--white), 0.2)
-    .q-pagination :deep(.q-btn)
-      border: 1px solid rgba(var(--white),0.1)
-      color: rgba(var(--white), 0.7) !important
-      background: rgba(var(--white), 0.05)
-      &.bg-primary
-        color: rgb(var(--neutral-100)) !important
 </style>
