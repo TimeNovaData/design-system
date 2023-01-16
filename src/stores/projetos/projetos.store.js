@@ -45,9 +45,11 @@ export const useProjetoStore = defineStore('projetoStore', () => {
     }
   }
 
-  async function getTempoProjeto(id) {
+  async function getTempoProjeto(id, filters) {
     try {
-      const { data } = await api.get(URLS.projeto + id + '/tempo_projeto/')
+      const { data } = await api.get(
+        URLS.projeto + id + '/tempo_projeto/?x=' + filters
+      )
       setTempoProjeto(data)
       return data
     } catch (e) {

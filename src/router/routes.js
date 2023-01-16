@@ -26,6 +26,15 @@ const routes = [
 
     children: [
       {
+        name: 'home',
+        path: '/home',
+        component: PageHome,
+        meta: {
+          breadcrumbs: [{ label: 'Home', name: 'home' }],
+        },
+      },
+
+      {
         name: 'consumo_horas',
         path: 'consumo_horas',
         component: ConsumoHoras,
@@ -34,14 +43,6 @@ const routes = [
             { label: 'Home', name: 'home' },
             { label: 'Horas Consumidas', name: 'consumo_horas' },
           ],
-        },
-      },
-      {
-        name: 'home',
-        path: '/home',
-        component: PageHome,
-        meta: {
-          breadcrumbs: [{ label: 'Home', name: 'home' }],
         },
       },
       {
@@ -97,6 +98,7 @@ const routes = [
     component: PageLogin,
     // meta: { transition: 'slide-right' },
   },
+
   {
     path: '/kanban/',
     component: LayoutKanban,
