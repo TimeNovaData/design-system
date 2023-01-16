@@ -51,21 +51,21 @@
             <div class="w-full min-h-[280px] flex flex-col">
               <apexchart
                 ref="chart"
-                v-show="optionsChart?.length && !isLoadingTempoProjeto"
                 width="100%"
                 height="250px"
                 type="bar"
                 :options="optionsChart"
                 :series="seriesChart"
-                :class="{ 'opacity-0': !seriesChart?.length }"
+                v-show="!isLoadingTempoProjeto && seriesChart.length > 0"
               ></apexchart>
+
               <SkeletonChart
-                v-if="isLoadingTempoProjeto"
+                v-if="isLoadingTempoProjeto && seriesChart.length === 0"
                 class="h-[250px] mx-24 mb-24"
               />
               <div
                 class="text-paragraph-2 text-center m-auto !h-full flex-1 flex flex-col justify-center"
-                v-else
+                v-else-if="!isLoadingTempoProjeto && seriesChart.length === 0"
               >
                 <q-icon
                   class="block mx-auto opacity-30"
@@ -368,6 +368,7 @@ const filtros = computed(() => `&agrupamento=${tempoProjetoPor.value.value}`)
 
 async function changeTempoProjetoPor() {
   tempoProjeto.value = []
+  await nextTick()
   await getTempoProjeto(pageID.value, filtros.value)
 }
 
@@ -429,7 +430,14 @@ function populateChart(tempoProjetos) {
   seriesChart.value = data
 }
 
+function resetDados() {
+  isLoadingTempoProjeto.value = true
+  projeto.value = {}
+  tempoProjeto.value = []
+  seriesChart.value = []
+}
 async function requests() {
+  resetDados()
   await getProjeto(pageID.value)
   await getTempoProjeto(pageID.value, filtros.value)
   await nextTick()
@@ -473,7 +481,7 @@ const optionsChart = {
   dataLabels: { enabled: false },
   xaxis: {
     labels: {
-      rotateAlways: false,
+      rotateAlways: true,
       style: {
         fontSize: '12px',
         fontFamily: 'Inter',
