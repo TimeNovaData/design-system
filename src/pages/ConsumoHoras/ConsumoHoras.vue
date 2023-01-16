@@ -239,9 +239,7 @@
           :rows="rows"
           :columns="columns"
           primary
-          :pagination="{
-            rowsPerPage: 10,
-          }"
+          v-model:pagination="pagination"
         >
           <template v-slot:top-left>
             <OInput
@@ -257,6 +255,14 @@
                 /></o-button>
               </template>
             </OInput>
+          </template>
+
+          <template v-slot:top>
+            <OTableHeaderBase
+              @update="updateTableModels"
+              :filter="filter"
+              :rowsPerPage="pagination.rowsPerPage"
+            />
           </template>
 
           <template v-slot:body="props">
@@ -348,9 +354,20 @@
               </q-td>
             </q-tr>
           </template>
+
+          <template v-slot:bottom="slotProps">
+            <OTableFooterBase
+              downloadable
+              :rows="rows"
+              :columns="columns"
+              :slotProps="slotProps"
+              :pagination="pagination"
+              @update="(val) => updatePagination(val)"
+            />
+          </template>
         </OTable>
 
-        <q-btn
+        <!-- <q-btn
           secondary
           icon-right="svguse:/icons.svg#icon_excel"
           label="Exportar para Excel"
@@ -359,7 +376,7 @@
           v-show="rows"
           no-caps
         >
-        </q-btn>
+        </q-btn> -->
       </q-card>
     </div>
     <!-- <span class="block h-48"></span> -->
@@ -386,6 +403,8 @@ import stackedChartBar from 'src/utils/chart/stackedChartBar'
 import TagBase from 'src/components/Tag/TagBase.vue'
 import { deepUnref } from 'vue-deepunref'
 import OSelectAvatar from 'src/components/Select/OSelectAvatar.vue'
+import OTableFooterBase from 'src/components/Table/OTableFooterBase.vue'
+import OTableHeaderBase from 'src/components/Table/OTableHeaderBase.vue'
 const { URLS } = api.defaults
 
 const {
@@ -628,6 +647,22 @@ async function initialRequests() {
   filtros.value.projeto.options = projetos.value
   filtros.value.cliente.options = clientes.value
   filtros.value.usuario.options = usuarios.value
+}
+
+const pagination = ref({
+  sortBy: 'desc',
+  descending: false,
+  page: 1,
+  rowsPerPage: 10,
+})
+
+function updatePagination(val) {
+  pagination.value = val
+}
+
+function updateTableModels(val) {
+  filter.value = val.filter
+  pagination.value.rowsPerPage = val.rowsPerPage
 }
 
 onMounted(async () => {
