@@ -204,7 +204,7 @@ const pagination = ref({
   sortBy: 'desc',
   descending: false,
   page: 1,
-  rowsPerPage: 1,
+  rowsPerPage: 10,
 })
 
 function updateModels(val) {
