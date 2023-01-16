@@ -23,7 +23,7 @@
     square
   >
     <template #content>
-      <p class="text-center mx-auto">{{ nome }}</p>
+      <p class="text-center mx-auto tag-base-projeto" v-html="nome"></p>
     </template>
   </OBadge>
 </template>
@@ -46,4 +46,12 @@ defineProps({
 .tag-base
   width: 20px
   height: 8px
+
+.tag-base,
+.tag-base-projeto
+  transition:  all .3s ease
+  *
+  .tag-base,
+  .tag-base-projeto
+    transition:  all .3s ease
 </style>

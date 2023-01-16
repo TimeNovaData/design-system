@@ -17,36 +17,45 @@
                 icon="svguse:/icons.svg#icon_date_time"
                 text="Investimento Diário"
               ></TextIcon>
-              <OButton
-                secondary
-                size="md"
-                icon="svguse:/icons.svg#icon_filtros"
-                class="mr-16"
-              >
-                Definições do gráfico
-                <q-menu class="p-12 pb-0">
-                  <q-form ref="form">
-                    <q-list class="w-[23.5rem]">
-                      <q-item
-                        class="px-0 text-headline-3 text-neutral-60 dark:text-white/60 justify-between flex items-center w-full mb-8"
-                        dense
-                      >
-                        Filtrando por
-                      </q-item>
 
-                      <q-item class="px-0 w-full mb-8" dense>
-                        <OSelect
-                          size="md"
-                          class="w-full"
-                          :options="tempoProjetoOptions"
-                          v-model="tempoProjetoPor"
-                          @update:model-value="changeTempoProjetoPor"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-form>
-                </q-menu>
-              </OButton>
+              <div>
+                <TagBase
+                  class="mr-16 bg-alert-success/10 text-alert-success dark:text-white/90 dark:!bg-alert-success/30"
+                  :nome="`Filtrando por ⠂<span class='font-semibold'>${tempoProjetoPor.label}</span>`"
+                  type="projeto"
+                />
+
+                <OButton
+                  secondary
+                  size="md"
+                  icon="svguse:/icons.svg#icon_filtros"
+                  class="mr-16"
+                >
+                  Definições do gráfico
+                  <q-menu class="p-12 pb-0">
+                    <q-form ref="form">
+                      <q-list class="w-[23.5rem]">
+                        <q-item
+                          class="px-0 text-headline-3 text-neutral-60 dark:text-white/60 justify-between flex items-center w-full mb-8"
+                          dense
+                        >
+                          Filtrando por
+                        </q-item>
+
+                        <q-item class="px-0 w-full mb-8" dense>
+                          <OSelect
+                            size="md"
+                            class="w-full"
+                            :options="tempoProjetoOptions"
+                            v-model="tempoProjetoPor"
+                            @update:model-value="changeTempoProjetoPor"
+                          />
+                        </q-item>
+                      </q-list>
+                    </q-form>
+                  </q-menu>
+                </OButton>
+              </div>
             </div>
             <div class="w-full min-h-[280px] flex flex-col">
               <apexchart
@@ -60,7 +69,7 @@
               ></apexchart>
 
               <SkeletonChart
-                v-if="isLoadingTempoProjeto && seriesChart.length === 0"
+                v-if="isLoadingTempoProjeto"
                 class="h-[250px] mx-24 mb-24"
               />
               <div
@@ -318,23 +327,35 @@ import emitter from 'src/boot/emitter'
 import OSelect from 'src/components/Select/OSelect.vue'
 import ChamadoListTable from 'src/components/Chamado/ChamadoListTable.vue'
 import SkeletonChart from 'src/components/Skeleton/SkeletonChart.vue'
+import OBadge from 'src/components/Badge/OBadge.vue'
+import TagBase from 'src/components/Tag/TagBase.vue'
 const { URLS } = api.defaults
 
+// Router
+const route = useRoute()
+const router = useRouter()
+
+// Stores
 const { getProjeto, getTempoProjeto } = useProjetoStore()
 const { projeto, tempoProjeto, isLoadingTempoProjeto } = storeToRefs(
   useProjetoStore()
 )
-
 const { getAcessos } = useAcessoStore()
 const { acessos } = storeToRefs(useAcessoStore())
-const dataAtual = ref(date.formatDate(new Date(), 'YYYY/MM/DD'))
+
+// ID
+const pageID = ref(null)
+
+// Els
+const header = ref(null)
+// Modais
 const modalChat = ref(null)
 const modalAnexo = ref(null)
 const modalAcessos = ref(null)
 const modalContatos = ref(null)
 
+// Comments
 const {
-  commentsReverse,
   getComments,
   sendComment,
   setID: setIDComments,
@@ -342,134 +363,24 @@ const {
   comments,
 } = useComments()
 
-const pageID = ref(null)
-const header = ref(null)
-const chart = ref(null)
-const seriesChart = ref([])
-const categoriasChart = ref([])
-const route = useRoute()
-const router = useRouter()
-const drag = ref(false)
+watch(
+  () => projeto,
+  (v) => setIDComments(v.value.id)
+  // { deep: true }
+)
+
+// Chamado
 const chamadosList = ref([])
 const handleClickChamado = inject('handleClickChamado')
-
-const getChamados = async (id) => api.get(`${URLS.chamado}?projeto__id=${id}`)
+const getChamados = async (id, filters = '') =>
+  api.get(`${URLS.chamado}?projeto__id=${id}${filters}`)
 
 const routeIsZero = Number(route.params.id) === 0
 
-watch(
-  () => projeto,
-  (v) => {
-    setIDComments(v.value.id)
-  },
-  { deep: true }
-)
-/* dois */
-const filtros = computed(() => `&agrupamento=${tempoProjetoPor.value.value}`)
-
-async function changeTempoProjetoPor() {
-  tempoProjeto.value = []
-  await nextTick()
-  await getTempoProjeto(pageID.value, filtros.value)
-}
-
-const tempoProjetoPor = ref({
-  label: 'Usúario',
-  value: 'usuario',
-})
-
-const tempoProjetoOptions = [
-  {
-    label: 'Projeto',
-    value: 'projeto',
-  },
-  {
-    label: 'Subprojeto',
-    value: 'sub_projeto',
-  },
-  {
-    label: 'Usuário',
-    value: 'usuario',
-  },
-]
-
-function startAndEndDrag() {
-  console.log('arrastou')
-}
-
-async function handleGetChamado(id) {
-  const req = await getChamados(id)
-  chamadosList.value = req.data
-}
-
-async function handleChangeProjeto(p) {
-  resetDados()
-  await nextTick()
-  await requests(pageID.value)
-  router.push({ params: { id: pageID.value } })
-}
-
-function populateChart(tempoProjetos) {
-  const data = tempoProjetos.map((i) => {
-    const data = i.datas.map((i) => i.duracao)
-    return {
-      name: i.item,
-      data,
-    }
-  })
-
-  const categorias = tempoProjetos[0]?.datas.map((i) => i.data)
-
-  categoriasChart.value = categorias
-  seriesChart.value = data
-}
-
-function resetDados() {
-  isLoadingTempoProjeto.value = true
-  projeto.value = {}
-  tempoProjeto.value = []
-  seriesChart.value = []
-}
-async function requests() {
-  resetDados()
-  getProjeto(pageID.value)
-  await getTempoProjeto(pageID.value, filtros.value)
-  await nextTick()
-  populateChart(tempoProjeto.value, chart)
-  handleGetChamado(pageID.value)
-  getAcessos('&projeto__id=' + pageID.value)
-}
-
-// Atualiza chamados ao alterar algo no modal
-emitter.on('chamadoAlterado', () => {
-  handleGetChamado(projeto.value.id)
-})
-
-if (!routeIsZero) {
-  pageID.value = route.params.id
-  requests()
-}
-
-const dragOptions = computed(() => ({
-  animation: 400,
-  group: 'description',
-  disabled: false,
-  ghostClass: 'ghost',
-}))
-
-onMounted(() => {
-  modalAcessos.value.dialogRef.show()
-  modalContatos.value.dialogRef.show()
-  if (routeIsZero) {
-    header.value.show()
-  }
-})
-
-onUnmounted(() => {
-  projeto.value = {}
-  tempoProjeto.value = {}
-})
-
+// Chart Tempo Projeto
+const chart = ref(null)
+const seriesChart = ref([])
+const categoriasChart = ref([])
 const optionsChart = ref({
   ...stackedChartBar,
   dataLabels: { enabled: false },
@@ -502,6 +413,135 @@ const optionsChart = ref({
       },
     },
   },
+})
+// Populate Chart
+async function populateChart(tempoProjetos) {
+  const data = tempoProjetos.map((i) => {
+    const data = i.datas.map((i) => i.duracao)
+    return {
+      name: i.item,
+      data,
+    }
+  })
+
+  const categorias = tempoProjetos[0]?.datas.map((i) => i.data)
+
+  categoriasChart.value = categorias
+  seriesChart.value = data
+
+  await nextTick()
+  chart.value?.updateOptions({
+    series: seriesChart.value,
+    xaxis: { categories: categoriasChart.value },
+  })
+}
+
+// Tempo Projeto
+const filtros = computed(() => `&agrupamento=${tempoProjetoPor.value.value}`)
+
+async function changeTempoProjetoPor() {
+  tempoProjeto.value = []
+  await nextTick()
+  await getTempoProjeto(pageID.value, filtros.value)
+}
+
+const tempoProjetoPor = ref({
+  label: 'Usúario',
+  value: 'usuario',
+})
+
+const tempoProjetoOptions = [
+  {
+    label: 'Projeto',
+    value: 'projeto',
+  },
+  {
+    label: 'Subprojeto',
+    value: 'sub_projeto',
+  },
+  {
+    label: 'Usuário',
+    value: 'usuario',
+  },
+]
+
+// Handles
+async function handleGetChamado(id, filters) {
+  const req = await getChamados(id, filters)
+  chamadosList.value = req.data
+}
+
+async function handleChangeProjeto(p) {
+  resetDados()
+  pageID.value = p.id
+  await nextTick()
+  await requests(pageID.value)
+  router.push({ params: { id: pageID.value } })
+}
+
+// Reset
+function resetDados() {
+  isLoadingTempoProjeto.value = true
+  projeto.value = {}
+  tempoProjeto.value = []
+  seriesChart.value = []
+}
+
+async function requests() {
+  resetDados()
+  await getProjeto(pageID.value)
+  await getTempoProjeto(pageID.value, filtros.value)
+  await nextTick()
+  populateChart(tempoProjeto.value, chart)
+  await handleGetChamado(pageID.value)
+  getAcessos('&projeto__id=' + pageID.value)
+}
+
+/* 
+
+
+
+*/
+// Atualiza chamados ao alterar algo no modal
+emitter.on('chamadoAlterado', () => {
+  handleGetChamado(projeto.value.id, '&no_loading')
+})
+
+// Date
+const dataAtual = ref(date.formatDate(new Date(), 'YYYY/MM/DD'))
+
+// Draggable
+const drag = ref(false)
+const dragOptions = computed(() => ({
+  animation: 400,
+  group: 'description',
+  disabled: false,
+  ghostClass: 'ghost',
+}))
+function startAndEndDrag() {
+  console.log('arrastou')
+}
+// Init
+async function created() {
+  if (!routeIsZero) {
+    pageID.value = route.params.id
+    await nextTick()
+    requests()
+  }
+}
+created()
+
+onMounted(() => {
+  modalAcessos.value.dialogRef.show()
+  modalContatos.value.dialogRef.show()
+  if (routeIsZero) {
+    header.value.show()
+  }
+})
+
+onUnmounted(() => {
+  projeto.value = {}
+  tempoProjeto.value = {}
 })
 </script>
 
