@@ -9,7 +9,7 @@ Notify.registerType('error', {
   progress: true,
   classes: 'notify-error',
   timeout: 2500,
-  position: 'top-right',
+  position: 'top-left',
 })
 
 Notify.registerType('sucess', {
@@ -17,7 +17,7 @@ Notify.registerType('sucess', {
   progress: true,
   classes: 'notify-sucess',
   timeout: 2500,
-  position: 'top-right',
+  position: 'top-left',
 })
 
 const NotifyError = (text, opts) =>

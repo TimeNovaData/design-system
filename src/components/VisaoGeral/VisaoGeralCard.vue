@@ -21,8 +21,8 @@ const props = defineProps({
     default: '-',
   },
   cardValue: {
-    type: String,
-    default: '0',
+    type: Number,
+    default: 0,
   },
   cardType: {
     type: String,

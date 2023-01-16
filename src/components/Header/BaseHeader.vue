@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between w-full">
       <!-- breadcrumbs -->
 
-      <q-breadcrumbs separator=">">
+      <q-breadcrumbs separator=">" class="bread">
         <q-breadcrumbs-el
           v-for="item in $route.meta.breadcrumbs"
           :label="item.label"
@@ -66,6 +66,10 @@ const user = inject('user')
 
 const router = useRouter()
 </script>
+<style lang="sass" scoped>
+.bread :deep(.q-breadcrumbs--last a)
+  color: rgb(var(--primary-pure)) !important
+</style>
 
 <style lang="sass">
 :root

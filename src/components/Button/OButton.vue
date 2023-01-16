@@ -17,7 +17,7 @@ export default { inheritAttrs: false }
 </script>
 
 <script setup>
-import { useSlots, useAttrs } from 'vue'
+import { useSlots, useAttrs, computed } from 'vue'
 
 const slots = useSlots()
 const attrs = useAttrs()
@@ -28,10 +28,11 @@ const padding = {
   lg: '.5rem  .75rem',
 }
 
-
 const sizes = { sm: '.75rem ', md: '.875rem', lg: '1rem' }
 const height = { sm: '2rem ', md: '2.5rem', lg: '3rem' }
-const iconSize = attrs['icon-size'] ? attrs['icon-size'] : '1.715em'
+const iconSize = computed(() =>
+  attrs['icon-size'] ? attrs['icon-size'] : '1.715em'
+)
 
 const setPadding = padding[attrs.size]
 const setSize = sizes[attrs.size]

@@ -8,6 +8,7 @@ import { useChamadoStore } from 'src/stores/chamados/chamados.store'
 // import { useTagStore } from 'src/stores/tags/state'
 import { useFaseStore } from 'src/stores/fases/fases.store'
 import { storeToRefs } from 'pinia'
+import emitter from 'src/boot/emitter'
 
 const BACKEND_URL = process.env.BACKEND_URL
 const { URLS } = api.defaults
@@ -74,6 +75,7 @@ export default function useChamadosComposable() {
     commit()
     // console.log(history.value)
     await sendChamadoChange()
+    emitter.emit('chamadoAlterado')
   }
 
   async function commitAltFront(val) {

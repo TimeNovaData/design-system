@@ -15,8 +15,9 @@
 <script setup>
 import { filePondConfig } from 'src/boot/filepond'
 import 'src/css/vendor/filePond.sass'
+import { ref } from 'vue'
 
-const myFiles = []
+const myFiles = ref([])
 
 function handleFilePondInit() {
   console.log('FilePond has initialized', filePondConfig)

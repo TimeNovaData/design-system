@@ -81,6 +81,7 @@
           secondary
           icon="svguse:/icons.svg#icon_attach"
           icon-size="1.25rem"
+          @click="$emit('anexoClick')"
         >
           Anexos</OButton
         >
@@ -110,7 +111,7 @@ import { inject, ref, onMounted } from 'vue'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 const { FData } = GLOBAL
 
-const emit = defineEmits(['updateSelect'])
+const emit = defineEmits(['updateSelect', 'anexoClick'])
 const header = ref(null)
 
 const itemEditableSelect = ref(null)

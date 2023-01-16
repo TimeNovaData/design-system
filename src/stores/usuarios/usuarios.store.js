@@ -9,49 +9,20 @@ const { URLS } = api.defaults
 
 export const useUsuarioStore = defineStore('usuarioStore', () => {
   const usuarios = ref([])
-  const usuariosFoto = ref([])
-  const isLoading = ref(false)
 
   async function getUsuarios() {
-    isLoading.value = true
-
-    const { data, error } = await useAxios(
-      URLS.usuario + '?no_loading',
-      { method: 'GET' },
-      api
-    )
-
     try {
-      setUsuarios(data.value)
-      return data.value
+      const { data } = await api.get(URLS.fotoUsuario + '?no_loading')
+      const usuarios = data.map((i) => {
+        i.foto = i.profile?.foto
+        return i
+      })
+      setUsuarios(usuarios)
+      return usuarios
     } catch (e) {
-      return error
-    } finally {
-      isLoading.value = false
+      console.log(e)
+      return e
     }
-  }
-
-  async function getUsuariosFoto() {
-    isLoading.value = true
-
-    const { data, error } = await useAxios(
-      URLS.fotoUsuario + '?no_loading',
-      { method: 'GET' },
-      api
-    )
-
-    try {
-      setUsuariosFoto(data.value.filter((i) => i.nome.trim()))
-      return data.value
-    } catch (e) {
-      return error
-    } finally {
-      isLoading.value = false
-    }
-  }
-
-  function setUsuariosFoto(value) {
-    usuariosFoto.value = value
   }
 
   function setUsuarios(value) {
@@ -60,15 +31,11 @@ export const useUsuarioStore = defineStore('usuarioStore', () => {
 
   function $reset() {
     usuarios.value = []
-    usuariosFoto.value = []
   }
   return {
     getUsuarios,
-    getUsuariosFoto,
     setUsuarios,
-    setUsuariosFoto,
     usuarios,
-    usuariosFoto,
     $reset,
   }
 })

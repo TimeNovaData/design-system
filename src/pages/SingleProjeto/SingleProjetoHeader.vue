@@ -26,7 +26,7 @@
                 {{ projeto.nome_cliente }}
               </div>
             </div>
-            <div class="item-editavel text-title-3">
+            <div class="item-editavel text-title-3 h-40">
               <div v-if="$route.params.id === '0'">
                 Selecione um projeto
 
@@ -140,6 +140,7 @@
           secondary
           icon="svguse:/icons.svg#icon_attach"
           icon-size="1.25rem"
+          @click="$emit('anexoClick')"
         >
           Anexos</OButton
         >
@@ -159,6 +160,7 @@
     :class="{ 'opacity-0': !headerMinify }"
     :projeto="projeto"
     @updateSelect="(v) => $emit('updateSelect', v)"
+    @anexoClick="$emit('anexoClick')"
   ></SingleProjetoHeaderMinify>
 </template>
 
@@ -175,7 +177,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import SingleProjetoHeaderMinify from './SingleProjetoHeaderMinify.vue'
 const { FData } = GLOBAL
 
-const emit = defineEmits(['updateSelect'])
+const emit = defineEmits(['updateSelect', 'anexoClick'])
 const header = ref(null)
 
 const itemEditableSelect = ref(null)

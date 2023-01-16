@@ -79,8 +79,8 @@
                     size="md"
                     class="w-full"
                     :modelValue="filtros.usuario.model"
-                    :options="usuariosFoto"
-                    :loading="!usuariosFoto"
+                    :options="usuarios"
+                    :loading="!usuarios"
                     clearable
                     @updateValue="(v) => (filtros.usuario.model = v)"
                   >
@@ -354,7 +354,7 @@
           secondary
           icon-right="svguse:/icons.svg#icon_excel"
           label="Exportar para Excel"
-          @click="exportTable"
+          @click="() => exportTable(columns, rows)"
           class="absolute bottom-16 sm:relative sm:w-full sm:bottom-0"
           v-show="rows"
           no-caps
@@ -394,6 +394,7 @@ const {
   // secondsToHours,
   wrapCsvValue,
   returnRGB,
+  exportTable,
   //
 } = GLOBAL
 //
@@ -416,11 +417,11 @@ const menu = ref(null)
 const filter = ref('')
 const handleClickChamado = inject('handleClickChamado')
 
-const usuariosFoto = inject('usuarios')
+const usuarios = inject('usuarios')
 const clientes = inject('clientes')
 const projetos = inject('projetos')
 // const initialLoad = inject('initialLoad')
-const { getUsuariosFoto, getProjetos, getClientes } = inject('get')
+const { getUsuarios, getProjetos, getClientes } = inject('get')
 
 const { getChamado } = useChamadoStore()
 const { chamados, isLoading: chamadoLoading } = storeToRefs(useChamadoStore())
@@ -534,6 +535,7 @@ async function getTempoTask() {
     { method: 'GET' },
     api
   )
+  debugger
 
   try {
     setTempoTask(data.value)
@@ -618,49 +620,15 @@ const rows = ref([])
 const options = { ...stackedChartBar }
 const series = [{ name: '', data: [] }]
 
-// exportar tabela ----------------------------------
-const $q = useQuasar()
-
-const exportTable = () => {
-  // naive encoding to csv format
-  const content = [columns.map((col) => wrapCsvValue(col.label))]
-    .concat(
-      rows.value.map((row) =>
-        columns
-          .map((col) =>
-            wrapCsvValue(
-              typeof col.field === 'function'
-                ? col.field(row)
-                : row[col.field === void 0 ? col.name : col.field],
-              col.format,
-              row
-            )
-          )
-          .join(',')
-      )
-    )
-    .join('\r\n')
-
-  const status = exportFile('table-export.csv', content, 'text/csv')
-
-  if (status !== true) {
-    $q.notify({
-      message: 'Browser denied file download...',
-      color: 'negative',
-      icon: 'warning',
-    })
-  }
-}
-
 async function initialRequests() {
   await getChamado()
-  await getUsuariosFoto()
+  await getUsuarios()
   await getTempoTask()
   getProjetos()
   getClientes()
   filtros.value.projeto.options = projetos.value
   filtros.value.cliente.options = clientes.value
-  filtros.value.usuario.options = usuariosFoto.value
+  filtros.value.usuario.options = usuarios.value
 }
 
 onMounted(async () => {

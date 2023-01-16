@@ -10,8 +10,19 @@
     :popup-content-class="popupClass"
     v-bind="attrs"
   >
+    <!-- 
+     {
+                "id": 2,
+                "username": "emanuel2",
+                "get_full_name": "emanuel morais",
+                "profile": {
+                    "id": 7,
+                    "foto": "http://localhost:8000/media/avatars/emanuel2/resized/100/arara-azul.jpg"
+                }
+            }
+   -->
     <template #option="{ itemProps, opt }">
-      <q-item v-bind="itemProps" class="px-4">
+      <q-item v-bind="itemProps" class="px-4" :key="opt.id">
         <OAvatar
           :nome="opt[nomeKey]"
           :foto="opt[fotoKey]"

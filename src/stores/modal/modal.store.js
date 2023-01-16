@@ -32,7 +32,7 @@ export const useModalStore = defineStore('modalStore', () => {
     taskModalAnexos.value = anexosRes
     modalTaskState.value = true
 
-    const { isLoading, commentsReverse, getComments, sendComment, setID } =
+    const { isLoading, comments, getComments, sendComment, setID } =
       useComments()
 
     setID(taskId)
@@ -41,7 +41,7 @@ export const useModalStore = defineStore('modalStore', () => {
 
     taskModalCommentObj.value = {
       isLoading: isLoading.value,
-      comments: computed(() => commentsReverse.value),
+      comments: computed(() => comments),
       getComments,
       sendComment,
     }

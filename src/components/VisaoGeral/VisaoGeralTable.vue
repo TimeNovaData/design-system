@@ -1,36 +1,37 @@
 <template>
   <OTable
+    v-show="rows.length"
     :rows="rows"
     :columns="columns"
-    primary
-    class="px-16 py-8 dark:bg-d-neutral-20 visao-geral-table"
-    :pagination="pagination"
+    v-model:pagination="pagination"
     :filter="filter"
+    class="px-16 py-8 dark:bg-d-neutral-20 visao-geral-table"
+    primary
   >
-    <template v-slot:top-left>
-      <OInput
-        size="md"
-        debounce="300"
-        v-model="filter"
-        placeholder="Pesquise por nome, tipo..."
-        class="no-label mb-4 w-[22rem]"
-      />
-    </template>
-
-    <template v-slot:top-right>
-      <div class="flex gap-8 items-center">
-        <span class="text-paragraph-2 text-neutral-70 dark:text-white/70">
-          Mostrar
-        </span>
-        <OSelect
-          class="w-72 h-40"
+    <template v-slot:top>
+      <div class="flex items-center justify-between w-full">
+        <OInput
           size="md"
-          v-model="rowsPerPage"
-          :options="[2, 3, 5]"
+          debounce="300"
+          v-model="filter"
+          placeholder="Pesquise por nome, tipo..."
+          class="no-label mb-4 w-[22rem]"
         />
-        <span class="text-paragraph-2 text-neutral-70 dark:text-white/70">
-          Linhas por página
-        </span>
+
+        <div class="flex gap-8 items-center">
+          <span class="text-paragraph-2 text-neutral-70 dark:text-white/70">
+            Mostrar
+          </span>
+          <OSelect
+            class="w-72 h-40"
+            size="md"
+            v-model="pagination.rowsPerPage"
+            :options="[10, 20, 30, 50]"
+          />
+          <span class="text-paragraph-2 text-neutral-70 dark:text-white/70">
+            Linhas por página
+          </span>
+        </div>
       </div>
     </template>
 
@@ -44,29 +45,29 @@
           {{ props.row.cliente }}
         </q-td>
 
-        <q-td key="responsavel" :auto-width="false" class="!border-r">
-          <div class="inline-flex items-center h-full gap-6">
-            <AvatarSingle
-              class="!w-32 !h-32 overflow-hidden ajuste-img"
-              :estatic="true"
-              :item="props.row.responsavel"
-            ></AvatarSingle>
-            <p class="">{{ props.row.responsavel?.nome }}</p>
+        <q-td key="responsaveis" :auto-width="false" class="px-6 !border-r">
+          <div class="grid h-full items-center relative">
+            <AvatarMultiple
+              v-if="props.row.responsaveis"
+              :list="props.row.responsaveis"
+            ></AvatarMultiple>
+            <span class="pl-2">-</span>
           </div>
         </q-td>
 
         <q-td
-          key="responsavel_atendimento"
+          key="responsaveis_atendimento"
           :auto-width="false"
           class="!border-r"
         >
           <div class="inline-flex items-center h-full gap-6">
-            <AvatarSingle
-              class="!w-32 !h-32 overflow-hidden ajuste-img"
-              :estatic="true"
-              :item="props.row.responsavel_atendimento"
-            ></AvatarSingle>
-            <p class="">{{ props.row.responsavel_atendimento?.nome }}</p>
+            <div class="grid h-full items-center relative">
+              <AvatarMultiple
+                v-if="props.row.responsaveis_atendimento"
+                :list="props.row.responsaveis_atendimento"
+              ></AvatarMultiple>
+              <span class="pl-2">-</span>
+            </div>
           </div>
         </q-td>
 
@@ -86,10 +87,17 @@
           {{ props.row.ultimo_acompanhamento }}
         </q-td>
 
-        <q-td key="status" :auto-width="false" class="!border-r">
-          <o-badge size="lg" color="var(--alert-error)" square class="w-[8rem]">
-            <template v-slot:content>{{ props.row.status }}</template>
-          </o-badge>
+        <q-td key="status_andamento" :auto-width="false" class="!border-r">
+          <OBadge
+            size="lg"
+            :color="returnRGB(props.row.status_andamento.cor)"
+            square
+            class="w-[8rem]"
+          >
+            <template v-slot:content>{{
+              props.row.status_andamento.status
+            }}</template>
+          </OBadge>
         </q-td>
 
         <q-td
@@ -109,33 +117,33 @@
         </q-td>
 
         <q-td class="text-center !px-6">
-          <a :href="adminUrl(props.row.id)" target="_blank">
-            <OButton
-              secondary
-              icon="svguse:/icons.svg#icon_config"
-              size="sm"
-              class="w-[2.375rem] h-[2.375rem] icon-opacity"
-            />
-          </a>
-          <a :href="'/projeto/' + props.row.id">
-            <OButton
-              secondary
-              icon="search"
-              size="sm"
-              class="w-[2.375rem] h-[2.375rem] icon-opacity ml-6"
-            />
-          </a>
+          <OButton
+            :href="adminUrl(props.row.id)"
+            target="_blank"
+            secondary
+            icon="svguse:/icons.svg#icon_config"
+            size="sm"
+            class="w-[2.375rem] h-[2.375rem] icon-opacity"
+          />
+          <OButton
+            :to="{ name: 'singleProjeto', params: { id: props.row.id } }"
+            secondary
+            icon="search"
+            size="sm"
+            class="w-[2.375rem] h-[2.375rem] icon-opacity ml-6"
+          />
         </q-td>
       </q-tr>
     </template>
 
-    <template v-slot:bottom="scope">
+    <template v-slot:bottom="props">
       <footer class="flex items-center justify-between w-full mt-12">
         <OButton
           icon="svguse:/icons.svg#icon_excel"
           size="sm"
           class="dark:bg-white/10 dark:!border-transparent icon-opacity"
           secondary
+          @click="() => exportTable(columns, rows)"
         >
           Baixar tabela
         </OButton>
@@ -143,8 +151,8 @@
         <div class="flex items-center gap-8">
           <OButton
             icon="chevron_left"
-            :disable="scope.isFirstPage"
-            @click="scope.prevPage"
+            :disable="props.isFirstPage"
+            @click="props.prevPage"
             primary
             size="sm"
           >
@@ -153,25 +161,16 @@
 
           <q-pagination
             v-model="pagination.page"
-            :max="scope.pagesNumber"
-            size="lg"
+            color="primary"
+            :max="pagesNumber"
+            :max-pages="4"
+            :boundary-numbers="false"
           />
 
           <OButton
-            v-if="scope.pagesNumber > 2"
-            :disable="scope.isLastPage"
-            class="w-[2.375rem] h-[2.375rem] dark:bg-white/5"
-            @click="scope.lastPage"
-            secondary
-            size="sm"
-          >
-            ...
-          </OButton>
-
-          <OButton
             icon-right="chevron_right"
-            :disable="scope.isLastPage"
-            @click="scope.nextPage"
+            :disable="props.isLastPage"
+            @click="props.nextPage"
             primary
             size="sm"
           >
@@ -181,16 +180,67 @@
       </footer>
     </template>
   </OTable>
+
+  <q-markup-table v-show="!rows.length" class="mt-20 px-16">
+    <thead>
+      <tr>
+        <th class="text-left" style="width: 150px">
+          <q-skeleton animation="blink" type="text" />
+        </th>
+        <th class="text-right">
+          <q-skeleton animation="blink" type="text" />
+        </th>
+        <th class="text-right">
+          <q-skeleton animation="blink" type="text" />
+        </th>
+        <th class="text-right">
+          <q-skeleton animation="blink" type="text" />
+        </th>
+        <th class="text-right">
+          <q-skeleton animation="blink" type="text" />
+        </th>
+        <th class="text-right">
+          <q-skeleton animation="blink" type="text" />
+        </th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr v-for="n in 5" :key="n">
+        <td class="text-left">
+          <q-skeleton animation="blink" type="text" width="85px" />
+        </td>
+        <td class="text-right">
+          <q-skeleton animation="blink" type="text" width="50px" />
+        </td>
+        <td class="text-right">
+          <q-skeleton animation="blink" type="text" width="35px" />
+        </td>
+        <td class="text-right">
+          <q-skeleton animation="blink" type="text" width="65px" />
+        </td>
+        <td class="text-right">
+          <q-skeleton animation="blink" type="text" width="25px" />
+        </td>
+        <td class="text-right">
+          <q-skeleton animation="blink" type="text" width="85px" />
+        </td>
+      </tr>
+    </tbody>
+  </q-markup-table>
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
+import GLOBAL from 'src/utils/GLOBAL'
 import OTable from 'src/components/Table/OTable.vue'
 import OInput from 'src/components/Input/OInput.vue'
-import AvatarSingle from 'src/components/Avatar/AvatarSingle.vue'
 import OBadge from 'src/components/Badge/OBadge.vue'
 import OButton from 'src/components/Button/OButton.vue'
 import OSelect from 'src/components/Select/OSelect.vue'
+import AvatarMultiple from 'src/components/Avatar/AvatarMultiple.vue'
+
+const { returnRGB, exportTable } = GLOBAL
 
 const props = defineProps({
   rows: Array,
@@ -201,24 +251,47 @@ const adminUrl = (id) =>
   `${process.env.BACKEND_URL}admin/control/caso/${id}/change/`
 
 const filter = ref('')
-const rowsPerPage = ref(5)
+
 const pagination = ref({
   sortBy: 'desc',
   descending: false,
   page: 1,
-  rowsPerPage: rowsPerPage.value,
-  // rowsNumber: xx if getting data from a server
+  rowsPerPage: 10,
 })
 
-const pagesNumber = computed(() => {
-  return Math.ceil(props.rows.length / pagination.value.rowsPerPage)
-})
+const pagesNumber = computed(() =>
+  Math.ceil(props.rows.length / pagination.value.rowsPerPage)
+)
 </script>
 
 <style lang="sass" scoped>
 .visao-geral-table
   .q-chip :deep(.q-chip__content)
     justify-content: center
+
+  :deep(.q-table__middle)
+    max-height: 37rem
+
+    thead
+      position: sticky
+      top: 0
+      background: rgb(var(--white))
+      z-index: 10
+
+  .q-pagination
+    :deep(.q-btn)
+      width: 2.375rem
+      height: 2.375rem
+      border: 1px solid rgba(var(--neutral-100),0.1)
+      font-size: .75rem
+      margin: 0
+
+      &:before
+        box-shadow: initial !important
+
+    :deep(.q-pagination__middle),
+    :deep(.q-pagination__content)
+      gap: .375rem
 
 .body--light
   .visao-geral-table
@@ -228,6 +301,11 @@ const pagesNumber = computed(() => {
       opacity: 1 !important
       background: rgba(var(--neutral-100), 0.1)
       color: rgba(var(--neutral-100), 0.4)
+    .q-pagination :deep(.q-btn)
+      color: rgb(var(--neutral-70)) !important
+      &.bg-primary
+        color: rgb(var(--neutral-100)) !important
+        border: transparent
 
 .body--dark
   .visao-geral-table
@@ -238,4 +316,10 @@ const pagesNumber = computed(() => {
       opacity: 1 !important
       background: rgba(var(--white), 0.05)
       color: rgba(var(--white), 0.2)
+    .q-pagination :deep(.q-btn)
+      border: 1px solid rgba(var(--white),0.1)
+      color: rgba(var(--white), 0.7) !important
+      background: rgba(var(--white), 0.05)
+      &.bg-primary
+        color: rgb(var(--neutral-100)) !important
 </style>

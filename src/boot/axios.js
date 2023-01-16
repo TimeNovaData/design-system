@@ -9,7 +9,9 @@ const axiosController = new AbortController()
 
 const api = axios.create({
   baseURL: API_URL,
+
   signal: axiosController.signal,
+
   headers: {
     Authorization: `Bearer ${TOKEN}`,
   },
@@ -41,6 +43,7 @@ const api = axios.create({
     atualizar_ordem_chamado: 'chamado/atualizar_ordem_chamado/',
     logAlteracoesChamado: 'logalteracoeschamado/',
     profile: 'profile/',
+    visao_geral_big_numbers: '/projeto/visao_geral_big_numbers/',
   },
 })
 

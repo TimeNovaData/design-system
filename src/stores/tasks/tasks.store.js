@@ -4,7 +4,7 @@ import { api } from 'src/boot/axios'
 import { useAxios } from '@vueuse/integrations/useAxios'
 import { deepUnref } from 'vue-deepunref'
 import GLOBAL from 'src/utils/GLOBAL'
-import { NotifySucess } from 'src/boot/Notify'
+import { NotifyError, NotifySucess } from 'src/boot/Notify'
 import emitter from 'src/boot/emitter'
 
 const { URLS } = api.defaults
@@ -27,59 +27,39 @@ export const useTaskStore = defineStore('taskstore', () => {
   )
 
   async function getTasks(filtro = '') {
-    isLoading.value = true
-
-    const { data, error } = await useAxios(
-      URLS.task + '?x=' + filtro + '&no_loading',
-      { method: 'GET' },
-      api
-    )
     try {
-      setTasksChamado(data.value.results)
-      setTasks(data.value.results)
-
-      return data.value.results
+      const { data } = await api.get(URLS.task + '?x=' + filtro + '&no_loading')
+      setTasksChamado(data.results)
+      setTasks(data.results)
+      return data.results
     } catch (e) {
-      return error
-    } finally {
-      isLoading.value = false
+      console.log(e)
+      return e
     }
   }
 
   async function getTask(id) {
-    isLoading.value = true
-
-    const { data, error } = await useAxios(
-      URLS.task + id + '?x=' + '&no_loading',
-      { method: 'GET' },
-      api
-    )
-
     try {
-      setTask(data.value)
-      return data.value
+      const { data } = await api.get(URLS.task + id + '?x=' + '&no_loading')
+      setTask(data)
+      return data
     } catch (e) {
-      return error
+      console.log(e)
+      return e
     } finally {
       isLoading.value = false
     }
   }
 
   async function getTaskTypes() {
-    isLoading.value = true
-
-    const { data, error } = await useAxios(
-      URLS.tipotask + '?no_loading',
-      { method: 'GET' },
-      api
-    )
     try {
-      setTaskTypes(data.value)
-      return data.value
+      const { data } = await api.get(URLS.tipotask + '?no_loading')
+      console.log(data)
+      setTaskTypes(data)
+      return data
     } catch (e) {
-      return error
-    } finally {
-      isLoading.value = false
+      console.log(e)
+      return e
     }
   }
 
@@ -101,22 +81,34 @@ export const useTaskStore = defineStore('taskstore', () => {
       window._yellow('CADASTRAR')
 
       const data = newTaskUnref
-      const newTask = await api.post(URLS.task, data)
-
-      NotifySucess('Task Criada com sucesso')
-      emitter.emit('taskCreate')
-      return newTask
+      try {
+        const newTask = await api.post(URLS.task, data)
+        NotifySucess('Task Criada com sucesso')
+        emitter.emit('taskCreate')
+        return newTask
+      } catch (e) {
+        NotifyError('Erro ao Criar Tarefa')
+        console.log(e)
+      }
       //
     } else {
-      const data = GLOBAL.compareAndReturnDiff(oldTaskUnref, newTaskUnref)
-      window._yellow('ALTERAR')
-      console.log(data)
-      const taskEditada = await api.patch(URLS.task + task.value.id + '/', data)
+      try {
+        const data = GLOBAL.compareAndReturnDiff(oldTaskUnref, newTaskUnref)
+        window._yellow('ALTERAR')
+        console.log(data)
+        const taskEditada = await api.patch(
+          URLS.task + task.value.id + '/',
+          data
+        )
 
-      NotifySucess('Task Alterada com sucesso')
-      emitter.emit('taskEdit')
+        NotifySucess('Task Alterada com sucesso')
+        emitter.emit('taskEdit')
 
-      return taskEditada
+        return taskEditada
+      } catch (e) {
+        NotifyError('Erro ao Alterar Tarefa')
+        console.log(e)
+      }
     }
   }
 

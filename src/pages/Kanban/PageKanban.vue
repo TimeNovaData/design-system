@@ -25,15 +25,14 @@
           @mouseup="handleColClick"
           @mousedown="handleColClick"
           @newCards="clickNewCard"
+          :newCardActive="novoCard"
         >
-          <Transition name="fade" duration="150">
-            <KanbanNewCard
-              v-if="novoCard.id === col.coluna.id"
-              :colData="col.coluna"
-              @invalid="closeNewCard"
-              @create="handleCreateChamado"
-            ></KanbanNewCard>
-          </Transition>
+          <KanbanNewCard
+            v-if="novoCard.id === col.coluna.id"
+            :colData="col.coluna"
+            @invalid="closeNewCard"
+            @create="handleCreateChamado"
+          ></KanbanNewCard>
 
           <draggable
             v-bind="dragOptions"
@@ -200,6 +199,7 @@ function closeNewCard() {
 async function handleCreateChamado(v) {
   novoCard.value.id = null
   const newCard = await createChamado({ ...v, ordem: 0 })
+  const newCardID = newCard.id
   const fase = newCard.fase.id
   const newArr = deepUnref(colunasWithCards.value).map((c) => {
     if (c.coluna.id === fase) {
@@ -274,24 +274,16 @@ onMounted(() => {
   document
     .querySelector('.kanban-col--wrapper')
     ?.dispatchEvent(new Event('mousedown'))
-  // getProjetos()
-  // getSubProjetos()
-  // getUsuariosFoto()
+
   getTags()
 })
 
 emitter.on('reloadDataKanban', async () => {
   await updateDados()
   await atualizarOrdem()
-  // getProjetos()
-  // getSubProjetos()
-  // getUsuariosFoto()
   getTags()
 })
 
-// provide('usuarios', usuariosFoto)
-// provide('projetos', projetos)
-// provide('subProjetos', subProjetos)
 provide('chamado', chamadoAtivo)
 provide('tagsList', tags)
 provide('tabs', tabs)
@@ -319,6 +311,7 @@ provide('getLogAlt', getLogAlt)
   height: 100vh
   pointer-events: none
   user-select: none
+  background-color: rgba(var(--d-neutral-40), 0.6)
 
 
 .kanban

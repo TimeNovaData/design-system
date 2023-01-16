@@ -13,7 +13,7 @@ export const useUserStore = defineStore('userStore', () => {
   const userProfile = ref({})
 
   const userFoto = computed(() => {
-    const item = usuarios.usuariosFoto.filter((u) => u.id === user.value.id)[0]
+    const item = usuarios.usuarios.filter((u) => u?.id === user.value?.id)[0]
     const foto = item?.foto
     return foto
   })
@@ -32,7 +32,6 @@ export const useUserStore = defineStore('userStore', () => {
       setUser(data.value)
       // necessario pois a foto do user
       // esta em usersFoto
-      // await usuarios.getUsuariosFoto()
       return data.value
     } catch (e) {
       return error
@@ -42,7 +41,7 @@ export const useUserStore = defineStore('userStore', () => {
   }
 
   async function getProfile() {
-    const id = user.value.id
+    const id = user.value?.id
     if (!id) return
     try {
       const { data, error } = await useAxios(

@@ -35,17 +35,20 @@
         >
           <VisaoGeralCard
             cardTitle="Total de projetos abertos"
-            cardValue="120"
+            :cardValue="bigNumbers.projetos_abertos"
           />
-          <VisaoGeralCard cardTitle="Meus Projetos Abertos" cardValue="25" />
+          <VisaoGeralCard
+            cardTitle="Meus Projetos Abertos"
+            :cardValue="bigNumbers.meus_projetos_abertos"
+          />
           <VisaoGeralCard
             cardTitle="Meus projetos atrasados"
-            cardValue="30"
+            :cardValue="bigNumbers.meus_projetos_atrasados"
             cardType="error"
           />
           <VisaoGeralCard
             cardTitle="Meus projetos desuatualizados"
-            cardValue="30"
+            :cardValue="bigNumbers.meus_projetos_desatualizados"
             cardType="error"
           />
         </div>
@@ -60,40 +63,54 @@
 </template>
 
 <script setup>
-import { ref, inject, computed } from 'vue'
+import { ref, inject, computed, onMounted } from 'vue'
+import { useAxios } from '@vueuse/integrations/useAxios'
+import { api } from 'src/boot/axios'
+import GLOBAL from 'src/utils/GLOBAL'
 import OButton from 'src/components/Button/OButton.vue'
 import TextIcon from 'src/components/Text/TextIcon.vue'
 import VisaoGeralCard from 'src/components/VisaoGeral/VisaoGeralCard.vue'
 import VisaoGeralTable from 'src/components/VisaoGeral/VisaoGeralTable.vue'
+import { deepUnref } from 'vue-deepunref'
 
+const { URLS } = api.defaults
+const { FData } = GLOBAL
 const projetos = inject('projetos')
 
+const bigNumbers = ref({})
 const projectFilter = ref('recorrente')
 
 function handleChangeprojectFilter(type) {
   projectFilter.value = type
 }
 
-console.log(projetos)
+async function getBigNumbers() {
+  const { data, error } = await useAxios(
+    URLS.visao_geral_big_numbers,
+    { method: 'GET' },
+    api
+  )
+
+  try {
+    bigNumbers.value = data.value
+    return data.value
+  } catch (e) {
+    return error
+  }
+}
 
 function setRowData(item) {
   return {
     id: item.id,
     projeto: item.nome,
-    cliente: item.nome_cliente,
-    responsavel: {
-      nome: 'Marlon',
-      foto: 'https://avatars.githubusercontent.com/u/62356988?v=4',
-    },
-    responsavel_atendimento: {
-      nome: 'Marlon Victor',
-      foto: 'https://avatars.githubusercontent.com/u/62356988?v=4',
-    },
-    data_entrega: '10/10/2022 - 17h 21m',
-    ultimo_acompanhamento: '10/10/2022 - 17h 21m',
-    status: 'Atrasado',
-    chamado_pendentes: 10,
-    tasks_pendentes: 11,
+    cliente: item.nome_cliente || '-',
+    responsaveis: item.responsaveis,
+    responsaveis_atendimento: item.atendimento,
+    data_entrega: FData(item.fim_contrato),
+    ultimo_acompanhamento: FData(item.ultimo_acompanhamento),
+    status_andamento: item.status_andamento,
+    chamado_pendentes: item.chamados_nao_concluidos,
+    tasks_pendentes: item.tasks_nao_concluidas,
   }
 }
 
@@ -123,16 +140,22 @@ const columns = [
     sortable: true,
   },
   {
-    name: 'responsavel',
-    field: 'responsavel',
-    label: 'Responsável',
+    name: 'responsaveis',
+    field: (row) =>
+      deepUnref(row.responsaveis)
+        .map((resp) => resp.nome)
+        .join(', '),
+    label: 'Responsáveis',
     align: 'left',
     sortable: true,
   },
   {
-    name: 'responsavel_atendimento',
-    field: 'responsavel_atendimento',
-    label: 'Responsável Atendimento',
+    name: 'responsaveis_atendimento',
+    field: (row) =>
+      deepUnref(row.responsaveis_atendimento)
+        .map((resp) => resp.nome)
+        .join(', '),
+    label: 'Atendimento',
     align: 'left',
     sortable: true,
   },
@@ -151,8 +174,8 @@ const columns = [
     sortable: true,
   },
   {
-    name: 'status',
-    field: 'status',
+    name: 'status_andamento',
+    field: (row) => deepUnref(row.status_andamento.status),
     label: 'Status',
     align: 'left',
     sortable: true,
@@ -173,6 +196,10 @@ const columns = [
   },
   { name: 'acoes', field: 'acoes', label: 'Ações', align: 'center' },
 ]
+
+onMounted(() => {
+  getBigNumbers()
+})
 </script>
 
 <style lang="sass" scoped></style>
