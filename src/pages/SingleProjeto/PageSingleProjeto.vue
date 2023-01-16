@@ -11,11 +11,50 @@
       <Transition name="fade" mode="out-in">
         <div v-if="projeto.id">
           <q-card class="mt-32">
-            <TextIcon
-              class="pt-24 mx-16 mb-24 text-title-4"
-              icon="svguse:/icons.svg#icon_date_time"
-              text="Investimento Diário"
-            ></TextIcon>
+            <div class="flex items-center justify-between w-full">
+              <TextIcon
+                class="pt-24 mx-16 mb-24 text-title-4"
+                icon="svguse:/icons.svg#icon_date_time"
+                text="Investimento Diário"
+              ></TextIcon>
+              <OButton
+                secondary
+                size="md"
+                icon="svguse:/icons.svg#icon_filtros"
+                class="mr-16"
+              >
+                Definições do gráfico
+                <q-menu class="p-12 pb-0">
+                  <q-form ref="form">
+                    <q-list class="w-[23.5rem]">
+                      <q-item
+                        class="px-0 text-headline-3 text-neutral-60 dark:text-white/60 justify-between flex items-center w-full mb-8"
+                        dense
+                      >
+                        Filtrando por
+                      </q-item>
+
+                      <q-item class="px-0 w-full mb-8" dense>
+                        <OSelect
+                          size="md"
+                          class="w-full"
+                          :options="tempoProjetoOptions"
+                          v-model="tempoProjetoPor"
+                          @update:modal-value="changeTempoProjetoPor"
+                        />
+                      </q-item>
+                    </q-list>
+
+                    <q-item class="px-0 flex gap-4 justify-end w-full">
+                      <OButton size="md" icon="close" tertiary>
+                        <!--  @click="handleRemove" -->
+                        Remover Filtros</OButton
+                      >
+                    </q-item>
+                  </q-form>
+                </q-menu>
+              </OButton>
+            </div>
 
             <apexchart
               ref="chart"
@@ -24,7 +63,7 @@
               type="bar"
               :options="optionsChart"
               :series="seriesChart"
-              :class="{ 'opacity-0': !seriesChart.length }"
+              :class="{ 'opacity-0': !seriesChart?.length }"
             ></apexchart>
           </q-card>
 
@@ -40,8 +79,8 @@
                   ( Em Breve )
                 </p>
               </div>
-              <div class="grid grid-cols-2 gap-16">
-                <div class="mt-16 grid grid-cols-2 gap-2">
+              <div class="grid grid-cols-[repeat(2,_minmax(auto,_1fr))] gap-16">
+                <div class="mt-16 grid gap-2">
                   <q-date
                     minimal
                     :years-in-month-view="false"
@@ -124,152 +163,11 @@
               icon="svguse:/icons.svg#icon_file_add"
               text="Chamados"
             ></TextIcon>
-
-            <div
-              class="table-container border border-neutral-100/10 rounded-generic mt-16 dark:border-white/10"
-            >
-              <header
-                class="grid grid-chamados border-neutral-100/10 border-b dark:border-white/10"
-              >
-                <div class="p-16 text-headline-3 flex items-center">Task</div>
-                <div
-                  class="p-16 text-headline-3 flex items-center text-end justify-end"
-                >
-                  Data de Criação
-                </div>
-                <div
-                  class="p-16 text-headline-3 flex items-center text-end justify-end"
-                >
-                  Data Desejada
-                </div>
-                <div
-                  class="p-16 text-headline-3 flex items-center text-end justify-end"
-                >
-                  Última Atualização
-                </div>
-                <div class="p-16 text-headline-3 flex items-center">Anexos</div>
-              </header>
-              <article>
-                <q-scroll-area class="!h-[400px]">
-                  <draggable
-                    v-bind="dragOptions"
-                    :list="chamadosList"
-                    :component-data="{
-                      tag: 'div',
-                      type: 'transition-group',
-                      name: !drag ? 'flip-list' : null,
-                      class: `transition-div `,
-                    }"
-                    group="a"
-                    itemKey="name"
-                    @end="(e) => startAndEndDrag(e, false)"
-                    @start="(e) => startAndEndDrag(e, true)"
-                  >
-                    <template #item="{ element: i }">
-                      <div
-                        @click="() => handleClickChamado(i.id)"
-                        class="grid-chamados h-52 cursor-pointer hover:bg-neutral-10 relative dark:hover:bg-white/5 border-neutral-100/10 border-b"
-                      >
-                        <div class="flex items-center gap-4 px-16 py-6">
-                          <OAvatar
-                            size="32px"
-                            :foto="i.user_criacao.foto"
-                          ></OAvatar>
-                          <div class="flex flex-col">
-                            <p class="text-paragraph-2 one-line">
-                              {{ i.titulo }}
-                            </p>
-                            <span
-                              class="text-neutral-60 text-paragraph-3 dark:text-white/60"
-                              >{{ i.user_criacao.nome }}</span
-                            >
-                          </div>
-                        </div>
-
-                        <div
-                          class="flex items-center text-paragraph-2 border-l border-neutral-100/10 p-16 text-end justify-end"
-                        >
-                          {{ GLOBAL.FData(i.data_criacao) }}
-                        </div>
-
-                        <div
-                          class="flex items-center text-paragraph-2 border-l border-neutral-100/10 p-16 !text-end justify-end"
-                        >
-                          {{ GLOBAL.FData(i.data_desejada) }}
-                        </div>
-
-                        <div
-                          class="flex items-center text-paragraph-2 border-l border-neutral-100/10 p-16 !text-end justify-end"
-                        >
-                          {{ GLOBAL.FData(i.data_atualizacao) }}
-                        </div>
-
-                        <div
-                          class="flex items-center text-paragraph-2 border-l border-neutral-100/10 p-10"
-                        >
-                          <div
-                            class="bg-neutral-100/10 w-full h-full justify-center flex text-center items-center rounded-generic"
-                          >
-                            {{ i.anexo || '-' }}
-                          </div>
-                        </div>
-                      </div>
-                    </template>
-
-                    <!-- 
-{
-  "id": 154,
-  "projeto": {
-    "id": 17,
-    "nome": "projeto teste",
-    "cor": "#11D276",
-    "tem_subprojetos": false
-  },
-  "tag": [],
-  "titulo": "❌asdasd",
-  "descricao": "",
-  "fase": {
-    "id": 9,
-    "ultima_atualizacao": "2021-06-17T18:17:04.816826Z",
-    "nome": "Standby",
-    "ordem": 10,
-    "fase_conclusao": false
-  },
-  "anexo": null,
-  "data_prevista": null,
-  "data_desejada": null,
-  "tempo_estimado": "00:00:00",
-  "orcado": "00:00:00",
-  "data_conclusao": null,
-  "responsaveis": [
-    {
-      "id": 2,
-      "nome": "emanuel morais",
-      "foto": "http://localhost:8000/media/avatars/emanuel2/resized/100/arara-azul.jpg"
-    }
-  ],
-  "data_criacao": "2023-01-12T10:22:26.906468-03:00",
-  "data_atualizacao": "2023-01-12T10:22:26.906546-03:00",
-  "user_criacao": {
-    "id": 2,
-    "nome": "emanuel morais",
-    "foto": "http://localhost:8000/media/avatars/emanuel2/resized/100/arara-azul.jpg"
-  },
-  "arquivado": false,
-  "sub_projeto": null,
-  "ordem": 22,
-  "tempo_decorrido": "00:00:00",
-  "quantidade_tasks": 0,
-  "quantidade_tasks_concluidas": 0,
-  "quantidade_tasks_pendentes": 0,
-  "quantidade_anexos": 0
-}
-
-                     -->
-                  </draggable>
-                </q-scroll-area>
-              </article>
-            </div>
+            <!-- 🟢 CHAMADO LIST  -->
+            <ChamadoListTable
+              @click:list-item="(id) => handleClickChamado(id)"
+              :chamados-list="chamadosList"
+            />
           </q-card>
         </div>
         <div v-else>
@@ -407,6 +305,8 @@ import AnexoItem from 'src/components/Anexo/AnexoItem.vue'
 import AcessoItem from 'src/components/Acesso/AcessoItem.vue'
 import GLOBAL from 'src/utils/GLOBAL'
 import emitter from 'src/boot/emitter'
+import OSelect from 'src/components/Select/OSelect.vue'
+import ChamadoListTable from 'src/components/Chamado/ChamadoListTable.vue'
 
 const { URLS } = api.defaults
 
@@ -429,6 +329,7 @@ const {
   comments,
 } = useComments()
 
+const pageID = ref(null)
 const header = ref(null)
 const seriesChart = ref([])
 const chart = ref(null)
@@ -440,24 +341,7 @@ const handleClickChamado = inject('handleClickChamado')
 
 const getChamados = async (id) => api.get(`${URLS.chamado}?projeto__id=${id}`)
 
-async function handleChangeProjeto(p) {
-  projeto.value = {}
-  await requests(p.id)
-  router.push({ params: { id: p.id } })
-}
 const routeIsZero = Number(route.params.id) === 0
-
-onMounted(() => {
-  modalAcessos.value.dialogRef.show()
-  modalContatos.value.dialogRef.show()
-  if (routeIsZero) {
-    header.value.show()
-  }
-})
-
-function startAndEndDrag() {
-  console.log('arrastou')
-}
 
 watch(
   () => projeto,
@@ -466,53 +350,78 @@ watch(
   },
   { deep: true }
 )
+/* dois */
+const filtros = computed(() => `&agrupamento=${tempoProjetoPor.value.value}`)
 
-function populateChart(tempoProjetos) {
-  const getDuracoes = (tempoProjeto) =>
-    Object.values(tempoProjeto).map((i) => i.duracao)
-  const duracoes = Object.values(tempoProjetos).map(getDuracoes)
-  // const labels = Object.keys(tempoProjetos).map((projeto) =>
-  //   projectName(projeto)
-  // )
-  const labels = Object.keys(tempoProjetos)
-  const categories = Object.values(tempoProjetos).map((projeto) =>
-    Object.keys(projeto)
-  )[0]
-  const generateSeriesApex = (item, index) => ({
-    name: labels[index],
-    data: duracoes[index],
-  })
-  const seriesApex = Object.values(tempoProjetos).map(generateSeriesApex)
-  console.log(seriesApex)
-  // if (categories && seriesApex !== {}) {
-  chart.value.updateOptions({
-    series: seriesApex,
-    xaxis: {
-      categories: categories || [],
-    },
-    // secondsToHours(i.duracao)
-  })
+async function changeTempoProjetoPor() {
+  await getTempoProjeto(pageID.value, filtros.value)
 }
-// async function requests(id) {
-//   await getProjeto(id)
-//   await getTempoProjeto(id)
-//   await nextTick()
-//   // populateChart(tempoProjeto.value)
-// }
 
-async function requests(id) {
-  await getProjeto(id)
-  await getTempoProjeto(id)
-  await nextTick()
-  await handleGetChamado(id)
-  await getAcessos('&projeto__id=' + id)
+const tempoProjetoPor = ref({
+  label: 'Usúario',
+  value: 'usuario',
+})
 
-  // 🟢
-  // seriesChart.value = populateChart(tempoProjeto.value, chart)
+const tempoProjetoOptions = [
+  {
+    label: 'Projeto',
+    value: 'projeto',
+  },
+  {
+    label: 'Subprojeto',
+    value: 'sub_projeto',
+  },
+  {
+    label: 'Usúario',
+    value: 'usuario',
+  },
+]
+
+function startAndEndDrag() {
+  console.log('arrastou')
 }
+
 async function handleGetChamado(id) {
   const req = await getChamados(id)
   chamadosList.value = req.data
+}
+
+async function handleChangeProjeto(p) {
+  pageID.value = p.id
+  projeto.value = {}
+  await nextTick()
+  await requests(pageID.value)
+  router.push({ params: { id: pageID.value } })
+}
+
+function populateChart(tempoProjetos) {
+  const data = tempoProjetos.map((i) => {
+    const data = i.datas.map((i) => i.duracao)
+    return {
+      name: i.item,
+      data,
+    }
+  })
+
+  const categorias = tempoProjetos[0]?.datas.map((i) => i.data)
+
+  chart.value.updateOptions({
+    series: data,
+    xaxis: {
+      categories: categorias || [],
+    },
+  })
+
+  seriesChart.value = data
+}
+
+async function requests() {
+  await getProjeto(pageID.value)
+  await getTempoProjeto(pageID.value, filtros.value)
+  await nextTick()
+  await handleGetChamado(pageID.value)
+  await getAcessos('&projeto__id=' + pageID.value)
+  populateChart(tempoProjeto.value, chart)
 }
 
 // Atualiza chamados ao alterar algo no modal
@@ -521,8 +430,24 @@ emitter.on('chamadoAlterado', () => {
 })
 
 if (!routeIsZero) {
-  requests(route.params.id)
+  pageID.value = route.params.id
+  requests()
 }
+
+const dragOptions = computed(() => ({
+  animation: 400,
+  group: 'description',
+  disabled: false,
+  ghostClass: 'ghost',
+}))
+
+onMounted(() => {
+  modalAcessos.value.dialogRef.show()
+  modalContatos.value.dialogRef.show()
+  if (routeIsZero) {
+    header.value.show()
+  }
+})
 
 onUnmounted(() => {
   projeto.value = {}
@@ -535,13 +460,6 @@ const optionsChart = {
     enabled: false,
   },
 }
-
-const dragOptions = computed(() => ({
-  animation: 400,
-  group: 'description',
-  disabled: false,
-  ghostClass: 'ghost',
-}))
 </script>
 
 <style lang="sass" scoped>
@@ -570,117 +488,6 @@ const dragOptions = computed(() => ({
 
   .body--dark &
     border: 1px solid rgba(var(--white),0.1)
-
-.grid-chamados
-  grid-template-columns: auto 162px 162px 162px 100px
-  display: grid
-  width: 100%
 </style>
 
-<!-- 
-{
-  id: 70,
-  projeto: {
-    id: 4,
-    nome: '#aquipneus#',
-    cliente: 4,
-    nome_cliente: 'wqwdqwdqw',
-    logo: 'http://localhost:8000/media/defaults/logo_cliente.png',
-    cor: '#11D276',
-    fim_contrato: null,
-    status: 'Recorrente',
-    escopo: '',
-    briefing_text: null,
-    responsaveis: [
-      {
-        id: 2,
-        nome: 'emanuel morais',
-        foto: 'http://localhost:8000/media/avatars/emanuel2/resized/100/arara-azul.jpg',
-      },
-      {
-        id: 1,
-        nome: 'Cola Borador',
-        foto: 'https://www.gravatar.com/avatar/d41d8cd98f00b204e9800998ecf8427e/?s=100',
-      },
-      {
-        id: 5,
-        nome: 'daniel silva',
-        foto: 'https://www.gravatar.com/avatar/24e1c6184c96437ebce240c62f21834c/?s=100',
-      },
-      {
-        id: 3,
-        nome: 'Bernardo Moraes',
-        foto: 'http://localhost:8000/media/avatars/emanuel3/resized/100/nyan2.gif',
-      },
-    ],
-    atendimento: [
-      {
-        id: 2,
-        nome: 'emanuel morais',
-        foto: 'http://localhost:8000/media/avatars/emanuel2/resized/100/arara-azul.jpg',
-      },
-    ],
-    usuarios_com_acesso: [],
-    tem_subprojetos: true,
-  },
-  tag: [
-    { id: 3, nome: 'tag tu', cor_letra: '#D2821B', cor_fundo: '#F6FEFA' },
-    { id: 6, nome: 'sdfds', cor_letra: '#8f0000', cor_fundo: '#F6FEFA' },
-  ],
-  titulo:
-    'novo Chamado sadasdasdas dasd das das das  asd asd ads dasda sd as ads dda sdas das adasd',
-  descricao: '',
-  descricao_chamado: null,
-  prioridade: null,
-  fase: {
-    id: 9,
-    ultima_atualizacao: '2021-06-17T18:17:04.816826Z',
-    nome: 'Standby',
-    ordem: 10,
-    fase_conclusao: false,
-  },
-  link: null,
-  anexo: null,
-  data_prevista: '2023-12-15',
-  data_desejada: '2023-12-12',
-  tempo_estimado: '00:00:00',
-  data_conclusao: null,
-  aprovado: false,
-  prazo_aprovacao: null,
-  data_aprovacao: null,
-  responsaveis: [
-    {
-      id: 2,
-      nome: 'emanuel morais',
-      foto: 'http://localhost:8000/media/avatars/emanuel2/resized/100/arara-azul.jpg',
-    },
-  ],
-  data_criacao: '2022-12-21T14:55:31.093909-03:00',
-  data_atualizacao: '2022-12-21T14:55:31.093995-03:00',
-  user_criacao: {
-    id: 2,
-    nome: 'emanuel morais',
-    foto: 'http://localhost:8000/media/avatars/emanuel2/resized/100/arara-azul.jpg',
-  },
-  arquivado: false,
-  sub_projeto: {
-    id: 1,
-    logo: 'http://localhost:8000/media/defaults/logo_cliente.png',
-    nome: 'Subprojeto 1',
-    cor: '#11D276',
-    data_desejada: '2022-12-26',
-    caso_pai: 4,
-  },
-  coluna_sub_projeto: null,
-  ordem: 2,
-  descricao_quill_html: '',
-  tempo_total: '0.0',
-  tempo_decorrido: '00:00:00',
-  quantidade_tasks: 0,
-  quantidade_tasks_concluidas: 0,
-  quantidade_tasks_pendentes: 0,
-  quantidade_anexos: 0,
-}
-
-
-               -->
+<!-- treis -->

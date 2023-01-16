@@ -60,6 +60,7 @@ let stringOptions = attrs.options
 // function handleFocus() {
 //   componentRef.value.showPopup()
 // }
+// asas
 watch(
   () => attrs.options,
   async (v) => {
