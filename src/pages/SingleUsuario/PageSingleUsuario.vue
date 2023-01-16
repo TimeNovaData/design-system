@@ -17,13 +17,24 @@
         </div>
         <div class="usuarios">
           <div class="user-name">
-            <div></div>
-
             <p class="text-caps-2 text-primary-pure">Usuário</p>
 
             <div class="colaborador flex">
-              <p class="text-white">Andrei Muniz</p>
-              <div class="icon">X</div>
+              <div class="item-editavel text-title-3 h-40">
+                > {{ userActive.username }}
+              </div>
+
+              <KanbanItemEditableSelect
+                text="Selecione um usuário"
+                selectLabel="Usuário"
+                :options="usuarios"
+                :selected="user !== {} ? user : null"
+                ref="itemEditableSelect"
+                :selectProps="{
+                  fotoKey: 'foto',
+                  nomeKey: 'username',
+                }"
+              />
             </div>
           </div>
           <div class="user-infos flex gap-32">
@@ -202,6 +213,7 @@ import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import { storeToRefs } from 'pinia'
 import draggable from 'vuedraggable'
 import emitter from 'src/boot/emitter'
+import KanbanItemEditableSelect from 'src/components/Kanban/KanbanItemEditableSelect.vue'
 
 import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
 import { useUsuarioStore } from 'src/stores/usuarios/usuarios.store'
@@ -223,6 +235,8 @@ const { tasks } = storeToRefs(useTaskStore())
 const userActive = computed(() =>
   usuarios.value.filter((i) => i.id === Number(userActiveID.value))
 )
+
+console.warn(userActive)
 
 const listAvatar = ref([
   {
@@ -260,7 +274,7 @@ const tasksTodo = computed(() =>
 const tasksfinished = computed(() =>
   tasks.value.filter((t) => t.status === 'Concluído')
 )
-console.log(tasksfinished)
+
 const dragOptions = computed(() => ({
   animation: 400,
   group: 'description',
@@ -299,4 +313,18 @@ onMounted(async () => {
   display: grid
   grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 230px) minmax(120px, 130px)  repeat(2, 100px) minmax(120px, 130px)
   align-items: center
+.item-editavel
+  display: flex
+  align-items: center
+  gap:.5rem
+  cursor: pointer
+  padding: 2px
+  border-radius: 3px
+  border: 1px solid transparent
+  transition: .3s ease
+  &:hover
+    border-color: rgba(var(--neutral-100),0.1)
+  .body--dark &
+    &:hover
+      border-color: rgba(var(--white),0.2)
 </style>
