@@ -468,7 +468,6 @@ watch(
 )
 
 function populateChart(tempoProjetos) {
-  debugger
   const getDuracoes = (tempoProjeto) =>
     Object.values(tempoProjeto).map((i) => i.duracao)
   const duracoes = Object.values(tempoProjetos).map(getDuracoes)
