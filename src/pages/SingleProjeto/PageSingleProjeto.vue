@@ -10,7 +10,7 @@
       />
       <Transition name="fade" mode="out-in">
         <div v-if="projeto.id">
-          <q-card class="mt-32">
+          <q-card class="mt-32 flex flex-col">
             <div class="flex items-center justify-between w-full">
               <TextIcon
                 class="pt-24 mx-16 mb-24 text-title-4"
@@ -40,31 +40,41 @@
                           class="w-full"
                           :options="tempoProjetoOptions"
                           v-model="tempoProjetoPor"
-                          @update:modal-value="changeTempoProjetoPor"
+                          @update:model-value="changeTempoProjetoPor"
                         />
                       </q-item>
                     </q-list>
-
-                    <q-item class="px-0 flex gap-4 justify-end w-full">
-                      <OButton size="md" icon="close" tertiary>
-                        <!--  @click="handleRemove" -->
-                        Remover Filtros</OButton
-                      >
-                    </q-item>
                   </q-form>
                 </q-menu>
               </OButton>
             </div>
-
-            <apexchart
-              ref="chart"
-              width="100%"
-              height="250px"
-              type="bar"
-              :options="optionsChart"
-              :series="seriesChart"
-              :class="{ 'opacity-0': !seriesChart?.length }"
-            ></apexchart>
+            <div class="w-full min-h-[280px] flex flex-col">
+              <apexchart
+                ref="chart"
+                v-show="optionsChart?.length && !isLoadingTempoProjeto"
+                width="100%"
+                height="250px"
+                type="bar"
+                :options="optionsChart"
+                :series="seriesChart"
+                :class="{ 'opacity-0': !seriesChart?.length }"
+              ></apexchart>
+              <SkeletonChart
+                v-if="isLoadingTempoProjeto"
+                class="h-[250px] mx-24 mb-24"
+              />
+              <div
+                class="text-paragraph-2 text-center m-auto !h-full flex-1 flex flex-col justify-center"
+                v-else
+              >
+                <q-icon
+                  class="block mx-auto opacity-30"
+                  name="fluorescent"
+                  size="2.5rem"
+                ></q-icon>
+                <p class="opacity-40">Sem Dados para exibir o grafico.</p>
+              </div>
+            </div>
           </q-card>
 
           <div class="grid grid-cols-2 gap-32 mt-32">
@@ -307,11 +317,14 @@ import GLOBAL from 'src/utils/GLOBAL'
 import emitter from 'src/boot/emitter'
 import OSelect from 'src/components/Select/OSelect.vue'
 import ChamadoListTable from 'src/components/Chamado/ChamadoListTable.vue'
-
+import SkeletonChart from 'src/components/Skeleton/SkeletonChart.vue'
 const { URLS } = api.defaults
 
 const { getProjeto, getTempoProjeto } = useProjetoStore()
-const { projeto, tempoProjeto } = storeToRefs(useProjetoStore())
+const { projeto, tempoProjeto, isLoadingTempoProjeto } = storeToRefs(
+  useProjetoStore()
+)
+
 const { getAcessos } = useAcessoStore()
 const { acessos } = storeToRefs(useAcessoStore())
 const dataAtual = ref(date.formatDate(new Date(), 'YYYY/MM/DD'))
@@ -354,6 +367,7 @@ watch(
 const filtros = computed(() => `&agrupamento=${tempoProjetoPor.value.value}`)
 
 async function changeTempoProjetoPor() {
+  tempoProjeto.value = []
   await getTempoProjeto(pageID.value, filtros.value)
 }
 
@@ -372,7 +386,7 @@ const tempoProjetoOptions = [
     value: 'sub_projeto',
   },
   {
-    label: 'Usúario',
+    label: 'Usuário',
     value: 'usuario',
   },
 ]
@@ -456,8 +470,18 @@ onUnmounted(() => {
 
 const optionsChart = {
   ...stackedChartBar,
-  dataLabels: {
-    enabled: false,
+  dataLabels: { enabled: false },
+  xaxis: {
+    labels: {
+      rotateAlways: false,
+      style: {
+        fontSize: '12px',
+        fontFamily: 'Inter',
+      },
+      formatter: function (value, timestamp, opts) {
+        return value.slice(0, -5)
+      },
+    },
   },
 }
 </script>
