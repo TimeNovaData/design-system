@@ -4,35 +4,16 @@
     :rows="rows"
     :columns="columns"
     v-model:pagination="pagination"
-    :filter="filter"
+    :filter="searchFilter"
     class="px-16 py-8 dark:bg-d-neutral-20 visao-geral-table"
     primary
   >
     <template v-slot:top>
-      <div class="flex items-center justify-between w-full">
-        <OInput
-          size="md"
-          debounce="300"
-          v-model="filter"
-          placeholder="Pesquise por nome, tipo..."
-          class="no-label mb-4 w-[22rem]"
-        />
-
-        <div class="flex gap-8 items-center">
-          <span class="text-paragraph-2 text-neutral-70 dark:text-white/70">
-            Mostrar
-          </span>
-          <OSelect
-            class="w-72 h-40"
-            size="md"
-            v-model="pagination.rowsPerPage"
-            :options="[10, 20, 30, 50]"
-          />
-          <span class="text-paragraph-2 text-neutral-70 dark:text-white/70">
-            Linhas por página
-          </span>
-        </div>
-      </div>
+      <OTableHeaderBase
+        @update="updateModels"
+        :filter="searchFilter"
+        :rowsPerPage="pagination.rowsPerPage"
+      />
     </template>
 
     <template v-slot:body="props">
@@ -136,48 +117,15 @@
       </q-tr>
     </template>
 
-    <template v-slot:bottom="props">
-      <footer class="flex items-center justify-between w-full mt-12">
-        <OButton
-          icon="svguse:/icons.svg#icon_excel"
-          size="sm"
-          class="dark:bg-white/10 dark:!border-transparent icon-opacity"
-          secondary
-          @click="() => exportTable(columns, rows)"
-        >
-          Baixar tabela
-        </OButton>
-
-        <div class="flex items-center gap-8">
-          <OButton
-            icon="chevron_left"
-            :disable="props.isFirstPage"
-            @click="props.prevPage"
-            primary
-            size="sm"
-          >
-            Anterior
-          </OButton>
-
-          <q-pagination
-            v-model="pagination.page"
-            color="primary"
-            :max="pagesNumber"
-            :max-pages="4"
-            :boundary-numbers="false"
-          />
-
-          <OButton
-            icon-right="chevron_right"
-            :disable="props.isLastPage"
-            @click="props.nextPage"
-            primary
-            size="sm"
-          >
-            Próximo
-          </OButton>
-        </div>
-      </footer>
+    <template v-slot:bottom="slotProps">
+      <OTableFooterBase
+        downloadable
+        :rows="props.rows"
+        :columns="props.columns"
+        :slotProps="slotProps"
+        :pagination="pagination"
+        @update="(val) => updatePagination(val)"
+      />
     </template>
   </OTable>
 
@@ -231,16 +179,16 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import GLOBAL from 'src/utils/GLOBAL'
 import OTable from 'src/components/Table/OTable.vue'
-import OInput from 'src/components/Input/OInput.vue'
 import OBadge from 'src/components/Badge/OBadge.vue'
 import OButton from 'src/components/Button/OButton.vue'
-import OSelect from 'src/components/Select/OSelect.vue'
+import OTableHeaderBase from 'src/components/Table/OTableHeaderBase.vue'
+import OTableFooterBase from 'src/components/Table/OTableFooterBase.vue'
 import AvatarMultiple from 'src/components/Avatar/AvatarMultiple.vue'
 
-const { returnRGB, exportTable } = GLOBAL
+const { returnRGB } = GLOBAL
 
 const props = defineProps({
   rows: Array,
@@ -250,18 +198,23 @@ const props = defineProps({
 const adminUrl = (id) =>
   `${process.env.BACKEND_URL}admin/control/caso/${id}/change/`
 
-const filter = ref('')
+const searchFilter = ref('')
 
 const pagination = ref({
   sortBy: 'desc',
   descending: false,
   page: 1,
-  rowsPerPage: 10,
+  rowsPerPage: 1,
 })
 
-const pagesNumber = computed(() =>
-  Math.ceil(props.rows.length / pagination.value.rowsPerPage)
-)
+function updateModels(val) {
+  searchFilter.value = val.filter
+  pagination.value.rowsPerPage = val.rowsPerPage
+}
+
+function updatePagination(val) {
+  pagination.value = val
+}
 </script>
 
 <style lang="sass" scoped>
