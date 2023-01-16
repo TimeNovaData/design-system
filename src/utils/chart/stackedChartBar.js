@@ -53,6 +53,7 @@ export default {
       // offsetY: 0
     },
   },
+
   dataLabels: {
     enabled: true,
     style: {

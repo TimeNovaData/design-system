@@ -8,6 +8,7 @@ const { URLS } = api.defaults
 export const useProjetoStore = defineStore('projetoStore', () => {
   const projetos = ref([])
   const subProjetos = ref([])
+  const isLoadingTempoProjeto = ref(false)
 
   const projeto = ref([])
   const tempoProjeto = ref([])
@@ -46,6 +47,7 @@ export const useProjetoStore = defineStore('projetoStore', () => {
   }
 
   async function getTempoProjeto(id, filters) {
+    isLoadingTempoProjeto.value = true
     try {
       const { data } = await api.get(
         URLS.projeto + id + '/tempo_projeto/?x=' + filters
@@ -55,6 +57,8 @@ export const useProjetoStore = defineStore('projetoStore', () => {
     } catch (e) {
       console.log(e)
       return e
+    } finally {
+      isLoadingTempoProjeto.value = false
     }
   }
 
@@ -84,5 +88,6 @@ export const useProjetoStore = defineStore('projetoStore', () => {
     getProjeto,
     tempoProjeto,
     getTempoProjeto,
+    isLoadingTempoProjeto,
   }
 })
