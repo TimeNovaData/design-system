@@ -433,12 +433,12 @@ function resetDados() {
 }
 async function requests() {
   resetDados()
-  await getProjeto(pageID.value)
+  getProjeto(pageID.value)
   await getTempoProjeto(pageID.value, filtros.value)
-  populateChart(tempoProjeto.value, chart)
   await nextTick()
-  await handleGetChamado(pageID.value)
-  await getAcessos('&projeto__id=' + pageID.value)
+  populateChart(tempoProjeto.value, chart)
+  handleGetChamado(pageID.value)
+  getAcessos('&projeto__id=' + pageID.value)
 }
 
 // Atualiza chamados ao alterar algo no modal
