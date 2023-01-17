@@ -36,6 +36,7 @@ const api = axios.create({
     user: 'usuario/usuario_logado/',
     fotoUsuario: 'usuario/foto_usuario/',
     anexochamado: 'anexochamado/',
+    anexoprojeto: 'anexosprojeto/',
     tagchamado: 'tagchamado/',
     subprojeto: 'subprojeto/',
     colunasubprojeto: 'colunasubprojeto/',

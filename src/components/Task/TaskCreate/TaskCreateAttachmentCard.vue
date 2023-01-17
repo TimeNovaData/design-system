@@ -8,6 +8,7 @@
       :allow-multiple="true"
       @init="handleFilePondInit"
       v-bind="filePondConfig"
+      :server="server"
     />
   </q-card>
 </template>
@@ -16,8 +17,13 @@
 import { filePondConfig } from 'src/boot/filepond'
 import 'src/css/vendor/filePond.sass'
 import { ref } from 'vue'
-
+import { api } from 'src/boot/axios'
+const { URLS } = api.defaults
 const myFiles = ref([])
+
+defineProps({
+  server: Object,
+})
 
 function handleFilePondInit() {
   console.log('FilePond has initialized', filePondConfig)

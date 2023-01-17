@@ -8,6 +8,7 @@
         @updateSelect="handleChangeProjeto"
         @anexoClick="modalAnexo.dialogRef.show()"
       />
+
       <Transition name="fade" mode="out-in">
         <div v-if="projeto.id">
           <q-card class="mt-32 flex flex-col">
@@ -70,7 +71,7 @@
 
               <SkeletonChart
                 v-if="isLoadingTempoProjeto"
-                class="h-[250px] mx-24 mb-24"
+                class="h-[250px] mx-24 mb-24 flex flex-col"
               />
               <div
                 class="text-paragraph-2 text-center m-auto !h-full flex-1 flex flex-col justify-center"
@@ -361,6 +362,11 @@
   <!-- Modal Anexos -->
   <ModalSide ref="modalAnexo" text="Anexos" icon="svguse:/icons.svg#icon_chat">
     <section class="flex flex-col p-24 gap-8">
+      <div class="w-full flex justify-end">
+        <OButton secondary size="md" icon="add_circle" @click="openNovoAnexo"
+          >Novo anexo</OButton
+        >
+      </div>
       <AnexoItem ext="ai" />
     </section>
   </ModalSide>
@@ -372,6 +378,11 @@
     icon="svguse:/icons.svg#icon_lock"
   >
     <section class="flex flex-col p-24 gap-8">
+      <div class="flex justify-between mb-8">
+        <!--    <OButton secondary size="md" icon="add_circle" @click="openNovoAnexo"
+          >Novo anexo</OButton
+        > -->
+      </div>
       <AcessoItem
         name="Google Drive"
         type="acess"
@@ -422,6 +433,32 @@
       </q-list>
     </section>
   </ModalSide>
+
+  <ModalCenter
+    ref="modalAddAnexo"
+    text="Adicionar Anexos"
+    icon="svguse:/icons.svg#icon_attachment"
+  >
+    <TaskCreateAttachmentCard
+      class="h-full flex-1"
+      :server="{
+        url: API_URL,
+        timeout: 7000,
+        process: {
+          url: URLS.anexoprojeto,
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${TOKEN}`,
+          },
+          // withCredentials: true,
+          ondata: (formData) => {
+            formData.append('projeto', pageID)
+            return formData
+          },
+        },
+      }"
+    />
+  </ModalCenter>
 </template>
 
 <script setup>
@@ -431,6 +468,7 @@ import TextIcon from 'src/components/Text/TextIcon.vue'
 import draggable from 'vuedraggable'
 import OButton from 'src/components/Button/OButton.vue'
 import ModalSide from 'src/components/Modal/ModalSide.vue'
+import ModalCenter from 'src/components/Modal/ModalCenter.vue'
 import { useProjetoStore } from 'src/stores/projetos/projetos.store'
 import { useAcessoStore } from 'src/stores/acessos/acessos.store'
 
@@ -446,7 +484,7 @@ import {
 import { useRoute, useRouter } from 'vue-router'
 import SingleProjetoHeader from './SingleProjetoHeader.vue'
 import stackedChartBar from 'src/utils/chart/stackedChartBar'
-import { date } from 'quasar'
+import { Cookies, date } from 'quasar'
 import OChatBox from 'src/components/Chat/OChatBox.vue'
 import { api } from 'src/boot/axios'
 import useComments from 'src/composables/useComments'
@@ -462,8 +500,11 @@ import AvatarTextSubtext from 'src/components/Avatar/AvatarTextSubtext.vue'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import { columnsChamado, columnsTask } from './cols.js'
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
+import TaskCreateAttachmentCard from 'src/components/Task/TaskCreate/TaskCreateAttachmentCard.vue'
 
 const { URLS } = api.defaults
+const API_URL = process.env.API_URL
+const TOKEN = Cookies.get('NDT_TOKEN')
 // Router
 const route = useRoute()
 const router = useRouter()
@@ -488,7 +529,7 @@ const modalChat = ref(null)
 const modalAnexo = ref(null)
 const modalAcessos = ref(null)
 const modalContatos = ref(null)
-
+const modalAddAnexo = ref(null)
 // Comments
 const {
   getComments,
@@ -561,13 +602,6 @@ async function populateChart(tempoProjetos) {
 
   const categorias = tempoProjetos[0]?.datas.map((i) => i.data)
 
-  // optionsChart.value = {
-  //   ...optionsChart.value,
-  //   xaxis: {
-  //     categories: categorias,
-  //   },
-  // }
-
   seriesChart.value = data
 
   await nextTick()
@@ -613,6 +647,11 @@ const tempoProjetoOptions = [
 
 // Tasks
 const openTaskViewModal = inject('openTaskViewModal')
+
+// Anexos
+function openNovoAnexo() {
+  modalAddAnexo.value.dialogRef.show()
+}
 
 // Handles
 async function handleGetChamado(id, filters) {
