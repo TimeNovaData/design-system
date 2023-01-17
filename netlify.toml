@@ -14,6 +14,11 @@
   must-revalidate'''
 
 [[headers]]
+  for = "/*"
+    [headers.values]
+    Access-Control-Allow-Origin = "*"
+
+[[headers]]
    for = "**/*.@(jpg|jpeg|gif|png|svg|webp|js|css|eot|otf|ttf|ttc|woff|woff2|font.css)"
   [headers.values]
   cache-control = '''
