@@ -33,7 +33,7 @@ import OBadge from 'src/components/Badge/OBadge.vue'
 import GLOBAL from 'src/utils/GLOBAL'
 
 defineProps({
-  nome: String,
+  nome: [Number, String],
   cor: String,
   type: {
     default: 'sm',

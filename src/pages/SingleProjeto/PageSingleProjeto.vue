@@ -6,7 +6,7 @@
         :projeto="projeto"
         ref="header"
         @updateSelect="handleChangeProjeto"
-        @anexoClick="modalAnexo.dialogRef.show()"
+        @anexoClick="handleShowAnexos"
       />
 
       <Transition name="fade" mode="out-in">
@@ -276,8 +276,8 @@
 
                   <q-td key="responsavel_task" :auto-width="false">
                     <OAvatar
-                      :nome="props.row.responsavel_task.get_full_name"
-                      :foto="props.row.responsavel_task.profile.foto"
+                      :nome="props.row.responsavel_task?.get_full_name"
+                      :foto="props.row.responsavel_task.profile?.foto"
                     />
                   </q-td>
 
@@ -367,7 +367,15 @@
           >Novo anexo</OButton
         >
       </div>
-      <AnexoItem ext="ai" />
+      <AnexoItem
+        v-for="anexo in anexosList"
+        :key="anexo.id"
+        :ext="anexo.anexo_thumb?.extensao?.replace('.', '')"
+        :thumb="anexo.anexo_thumb?.url || ''"
+        :link="anexo.anexo"
+        :size="anexo.anexo_tamanho"
+        :nome="anexo.anexo_nome"
+      />
     </section>
   </ModalSide>
 
@@ -439,7 +447,7 @@
     text="Adicionar Anexos"
     icon="svguse:/icons.svg#icon_attachment"
   >
-    <TaskCreateAttachmentCard
+    <!--  <TaskCreateAttachmentCard
       class="h-full flex-1"
       :server="{
         url: API_URL,
@@ -450,13 +458,24 @@
           headers: {
             Authorization: `Bearer ${TOKEN}`,
           },
-          // withCredentials: true,
           ondata: (formData) => {
             formData.append('projeto', pageID)
             return formData
           },
         },
+        revert: (uniqueFileId) => {
+          return {
+            url: URLS.anexoprojeto + uniqueFileId,
+            method: 'DELETE',
+            headers: {
+              Authorization: `Bearer ${TOKEN}`,
+            },
+          }
+        },
       }"
+    /> -->
+    <AttachmentFilepond
+      :server="{ url: URLS.anexoprojeto, key: 'projeto', id: pageID }"
     />
   </ModalCenter>
 </template>
@@ -501,10 +520,10 @@ import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import { columnsChamado, columnsTask } from './cols.js'
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
 import TaskCreateAttachmentCard from 'src/components/Task/TaskCreate/TaskCreateAttachmentCard.vue'
+import AttachmentFilepond from 'src/components/Attachment/AttachmentFilepond.vue'
+import { useAnexoStore } from 'src/stores/anexos/anexos.store'
 
 const { URLS } = api.defaults
-const API_URL = process.env.API_URL
-const TOKEN = Cookies.get('NDT_TOKEN')
 // Router
 const route = useRoute()
 const router = useRouter()
@@ -648,9 +667,21 @@ const tempoProjetoOptions = [
 // Tasks
 const openTaskViewModal = inject('openTaskViewModal')
 
-// Anexos
-function openNovoAnexo() {
+// Anexos ------------------------------
+const { getAnexos } = useAnexoStore()
+const anexosList = ref([])
+
+async function openNovoAnexo() {
   modalAddAnexo.value.dialogRef.show()
+}
+
+async function handleShowAnexos() {
+  anexosList.value = await getAnexos(
+    '&projeto__id=' + pageID.value,
+    false,
+    'projeto'
+  )
+  modalAnexo.value.dialogRef.show()
 }
 
 // Handles
@@ -681,9 +712,9 @@ async function requests() {
   await getTempoProjeto(pageID.value, filtros.value)
   await nextTick()
   populateChart(tempoProjeto.value)
-  await handleGetChamado(pageID.value)
+  await handleGetChamado(pageID.value + '&status=abertos')
   getAcessos('&projeto__id=' + pageID.value)
-  getTasks('&projeto__id=' + pageID.value)
+  getTasks('&status=abertas&projeto__id=' + pageID.value)
 }
 
 /*
@@ -693,12 +724,25 @@ async function requests() {
 */
 // Atualiza chamados ao alterar algo no modal
 emitter.on('chamadoAlterado', () =>
-  handleGetChamado(projeto.value.id, '&no_loading')
+  handleGetChamado(projeto.value.id, '&no_loading&status=abertos')
 )
 
 // Atualiza as tasks ao criar ou editar
-emitter.on('taskEdit', () => getTasks('&projeto__id=' + pageID.value))
-emitter.on('taskCreate', () => getTasks('&projeto__id=' + pageID.value))
+emitter.on('taskEdit', () =>
+  getTasks(`&projeto__id=${pageID.value}&status=abertas`)
+)
+emitter.on('taskCreate', () =>
+  getTasks(`&projeto__id=${pageID.value}&status=abertas`)
+)
+
+// atualiza os anexos ao enviar
+emitter.on(`filepond:projeto`, async () => {
+  anexosList.value = await getAnexos(
+    '&projeto__id=' + pageID.value,
+    false,
+    'projeto'
+  )
+})
 
 // Date
 const dataAtual = ref(date.formatDate(new Date(), 'YYYY/MM/DD'))
@@ -740,9 +784,9 @@ onUnmounted(() => {
 
 <style lang="sass" scoped>
 .container
-  max-width: 1448px
+  max-width: calc(1448px + 128px)
   margin: 0 auto
-  padding: 0 32px
+  padding: 0 64px
 
 .projeto-date
   box-shadow: initial

@@ -9,6 +9,7 @@
       @init="handleFilePondInit"
       v-bind="filePondConfig"
       :server="server"
+      @processfile="(obj) => $emit('processfile', obj)"
     />
   </q-card>
 </template>

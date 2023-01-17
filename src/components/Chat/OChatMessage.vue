@@ -18,12 +18,14 @@
       <span class="text-neutral-60 dark:text-white/40">{{
         data.data_amigavel
       }}</span>
+      <TagBase type="projeto" v-if="data.tipo_etapa" :nome="data.tipo_etapa" />
     </div>
   </div>
 </template>
 
 <script setup>
 import { inject } from 'vue'
+import TagBase from 'src/components/Tag/TagBase.vue'
 
 const props = defineProps({
   data: Object,
