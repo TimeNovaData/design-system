@@ -561,22 +561,22 @@ async function populateChart(tempoProjetos) {
 
   const categorias = tempoProjetos[0]?.datas.map((i) => i.data)
 
-  optionsChart.value = {
-    ...optionsChart.value,
-    xaxis: {
-      categories: categorias,
-    },
-  }
+  // optionsChart.value = {
+  //   ...optionsChart.value,
+  //   xaxis: {
+  //     categories: categorias,
+  //   },
+  // }
 
   seriesChart.value = data
 
   await nextTick()
   const chartTempo = chart.value
   // debugger
-  // chartTempo?.updateOptions({
-  //   series: seriesChart.value,
-  //   xaxis: { categories: categorias },
-  // })
+  chartTempo?.updateOptions({
+    series: seriesChart.value,
+    xaxis: { categories: categorias },
+  })
 }
 
 // Tempo Projeto
