@@ -1,21 +1,5 @@
 <template>
-  <OTable
-    v-show="rows.length"
-    :rows="rows"
-    :columns="columns"
-    v-model:pagination="pagination"
-    :filter="searchFilter"
-    class="px-16 py-8 dark:bg-d-neutral-20 visao-geral-table"
-    primary
-  >
-    <template v-slot:top>
-      <OTableHeaderBase
-        @update="updateModels"
-        :filter="searchFilter"
-        :rowsPerPage="pagination.rowsPerPage"
-      />
-    </template>
-
+  <OTableBase :rows="rows" :columns="columns" class="px-16 py-8">
     <template v-slot:body="props">
       <q-tr :props="props">
         <q-td key="projeto" :auto-width="false" class="!border-r w-1/2">
@@ -116,66 +100,7 @@
         </q-td>
       </q-tr>
     </template>
-
-    <template v-slot:bottom="slotProps">
-      <OTableFooterBase
-        downloadable
-        :rows="props.rows"
-        :columns="props.columns"
-        :slotProps="slotProps"
-        :pagination="pagination"
-        @update="(val) => updatePagination(val)"
-      />
-    </template>
-  </OTable>
-
-  <q-markup-table v-show="!rows.length" class="mt-20 px-16">
-    <thead>
-      <tr>
-        <th class="text-left" style="width: 150px">
-          <q-skeleton animation="blink" type="text" />
-        </th>
-        <th class="text-right">
-          <q-skeleton animation="blink" type="text" />
-        </th>
-        <th class="text-right">
-          <q-skeleton animation="blink" type="text" />
-        </th>
-        <th class="text-right">
-          <q-skeleton animation="blink" type="text" />
-        </th>
-        <th class="text-right">
-          <q-skeleton animation="blink" type="text" />
-        </th>
-        <th class="text-right">
-          <q-skeleton animation="blink" type="text" />
-        </th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <tr v-for="n in 5" :key="n">
-        <td class="text-left">
-          <q-skeleton animation="blink" type="text" width="85px" />
-        </td>
-        <td class="text-right">
-          <q-skeleton animation="blink" type="text" width="50px" />
-        </td>
-        <td class="text-right">
-          <q-skeleton animation="blink" type="text" width="35px" />
-        </td>
-        <td class="text-right">
-          <q-skeleton animation="blink" type="text" width="65px" />
-        </td>
-        <td class="text-right">
-          <q-skeleton animation="blink" type="text" width="25px" />
-        </td>
-        <td class="text-right">
-          <q-skeleton animation="blink" type="text" width="85px" />
-        </td>
-      </tr>
-    </tbody>
-  </q-markup-table>
+  </OTableBase>
 </template>
 
 <script setup>
@@ -184,9 +109,8 @@ import GLOBAL from 'src/utils/GLOBAL'
 import OTable from 'src/components/Table/OTable.vue'
 import OBadge from 'src/components/Badge/OBadge.vue'
 import OButton from 'src/components/Button/OButton.vue'
-import OTableHeaderBase from 'src/components/Table/OTableHeaderBase.vue'
-import OTableFooterBase from 'src/components/Table/OTableFooterBase.vue'
 import AvatarMultiple from 'src/components/Avatar/AvatarMultiple.vue'
+import OTableBase from 'src/components/Table/OTableBase.vue'
 
 const { returnRGB } = GLOBAL
 
@@ -197,42 +121,6 @@ const props = defineProps({
 
 const adminUrl = (id) =>
   `${process.env.BACKEND_URL}admin/control/caso/${id}/change/`
-
-const searchFilter = ref('')
-
-const pagination = ref({
-  sortBy: 'desc',
-  descending: false,
-  page: 1,
-  rowsPerPage: 10,
-})
-
-function updateModels(val) {
-  searchFilter.value = val.filter
-  pagination.value.rowsPerPage = val.rowsPerPage
-}
-
-function updatePagination(val) {
-  pagination.value = val
-}
 </script>
 
-<style lang="sass" scoped>
-.visao-geral-table
-  .q-chip :deep(.q-chip__content)
-    justify-content: center
-
-  :deep(.q-table__middle)
-    max-height: 37rem
-
-    thead
-      position: sticky
-      top: 0
-      background: rgb(var(--white))
-      z-index: 10
-
-.body--light
-  .visao-geral-table
-    :deep(.icon-opacity .q-icon)
-      color: #999ca4
-</style>
+<style lang="sass" scoped></style>

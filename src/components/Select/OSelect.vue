@@ -74,10 +74,10 @@ watch(
 function filterFn(val, update, abort) {
   update(() => {
     if (!val) return (options.value = stringOptions)
-    const needle = val.toLowerCase()
+    const needle = val?.toLowerCase()
     options.value = stringOptions.filter((v) => {
       const option = v[attrs['option-label']]
-      const have = option.toLowerCase().indexOf(needle) > -1
+      const have = option?.toLowerCase().indexOf(needle) > -1
       return have
     })
   })

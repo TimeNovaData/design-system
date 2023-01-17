@@ -1,5 +1,5 @@
 <template>
-  <div class="flex items-center gap-8">
+  <div class="flex items-center gap-8 flex-nowrap">
     <q-avatar
       :size="size"
       class="!bg-neutral-20 dark:!bg-white/10"

@@ -183,10 +183,222 @@
               text="Chamados"
             ></TextIcon>
             <!-- 🟢 CHAMADO LIST  -->
-            <ChamadoListTable
+            <!-- <ChamadoListTable
               @click:list-item="(id) => handleClickChamado(id)"
               :chamados-list="chamadosList"
-            />
+            /> -->
+            <OTableBase
+              :columns="columnsChamado"
+              :rows="chamadosList"
+              :footer="false"
+              :header="false"
+              f
+            >
+              <template #body="props">
+                <q-tr
+                  class="cursor-pointer"
+                  :props="props"
+                  @click="handleClickChamado(props.row.id)"
+                >
+                  <!--  -->
+                  <q-td key="chamado" class="w-1/2">
+                    <AvatarTextSubtext
+                      :titulo="props.row.titulo"
+                      :subtitle="props.row.user_criacao.nome"
+                      :foto="props.row.user_criacao.foto"
+                    />
+                  </q-td>
+
+                  <q-td key="data_criacao">
+                    <div class="text-paragraph-2 text-end">
+                      {{ GLOBAL.FData(props.row.data_criacao) }}
+                    </div>
+                  </q-td>
+
+                  <q-td key="data_desejada">
+                    <div class="text-paragraph-2 text-end">
+                      {{ GLOBAL.FData(props.row.data_desejada) }}
+                    </div>
+                  </q-td>
+
+                  <q-td key="data_atualizacao">
+                    <div class="text-paragraph-2 text-end">
+                      {{ GLOBAL.FData(props.row.data_atualizacao) }}
+                    </div>
+                  </q-td>
+
+                  <q-td key="anexo" class="!p-10">
+                    <div
+                      class="bg-neutral-100/10 w-full h-full justify-center flex text-center items-center rounded-generic dark:bg-white/10"
+                    >
+                      {{ props.row.anexo || '-' }}
+                    </div>
+                  </q-td>
+                  <!-- 
+
+                   -->
+                </q-tr>
+              </template>
+            </OTableBase>
+          </q-card>
+
+          <!-- 
+
+const oi = {
+  id: 252,
+  chamado: { id: 2, titulo: 'CREATE - READ 1' },
+  tag: [],
+  projeto: {
+    id: 4,
+    nome: '#aquipneus#',
+    cor: '#11D276',
+    tem_subprojetos: true,
+  },
+  sub_projeto: null,
+  tipo_task: {
+    id: 55,
+    tempo: '457.0',
+    nome: 'teste2',
+    tipo: '',
+    ferramenta: 15,
+    expertise: [1, 2, 23],
+  },
+  ordem: 3,
+  ordem_caso: 33,
+  titulo: 'Teste add Task2',
+  observacoes: null,
+  tempo_estimado: '01:00:00',
+  link: null,
+  entrega_data_desejada: '2021-09-01T15:01:00-03:00',
+  data_inicial_previsto: null,
+  data_conclusao: '2021-09-16',
+  responsavel_task: {
+    id: 2,
+    username: 'emanuel2',
+    get_full_name: 'emanuel morais',
+    profile: {
+      id: 7,
+      foto: 'http://localhost:8000/media/avatars/emanuel2/resized/100/arara-azul.jpg',
+    },
+  },
+  data_criacao: '2021-09-01T09:01:45.263417-03:00',
+  is_playing: true,
+  ultima_contagem: '2021-09-14T09:28:15.692999-03:00',
+  data_atualizacao: '2021-09-16T14:21:37.059435-03:00',
+  quantidade: 1,
+  usuario_criacao: {
+    id: 2,
+    username: 'emanuel2',
+    get_full_name: 'emanuel morais',
+    profile: {
+      id: 7,
+      foto: 'http://localhost:8000/media/avatars/emanuel2/resized/100/arara-azul.jpg',
+    },
+  },
+  usuario_atualizacao: 2,
+  status: 'Concluído',
+  tempo_total: '00:00:00',
+  data_final_previsto: null,
+  tempo_ao_vivo_formatado_hora_minuto_segundo: '1:23:22',
+}
+
+           -->
+          <!--⚡ TASKS -->
+          <q-card class="p-16 mt-32">
+            <TextIcon
+              class="text-title-4"
+              icon="svguse:/icons.svg#icon_tasks"
+              text="Tasks"
+            ></TextIcon>
+            <OTableBase
+              :columns="columnsTask"
+              :rows="tasks"
+              :footer="false"
+              :header="false"
+              f
+            >
+              <template #body="props">
+                <q-tr
+                  class="cursor-pointer"
+                  :props="props"
+                  @click="openTaskViewModal(props.row.id)"
+                >
+                  <q-td key="titulo" :auto-width="true" class="w-1/2">
+                    <AvatarTextSubtext
+                      :titulo="props.row.titulo"
+                      :subtitle="props.row.usuario_criacao.get_full_name"
+                      :foto="props.row.usuario_criacao.profile.foto"
+                    />
+                  </q-td>
+
+                  <q-td key="responsavel_task" :auto-width="false">
+                    <OAvatar
+                      :nome="props.row.responsavel_task.get_full_name"
+                      :foto="props.row.responsavel_task.profile.foto"
+                    />
+                  </q-td>
+
+                  <q-td key="chamado" :auto-width="false" class="!p-10">
+                    <div class="one-line w-full h-full">
+                      <div
+                        class="w-[100px] one-line bg-neutral-100/10 h-full justify-center flex text-center items-center rounded-generic dark:bg-white/10 align-middle"
+                      >
+                        {{ props.row?.chamado?.titulo || '-' }}
+                      </div>
+                    </div>
+                  </q-td>
+
+                  <q-td key="data_criacao" :auto-width="false">
+                    <div class="text-paragraph-2 text-end">
+                      {{ GLOBAL.FData(props.row.data_criacao) }}
+                    </div>
+                  </q-td>
+
+                  <q-td key="data_desejada" :auto-width="false">
+                    <div class="text-paragraph-2 text-end">
+                      {{ GLOBAL.FData(props.row.data_desejada) }}
+                    </div>
+                  </q-td>
+
+                  <q-td key="data_prevista" :auto-width="false">
+                    <div class="text-paragraph-2 text-end">
+                      {{ GLOBAL.FData(props.row.data_prevista) }}
+                    </div>
+                  </q-td>
+
+                  <q-td key="tempo_decorrido" :auto-width="false">
+                    <div class="text-paragraph-2 text-end">
+                      {{ GLOBAL.FTime(props.row.tempo_decorrido) }}
+                    </div>
+                  </q-td>
+
+                  <!--  -->
+                  <!--   
+
+
+                  <q-td key="data_desejada" :auto-width="false">
+                    <div class="text-paragraph-2 text-end">
+                      {{ GLOBAL.FData(props.row.data_desejada) }}
+                    </div>
+                  </q-td>
+
+                  <q-td key="data_atualizacao" :auto-width="false">
+                    <div class="text-paragraph-2 text-end">
+                      {{ GLOBAL.FData(props.row.data_atualizacao) }}
+                    </div>
+                  </q-td>
+
+                  <q-td key="anexo" :auto-width="false" class="!p-10">
+                    <div
+                      class="bg-neutral-100/10 w-full h-full justify-center flex text-center items-center rounded-generic dark:bg-white/10"
+                    >
+                      {{ props.row.anexo || '-' }}
+                    </div>
+                  </q-td>
+                 -->
+                </q-tr>
+              </template>
+            </OTableBase>
           </q-card>
         </div>
         <div v-else>
@@ -203,6 +415,7 @@
         </div></Transition
       >
     </div>
+    <q-space class="h-48" />
   </q-scroll-area>
 
   <!-- Modal Acompnhamentos -->
@@ -317,7 +530,6 @@ import stackedChartBar from 'src/utils/chart/stackedChartBar'
 import { date } from 'quasar'
 import OChatBox from 'src/components/Chat/OChatBox.vue'
 import { api } from 'src/boot/axios'
-import OAvatar from 'src/components/Avatar/OAvatar.vue'
 import useComments from 'src/composables/useComments'
 import AnexoIcon from 'src/components/Anexo/AnexoIcon.vue'
 import AnexoItem from 'src/components/Anexo/AnexoItem.vue'
@@ -325,12 +537,16 @@ import AcessoItem from 'src/components/Acesso/AcessoItem.vue'
 import GLOBAL from 'src/utils/GLOBAL'
 import emitter from 'src/boot/emitter'
 import OSelect from 'src/components/Select/OSelect.vue'
-import ChamadoListTable from 'src/components/Chamado/ChamadoListTable.vue'
 import SkeletonChart from 'src/components/Skeleton/SkeletonChart.vue'
-import OBadge from 'src/components/Badge/OBadge.vue'
 import TagBase from 'src/components/Tag/TagBase.vue'
-const { URLS } = api.defaults
+import OTableBase from 'src/components/Table/OTableBase.vue'
+import AvatarTextSubtext from 'src/components/Avatar/AvatarTextSubtext.vue'
+import { useTaskStore } from 'src/stores/tasks/tasks.store'
+import { columnsChamado, columnsTask } from './cols.js'
+import AvatarSingle from 'src/components/Avatar/AvatarSingle.vue'
+import OAvatar from 'src/components/Avatar/OAvatar.vue'
 
+const { URLS } = api.defaults
 // Router
 const route = useRoute()
 const router = useRouter()
@@ -342,6 +558,8 @@ const { projeto, tempoProjeto, isLoadingTempoProjeto } = storeToRefs(
 )
 const { getAcessos } = useAcessoStore()
 const { acessos } = storeToRefs(useAcessoStore())
+const { getTasks } = useTaskStore()
+const { tasks } = storeToRefs(useTaskStore())
 
 // ID
 const pageID = ref(null)
@@ -365,8 +583,8 @@ const {
 
 watch(
   () => projeto,
-  (v) => setIDComments(v.value.id)
-  // { deep: true }
+  (v) => setIDComments(v.value.id),
+  { deep: true }
 )
 
 // Chamado
@@ -465,6 +683,9 @@ const tempoProjetoOptions = [
   },
 ]
 
+// Tasks
+const openTaskViewModal = inject('openTaskViewModal')
+
 // Handles
 async function handleGetChamado(id, filters) {
   const req = await getChamados(id, filters)
@@ -495,17 +716,22 @@ async function requests() {
   populateChart(tempoProjeto.value, chart)
   await handleGetChamado(pageID.value)
   getAcessos('&projeto__id=' + pageID.value)
+  getTasks('&projeto__id=' + pageID.value)
 }
 
-/* 
+/*
 
 
 
 */
 // Atualiza chamados ao alterar algo no modal
-emitter.on('chamadoAlterado', () => {
+emitter.on('chamadoAlterado', () =>
   handleGetChamado(projeto.value.id, '&no_loading')
-})
+)
+
+// Atualiza as tasks ao criar ou editar
+emitter.on('taskEdit', () => getTasks('&projeto__id=' + pageID.value))
+emitter.on('taskCreate', () => getTasks('&projeto__id=' + pageID.value))
 
 // Date
 const dataAtual = ref(date.formatDate(new Date(), 'YYYY/MM/DD'))
