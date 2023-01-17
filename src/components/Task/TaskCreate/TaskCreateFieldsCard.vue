@@ -38,6 +38,26 @@
     />
 
     <OSelect
+      :disable="!chamados?.length"
+      label="Chamado"
+      size="lg"
+      class="bg-white dark:!bg-transparent"
+      placeholder="Pode deixar vazio"
+      :options="chamados"
+      v-model="model.chamado"
+      @update:model-value="(value) => (model.chamado = value)"
+      option-value="id"
+      :loading="chamadoLoading"
+      option-label="titulo"
+    >
+      <template #selected-item="{ itemProps, opt }">
+        <q-item v-bind="itemProps" class="translate-y-2 p-0 min-h-0">
+          <p>{{ opt.titulo }}</p>
+        </q-item>
+      </template>
+    </OSelect>
+
+    <OSelect
       use-input
       label="Grupo / Tipo"
       size="lg"
@@ -162,6 +182,8 @@ import OSelectAvatar from 'src/components/Select/OSelectAvatar.vue'
 import OSelect from 'src/components/Select/OSelect.vue'
 import OInputNumber from 'src/components/Input/OInputNumber.vue'
 import OButton from 'src/components/Button/OButton.vue'
+import { useChamadoStore } from 'src/stores/chamados/chamados.store'
+import { storeToRefs } from 'pinia'
 
 const { FTime, FData, FTimeLong } = GLOBAL
 const emit = defineEmits(['update'])
@@ -210,7 +232,23 @@ const model = ref({
   entrega_data_desejada_data: setDeliveryDateModel.value,
   entrega_data_desejada_hora: setDeliveryTimeModel.value,
   tempo_estimado: setTimeModel.value || '00:00',
+  chamado: props.taskValues?.chamado || {},
 })
+
+// Chamado
+const chamados = ref([])
+const chamadoLoading = ref(false)
+const { getChamado } = useChamadoStore()
+
+watch(
+  () => model.value.projeto,
+  async (v) => {
+    chamadoLoading.value = true
+    chamados.value = []
+    chamados.value = await getChamado(`&projeto__id=${v.id}`, false)
+    chamadoLoading.value = false
+  }
+)
 
 // Formatando os dados da model para enviar pro back
 watch(

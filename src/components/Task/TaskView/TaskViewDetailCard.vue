@@ -86,6 +86,11 @@
         />
       </div>
     </div>
+    <hr />
+    <div class="flex flex-col py-20" v-if="details?.chamado">
+      <span class="text-caps-3 dark:text-white/40">CHAMADO</span>
+      <p class="text-paragraph-1 two-lines">{{ details.chamado.titulo }}</p>
+    </div>
   </q-card>
 </template>
 

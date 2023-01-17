@@ -2,6 +2,7 @@
   <OSelect
     v-model="model"
     class="select-avatar"
+    :class="{ 'have-model': model }"
     option-value="id"
     option-label="nome"
     ref="componentRef"
@@ -85,4 +86,11 @@ const componentRef = ref(null)
 defineExpose({ componentRef })
 </script>
 
-<style lang="sass" scoped></style>
+<style lang="sass" scoped>
+.select-avatar
+  :deep(.q-placeholder)
+    opacity: 0 !important
+  &.have-model
+    :deep(.q-placeholder)
+      opacity: 1 !important
+</style>

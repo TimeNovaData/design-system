@@ -10,7 +10,7 @@ export const useChamadoStore = defineStore('chamadoStore', () => {
   const chamados = ref(false)
   const isLoading = ref(false)
 
-  async function getChamado(filters = '') {
+  async function getChamado(filters = '', set = true) {
     isLoading.value = true
 
     const { data, error } = await useAxios(
@@ -20,7 +20,7 @@ export const useChamadoStore = defineStore('chamadoStore', () => {
     )
 
     try {
-      setChamado(data.value)
+      set && setChamado(data.value)
       return data.value
     } catch (e) {
       return error
@@ -58,6 +58,7 @@ export const useChamadoStore = defineStore('chamadoStore', () => {
     chamados,
     getChamado,
     createChamado,
+    setChamado,
     isLoading,
   }
 })

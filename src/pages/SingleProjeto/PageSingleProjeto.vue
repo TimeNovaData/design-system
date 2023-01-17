@@ -339,11 +339,13 @@ const oi = {
                   </q-td>
 
                   <q-td key="chamado" :auto-width="false" class="!p-10">
-                    <div class="one-line w-full h-full">
+                    <div class="h-full">
                       <div
-                        class="w-[100px] one-line bg-neutral-100/10 h-full justify-center flex text-center items-center rounded-generic dark:bg-white/10 align-middle"
+                        class="bg-neutral-100/10 h-full w-[150px] rounded-generic dark:bg-white/10 align-middle p-4 py-6"
                       >
-                        {{ props.row?.chamado?.titulo || '-' }}
+                        <p class="one-line">
+                          {{ props.row?.chamado?.titulo || '-' }}
+                        </p>
                       </div>
                     </div>
                   </q-td>

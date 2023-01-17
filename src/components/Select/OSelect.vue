@@ -1,6 +1,7 @@
 <template>
   <q-select
     ref="componentRef"
+    class="Oselect"
     :class="'size-' + attrs.size"
     popup-content-class="select-menu"
     input-debounce="300"
@@ -85,6 +86,15 @@ function filterFn(val, update, abort) {
 
 defineExpose({ componentRef })
 </script>
+
+<style lang="sass" scoped>
+.Oselect
+  :deep(.q-placeholder)
+    opacity: 0 !important
+  &.have-model
+    :deep(.q-placeholder)
+      opacity: 1 !important
+</style>
 
 <style lang="sass">
 // .q-item
