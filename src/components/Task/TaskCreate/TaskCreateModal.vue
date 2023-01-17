@@ -69,9 +69,10 @@
                 <q-icon size="1.5rem" name="svguse:/icons.svg#icon_chat" />
                 <p class="text-paragraph-1">Comentários</p>
                 <OCounter
+                  v-if="unref(taskModalCommentObj?.comments)?.results.length"
                   class="!w-20 !h-20 bg-neutral-100/10 text-neutral-100 dark:bg-white/10 dark:text-white"
                 >
-                  {{ taskModalCommentObj?.comments.length }}
+                  {{ unref(taskModalCommentObj?.comments)?.results.length }}
                 </OCounter>
               </template>
             </q-tab>
@@ -100,14 +101,16 @@
                 (val) => handleUpdate({ ...newTaskScope, observacoes: val })
               "
             />
-            <OChatBox
-              v-if="taskModalObj"
-              name="chat"
-              :comments="taskModalCommentObj?.comments"
-              :sendComment="taskModalCommentObj?.sendComment"
-              :getComments="taskModalCommentObj?.getComments"
-              :isLoading="taskModalCommentObj?.isLoading"
-            />
+            <div name="chat">
+              <OChatBox
+                v-if="taskModalObj"
+                :comments="taskModalCommentObj?.comments"
+                :sendComment="taskModalCommentObj?.sendComment"
+                :getComments="taskModalCommentObj?.getComments"
+                :isLoading="taskModalCommentObj?.isLoading"
+              />
+            </div>
+
             <TaskCreateAttachmentCard name="attach" />
           </q-tab-panels>
         </div>
@@ -145,7 +148,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed, unref } from 'vue'
 import { useDialogPluginComponent } from 'quasar'
 import OButton from 'src/components/Button/OButton.vue'
 import OChatBox from 'src/components/Chat/OChatBox.vue'

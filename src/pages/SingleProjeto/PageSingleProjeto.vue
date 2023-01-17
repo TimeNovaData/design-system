@@ -163,7 +163,10 @@
                 :canUpdate="!modalChat.dialogState"
               >
                 <template #top>
-                  <p class="text-center mx-auto opacity-40 text-paragraph-3">
+                  <p
+                    class="text-center mx-auto opacity-40 text-paragraph-3"
+                    v-if="comments?.results?.length"
+                  >
                     Mostrando ultimas 10 mensagens
                   </p>
                 </template>
@@ -760,8 +763,8 @@ async function created() {
 created()
 
 onMounted(() => {
-  modalAcessos.value.dialogRef.show()
-  modalContatos.value.dialogRef.show()
+  // modalAcessos.value.dialogRef.show()
+  // modalContatos.value.dialogRef.show()
   if (routeIsZero) {
     header.value.show()
   }

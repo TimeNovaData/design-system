@@ -61,10 +61,10 @@
                 ></q-icon>
                 <p class="text-paragraph-1">Comentários</p>
                 <OCounter
-                  v-if="taskModalCommentObj?.comments.length"
+                  v-if="unref(taskModalCommentObj?.comments)?.results.length"
                   class="!w-20 !h-20 bg-neutral-100/10 text-neutral-100 dark:bg-white/10 dark:text-white"
                 >
-                  {{ taskModalCommentObj.comments.length }}
+                  {{ unref(taskModalCommentObj?.comments)?.results.length }}
                 </OCounter>
               </template>
             </q-tab>
@@ -97,14 +97,16 @@
               :description="taskModalObj.observacoes"
             />
 
-            <OChatBox
-              name="chat"
-              :comments="taskModalCommentObj?.comments"
-              :sendComment="taskModalCommentObj?.sendComment"
-              :getComments="taskModalCommentObj?.getComments"
-              :isLoading="taskModalCommentObj?.isLoading"
-              tipo="task"
-            />
+            <div name="chat">
+              <OChatBox
+                :comments="taskModalCommentObj?.comments"
+                :sendComment="taskModalCommentObj?.sendComment"
+                :getComments="taskModalCommentObj?.getComments"
+                :isLoading="taskModalCommentObj?.isLoading"
+                tipo="task"
+              />
+            </div>
+
             <TaskViewAttachmentCard name="anexos" :anexos="taskModalAnexos" />
           </q-tab-panels>
         </div>
@@ -132,7 +134,7 @@
 </template>
 
 <script setup>
-import { ref, inject } from 'vue'
+import { ref, inject, watch, unref } from 'vue'
 import { useDialogPluginComponent } from 'quasar'
 import { storeToRefs } from 'pinia'
 import { useModalStore } from 'src/stores/modal/modal.store'

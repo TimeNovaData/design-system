@@ -4,14 +4,14 @@
     class="q-chat p-16 flex flex-col bg-neutral-20 dark:bg-d-neutral-10 flex-1 flex-nowrap h-full"
   >
     <div
-      v-if="!comments.results.length && isLoading"
+      v-if="!comentariosResult?.length && isLoading"
       class="flex place-content-center h-full flex-1"
     >
       <q-spinner color="primary" class="shrink-0" size="48px" />
     </div>
 
     <div
-      v-else-if="!comments.results.length"
+      v-else-if="!comentariosResult?.length"
       class="flex place-content-center h-full flex-1"
     >
       <div class="flex flex-col gap-6 opacity-40">
@@ -19,30 +19,28 @@
         <p>Sem mensagens no momento</p>
       </div>
     </div>
-
     <q-scroll-area
-      v-else
       @scroll="handleScroll"
       class="flex flex-col gap-8 flex-1 pr-10"
     >
       <OChatMessage
-        v-for="data in comments.results"
+        v-for="data in comentariosResult"
         :key="data.id"
         :data="data"
       />
-      <q-page-sticky
-        position="bottom-left"
-        :offset="[0, 0]"
-        v-show="scroll < 0.88 && scroll !== false"
-        @click="scrollChatToBottom(true)"
-      >
-        <OButton
-          secondary
-          round
-          icon="arrow_forward"
-          class="rotate-90 !p-0 !h-32 !w-32 !min-w-0 !min-h-0 bg-white hover:!bg-primary-pure hover:!text-white"
-        />
-      </q-page-sticky>
+      <!-- <q-page-sticky
+          position="bottom-left"
+          :offset="[0, 0]"
+          v-show="scroll < 0.88 && scroll !== false"
+          @click="scrollChatToBottom(true)"
+        >
+          <OButton
+            secondary
+            round
+            icon="arrow_forward"
+            class="rotate-90 !p-0 !h-32 !w-32 !min-w-0 !min-h-0 bg-white hover:!bg-primary-pure hover:!text-white"
+          />
+        </q-page-sticky> -->
       <slot name="top"></slot>
     </q-scroll-area>
 
@@ -68,11 +66,21 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted, watch, useSlots } from 'vue'
+import {
+  ref,
+  onMounted,
+  onUnmounted,
+  watch,
+  useSlots,
+  computed,
+  unref,
+  nextTick,
+} from 'vue'
 import OButton from 'src/components/Button/OButton.vue'
 import OInput from 'src/components/Input/OInput.vue'
 import OChatMessage from 'src/components/Chat/OChatMessage.vue'
 import { scroll as qScroll } from 'quasar'
+import { deepUnref } from 'vue-deepunref'
 // const { getScrollHeight, getVerticalScrollPosition, getScrollTarget } = scroll
 
 const cardChatBox = ref(null)
@@ -97,13 +105,16 @@ const props = defineProps({
 })
 
 const scroll = ref(false)
+const comentariosResult = ref(unref(props.comments)?.results)
 
 watch(
-  () => props.comments.results,
-  () => {
+  () => props.comments,
+  async (v) => {
+    comentariosResult.value = unref(v)?.results
     chatContainer = cardChatBox.value.$el.querySelector(
       '.q-scrollarea__container'
     )
+    await nextTick()
     scrollChatToBottom()
   },
   { deep: true, flush: 'post' }
@@ -141,7 +152,7 @@ async function updateChatInterval(container) {
     '.q-scrollarea__container'
   )
 
-  if (props.canUpdate) {
+  if (props.canUpdate && props.getComments) {
     const newComments = await props.getComments(props.tipo, props.filters)
     // const lastMessage = container.querySelector('.o-chat-message:last-child')
     // const el = getScrollTarget(container)
@@ -162,7 +173,6 @@ onMounted(() => {
 
   updateChatInterval(chatContainer)
   scrollChatToBottom()
-  window._big('chat montou')
 })
 
 onUnmounted(() => {
