@@ -544,7 +544,7 @@ const optionsChart = ref({
         fontFamily: 'Inter',
       },
       formatter: function (value) {
-        return value ? value.slice(0, -5) : value
+        return value ? String(value).slice(0, -5) : value
       },
     },
   },
@@ -573,10 +573,12 @@ async function populateChart(tempoProjetos) {
   await nextTick()
   const chartTempo = chart.value
   // debugger
-  chartTempo?.updateOptions({
-    series: seriesChart.value,
-    xaxis: { categories: categorias },
-  })
+  if (chartTempo) {
+    chartTempo.updateOptions({
+      series: data,
+      xaxis: { categories: categorias },
+    })
+  }
 }
 
 // Tempo Projeto
@@ -586,6 +588,7 @@ async function changeTempoProjetoPor() {
   tempoProjeto.value = []
   await nextTick()
   await getTempoProjeto(pageID.value, filtros.value)
+  populateChart(tempoProjeto.value)
 }
 
 const tempoProjetoPor = ref({
@@ -638,7 +641,7 @@ async function requests() {
   await getProjeto(pageID.value)
   await getTempoProjeto(pageID.value, filtros.value)
   await nextTick()
-  populateChart(tempoProjeto.value, chart)
+  populateChart(tempoProjeto.value)
   await handleGetChamado(pageID.value)
   getAcessos('&projeto__id=' + pageID.value)
   getTasks('&projeto__id=' + pageID.value)

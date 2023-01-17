@@ -52,7 +52,7 @@ export const useProjetoStore = defineStore('projetoStore', () => {
       const { data } = await api.get(
         URLS.projeto + id + '/tempo_projeto/?x=' + filters
       )
-      window._red('dataaaaaaaa')
+      window._red('getTempoProjeto')
       console.log(data)
       setTempoProjeto(data)
       return data
