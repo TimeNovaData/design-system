@@ -3,7 +3,6 @@
     <FilePond
       name="attachments"
       ref="pond"
-      acceptedFileTypes="image/jpeg, image/png"
       :files="myFiles"
       :allow-multiple="true"
       @init="handleFilePondInit"

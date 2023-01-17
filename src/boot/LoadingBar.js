@@ -9,6 +9,7 @@ function logURLS(url) {
     patch: '_silver',
     get: '_green',
     post: '_yellow',
+    delete: '_red',
   }
 
   const type = color[method] ? color[method] : '_logsimple'

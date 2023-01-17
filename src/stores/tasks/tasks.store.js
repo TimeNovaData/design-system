@@ -26,11 +26,11 @@ export const useTaskStore = defineStore('taskstore', () => {
     )
   )
 
-  async function getTasks(filtro = '') {
+  async function getTasks(filtro = '', set = true) {
     try {
       const { data } = await api.get(URLS.task + '?x=' + filtro + '&no_loading')
-      setTasksChamado(data.results)
-      setTasks(data.results)
+      set && setTasksChamado(data.results)
+      set && setTasks(data.results)
       return data.results
     } catch (e) {
       console.log(e)

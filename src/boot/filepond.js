@@ -1,14 +1,20 @@
 import { boot } from 'quasar/wrappers'
 
 // Import Vue FilePond
+
 import vueFilePond from 'vue-filepond'
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 
 // Import FilePond styles
 import 'filepond/dist/filepond.min.css'
+// import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 
 // Create component
-export const FilePond = vueFilePond(FilePondPluginFileValidateType)
+export const FilePond = vueFilePond(
+  FilePondPluginFileValidateType
+  // FilePondPluginImagePreview
+)
 
 // Settings
 const labelTemplate = `
@@ -40,7 +46,7 @@ const filePondConfig = {
   imagePreviewHeight: 160,
   allowImageEdit: true,
   imageEditAllowEdit: true,
-
+  labelTapToUndo: 'Toque para remover',
   labelFileTypeNotAllowed: 'Tipo de arquivo não é suportado',
   fileValidateTypeLabelExpectedTypes: 'Espera {allButLastType} ou {lastType}',
   labelFileProcessingError: 'Erro durante o upload',

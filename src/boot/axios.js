@@ -63,6 +63,11 @@ async function getToken(error) {
 
 api.interceptors.response.use(undefined, async (error) => await getToken(error))
 
+axios.interceptors.response.use(
+  undefined,
+  async (error) => await getToken(error)
+)
+
 // Add a request interceptor
 api.interceptors.request.use(
   function (config) {
