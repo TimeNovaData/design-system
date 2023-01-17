@@ -33,7 +33,6 @@
       >
         <div class="flex flex-col gap-16">
           <TaskViewDetailCard :details="taskModalObj" />
-          <TaskViewAttachmentCard :anexos="taskModalAnexos" />
         </div>
 
         <div class="flex flex-col">
@@ -69,6 +68,27 @@
                 </OCounter>
               </template>
             </q-tab>
+
+            <q-tab class="!flex-none md:!flex-1" name="anexos">
+              <template
+                class="inline-flex items-center gap-8 text-neutral-70 dark:text-white/70"
+                :class="{
+                  'text-neutral-100 dark:!text-white': tabs == 'anexos',
+                }"
+              >
+                <q-icon
+                  size="1.5rem"
+                  name="svguse:/icons.svg#icon_attach"
+                ></q-icon>
+                <p class="text-paragraph-1">Anexos</p>
+                <OCounter
+                  v-if="taskModalAnexos?.length"
+                  class="!w-20 !h-20 bg-neutral-100/10 text-neutral-100 dark:bg-white/10 dark:text-white"
+                >
+                  {{ taskModalAnexos?.length }}
+                </OCounter>
+              </template>
+            </q-tab>
           </q-tabs>
 
           <q-tab-panels v-model="tabs" animated swipeable class="flex-1">
@@ -85,6 +105,7 @@
               :isLoading="taskModalCommentObj?.isLoading"
               tipo="task"
             />
+            <TaskViewAttachmentCard name="anexos" :anexos="taskModalAnexos" />
           </q-tab-panels>
         </div>
       </section>

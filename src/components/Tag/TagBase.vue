@@ -50,7 +50,6 @@ defineProps({
 .tag-base,
 .tag-base-projeto
   transition:  all .3s ease
-  *
   .tag-base,
   .tag-base-projeto
     transition:  all .3s ease

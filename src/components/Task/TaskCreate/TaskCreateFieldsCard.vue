@@ -38,7 +38,7 @@
     />
 
     <OSelect
-      :disable="!chamados?.length"
+      :disable="!model.chamado"
       label="Chamado"
       size="lg"
       class="bg-white dark:!bg-transparent"
@@ -240,13 +240,17 @@ const chamados = ref([])
 const chamadoLoading = ref(false)
 const { getChamado } = useChamadoStore()
 
+async function setandGetChamados(v) {
+  chamados.value = []
+  chamadoLoading.value = true
+  chamados.value = await getChamado(`&projeto__id=${v.id}&no_loading`, false)
+  chamadoLoading.value = false
+}
 watch(
   () => model.value.projeto,
   async (v) => {
-    chamadoLoading.value = true
-    chamados.value = []
-    chamados.value = await getChamado(`&projeto__id=${v.id}`, false)
-    chamadoLoading.value = false
+    model.value.chamado = {}
+    setandGetChamados(v)
   }
 )
 
@@ -298,6 +302,9 @@ function updateProjectSelect(val) {
 }
 
 setSubProjectList()
+onMounted(() => {
+  if (model.value.projeto) setandGetChamados(model.value.projeto)
+})
 
 defineExpose({ form })
 </script>
