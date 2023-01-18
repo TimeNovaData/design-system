@@ -11,17 +11,6 @@
     :popup-content-class="popupClass"
     v-bind="attrs"
   >
-    <!-- 
-     {
-                "id": 2,
-                "username": "emanuel2",
-                "get_full_name": "emanuel morais",
-                "profile": {
-                    "id": 7,
-                    "foto": "http://localhost:8000/media/avatars/emanuel2/resized/100/arara-azul.jpg"
-                }
-            }
-   -->
     <template #option="{ itemProps, opt }">
       <q-item v-bind="itemProps" class="px-4" :key="opt.id">
         <OAvatar
@@ -34,7 +23,6 @@
 
     <template #selected-item="{ itemProps, opt }">
       <q-item v-bind="itemProps" class="translate-y-2 p-0 min-h-0">
-        {{ itemProps }}
         <OAvatar
           v-show="opt[nomeKey]"
           classAvatar="!w-[0.74em] !h-[0.74em]"
@@ -75,7 +63,8 @@ const props = defineProps({
 
 watch(
   () => props.modelValue,
-  (v) => (model.value = v)
+  (v) => (model.value = v),
+  { deep: true }
 )
 
 const model = ref(props.modelValue)

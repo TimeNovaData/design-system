@@ -2,15 +2,30 @@
   <OTableBase :rows="rows" :columns="columns" class="px-16 py-8">
     <template v-slot:body="props">
       <q-tr :props="props">
-        <q-td key="projeto" :auto-width="false" class="!border-r w-1/2">
+        <q-td
+          key="projeto"
+          :auto-width="false"
+          class="!border-r w-1/2 cursor-pointer"
+          @click="$emit('click:acompanhamento', props.row.id)"
+        >
           {{ props.row.projeto }}
         </q-td>
 
-        <q-td key="cliente" :auto-width="false" class="!border-r w-1/2">
+        <q-td
+          key="cliente"
+          :auto-width="false"
+          class="!border-r w-1/2 cursor-pointer"
+          @click="$emit('click:acompanhamento', props.row.id)"
+        >
           {{ props.row.cliente }}
         </q-td>
 
-        <q-td key="responsaveis" :auto-width="false" class="px-6 !border-r">
+        <q-td
+          key="responsaveis"
+          :auto-width="false"
+          class="px-6 !border-r cursor-pointer"
+          @click="$emit('click:acompanhamento', props.row.id)"
+        >
           <div class="grid h-full items-center relative">
             <AvatarMultiple
               v-if="props.row.responsaveis"
@@ -21,9 +36,10 @@
         </q-td>
 
         <q-td
+          @click="$emit('click:acompanhamento', props.row.id)"
           key="responsaveis_atendimento"
           :auto-width="false"
-          class="!border-r"
+          class="!border-r cursor-pointer"
         >
           <div class="inline-flex items-center h-full gap-6">
             <div class="grid h-full items-center relative">
@@ -39,7 +55,8 @@
         <q-td
           key="data_entrega"
           :auto-width="false"
-          class="text-right !border-r"
+          class="text-right !border-r cursor-pointer"
+          @click="$emit('click:acompanhamento', props.row.id)"
         >
           {{ props.row.data_entrega }}
         </q-td>
@@ -47,12 +64,18 @@
         <q-td
           key="ultimo_acompanhamento"
           :auto-width="false"
-          class="text-right !border-r"
+          class="text-right !border-r cursor-pointer"
+          @click="$emit('click:acompanhamento', props.row.id)"
         >
           {{ props.row.ultimo_acompanhamento }}
         </q-td>
 
-        <q-td key="status_andamento" :auto-width="false" class="!border-r">
+        <q-td
+          key="status_andamento"
+          :auto-width="false"
+          class="!border-r cursor-pointer"
+          @click="$emit('click:acompanhamento', props.row.id)"
+        >
           <OBadge
             size="lg"
             :color="returnRGB(props.row.status_andamento.cor)"
@@ -66,14 +89,16 @@
         </q-td>
 
         <q-td
+          @click="$emit('click:acompanhamento', props.row.id)"
           key="chamado_pendentes"
           :auto-width="false"
-          class="text-right !border-r w-96"
+          class="text-right !border-r w-96 cursor-pointer"
         >
           {{ props.row.chamado_pendentes }}
         </q-td>
 
         <q-td
+          @click="$emit('click:acompanhamento', props.row.id)"
           key="tasks_pendentes"
           :auto-width="false"
           class="text-right !border-r w-96"
@@ -118,6 +143,8 @@ const props = defineProps({
   rows: Array,
   columns: Array,
 })
+
+defineEmits(['click:acompanhamento'])
 
 const adminUrl = (id) =>
   `${process.env.BACKEND_URL}admin/control/caso/${id}/change/`

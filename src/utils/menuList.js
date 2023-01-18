@@ -20,6 +20,19 @@ const menuList = [
     icon: 'timelapse',
     href: '/consumo_horas',
   },
+  {
+    title: 'Visão Geral',
+    nivel: 0,
+    icon: 'monitor_heart',
+    href: '/visao_geral',
+  },
+
+  {
+    title: 'Single Projeto',
+    nivel: 0,
+    icon: 'web',
+    href: '/projeto',
+  },
 
   // {
   //   title: 'Financeiro',
@@ -108,22 +121,10 @@ if (dev)
     /* temporario */
 
     {
-      title: 'Single Projeto',
-      nivel: 0,
-      icon: 'web',
-      href: '/projeto',
-    },
-    {
       title: 'Single Colaborador',
       nivel: 0,
       icon: 'emoji_people',
       href: '/colaborador/user',
-    },
-    {
-      title: 'Visão Geral',
-      nivel: 0,
-      icon: 'monitor_heart',
-      href: '/visao_geral',
     }
   )
 

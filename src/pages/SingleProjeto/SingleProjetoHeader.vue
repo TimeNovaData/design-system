@@ -52,8 +52,11 @@
                 :selectProps="{
                   clearable: false,
                   loading: !projetos.length,
+                  nomeKey: 'nome_completo',
                 }"
                 ref="itemEditableSelect"
+                @clear:select="handleClear"
+                :clearActive="false"
               ></KanbanItemEditableSelect>
             </div>
           </div>
@@ -90,9 +93,11 @@
                 size="lg"
                 square
                 color="var(--alert-success)"
-                v-if="projeto.atendimento"
+                v-if="projeto.id"
               >
-                <template v-slot:content>{{ FData(projeto) }}</template>
+                <template v-slot:content>{{
+                  FData(projeto.fim_contrato)
+                }}</template>
               </OBadge>
               <q-skeleton v-else type="rect" height="24px" width="100%" />
             </div>
@@ -117,7 +122,7 @@
       </div>
 
       <div
-        class="flex items-center gap-6 ml-auto flex-nowrap w-full !mt-64 h-max"
+        class="flex items-end gap-6 ml-auto flex-nowrap w-full !mt-[8.43rem] h-max justify-end"
         :class="{ 'pointer-events-none': !projeto.id }"
       >
         <OButton
@@ -125,6 +130,8 @@
           size="md"
           secondary
           icon="svguse:/icons.svg#icon_paper"
+          @click="$emit('escopoClick')"
+          icon-size="1.25rem"
         >
           Escopo</OButton
         >
@@ -132,9 +139,15 @@
           class="dark:!bg-white/10 dark:shadow-[initial] dark:!border-0 !h-40 btn-header bg-white"
           size="md"
           secondary
+          icon="svguse:/icons.svg#icon_docs"
+          @click="$emit('briefingClick')"
+          icon-size="1.25rem"
         >
           Briefing</OButton
         >
+        <hr
+          class="w-1 h-24 my-auto mx-4 bg-neutral-100/10 dark:bg-white/10 border-[0]"
+        />
         <OButton
           class="dark:!bg-white/10 dark:shadow-[initial] dark:!border-0 !h-40 btn-header bg-white"
           size="md"
@@ -148,12 +161,22 @@
         <OButton
           class="dark:!bg-white/10 dark:shadow-[initial] dark:!border-0 !h-40 btn-header bg-white"
           icon-size="1.25rem"
+          icon="svguse:/icons.svg#icon_cadeado"
+          size="md"
+          secondary
+          @click="$emit('acessosClick')"
+        >
+          <q-tooltip>Acessos</q-tooltip>
+        </OButton>
+        <OButton
+          class="dark:!bg-white/10 dark:shadow-[initial] dark:!border-0 !h-40 btn-header bg-white"
+          icon-size="1.25rem"
           icon="svguse:/icons.svg#icon_users"
           size="md"
           secondary
-        >
-          Contatos</OButton
-        >
+          @click="$emit('contatosClick')"
+          ><q-tooltip>Contatos</q-tooltip>
+        </OButton>
       </div>
     </div>
   </header>
@@ -162,6 +185,10 @@
     :projeto="projeto"
     @updateSelect="(v) => $emit('updateSelect', v)"
     @anexoClick="$emit('anexoClick')"
+    @contatosClick="$emit('contatosClick')"
+    @acessosClick="$emit('acessosClick')"
+    @briefingClick="$emit('briefingClick')"
+    @escopoClick="$emit('escopoClick')"
   ></SingleProjetoHeaderMinify>
 </template>
 
@@ -178,7 +205,14 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import SingleProjetoHeaderMinify from './SingleProjetoHeaderMinify.vue'
 const { FData } = GLOBAL
 
-const emit = defineEmits(['updateSelect', 'anexoClick'])
+const emit = defineEmits([
+  'updateSelect',
+  'anexoClick',
+  'escopoClick',
+  'briefingClick',
+  'contatosClick',
+  'acessosClick',
+])
 const header = ref(null)
 
 const itemEditableSelect = ref(null)
@@ -199,6 +233,10 @@ function onScroll(position) {
   } else {
     headerMinify.value = false
   }
+}
+
+function handleClear(e) {
+  debugger
 }
 
 defineExpose({ itemEditableSelect, show })
@@ -223,8 +261,8 @@ defineExpose({ itemEditableSelect, show })
       border-color: rgba(var(--white),0.2)
 
 .btn-header
-  flex: 1 1 100%
-  height: 108px !important
+  // flex: 1 1 100%
+  // height: 108px !important
   &:deep(.q-btn__content)
     flex-wrap: nowrap
 

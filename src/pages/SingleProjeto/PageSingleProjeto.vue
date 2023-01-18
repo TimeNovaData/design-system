@@ -7,6 +7,10 @@
         ref="header"
         @updateSelect="handleChangeProjeto"
         @anexoClick="handleShowAnexos"
+        @contatosClick="handleShowContatos"
+        @acessosClick="handleShowAcessos"
+        @briefingClick="handleShowBriefing"
+        @escopoClick="handleShowEscopo"
       />
 
       <Transition name="fade" mode="out-in">
@@ -235,7 +239,7 @@
                     <div
                       class="bg-neutral-100/10 w-full h-full justify-center flex text-center items-center rounded-generic dark:bg-white/10"
                     >
-                      {{ props.row.anexo || '-' }}
+                      {{ props.row?.quantidade_anexos || '-' }}
                     </div>
                   </q-td>
                   <!-- 
@@ -253,12 +257,12 @@
               icon="svguse:/icons.svg#icon_tasks"
               text="Tasks"
             ></TextIcon>
+
             <OTableBase
               :columns="columnsTask"
               :rows="tasks"
               :footer="false"
               :header="false"
-              f
             >
               <template #body="props">
                 <q-tr
@@ -301,19 +305,19 @@
 
                   <q-td key="data_desejada" :auto-width="false">
                     <div class="text-paragraph-2 text-end">
-                      {{ GLOBAL.FData(props.row.data_desejada) }}
+                      {{ GLOBAL.FData(props.row.entrega_data_desejada) }}
                     </div>
                   </q-td>
 
                   <q-td key="data_prevista" :auto-width="false">
                     <div class="text-paragraph-2 text-end">
-                      {{ GLOBAL.FData(props.row.data_prevista) }}
+                      {{ GLOBAL.FData(props.row.data_final_previsto) }}
                     </div>
                   </q-td>
 
                   <q-td key="tempo_decorrido" :auto-width="false">
                     <div class="text-paragraph-2 text-end">
-                      {{ GLOBAL.FTime(props.row.tempo_decorrido) }}
+                      {{ GLOBAL.FTime(props.row.tempo_total) }}
                     </div>
                   </q-td>
                 </q-tr>
@@ -346,6 +350,7 @@
   >
     <!-- v-if="modalChat.dialogState" -->
     <OChatBox
+      v-if="comments.length !== 0"
       class="h-full w-full flex-1 mb-0"
       style="box-shadow: initial"
       :comments="comments"
@@ -356,8 +361,10 @@
       filters="&page=1&page_size=200"
     >
     </OChatBox>
+    <div v-else>
+      <EmptyItem text="Sem acompanhamentos para exibir" />
+    </div>
   </ModalSide>
-  {{ acessos }}
 
   <!-- Modal Anexos -->
   <ModalSide ref="modalAnexo" text="Anexos" icon="svguse:/icons.svg#icon_chat">
@@ -367,15 +374,21 @@
           >Novo anexo</OButton
         >
       </div>
-      <AnexoItem
-        v-for="i in anexosListReverse"
-        :key="i.id"
-        :ext="i.anexo_thumb?.extensao?.replace('.', '')"
-        :thumb="i.anexo_thumb?.url || ''"
-        :link="i.attachments"
-        :size="i.anexo_tamanho"
-        :nome="i.anexo_nome"
-      />
+
+      <div v-if="anexosListReverse.length">
+        <AnexoItem
+          v-for="i in anexosListReverse"
+          :key="i.id"
+          :ext="i.anexo_thumb?.extensao?.replace('.', '')"
+          :thumb="i.anexo_thumb?.url || ''"
+          :link="i.attachments"
+          :size="i.anexo_tamanho"
+          :nome="i.anexo_nome"
+        />
+      </div>
+      <div v-else>
+        <EmptyItem text="Sem Anexos para exibir" />
+      </div>
     </section>
   </ModalSide>
 
@@ -385,60 +398,137 @@
     text="Acessos"
     icon="svguse:/icons.svg#icon_lock"
   >
-    <section class="flex flex-col p-24 gap-8">
+    <section class="flex flex-col p-24 gap-8" v-if="acessosList.length !== 0">
       <div class="flex justify-between mb-8">
         <!--    <OButton secondary size="md" icon="add_circle" @click="openNovoAnexo"
           >Novo anexo</OButton
         > -->
       </div>
       <AcessoItem
-        name="Google Drive"
+        v-for="item in acessosList"
+        :key="item.id"
+        :name="item.ferramenta"
         type="acess"
-        login="Instagram@novadata.com.br"
-        senha="google"
+        :acesso="item.acesso"
       />
-      <AcessoItem
-        name="Instagram"
-        link="https://drive.google.com/drive/u/0/my-drives"
-        type="link"
-      />
+    </section>
+    <section v-else class="flex flex-col p-24 gap-8">
+      <EmptyItem text="Sem Acessos para exibir" />
     </section>
   </ModalSide>
 
+  <!-- 
+
+    
+const oi = [
+  {
+    id: 3,
+    nome: 'Telefone',
+    telefone: '999999999999999',
+    email: 'email.example@example.com.br',
+    cargo: 'teste',
+    cliente: 2,
+  },
+  {
+    id: 4,
+    nome: 'qwedqw',
+    telefone: '2112112',
+    email: 'email.example2@example.com.br',
+    cargo: 'teste2',
+    cliente: 2,
+  },
+]
+   -->
   <ModalSide
     ref="modalContatos"
     text="Contatos"
     icon="svguse:/icons.svg#icon_users"
   >
-    <section class="flex flex-col p-24 gap-8">
-      <q-list class="-mx-16" :padding="false">
+    <section
+      v-if="contatosList.length"
+      class="flex flex-col p-24 gap-18 divide-y divide-neutral-30 dark:divide-white/10"
+    >
+      <q-list
+        class="-mx-16"
+        :padding="false"
+        v-for="item in contatosList"
+        :key="item.id"
+      >
         <q-item class="flex gap-8 items-center" clickable
           ><q-icon
             class="text-primary-pure h-24 w-24"
             name="svguse:/icons.svg#icon_users"
           ></q-icon>
-          <p class="text-paragraph-1">Andrei Muniz</p>
+          <p class="text-paragraph-1">{{ item.nome }}</p>
         </q-item>
         <q-item class="flex gap-8 items-center" clickable
           ><q-icon
             class="text-primary-pure h-24 w-24"
             name="svguse:/icons.svg#icon_mala"
           ></q-icon>
-          <p class="text-paragraph-1">Gerente de Projetos</p>
+          <p class="text-paragraph-1">{{ item.cargo }}</p>
         </q-item>
         <q-item class="flex gap-8 items-center" clickable
           ><q-icon
             class="text-primary-pure h-24 w-24"
             name="svguse:/icons.svg#ico_tel"
           ></q-icon>
-          <p class="text-paragraph-1">(00) 99882 8029</p>
+          <p class="text-paragraph-1">{{ item.telefone }}</p>
         </q-item>
 
         <q-item class="flex gap-8 items-center" clickable
           ><q-icon class="text-primary-pure h-24 w-24" name="mail"></q-icon>
-          <p class="text-paragraph-1">andrei.muniz@novadata.com.br</p>
+          <p class="text-paragraph-1">{{ item.email }}</p>
         </q-item>
       </q-list>
+    </section>
+    <section v-else class="flex flex-col p-24 gap-8">
+      <EmptyItem text="Sem contatos cadastrados" />
+    </section>
+  </ModalSide>
+
+  <!-- MODAL Briefing -->
+  <ModalSide
+    ref="modalBriefing"
+    text="Briefing"
+    icon="svguse:/icons.svg#icon_docs"
+  >
+    <section
+      class="flex flex-col p-24 gap-18 divide-y divide-neutral-30"
+      v-if="projeto.briefing_text"
+    >
+      <div
+        class="bg-neutral-20 p-16 border border-neutral-100/5 dark:bg-white/5 dark:border-white/10 text-neutral-70 dark:text-white/70 text-paragraph-2 rounded-generic"
+      >
+        <div
+          style="white-space: break-spaces"
+          v-html="projeto.briefing_text"
+        ></div>
+      </div>
+    </section>
+    <section v-else class="flex flex-col p-24 gap-8">
+      <EmptyItem text="Não há briefing cadastrado." />
+    </section>
+  </ModalSide>
+
+  <!-- MODAL Escopo -->
+  <ModalSide
+    ref="modalEscopo"
+    text="Escopo"
+    icon="svguse:/icons.svg#icon_paper"
+  >
+    <section
+      class="flex flex-col p-24 gap-18 divide-y divide-neutral-30"
+      v-if="projeto.escopo"
+    >
+      <div
+        class="bg-neutral-20 p-16 border border-neutral-100/5 dark:bg-white/5 dark:border-white/10 text-neutral-70 dark:text-white/70 text-paragraph-2 rounded-generic"
+      >
+        <div style="white-space: break-spaces" v-html="projeto.escopo"></div>
+      </div>
+    </section>
+    <section v-else class="flex flex-col p-24 gap-8">
+      <EmptyItem text="Não há Escopo cadastrado." />
     </section>
   </ModalSide>
 
@@ -459,7 +549,6 @@ import OButton from 'src/components/Button/OButton.vue'
 import ModalSide from 'src/components/Modal/ModalSide.vue'
 import ModalCenter from 'src/components/Modal/ModalCenter.vue'
 import { useProjetoStore } from 'src/stores/projetos/projetos.store'
-import { useAcessoStore } from 'src/stores/acessos/acessos.store'
 
 import {
   onMounted,
@@ -489,10 +578,9 @@ import AvatarTextSubtext from 'src/components/Avatar/AvatarTextSubtext.vue'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import { columnsChamado, columnsTask } from './cols.js'
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
-import TaskCreateAttachmentCard from 'src/components/Task/TaskCreate/TaskCreateAttachmentCard.vue'
-import AttachmentFilepond from 'src/components/Attachment/AttachmentFilepond.vue'
 import { useAnexoStore } from 'src/stores/anexos/anexos.store'
 import ModalAddAnexo from 'src/components/Modal/ModalAddAnexo.vue'
+import EmptyItem from 'src/components/Empty/EmptyItem.vue'
 
 const { URLS } = api.defaults
 // Router
@@ -500,12 +588,12 @@ const route = useRoute()
 const router = useRouter()
 
 // Stores
-const { getProjeto, getTempoProjeto } = useProjetoStore()
+const { getProjeto, getTempoProjeto, getContatos, getAcessos } =
+  useProjetoStore()
+
 const { projeto, tempoProjeto, isLoadingTempoProjeto } = storeToRefs(
   useProjetoStore()
 )
-const { getAcessos } = useAcessoStore()
-const { acessos } = storeToRefs(useAcessoStore())
 const { getTasks } = useTaskStore()
 // const { tasks } = storeToRefs(useTaskStore())
 const tasks = ref([])
@@ -521,6 +609,8 @@ const modalAnexo = ref(null)
 const modalAcessos = ref(null)
 const modalContatos = ref(null)
 const modalAddAnexoRef = ref(null)
+const modalBriefing = ref(null)
+const modalEscopo = ref(null)
 // Comments
 const {
   getComments,
@@ -657,6 +747,28 @@ async function handleShowAnexos() {
   modalAnexo.value.dialogRef.show()
 }
 
+const contatosList = ref([])
+async function handleShowContatos() {
+  contatosList.value = await getContatos(
+    `&cliente__id=${projeto.value.cliente}`
+  )
+  modalContatos.value.dialogRef.show()
+}
+
+const acessosList = ref([])
+async function handleShowAcessos() {
+  acessosList.value = await getAcessos(`&projeto__id=${projeto.value.id}`)
+  modalAcessos.value.dialogRef.show()
+}
+
+async function handleShowBriefing() {
+  modalBriefing.value.dialogRef.show()
+}
+
+async function handleShowEscopo() {
+  modalEscopo.value.dialogRef.show()
+}
+
 // Handles
 async function handleGetChamado(id, filters) {
   const req = await getChamados(id, filters)
@@ -686,7 +798,6 @@ async function requests() {
   await nextTick()
   populateChart(tempoProjeto.value)
   await handleGetChamado(pageID.value + '&status=abertos')
-  getAcessos('&projeto__id=' + pageID.value)
   tasks.value = await getTasks(
     '&status=abertas&projeto__id=' + pageID.value,
     false

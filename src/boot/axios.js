@@ -46,6 +46,8 @@ const api = axios.create({
     logAlteracoesChamado: 'logalteracoeschamado/',
     profile: 'profile/',
     visao_geral_big_numbers: '/projeto/visao_geral_big_numbers/',
+    contato: 'contato/',
+    acessos: 'acessos/',
   },
 })
 

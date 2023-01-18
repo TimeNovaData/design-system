@@ -175,16 +175,8 @@
           </div>
         </div>
         <div class="w-full px-16">
-          <div class="h-[450px] grid place-items-center" v-show="isLoading">
-            <div class="flex items-center gap-12">
-              <q-spinner color="primary" class="shrink-0" size="48px" />
-              <p class="text-paragraph-1 text-neutral-70 dark:text-white/70">
-                Carregando
-              </p>
-            </div>
-          </div>
           <apexchart
-            v-show="!isLoading"
+            v-show="!isLoading && series.length"
             ref="chart"
             width="100%"
             height="450px"
@@ -192,6 +184,22 @@
             :options="options"
             :series="series"
           ></apexchart>
+          <SkeletonChart
+            class="h-[350px] flex flex-col"
+            v-show="isLoading && series.length === 0"
+          />
+          <div class="h-[350px]" v-show="!isLoading && series.length === 0">
+            <div class="flex place-content-center h-full flex-1">
+              <div class="flex flex-col gap-6 opacity-40">
+                <q-icon
+                  class="block mx-auto"
+                  name="fluorescent"
+                  size="2.5rem"
+                ></q-icon>
+                <p>Sem dados para visualizar o grafico.</p>
+              </div>
+            </div>
+          </div>
         </div>
       </q-card>
 
@@ -233,41 +241,11 @@
           </div>
         </div>
 
-        <OTable
-          :loading="chamadoLoading"
-          :filter="filter"
-          :rows="rows"
-          :columns="columns"
-          primary
-          v-model:pagination="pagination"
-        >
-          <template v-slot:top-left>
-            <OInput
-              size="md"
-              debounce="300"
-              v-model="filter"
-              placeholder="Pesquise por nome, tipo..."
-              class="no-label"
-            >
-              <template v-slot:append>
-                <o-button size="md" tertiary>
-                  <q-icon name="search"
-                /></o-button>
-              </template>
-            </OInput>
-          </template>
-
-          <template v-slot:top>
-            <OTableHeaderBase
-              @update="updateTableModels"
-              :filter="filter"
-              :rowsPerPage="pagination.rowsPerPage"
-            />
-          </template>
-
+        <OTableBase :loading="chamadoLoading" :rows="rows" :columns="columns">
           <template v-slot:body="props">
             <q-tr :props="props" class="cursor-pointer">
               <q-td
+                class="w-1/2"
                 @click="() => handleClickChamado(props.row.id)"
                 key="titulo"
                 :auto-width="false"
@@ -354,29 +332,7 @@
               </q-td>
             </q-tr>
           </template>
-
-          <template v-slot:bottom="slotProps">
-            <OTableFooterBase
-              downloadable
-              :rows="rows"
-              :columns="columns"
-              :slotProps="slotProps"
-              :pagination="pagination"
-              @update="(val) => updatePagination(val)"
-            />
-          </template>
-        </OTable>
-
-        <!-- <q-btn
-          secondary
-          icon-right="svguse:/icons.svg#icon_excel"
-          label="Exportar para Excel"
-          @click="() => exportTable(columns, rows)"
-          class="absolute bottom-16 sm:relative sm:w-full sm:bottom-0"
-          v-show="rows"
-          no-caps
-        >
-        </q-btn> -->
+        </OTableBase>
       </q-card>
     </div>
     <!-- <span class="block h-48"></span> -->
@@ -397,7 +353,7 @@ import OTable from 'src/components/Table/OTable.vue'
 import TextIcon from 'src/components/Text/TextIcon.vue'
 import { useChamadoStore } from 'src/stores/chamados/chamados.store'
 import GLOBAL from 'src/utils/GLOBAL'
-import { computed, onMounted, ref, watch, inject } from 'vue'
+import { computed, onMounted, ref, watch, inject, nextTick } from 'vue'
 import { columns1 } from './columns'
 import stackedChartBar from 'src/utils/chart/stackedChartBar'
 import TagBase from 'src/components/Tag/TagBase.vue'
@@ -405,6 +361,8 @@ import { deepUnref } from 'vue-deepunref'
 import OSelectAvatar from 'src/components/Select/OSelectAvatar.vue'
 import OTableFooterBase from 'src/components/Table/OTableFooterBase.vue'
 import OTableHeaderBase from 'src/components/Table/OTableHeaderBase.vue'
+import SkeletonChart from 'src/components/Skeleton/SkeletonChart.vue'
+import OTableBase from 'src/components/Table/OTableBase.vue'
 const { URLS } = api.defaults
 
 const {
@@ -420,12 +378,15 @@ const {
 const FiltroInvestimentoPor = ref('projeto')
 const FiltroTempoAtividade = ref('projeto')
 
-function handleChangeFiltroInvestimento(tipo) {
+async function handleChangeFiltroInvestimento(tipo) {
   FiltroInvestimentoPor.value = tipo
+  await nextTick()
   getTempoTask()
 }
 function handleChangeFiltroTempoAtividade(tipo) {
+  window._red(tipo)
   FiltroTempoAtividade.value = tipo
+
   getChamadoTable()
 }
 
@@ -444,6 +405,7 @@ const { getUsuarios, getProjetos, getClientes } = inject('get')
 
 const { getChamado } = useChamadoStore()
 const { chamados, isLoading: chamadoLoading } = storeToRefs(useChamadoStore())
+
 const isLoading = ref(true)
 
 let filtrosAplicados = {}
@@ -545,23 +507,23 @@ watch(
 
 const tempoTask = ref([])
 isLoading.value = true
+
 async function getTempoTask() {
+  isLoading.value = true
   menu.value.hide()
   filtroOBJ.value.agrupamento = FiltroInvestimentoPor.value
-
-  const { data, error } = await useAxios(
-    URLS.tempoProjeto + '/' + generateStringFilterFromObject(filtroOBJ.value),
-    { method: 'GET' },
-    api
-  )
-
   try {
-    setTempoTask(data.value)
-    populateChart(data.value)
+    const { data } = await api.get(
+      URLS.tempoProjeto + '/' + generateStringFilterFromObject(filtroOBJ.value)
+    )
+
+    setTempoTask(data)
+    populateChart(data)
     filtrosAplicados = filtroNameOBJ.value
     return data.value
   } catch (e) {
-    return error
+    console.log(e)
+    return e
   } finally {
     isLoading.value = false
   }
@@ -571,56 +533,33 @@ function setTempoTask(v) {
   tempoTask.value = v
 }
 
-const getProjectName = (id) => (acc, i) => {
-  if (i.id === Number(id)) {
-    acc = i.nome
+async function populateChart(tempoProjetos) {
+  const data = tempoProjetos.map((i) => {
+    const data = i.datas.map((i) => i.duracao)
+    return {
+      name: i.item,
+      data,
+    }
+  })
+
+  const categorias = tempoProjetos[0]?.datas.map((i) => i.data)
+  series.value = data
+  await nextTick()
+
+  if (chart.value) {
+    chart.value.updateOptions({
+      series: series.value,
+      xaxis: { categories: categorias },
+    })
   }
-  return acc
-}
-
-// const projectName = (id) => projetos.value.reduce(getProjectName(id), '')
-
-function populateChart(tempoProjetos) {
-  const getDuracoes = (tempoProjeto) =>
-    Object.values(tempoProjeto).map((i) => i.duracao)
-  // projetos
-  const duracoes = Object.values(tempoProjetos).map(getDuracoes)
-
-  // const labels = Object.keys(tempoProjetos).map((projeto) =>
-  //   projectName(projeto)
-  // )
-  const labels = Object.keys(tempoProjetos)
-
-  const categories = Object.values(tempoProjetos).map((projeto) =>
-    Object.keys(projeto)
-  )[0]
-
-  const generateSeriesApex = (item, index) => ({
-    name: labels[index],
-    data: duracoes[index],
-  })
-
-  const seriesApex = Object.values(tempoProjetos).map(generateSeriesApex)
-  console.log(seriesApex)
-
-  // if (categories && seriesApex !== {}) {
-  chart.value.updateOptions({
-    series: seriesApex,
-    xaxis: {
-      categories: categories || [],
-    },
-    // secondsToHours(i.duracao)
-  })
-  if (filtros.value.projeto.model.id) getChamadoTable()
-
-  // }
 }
 
 function getChamadoTable() {
   const projeto = filtros.value.projeto.model.id
+  chamados.value = []
   getChamado(
     `${projeto ? `&projeto__id=${projeto}` : ''}` +
-      `&agrupamento=${FiltroInvestimentoPor.value}`
+      `&agrupamento=${FiltroTempoAtividade.value}`
   )
 }
 
@@ -636,7 +575,7 @@ async function handleRemoveFilters() {
 const columns = columns1
 const rows = ref([])
 const options = { ...stackedChartBar }
-const series = [{ name: '', data: [] }]
+const series = ref([])
 
 async function initialRequests() {
   await getChamado()

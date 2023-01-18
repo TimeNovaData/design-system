@@ -1,7 +1,7 @@
 <template>
   <article v-if="type === 'acess'" :class="acessItemClass">
-    <p class="text-headline-2">{{ name }}</p>
-    <div class="flex items-center gap-6">
+    <p class="text-headline-2 ml-28">{{ name }}</p>
+    <!--  <div class="flex items-center gap-6">
       <q-icon
         class="text-neutral-70 h-24 w-24"
         name="svguse:/icons.svg#icon_user_circle"
@@ -15,18 +15,23 @@
         @click="copyAndAlert(login)"
         ><q-icon name="file_copy"></q-icon
       ></OButton>
-    </div>
+    </div> -->
 
-    <div class="flex items-center gap-6">
+    <div class="flex items-center gap-6 flex-nowrap">
       <q-icon
         class="text-neutral-70 h-24 w-24"
         name="svguse:/icons.svg#icon_pass"
       ></q-icon>
       <Transition name="fade" mode="out-in">
-        <p v-if="visivel" class="text-paragraph-2 min-w-[250px]">{{ senha }}</p>
+        <p
+          v-if="visivel"
+          class="text-paragraph-2 min-w-[250px] min-h-[48px]"
+          style="word-break: break-all; white-space: break-spaces"
+          v-html="acesso"
+        ></p>
         <q-skeleton
           v-else
-          class="h-24 rounded-full w-[250px] cursor-not-allowed"
+          class="h-24 rounded-generic w-[250px] cursor-not-allowed min-h-[48px]"
           animation-speed="20000"
         />
       </Transition>
@@ -41,7 +46,7 @@
       <OButton
         tertiary
         class="!opacity-70 !p-0 !h-32 !w-32"
-        @click="copyAndAlert(senha)"
+        @click="copyAndAlert(acesso)"
         ><q-icon name="file_copy"></q-icon
       ></OButton>
     </div>
@@ -84,10 +89,11 @@ const visivel = ref(false)
 
 defineProps({
   type: String,
-  login: String,
-  senha: String,
+  // login: String,
+  acesso: String,
+  // senha: String,
   name: String,
-  link: String,
+  // link: String,
 })
 
 async function copyAndAlert(text) {

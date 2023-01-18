@@ -4,7 +4,7 @@
       v-model="model.titulo"
       label="Título"
       size="lg"
-      class="bg-white dark:!bg-transparent !p-0"
+      class="bg-white dark:!bg-transparent !p-0 label-transparent"
       required
       :rules="[(val) => val.length || '']"
       tabindex="-1"
@@ -14,11 +14,13 @@
     <OSelectAvatar
       label="Cliente - Projeto"
       size="lg"
-      class="bg-white dark:!bg-transparent !p-0"
+      class="bg-white dark:!bg-transparent !p-0 label-transparent"
       :options="projectList"
       :modelValue="model.projeto"
       :loading="!projectList.length"
       fotoKey="logo"
+      option-label="nome_completo"
+      nomeKey="nome_completo"
       @update-value="(value) => updateProjectSelect(value)"
       required
       :rules="[(val) => val || '']"
@@ -29,7 +31,7 @@
       v-if="subProjectSelectList.length"
       label="Subprojeto"
       size="lg"
-      class="bg-white dark:!bg-transparent"
+      class="bg-white dark:!bg-transparent label-transparent"
       :options="subProjectSelectList"
       :modelValue="model.sub_projeto"
       :loading="!subProjectList.length"
@@ -37,35 +39,38 @@
       @update-value="(value) => (model.sub_projeto = value)"
     />
 
-    <OSelect
-      :disable="!model.chamado"
-      label="Chamado"
-      size="lg"
-      class="bg-white dark:!bg-transparent"
-      placeholder="Pode deixar vazio"
-      :options="chamados"
-      v-model="model.chamado"
-      @update:model-value="(value) => (model.chamado = value)"
-      option-value="id"
-      :loading="chamadoLoading"
-      option-label="titulo"
-    >
-      <template #selected-item="{ itemProps, opt }">
-        <q-item v-bind="itemProps" class="translate-y-2 p-0 min-h-0">
-          <p>{{ opt.titulo }}</p>
-        </q-item>
-      </template>
-    </OSelect>
+    <div>
+      <q-tooltip v-if="chamados.length === 0" v-bind="tooltipProps"
+        >Escolha um projeto para habilitar</q-tooltip
+      >
+      <OSelect
+        :disable="chamados.length === 0"
+        label="Chamado"
+        size="lg"
+        class="bg-white dark:!bg-transparent label-transparent"
+        :options="chamados"
+        v-model="model.chamado"
+        @update:model-value="(value) => (model.chamado = value)"
+        option-value="id"
+        :loading="chamadoLoading"
+        option-label="titulo"
+      >
+        <template #selected-item="{ itemProps, opt }">
+          <q-item v-bind="itemProps" class="translate-y-2 p-0 min-h-0">
+            <p>{{ opt.titulo }}</p>
+          </q-item>
+        </template>
+      </OSelect>
+    </div>
 
     <OSelect
       use-input
       label="Grupo / Tipo"
       size="lg"
-      class="bg-white dark:!bg-transparent"
+      class="bg-white dark:!bg-transparent label-transparent"
       :options="taskTypes"
       v-model="model.tipo_task"
-      option-value="nome"
-      option-label="nome"
+      option-label="nome_completo"
       :loading="!taskTypes.length"
     ></OSelect>
 
@@ -76,7 +81,7 @@
             :modelValue="model.quantidade"
             label="Quantidade"
             size="lg"
-            class="bg-white dark:!bg-transparent"
+            class="bg-white dark:!bg-transparent label-transparent"
             @update-value="(value) => (model.quantidade = value)"
           ></OInputNumber>
         </div>
@@ -85,7 +90,7 @@
           v-model="model.tempo_estimado"
           label="Tempo estimado"
           size="lg"
-          class="bg-white dark:!bg-transparent"
+          class="bg-white dark:!bg-transparent label-transparent"
           mask="##h ##m"
           reverse-fill-mask
           placeholder="00h 00m"
@@ -98,13 +103,20 @@
       </div>
 
       <div class="grid grid-cols-2 gap-16">
-        <OButton
-          secondary
-          class="bg-white h-48 w-full opaque-icon dark:!bg-white/10 dark:!border-transparent dark:text-white"
-          icon="svguse:/icons.svg#icon_clock_fast"
-        >
-          Estimar
-        </OButton>
+        <div>
+          <OButton
+            :disable="!model.tipo_task"
+            secondary
+            class="bg-white h-48 w-full opaque-icon dark:!bg-white/10 dark:!border-transparent dark:text-white"
+            icon="svguse:/icons.svg#icon_clock_fast"
+            @click="setTempoEstimado"
+          >
+            Estimar
+          </OButton>
+          <q-tooltip v-if="!model.tipo_task" v-bind="tooltipProps"
+            >Escolha um Tipo para habilitar</q-tooltip
+          >
+        </div>
 
         <OButton
           secondary
@@ -117,7 +129,7 @@
 
       <OInput
         size="lg"
-        class="bg-white dark:!bg-transparent w-full cursor-pointer"
+        class="bg-white dark:!bg-transparent w-full cursor-pointer label-transparent"
         label="Data de entrega desejada"
         v-model="deliveryDateComplete"
       >
@@ -137,6 +149,7 @@
                 size="md"
                 type="time"
                 v-model="model.entrega_data_desejada_hora"
+                class="label-transparent"
               />
               <OButton
                 @click="popUpDate.hide()"
@@ -160,7 +173,7 @@
       <OSelectAvatar
         label="Responsável"
         size="lg"
-        class="bg-white dark:!bg-transparent"
+        class="bg-white dark:!bg-transparent label-transparent"
         :options="userList"
         :modelValue="model.responsavel_task"
         :loading="!userList.length"
@@ -184,6 +197,7 @@ import OInputNumber from 'src/components/Input/OInputNumber.vue'
 import OButton from 'src/components/Button/OButton.vue'
 import { useChamadoStore } from 'src/stores/chamados/chamados.store'
 import { storeToRefs } from 'pinia'
+import { NotifyAlert, NotifySucess } from 'src/boot/Notify'
 
 const { FTime, FData, FTimeLong } = GLOBAL
 const emit = defineEmits(['update'])
@@ -232,7 +246,7 @@ const model = ref({
   entrega_data_desejada_data: setDeliveryDateModel.value,
   entrega_data_desejada_hora: setDeliveryTimeModel.value,
   tempo_estimado: setTimeModel.value || '00:00',
-  chamado: props.taskValues?.chamado || {},
+  chamado: props.taskValues?.chamado || null,
 })
 
 // Chamado
@@ -249,7 +263,7 @@ async function setandGetChamados(v) {
 watch(
   () => model.value.projeto,
   async (v) => {
-    model.value.chamado = {}
+    model.value.chamado = null
     setandGetChamados(v)
   }
 )
@@ -301,10 +315,25 @@ function updateProjectSelect(val) {
   setSubProjectList()
 }
 
+function setTempoEstimado() {
+  if (model.value.tipo_task.tempo_medio) {
+    model.value.tempo_estimado = model.value.tipo_task.tempo_medio
+    NotifySucess('Tempo Estimado Aplicado')
+  } else {
+    NotifyAlert('Nao há tempo estimado para este tipo de task')
+  }
+}
+
 setSubProjectList()
 onMounted(() => {
   if (model.value.projeto) setandGetChamados(model.value.projeto)
 })
+
+const tooltipProps = {
+  anchor: 'top middle',
+  self: 'bottom middle',
+  offset: [10, 10],
+}
 
 defineExpose({ form })
 </script>

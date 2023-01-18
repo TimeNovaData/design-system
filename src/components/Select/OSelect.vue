@@ -88,12 +88,12 @@ defineExpose({ componentRef })
 </script>
 
 <style lang="sass" scoped>
-.Oselect
-  :deep(.q-placeholder)
-    opacity: 0 !important
-  &.have-model
-    :deep(.q-placeholder)
-      opacity: 1 !important
+// .Oselect
+//   :deep(.q-placeholder::placeholder)
+//     opacity: 0 !important
+//   &.have-model
+//     :deep(.q-placeholder::placeholder)
+//       opacity: 1 !important
 </style>
 
 <style lang="sass">

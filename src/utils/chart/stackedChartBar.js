@@ -81,6 +81,10 @@ export default {
       borderRadiusApplication: 'end',
     },
   },
+  legend: {
+    show: true,
+    showForSingleSeries: false,
+  },
 
   grid: {
     borderColor: '#E9ECEF',

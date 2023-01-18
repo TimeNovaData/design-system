@@ -3,9 +3,8 @@
     <p
       v-if="description"
       class="text-paragraph-2 text-neutral-70 dark:text-white/70"
-    >
-      {{ description }}
-    </p>
+      v-html="description"
+    ></p>
 
     <div v-else class="flex place-content-center h-full">
       <div class="flex flex-col gap-6 opacity-30 dark:opacity-40">

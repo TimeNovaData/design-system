@@ -55,6 +55,7 @@ async function requests() {
   await getUsuarios()
 
   await getProjetos()
+
   await getClientes()
   await getSubProjetos()
   await getTaskTypes()
@@ -114,6 +115,19 @@ provide('get', {
 ::-webkit-scrollbar-thumb
   background: rgba(var(--neutral-100),0.2)
   border-radius: 8px
+
+
+.body--dark
+
+  /* Track */
+  ::-webkit-scrollbar-track
+    background: rgba(var(--white),0.1)
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb
+    background: rgba(var(--white),0.2)
+    border-radius: 8px
+
 
 // /* Handle on hover */
 // ::-webkit-scrollbar-thumb:hover

@@ -16,8 +16,17 @@ export const useProjetoStore = defineStore('projetoStore', () => {
   async function getProjetos() {
     try {
       const { data } = await api.get(URLS.projeto + '?no_loading')
-      setProjetos(data)
-      return data
+
+      const result = data?.map((i) => {
+        i.nome_completo = `${i.nome_cliente ? i.nome_cliente + ' ⠂' : ''}  ${
+          i.nome || ''
+        }`.trim()
+        i.jow = 'dev'
+        return i
+      })
+
+      setProjetos(result)
+      return result
     } catch (e) {
       console.log(e)
       return e
@@ -38,6 +47,12 @@ export const useProjetoStore = defineStore('projetoStore', () => {
   async function getProjeto(id) {
     try {
       const { data } = await api.get(URLS.projeto + id)
+
+      if (data) {
+        data.nome_completo = `${
+          data.nome_cliente ? data.nome_cliente + ' ⠂' : ''
+        }  ${data.nome || ''}`.trim()
+      }
       setProjeto(data)
       return data
     } catch (e) {
@@ -61,6 +76,26 @@ export const useProjetoStore = defineStore('projetoStore', () => {
       return e
     } finally {
       isLoadingTempoProjeto.value = false
+    }
+  }
+
+  async function getContatos(filtros) {
+    try {
+      const { data } = await api.get(URLS.contato + '?x=' + filtros)
+      return data
+    } catch (e) {
+      console.log(e)
+      return e
+    }
+  }
+
+  async function getAcessos(filtros) {
+    try {
+      const { data } = await api.get(URLS.acessos + '?x=' + filtros)
+      return data
+    } catch (e) {
+      console.log(e)
+      return e
     }
   }
 
@@ -91,5 +126,7 @@ export const useProjetoStore = defineStore('projetoStore', () => {
     tempoProjeto,
     getTempoProjeto,
     isLoadingTempoProjeto,
+    getContatos,
+    getAcessos,
   }
 })

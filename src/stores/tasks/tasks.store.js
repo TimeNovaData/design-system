@@ -55,7 +55,17 @@ export const useTaskStore = defineStore('taskstore', () => {
     try {
       const { data } = await api.get(URLS.tipotask + '?no_loading')
       console.log(data)
-      setTaskTypes(data)
+
+      const result = data.map((i) => {
+        i.nome_completo = `${
+          i.ferramenta?.nome_ferramenta
+            ? i.ferramenta?.nome_ferramenta + ' ⠂'
+            : ''
+        } ${i.nome || ''}`.trim()
+        return i
+      })
+
+      setTaskTypes(result)
       return data
     } catch (e) {
       console.log(e)

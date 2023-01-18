@@ -56,10 +56,31 @@
         <VisaoGeralTable
           :rows="projectFilter === 'recorrente' ? rowsRecorrente : rowsOneShot"
           :columns="columns"
+          @click:acompanhamento="openModalChat"
         />
       </q-card>
     </div>
   </q-scroll-area>
+
+  <!-- Modal Acompnhamentos -->
+  <ModalSide
+    ref="modalChat"
+    text="Todos os acompanhamentos"
+    icon="svguse:/icons.svg#icon_chat"
+  >
+    <!-- v-if="modalChat.dialogState" -->
+    <OChatBox
+      class="h-full w-full flex-1 mb-0"
+      style="box-shadow: initial"
+      :comments="comments"
+      :sendComment="sendComment"
+      :getComments="getComments"
+      :isLoading="isLoading"
+      tipo="projeto"
+      filters="&page=1&page_size=200"
+    >
+    </OChatBox>
+  </ModalSide>
 </template>
 
 <script setup>
@@ -72,6 +93,9 @@ import TextIcon from 'src/components/Text/TextIcon.vue'
 import VisaoGeralCard from 'src/components/VisaoGeral/VisaoGeralCard.vue'
 import VisaoGeralTable from 'src/components/VisaoGeral/VisaoGeralTable.vue'
 import { deepUnref } from 'vue-deepunref'
+import ModalSide from 'src/components/Modal/ModalSide.vue'
+import OChatBox from 'src/components/Chat/OChatBox.vue'
+import useComments from 'src/composables/useComments'
 
 const { URLS } = api.defaults
 const { FData } = GLOBAL
@@ -82,6 +106,20 @@ const projectFilter = ref('recorrente')
 
 function handleChangeprojectFilter(type) {
   projectFilter.value = type
+}
+
+const {
+  getComments,
+  sendComment,
+  setID: setIDComments,
+  isLoading,
+  comments,
+} = useComments()
+
+const modalChat = ref(null)
+function openModalChat(id) {
+  setIDComments(id)
+  modalChat.value.dialogRef.show()
 }
 
 async function getBigNumbers() {
