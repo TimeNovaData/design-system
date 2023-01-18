@@ -236,7 +236,7 @@ function onScroll(position) {
 }
 
 function handleClear(e) {
-  debugger
+  // debugger
 }
 
 defineExpose({ itemEditableSelect, show })
