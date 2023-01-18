@@ -17,7 +17,7 @@
       ></OButton>
     </div> -->
 
-    <div class="flex items-center gap-6">
+    <div class="flex items-center gap-6 flex-nowrap">
       <q-icon
         class="text-neutral-70 h-24 w-24"
         name="svguse:/icons.svg#icon_pass"
@@ -26,6 +26,7 @@
         <p
           v-if="visivel"
           class="text-paragraph-2 min-w-[250px] min-h-[48px]"
+          style="word-break: break-all; white-space: break-spaces"
           v-html="acesso"
         ></p>
         <q-skeleton
