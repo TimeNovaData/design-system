@@ -6,6 +6,7 @@
     :key="index"
     :index="index"
     :nome="n.nome"
+    v-bind="avatarAttrs"
   >
   </AvatarSingle>
   <div
@@ -71,6 +72,7 @@ const props = defineProps({
     type: String,
     default: 'left',
   },
+  avatarAttrs: Object,
 })
 
 const visivelList = computed(() => props.list.slice(0, props.limit))
