@@ -68,6 +68,16 @@ watch(
   { deep: true }
 )
 
+// projetos.value = projetos.value.map((i) => {
+//   i.nome_completo = `${i.nome_cliente || ''} ${i.nome || ''}`
+//   return i
+// })
+
+// taskTypes.value = taskTypes.value.map((i) => {
+//   i.nome_completo = `${i.ferramenta || ''} ${i.nome || ''}`
+//   return i
+// })
+
 provide('darkMode', darkMode)
 provide('userProfile', userProfile)
 provide('user', user)

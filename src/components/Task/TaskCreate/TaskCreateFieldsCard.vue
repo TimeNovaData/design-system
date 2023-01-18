@@ -19,6 +19,8 @@
       :modelValue="model.projeto"
       :loading="!projectList.length"
       fotoKey="logo"
+      option-label="nome_completo"
+      nomeKey="nome_completo"
       @update-value="(value) => updateProjectSelect(value)"
       required
       :rules="[(val) => val || '']"
@@ -64,8 +66,7 @@
       class="bg-white dark:!bg-transparent"
       :options="taskTypes"
       v-model="model.tipo_task"
-      option-value="nome"
-      option-label="nome"
+      option-label="nome_completo"
       :loading="!taskTypes.length"
     ></OSelect>
 

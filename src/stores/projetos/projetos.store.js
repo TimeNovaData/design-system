@@ -16,7 +16,14 @@ export const useProjetoStore = defineStore('projetoStore', () => {
   async function getProjetos() {
     try {
       const { data } = await api.get(URLS.projeto + '?no_loading')
-      setProjetos(data)
+      const result = data.map((i) => {
+        i.nome_completo = `${i.nome_cliente ? i.nome_cliente + ' ⠂' : ''}  ${
+          i.nome || ''
+        }`.trim()
+        return i
+      })
+
+      setProjetos(result)
       return data
     } catch (e) {
       console.log(e)
@@ -38,8 +45,15 @@ export const useProjetoStore = defineStore('projetoStore', () => {
   async function getProjeto(id) {
     try {
       const { data } = await api.get(URLS.projeto + id)
-      setProjeto(data)
-      return data
+
+      const result = data.map((i) => {
+        i.nome_completo = `${i.nome_cliente ? i.nome_cliente + ' ⠂' : ''}  ${
+          i.nome || ''
+        }`.trim()
+        return i
+      })
+      setProjeto(result)
+      return result
     } catch (e) {
       console.log(e)
       return e
