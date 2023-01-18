@@ -14,7 +14,7 @@ export const useChamadoStore = defineStore('chamadoStore', () => {
     isLoading.value = true
 
     const { data, error } = await useAxios(
-      URLS.chamado + '?x' + filters,
+      URLS.chamado + '?x=' + filters,
       { method: 'GET' },
       api
     )

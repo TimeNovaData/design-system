@@ -257,12 +257,12 @@
               icon="svguse:/icons.svg#icon_tasks"
               text="Tasks"
             ></TextIcon>
+
             <OTableBase
               :columns="columnsTask"
               :rows="tasks"
               :footer="false"
               :header="false"
-              f
             >
               <template #body="props">
                 <q-tr
@@ -577,7 +577,7 @@ const router = useRouter()
 // Stores
 const { getProjeto, getTempoProjeto, getContatos, getAcessos } =
   useProjetoStore()
-  
+
 const { projeto, tempoProjeto, isLoadingTempoProjeto } = storeToRefs(
   useProjetoStore()
 )

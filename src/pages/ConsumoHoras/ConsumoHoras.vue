@@ -241,41 +241,11 @@
           </div>
         </div>
 
-        <OTable
-          :loading="chamadoLoading"
-          :filter="filter"
-          :rows="rows"
-          :columns="columns"
-          primary
-          v-model:pagination="pagination"
-        >
-          <template v-slot:top-left>
-            <OInput
-              size="md"
-              debounce="300"
-              v-model="filter"
-              placeholder="Pesquise por nome, tipo..."
-              class="no-label"
-            >
-              <template v-slot:append>
-                <o-button size="md" tertiary>
-                  <q-icon name="search"
-                /></o-button>
-              </template>
-            </OInput>
-          </template>
-
-          <template v-slot:top>
-            <OTableHeaderBase
-              @update="updateTableModels"
-              :filter="filter"
-              :rowsPerPage="pagination.rowsPerPage"
-            />
-          </template>
-
+        <OTableBase :loading="chamadoLoading" :rows="rows" :columns="columns">
           <template v-slot:body="props">
             <q-tr :props="props" class="cursor-pointer">
               <q-td
+                class="w-1/2"
                 @click="() => handleClickChamado(props.row.id)"
                 key="titulo"
                 :auto-width="false"
@@ -362,29 +332,7 @@
               </q-td>
             </q-tr>
           </template>
-
-          <template v-slot:bottom="slotProps">
-            <OTableFooterBase
-              downloadable
-              :rows="rows"
-              :columns="columns"
-              :slotProps="slotProps"
-              :pagination="pagination"
-              @update="(val) => updatePagination(val)"
-            />
-          </template>
-        </OTable>
-
-        <!-- <q-btn
-          secondary
-          icon-right="svguse:/icons.svg#icon_excel"
-          label="Exportar para Excel"
-          @click="() => exportTable(columns, rows)"
-          class="absolute bottom-16 sm:relative sm:w-full sm:bottom-0"
-          v-show="rows"
-          no-caps
-        >
-        </q-btn> -->
+        </OTableBase>
       </q-card>
     </div>
     <!-- <span class="block h-48"></span> -->
@@ -414,6 +362,7 @@ import OSelectAvatar from 'src/components/Select/OSelectAvatar.vue'
 import OTableFooterBase from 'src/components/Table/OTableFooterBase.vue'
 import OTableHeaderBase from 'src/components/Table/OTableHeaderBase.vue'
 import SkeletonChart from 'src/components/Skeleton/SkeletonChart.vue'
+import OTableBase from 'src/components/Table/OTableBase.vue'
 const { URLS } = api.defaults
 
 const {
@@ -429,12 +378,15 @@ const {
 const FiltroInvestimentoPor = ref('projeto')
 const FiltroTempoAtividade = ref('projeto')
 
-function handleChangeFiltroInvestimento(tipo) {
+async function handleChangeFiltroInvestimento(tipo) {
   FiltroInvestimentoPor.value = tipo
+  await nextTick()
   getTempoTask()
 }
 function handleChangeFiltroTempoAtividade(tipo) {
+  window._red(tipo)
   FiltroTempoAtividade.value = tipo
+
   getChamadoTable()
 }
 
@@ -558,7 +510,6 @@ isLoading.value = true
 async function getTempoTask() {
   menu.value.hide()
   filtroOBJ.value.agrupamento = FiltroInvestimentoPor.value
-
   try {
     const { data } = await api.get(
       URLS.tempoProjeto + '/' + generateStringFilterFromObject(filtroOBJ.value)
@@ -579,51 +530,6 @@ async function getTempoTask() {
 function setTempoTask(v) {
   tempoTask.value = v
 }
-
-const getProjectName = (id) => (acc, i) => {
-  if (i.id === Number(id)) {
-    acc = i.nome
-  }
-  return acc
-}
-
-// const projectName = (id) => projetos.value.reduce(getProjectName(id), '')
-
-// function populateChart(tempoProjetos) {
-//   const getDuracoes = (tempoProjeto) =>
-//     Object.values(tempoProjeto).map((i) => i.duracao)
-//   // projetos
-//   const duracoes = Object.values(tempoProjetos).map(getDuracoes)
-
-//   // const labels = Object.keys(tempoProjetos).map((projeto) =>
-//   //   projectName(projeto)
-//   // )
-//   const labels = Object.keys(tempoProjetos)
-
-//   const categories = Object.values(tempoProjetos).map((projeto) =>
-//     Object.keys(projeto)
-//   )[0]
-
-//   const generateSeriesApex = (item, index) => ({
-//     name: labels[index],
-//     data: duracoes[index],
-//   })
-
-//   const seriesApex = Object.values(tempoProjetos).map(generateSeriesApex)
-//   console.log(seriesApex)
-
-//   // if (categories && seriesApex !== {}) {
-//   chart.value.updateOptions({
-//     series: seriesApex,
-//     xaxis: {
-//       categories: categories || [],
-//     },
-//     // secondsToHours(i.duracao)
-//   })
-//   if (filtros.value.projeto.model.id) getChamadoTable()
-
-//   // }
-// }
 
 async function populateChart(tempoProjetos) {
   const data = tempoProjetos.map((i) => {
@@ -648,9 +554,10 @@ async function populateChart(tempoProjetos) {
 
 function getChamadoTable() {
   const projeto = filtros.value.projeto.model.id
+  chamados.value = []
   getChamado(
     `${projeto ? `&projeto__id=${projeto}` : ''}` +
-      `&agrupamento=${FiltroInvestimentoPor.value}`
+      `&agrupamento=${FiltroTempoAtividade.value}`
   )
 }
 
