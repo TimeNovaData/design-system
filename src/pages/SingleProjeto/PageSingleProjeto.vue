@@ -724,6 +724,14 @@ const tempoProjetoOptions = [
     label: 'Usuário',
     value: 'usuario',
   },
+  {
+    label: 'Chamado',
+    value: 'chamado',
+  },
+  {
+    label: 'Cargo',
+    value: 'cargo',
+  },
 ]
 
 // Tasks

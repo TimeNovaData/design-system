@@ -21,7 +21,7 @@
       <TagBase
         type="projeto"
         v-if="data.tipo_etapa"
-        :nome="data.tipo_etapa.classe_nome"
+        :nome="data.tipo_etapa.tipo_etapa"
         :cor="data.tipo_etapa.cor"
       />
     </div>
