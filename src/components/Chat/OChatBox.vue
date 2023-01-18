@@ -160,6 +160,10 @@ async function updateChatInterval(container) {
     // console.log(getScrollHeight(el), 'getScrollHeight')
     // console.log(el.clientHeight, 'clientHeight')
     // console.log(newComments)
+    // newComments.map()
+    const newC = newComments.results.map((i) => i.comentario)
+    const oldC = comentariosResult.value.map((i) => i.comentario)
+    if (newC.toString() === oldC.toString()) return
     newComments?.length && scrollChatToBottom()
   }
 
