@@ -23,9 +23,11 @@ const props = defineProps({
     type: Object,
   },
 })
+
 const serverOpt = {
   url: API_URL,
   timeout: 7000,
+
   process: {
     url: props.server.url,
     method: 'POST',
@@ -36,7 +38,12 @@ const serverOpt = {
       formData.append(props.server.key, props.server.id)
       return formData
     },
+    onerror: (response) => {
+      debugger
+      console.log(response)
+    },
   },
+
   revert: async (uniqueID) => {
     const id = JSON.parse(uniqueID)
     if (id.id) {

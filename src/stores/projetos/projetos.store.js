@@ -21,11 +21,12 @@ export const useProjetoStore = defineStore('projetoStore', () => {
         i.nome_completo = `${i.nome_cliente ? i.nome_cliente + ' ⠂' : ''}  ${
           i.nome || ''
         }`.trim()
+        i.jow = 'dev'
         return i
       })
 
       setProjetos(result)
-      return data
+      return result
     } catch (e) {
       console.log(e)
       return e
@@ -47,6 +48,11 @@ export const useProjetoStore = defineStore('projetoStore', () => {
     try {
       const { data } = await api.get(URLS.projeto + id)
 
+      if (data) {
+        data.nome_completo = `${
+          data.nome_cliente ? data.nome_cliente + ' ⠂' : ''
+        }  ${data.nome || ''}`.trim()
+      }
       setProjeto(data)
       return data
     } catch (e) {

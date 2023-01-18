@@ -20,11 +20,22 @@ Notify.registerType('sucess', {
   position: 'top-left',
 })
 
+Notify.registerType('alert', {
+  icon: 'warning',
+  progress: true,
+  classes: 'notify-alert',
+  timeout: 2500,
+  position: 'top-left',
+})
+
 const NotifyError = (text, opts) =>
   Notify.create({ type: 'error', message: text, ...opts })
 
 const NotifySucess = (text, opts) =>
   Notify.create({ type: 'sucess', message: text, ...opts })
+
+const NotifyAlert = (text, opts) =>
+  Notify.create({ type: 'alert', message: text, ...opts })
 
 export default boot(async ({ app }) => {
   app.config.globalProperties.$Notify = Notify
@@ -33,4 +44,4 @@ export default boot(async ({ app }) => {
   window.NotifySucess = NotifySucess
 })
 
-export { NotifyError, NotifySucess }
+export { NotifyError, NotifySucess, NotifyAlert }

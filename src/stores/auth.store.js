@@ -6,13 +6,13 @@ import { useResetStore } from 'src/utils/useResetStore'
 
 const tokenOpt = {
   secure: process.env.HTTPS_MODE,
-  expires: '30m 0',
+  expires: '1m 0',
   // path: '/',
 }
 
 const refreshTokenOpt = {
   secure: process.env.HTTPS_MODE,
-  // expires: '30m 0',
+  expires: '1m 0',
 }
 
 export const useAuthStore = defineStore('auth', () => {

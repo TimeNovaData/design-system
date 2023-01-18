@@ -64,6 +64,8 @@
       fotoKey="logo"
       :options="opt"
       :label="selectLabel"
+      :option-value="optionValue"
+      :option-label="optionLabel"
       v-bind="selectProps"
     >
     </OSelectAvatar>
@@ -106,6 +108,11 @@ const props = defineProps({
   selectLabel: String,
   selected: Object,
   selectProps: Object,
+
+  clearActive: {
+    type: Boolean,
+    default: true,
+  },
 })
 
 const opt = ref(props.options)
@@ -133,6 +140,7 @@ const select = ref(null)
 const projetoSelected = ref(props.selected)
 
 function handleEmit(v) {
+  if (!props.clearActive && !v) return
   emit('updateValue', v)
   props.closeOnSelect && popupUpProjeto.value.hide()
 }

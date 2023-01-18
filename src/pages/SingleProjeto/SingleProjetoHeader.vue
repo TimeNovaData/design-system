@@ -52,8 +52,11 @@
                 :selectProps="{
                   clearable: false,
                   loading: !projetos.length,
+                  nomeKey: 'nome_completo',
                 }"
                 ref="itemEditableSelect"
+                @clear:select="handleClear"
+                :clearActive="false"
               ></KanbanItemEditableSelect>
             </div>
           </div>
@@ -90,9 +93,11 @@
                 size="lg"
                 square
                 color="var(--alert-success)"
-                v-if="projeto.atendimento"
+                v-if="projeto.id"
               >
-                <template v-slot:content>{{ FData(projeto) }}</template>
+                <template v-slot:content>{{
+                  FData(projeto.fim_contrato)
+                }}</template>
               </OBadge>
               <q-skeleton v-else type="rect" height="24px" width="100%" />
             </div>
@@ -228,6 +233,10 @@ function onScroll(position) {
   } else {
     headerMinify.value = false
   }
+}
+
+function handleClear(e) {
+  debugger
 }
 
 defineExpose({ itemEditableSelect, show })

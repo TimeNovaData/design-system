@@ -305,19 +305,19 @@
 
                   <q-td key="data_desejada" :auto-width="false">
                     <div class="text-paragraph-2 text-end">
-                      {{ GLOBAL.FData(props.row.data_desejada) }}
+                      {{ GLOBAL.FData(props.row.entrega_data_desejada) }}
                     </div>
                   </q-td>
 
                   <q-td key="data_prevista" :auto-width="false">
                     <div class="text-paragraph-2 text-end">
-                      {{ GLOBAL.FData(props.row.data_prevista) }}
+                      {{ GLOBAL.FData(props.row.data_final_previsto) }}
                     </div>
                   </q-td>
 
                   <q-td key="tempo_decorrido" :auto-width="false">
                     <div class="text-paragraph-2 text-end">
-                      {{ GLOBAL.FTime(props.row.tempo_decorrido) }}
+                      {{ GLOBAL.FTime(props.row.tempo_total) }}
                     </div>
                   </q-td>
                 </q-tr>
@@ -350,6 +350,7 @@
   >
     <!-- v-if="modalChat.dialogState" -->
     <OChatBox
+      v-if="comments.length !== 0"
       class="h-full w-full flex-1 mb-0"
       style="box-shadow: initial"
       :comments="comments"
@@ -360,6 +361,9 @@
       filters="&page=1&page_size=200"
     >
     </OChatBox>
+    <div v-else>
+      <EmptyItem text="Sem acompanhamentos para exibir" />
+    </div>
   </ModalSide>
 
   <!-- Modal Anexos -->
@@ -370,15 +374,21 @@
           >Novo anexo</OButton
         >
       </div>
-      <AnexoItem
-        v-for="i in anexosListReverse"
-        :key="i.id"
-        :ext="i.anexo_thumb?.extensao?.replace('.', '')"
-        :thumb="i.anexo_thumb?.url || ''"
-        :link="i.attachments"
-        :size="i.anexo_tamanho"
-        :nome="i.anexo_nome"
-      />
+
+      <div v-if="anexosListReverse.length">
+        <AnexoItem
+          v-for="i in anexosListReverse"
+          :key="i.id"
+          :ext="i.anexo_thumb?.extensao?.replace('.', '')"
+          :thumb="i.anexo_thumb?.url || ''"
+          :link="i.attachments"
+          :size="i.anexo_tamanho"
+          :nome="i.anexo_nome"
+        />
+      </div>
+      <div v-else>
+        <EmptyItem text="Sem Anexos para exibir" />
+      </div>
     </section>
   </ModalSide>
 
@@ -388,32 +398,12 @@
     text="Acessos"
     icon="svguse:/icons.svg#icon_lock"
   >
-    <section class="flex flex-col p-24 gap-8">
+    <section class="flex flex-col p-24 gap-8" v-if="acessosList.length !== 0">
       <div class="flex justify-between mb-8">
         <!--    <OButton secondary size="md" icon="add_circle" @click="openNovoAnexo"
           >Novo anexo</OButton
         > -->
       </div>
-
-      <!-- 
-
-                  [
-        {
-          "id": 1,
-          "ferramenta": "Ferramenta A",
-          "acesso": "Acesso A",
-          "antigo_link_trello": "link trello A",
-          "projeto": 15
-        },
-        {
-          "id": 4,
-          "ferramenta": "Ferramenta A",
-          "acesso": "Acesso D",
-          "antigo_link_trello": "link trello A",
-          "projeto": 15
-        }
-      ]
-       -->
       <AcessoItem
         v-for="item in acessosList"
         :key="item.id"
@@ -421,6 +411,9 @@
         type="acess"
         :acesso="item.acesso"
       />
+    </section>
+    <section v-else class="flex flex-col p-24 gap-8">
+      <EmptyItem text="Sem Acessos para exibir" />
     </section>
   </ModalSide>
 
@@ -452,6 +445,7 @@ const oi = [
     icon="svguse:/icons.svg#icon_users"
   >
     <section
+      v-if="contatosList.length"
       class="flex flex-col p-24 gap-18 divide-y divide-neutral-30 dark:divide-white/10"
     >
       <q-list
@@ -488,6 +482,9 @@ const oi = [
         </q-item>
       </q-list>
     </section>
+    <section v-else class="flex flex-col p-24 gap-8">
+      <EmptyItem text="Sem contatos cadastrados" />
+    </section>
   </ModalSide>
 
   <!-- MODAL Briefing -->
@@ -496,12 +493,21 @@ const oi = [
     text="Briefing"
     icon="svguse:/icons.svg#icon_docs"
   >
-    <section class="flex flex-col p-24 gap-18 divide-y divide-neutral-30">
+    <section
+      class="flex flex-col p-24 gap-18 divide-y divide-neutral-30"
+      v-if="projeto.briefing_text"
+    >
       <div
         class="bg-neutral-20 p-16 border border-neutral-100/5 dark:bg-white/5 dark:border-white/10 text-neutral-70 dark:text-white/70 text-paragraph-2 rounded-generic"
       >
-        <div v-html="projeto.briefing_text"></div>
+        <div
+          style="white-space: break-spaces"
+          v-html="projeto.briefing_text"
+        ></div>
       </div>
+    </section>
+    <section v-else class="flex flex-col p-24 gap-8">
+      <EmptyItem text="Não há briefing cadastrado." />
     </section>
   </ModalSide>
 
@@ -511,12 +517,18 @@ const oi = [
     text="Escopo"
     icon="svguse:/icons.svg#icon_paper"
   >
-    <section class="flex flex-col p-24 gap-18 divide-y divide-neutral-30">
+    <section
+      class="flex flex-col p-24 gap-18 divide-y divide-neutral-30"
+      v-if="projeto.escopo"
+    >
       <div
         class="bg-neutral-20 p-16 border border-neutral-100/5 dark:bg-white/5 dark:border-white/10 text-neutral-70 dark:text-white/70 text-paragraph-2 rounded-generic"
       >
-        <div v-html="projeto.escopo"></div>
+        <div style="white-space: break-spaces" v-html="projeto.escopo"></div>
       </div>
+    </section>
+    <section v-else class="flex flex-col p-24 gap-8">
+      <EmptyItem text="Não há Escopo cadastrado." />
     </section>
   </ModalSide>
 
@@ -568,6 +580,7 @@ import { columnsChamado, columnsTask } from './cols.js'
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
 import { useAnexoStore } from 'src/stores/anexos/anexos.store'
 import ModalAddAnexo from 'src/components/Modal/ModalAddAnexo.vue'
+import EmptyItem from 'src/components/Empty/EmptyItem.vue'
 
 const { URLS } = api.defaults
 // Router

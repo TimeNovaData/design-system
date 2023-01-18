@@ -29,8 +29,11 @@
                 selectLabel="Projeto"
                 :options="projetos"
                 :selected="projeto !== {} ? projeto : null"
-                :clearable="false"
                 @updateValue="(v) => $emit('updateSelect', v)"
+                :clearActive="false"
+                :select-props="{
+                  clearable: false,
+                }"
               ></KanbanItemEditableSelect>
             </p>
           </div>

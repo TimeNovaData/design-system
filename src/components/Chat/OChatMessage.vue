@@ -18,7 +18,12 @@
       <span class="text-neutral-60 dark:text-white/40">{{
         data.data_amigavel
       }}</span>
-      <TagBase type="projeto" v-if="data.tipo_etapa" :nome="data.tipo_etapa" />
+      <TagBase
+        type="projeto"
+        v-if="data.tipo_etapa"
+        :nome="data.tipo_etapa.classe_nome"
+        :cor="data.tipo_etapa.cor"
+      />
     </div>
   </div>
 </template>
