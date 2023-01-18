@@ -172,6 +172,24 @@
               @click="handleChangeFiltroInvestimento('usuario')"
               >Usuário</OButton
             >
+
+            <OButton
+              class="text-neutral-70"
+              :class="{ active: FiltroInvestimentoPor === 'chamado' }"
+              size="md"
+              secondary
+              @click="handleChangeFiltroInvestimento('chamado')"
+              >Chamado</OButton
+            >
+
+            <OButton
+              class="text-neutral-70"
+              :class="{ active: FiltroInvestimentoPor === 'cargo' }"
+              size="md"
+              secondary
+              @click="handleChangeFiltroInvestimento('cargo')"
+              >Cargo</OButton
+            >
           </div>
         </div>
         <div class="w-full px-16">
