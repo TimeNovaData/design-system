@@ -8,8 +8,10 @@
     <div class="container relative">
       <div class="flex items-end mt-[-255px] mb-32">
         <div class="mr-24">
+          <q-skeleton v-if="isLoading" type="circle" size="160px" />
           <OAvatar
-            :foto="userActive.foto"
+            v-else
+            :foto="profileActive.foto"
             size="160px"
             class-avatar="border-2 border-white"
             style="box-sizing: initial"
@@ -20,64 +22,99 @@
             <p class="text-caps-2 text-primary-pure">Usuário</p>
 
             <div class="colaborador flex">
-              <div class="item-editavel text-title-3 h-40">
-                > {{ userActive.username }}
+              <div class="item-editavel text-title-3 w-full h-40 text-white">
+                <span v-if="profileActive.nome">{{ profileActive.nome }}</span>
+                <span v-else>Selecione um usuário</span>
+                <q-icon name="expand_more"></q-icon>
               </div>
 
               <KanbanItemEditableSelect
-                text="Selecione um usuário"
+                text="Selecione um Usuário"
                 selectLabel="Usuário"
                 :options="usuarios"
                 :selected="user !== {} ? user : null"
                 ref="itemEditableSelect"
+                @updateValue="(p) => handleChangeProfile(p.id)"
                 :selectProps="{
                   fotoKey: 'foto',
                   nomeKey: 'username',
+                  clearable: false,
                 }"
               />
             </div>
           </div>
-          <div class="user-infos flex gap-32">
-            <div class="flex flex-col justify-between">
+          <div class="user-infos mt-16 flex gap-32">
+            <div class="flex flex-col">
               <p class="text-caps-3 text-white/70 mb-2">TRABALHANDO EM</p>
 
-              <div class="flex items-center">
+              <div class="flex items-center flex-nowrap h-32">
                 <q-icon
                   name="svguse:/icons.svg#icon_suitcase"
                   class="text-primary-pure mr-8"
                   size="1.5rem"
                 >
                 </q-icon>
-                <p class="text-headline-4 text-white">
-                  Design System + Telas HUB | Novadata
+                <q-skeleton
+                  v-if="isLoading"
+                  type="rect"
+                  height="24px"
+                  width="170px"
+                />
+                <p
+                  v-else-if="profileProjects"
+                  class="text-headline-4 text-white"
+                >
+                  <span>
+                    {{ profileProjects }}
+                  </span>
                 </p>
+                <p v-else class="text-headline-4 text-white">-</p>
               </div>
             </div>
 
-            <div class="flex flex-col justify-between">
+            <div class="flex flex-col">
               <p class="text-caps-3 text-white/70 mb-2">Data de aniversário</p>
-              <div class="flex items-center">
+              <div class="flex items-center h-32">
                 <q-icon
                   name="svguse:/icons.svg#icon_calendar_check"
                   class="text-primary-pure mr-8"
                   size="1.5rem"
                 >
                 </q-icon>
-                <p class="text-headline-4 text-white">07/07/2000</p>
+                <q-skeleton
+                  v-if="isLoading"
+                  type="rect"
+                  height="24px"
+                  width="90px"
+                />
+                <p
+                  v-else-if="profileActive.data_nascimento"
+                  class="text-headline-4 text-white"
+                >
+                  {{ profileActive.data_nascimento }}
+                </p>
+                <p v-else class="text-headline-4 text-white">-</p>
               </div>
             </div>
 
-            <div class="flex flex-col justify-between">
+            <div class="flex flex-col">
               <p class="text-caps-3 text-white/70 mb-2">Equipe</p>
-              <div class="relative h-[30px]">
-                <AvatarMultipleVue :list="listAvatar"></AvatarMultipleVue>
+              <q-skeleton v-if="isLoading" type="circle" size="32px" />
+              <div v-else-if="profileTeam" class="relative h-[30px]">
+                <AvatarMultiple
+                  :list="profileTeam"
+                  :avatarAttrs="{
+                    class: '!bg-d-neutral-30 !border-d-neutral-10',
+                  }"
+                ></AvatarMultiple>
               </div>
+              <p v-else class="text-headline-4 text-white my-auto">-</p>
             </div>
           </div>
         </div>
       </div>
 
-      <section id="tasks" class="bg-neutral-10 mb-16">
+      <section id="tasks" class="bg-neutral-10 dark:bg-d-neutral-10 mb-16">
         <div class="header-wrapper flex items-center justify-between p-16">
           <div class="item-1 flex items-center">
             <q-icon
@@ -158,7 +195,7 @@
       </section>
 
       <!-- ✅ TASK FINALIZADAS -->
-      <section id="tasks-finalizadas" class="bg-white">
+      <section id="tasks-finalizadas" class="bg-white dark:!bg-d-neutral-20">
         <o-accordion
           class="border border-neutral-100/10 rounded-[3px] dark:border-white/10 overflow-hidden"
         >
@@ -201,65 +238,60 @@
 </template>
 
 <script setup>
-import { ref, inject, onMounted, computed, unref, nextTick } from 'vue'
+import { ref, inject, onMounted, computed, unref, nextTick, watch } from 'vue'
 import bg from 'src/assets/image/bg-single-usuario.png'
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
 import avatar from 'src/assets/image/gravatar.jpg'
-import AvatarMultipleVue from 'src/components/Avatar/AvatarMultiple.vue'
+import AvatarMultiple from 'src/components/Avatar/AvatarMultiple.vue'
 import OAccordion from 'src/components/Accordion/OAccordion.vue'
 import OButton from 'src/components/Button/OButton.vue'
 import TaskColaborador from 'src/components/TaskColaborador/TaskColaborador.vue'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
+import { useProfileStore } from 'src/stores/profile/profile.store'
 import { storeToRefs } from 'pinia'
 import draggable from 'vuedraggable'
 import emitter from 'src/boot/emitter'
 import KanbanItemEditableSelect from 'src/components/Kanban/KanbanItemEditableSelect.vue'
 
-import { onBeforeRouteUpdate, useRoute, useRouter } from 'vue-router'
-import { useUsuarioStore } from 'src/stores/usuarios/usuarios.store'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
+const router = useRouter()
 
 const user = inject('user')
-const { usuarios } = storeToRefs(useUsuarioStore())
-const { getUsuarios } = useUsuarioStore()
-const userFoto = inject('usuarios')
-const loading = ref(true)
-
+const usuarios = inject('usuarios')
 const openTaskEditModal = inject('openTaskEditModal')
+
+const loading = ref(true)
 const userActiveID = ref(null)
 
 const { getTasks } = useTaskStore()
 const { tasks } = storeToRefs(useTaskStore())
 
-const userActive = computed(() =>
-  usuarios.value.filter((i) => i.id === Number(userActiveID.value))
-)
+const { getProfile } = useProfileStore()
+const { profileActive, isLoading } = storeToRefs(useProfileStore())
 
-console.warn(userActive)
+async function handleChangeProfile(profileId) {
+  router.push({ params: { id: profileId } })
 
-const listAvatar = ref([
-  {
-    foto: 'https://cdn.quasar.dev/img/avatar1.jpg',
-    nome: 'Teste',
-  },
-  {
-    foto: 'https://cdn.quasar.dev/img/avatar2.jpg',
-    nome: 'Teste',
-  },
-  {
-    foto: 'https://cdn.quasar.dev/img/avatar3.jpg',
-    nome: 'Teste',
-  },
-  {
-    foto: 'https://cdn.quasar.dev/img/avatar4.jpg',
-    nome: 'Teste',
-  },
-  {
-    foto: 'https://cdn.quasar.dev/img/avatar5.jpg',
-    nome: 'Teste',
-  },
-])
+  await getProfile(profileId)
+
+  userActiveID.value = profileId
+  window._blue('PROFILE')
+  console.log(profileActive)
+}
+
+const profileProjects = computed(() => {
+  const projects = profileActive.value.projetos.map((p) => p.nome)
+  return projects.join(' • ')
+})
+
+const profileTeam = computed(() => {
+  return profileActive.value.equipe?.map((t) => ({
+    foto: t.profile.foto || '',
+    nome: t.get_full_name,
+  }))
+})
 
 emitter.on('taskCreate', () => {
   // atualizar a lista
@@ -287,20 +319,18 @@ const getTasksPaged = async (userId) => {
 }
 
 onMounted(async () => {
-  const router = useRouter()
   const routeID = route.params.id
   const userID = user.value.id
   const userRoute = routeID === 'user'
 
   await nextTick()
 
-  console.log(user.value.id)
   userRoute && router.push({ params: { id: userID } })
 
   userActiveID.value = userRoute ? user.value.id : routeID
 
+  await handleChangeProfile(userRoute ? userID : routeID)
   await getTasksPaged(userRoute ? userID : routeID)
-  // await getUsuarios()
   loading.value = false
 })
 </script>
@@ -323,8 +353,5 @@ onMounted(async () => {
   border: 1px solid transparent
   transition: .3s ease
   &:hover
-    border-color: rgba(var(--neutral-100),0.1)
-  .body--dark &
-    &:hover
-      border-color: rgba(var(--white),0.2)
+    border-color: rgba(var(--white),0.2)
 </style>

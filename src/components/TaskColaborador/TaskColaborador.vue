@@ -5,7 +5,7 @@
     @click="handleView($event, task.id)"
   >
     <li
-      class="task-item list-none cursor-pointer bg-white border border-neutral-100/10 rounded-[3px] dark:border-white/10 overflow-hidden px-16 py-[7px] mb-2"
+      class="task-item list-none cursor-pointer bg-white border border-neutral-100/10 rounded-[3px] dark:border-white/10 dark:!bg-d-neutral-20 overflow-hidden px-16 py-[7px] mb-2"
       :class="{
         'border-l-0 , border-r-0 , rounded-none': hideDragIcon,
       }"
