@@ -39,7 +39,6 @@ const serverOpt = {
       return formData
     },
     onerror: (response) => {
-      debugger
       console.log(response)
     },
   },
