@@ -577,6 +577,7 @@ const router = useRouter()
 // Stores
 const { getProjeto, getTempoProjeto, getContatos, getAcessos } =
   useProjetoStore()
+  
 const { projeto, tempoProjeto, isLoadingTempoProjeto } = storeToRefs(
   useProjetoStore()
 )
