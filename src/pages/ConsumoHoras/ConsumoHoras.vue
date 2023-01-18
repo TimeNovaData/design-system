@@ -405,6 +405,7 @@ const { getUsuarios, getProjetos, getClientes } = inject('get')
 
 const { getChamado } = useChamadoStore()
 const { chamados, isLoading: chamadoLoading } = storeToRefs(useChamadoStore())
+
 const isLoading = ref(true)
 
 let filtrosAplicados = {}
@@ -508,6 +509,7 @@ const tempoTask = ref([])
 isLoading.value = true
 
 async function getTempoTask() {
+  isLoading.value = true
   menu.value.hide()
   filtroOBJ.value.agrupamento = FiltroInvestimentoPor.value
   try {
