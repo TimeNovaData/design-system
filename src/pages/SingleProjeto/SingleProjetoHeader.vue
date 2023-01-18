@@ -140,7 +140,9 @@
         >
           Briefing</OButton
         >
-        <hr class="w-1 h-24 my-auto mx-4 bg-neutral-100/10" />
+        <hr
+          class="w-1 h-24 my-auto mx-4 bg-neutral-100/10 dark:bg-white/10 border-[0]"
+        />
         <OButton
           class="dark:!bg-white/10 dark:shadow-[initial] dark:!border-0 !h-40 btn-header bg-white"
           size="md"
@@ -178,6 +180,10 @@
     :projeto="projeto"
     @updateSelect="(v) => $emit('updateSelect', v)"
     @anexoClick="$emit('anexoClick')"
+    @contatosClick="$emit('contatosClick')"
+    @acessosClick="$emit('acessosClick')"
+    @briefingClick="$emit('briefingClick')"
+    @escopoClick="$emit('escopoClick')"
   ></SingleProjetoHeaderMinify>
 </template>
 

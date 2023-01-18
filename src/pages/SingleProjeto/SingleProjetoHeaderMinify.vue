@@ -121,7 +121,7 @@
 
 <script setup>
 import avatar from 'src/assets/image/gravatar.jpg'
-import AvatarMultiple from 'src/components/Avatar/AvatarMultiple.vue'
+
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
 import OBadge from 'src/components/Badge/OBadge.vue'
 import OButton from 'src/components/Button/OButton.vue'
@@ -131,7 +131,14 @@ import { inject, ref, onMounted } from 'vue'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 const { FData } = GLOBAL
 
-const emit = defineEmits(['updateSelect', 'anexoClick'])
+const emit = defineEmits([
+  'updateSelect',
+  'anexoClick',
+  'escopoClick',
+  'briefingClick',
+  'contatosClick',
+  'acessosClick',
+])
 const header = ref(null)
 
 const itemEditableSelect = ref(null)
