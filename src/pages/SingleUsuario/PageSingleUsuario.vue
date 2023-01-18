@@ -31,15 +31,20 @@
               <KanbanItemEditableSelect
                 text="Selecione um Usuário"
                 selectLabel="Usuário"
-                :options="usuarios"
-                :selected="user !== {} ? user : null"
+                :options="usuarios.filter((i) => i.profile)"
                 ref="itemEditableSelect"
-                @updateValue="(p) => handleChangeProfile(p.id)"
+                @updateValue="handleChangeSelect"
+                :selected="
+                  profileActive !== {}
+                    ? usuarios.filter((i) => i.id === profileActive.user)[0]
+                    : null
+                "
                 :selectProps="{
                   fotoKey: 'foto',
-                  nomeKey: 'username',
+                  nomeKey: 'get_full_name',
                   clearable: false,
                 }"
+                :clearActive="false"
               />
             </div>
           </div>
@@ -57,7 +62,7 @@
                 <q-skeleton
                   v-if="isLoading"
                   type="rect"
-                  height="24px"
+                  height="1.5rem"
                   width="170px"
                 />
                 <p
@@ -84,7 +89,7 @@
                 <q-skeleton
                   v-if="isLoading"
                   type="rect"
-                  height="24px"
+                  height="1.5rem"
                   width="90px"
                 />
                 <p
@@ -100,7 +105,7 @@
             <div class="flex flex-col">
               <p class="text-caps-3 text-white/70 mb-2">Equipe</p>
               <q-skeleton v-if="isLoading" type="circle" size="32px" />
-              <div v-else-if="profileTeam" class="relative h-[30px]">
+              <div v-else-if="profileTeam.length" class="relative h-[30px]">
                 <AvatarMultiple
                   :list="profileTeam"
                   :avatarAttrs="{
@@ -167,7 +172,7 @@
                       <q-skeleton type="rect" class="h-[3.75rem]" />
                       <q-skeleton type="rect" class="h-[3.75rem]" />
                     </div>
-                    <ul class="overflow-hidden relative" v-else>
+                    <div class="overflow-hidden relative" v-else>
                       <!-- <template v-for="(task, index) in tasks" :key="task.id"> -->
                       <draggable
                         v-bind="dragOptions"
@@ -185,7 +190,7 @@
                           <TaskColaborador :task="element" />
                         </template>
                       </draggable>
-                    </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -214,15 +219,13 @@
 
           <q-virtual-scroll
             style="max-height: 450px"
-            :items="tasks"
+            :items="tasksfinished"
             separator
-            v-slot="{ item: task }"
+            v-slot="{ item }"
             class="relative"
-            virtual-scroll-item-size="58px"
           >
             <TaskColaborador
-              :key="task.id"
-              :task="task"
+              :task="item"
               :hideDragIcon="true"
               :completed="true"
             />
@@ -260,6 +263,7 @@ const router = useRouter()
 
 const user = inject('user')
 const usuarios = inject('usuarios')
+const userProfile = inject('userProfile')
 const openTaskEditModal = inject('openTaskEditModal')
 
 const loading = ref(true)
@@ -271,14 +275,23 @@ const { tasks } = storeToRefs(useTaskStore())
 const { getProfile } = useProfileStore()
 const { profileActive, isLoading } = storeToRefs(useProfileStore())
 
+async function handleChangeSelect({ profile, id }) {
+  loading.value = true
+
+  await handleChangeProfile(profile.id)
+  await handleGetTasks(id)
+
+  loading.value = false
+}
+
 async function handleChangeProfile(profileId) {
-  router.push({ params: { id: profileId } })
-
   await getProfile(profileId)
+}
 
-  userActiveID.value = profileId
-  window._blue('PROFILE')
-  console.log(profileActive)
+const handleGetTasks = async (userId) => {
+  router.push({ params: { id: userId } })
+
+  return await getTasks(`&responsavel_task__id=${userId}&page_size=10`)
 }
 
 const profileProjects = computed(() => {
@@ -296,7 +309,7 @@ const profileTeam = computed(() => {
 emitter.on('taskCreate', () => {
   // atualizar a lista
   console.log('CRIOU')
-  getTasksPaged(userActiveID.value)
+  handleGetTasks(userActiveID.value)
 })
 
 const tasksTodo = computed(() =>
@@ -314,25 +327,51 @@ const dragOptions = computed(() => ({
   ghostClass: 'ghost',
 }))
 
-const getTasksPaged = async (userId) => {
-  return await getTasks(`&=responsavel_task__id=${userId}&page_size=10`)
-}
-
-onMounted(async () => {
+async function init() {
   const routeID = route.params.id
-  const userID = user.value.id
   const userRoute = routeID === 'user'
+
+  // USER
+  const IDFinal = Number(userRoute ? user.value.id : routeID) // ID DO USUÁRIO OU DA URL
+
+  // PROFILE
+  const userProfileID = userProfile.value.id // É O PROFILE DO USUARIO LOGADO
+  const profileID = usuarios.value
+    .filter((i) => i.id === IDFinal)
+    ?.reduce((acc, i) => i, {})?.profile.id // É O PROFILE DO USUÁRIO SELECIONADO
 
   await nextTick()
 
-  userRoute && router.push({ params: { id: userID } })
+  userRoute && router.push({ params: { id: IDFinal } })
 
-  userActiveID.value = userRoute ? user.value.id : routeID
+  // handleChangeProfile RECEBE O ID DO PROFILE
+  await handleChangeProfile(userRoute ? userProfileID : profileID)
 
-  await handleChangeProfile(userRoute ? userID : routeID)
-  await getTasksPaged(userRoute ? userID : routeID)
+  // getTasksPaged RECEBE O ID DO USUARIO
+  userActiveID.value = IDFinal
+
+  await nextTick()
+
+  await handleGetTasks(IDFinal)
   loading.value = false
-})
+}
+
+const unWatch = watch(
+  [userProfile, usuarios],
+  ([newX, newY]) => {
+    if (userProfile.value.id && usuarios.value.length) {
+      init()
+      console.log('foi')
+      unWatch && unWatch()
+    }
+  },
+  {
+    deep: true,
+    immediate: true,
+  }
+)
+
+onMounted(async () => {})
 </script>
 
 <style lang="sass" scoped>
