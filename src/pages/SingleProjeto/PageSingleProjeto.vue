@@ -7,6 +7,10 @@
         ref="header"
         @updateSelect="handleChangeProjeto"
         @anexoClick="handleShowAnexos"
+        @contatosClick="handleShowContatos"
+        @acessosClick="handleShowAcessos"
+        @briefingClick="handleShowBriefing"
+        @escopoClick="handleShowEscopo"
       />
 
       <Transition name="fade" mode="out-in">
@@ -357,7 +361,6 @@
     >
     </OChatBox>
   </ModalSide>
-  {{ acessos }}
 
   <!-- Modal Anexos -->
   <ModalSide ref="modalAnexo" text="Anexos" icon="svguse:/icons.svg#icon_chat">
@@ -391,54 +394,129 @@
           >Novo anexo</OButton
         > -->
       </div>
+
+      <!-- 
+
+                  [
+        {
+          "id": 1,
+          "ferramenta": "Ferramenta A",
+          "acesso": "Acesso A",
+          "antigo_link_trello": "link trello A",
+          "projeto": 15
+        },
+        {
+          "id": 4,
+          "ferramenta": "Ferramenta A",
+          "acesso": "Acesso D",
+          "antigo_link_trello": "link trello A",
+          "projeto": 15
+        }
+      ]
+       -->
       <AcessoItem
-        name="Google Drive"
+        v-for="item in acessosList"
+        :key="item.id"
+        :name="item.ferramenta"
         type="acess"
-        login="Instagram@novadata.com.br"
-        senha="google"
-      />
-      <AcessoItem
-        name="Instagram"
-        link="https://drive.google.com/drive/u/0/my-drives"
-        type="link"
+        :acesso="item.acesso"
       />
     </section>
   </ModalSide>
 
+  <!-- 
+
+    
+const oi = [
+  {
+    id: 3,
+    nome: 'Telefone',
+    telefone: '999999999999999',
+    email: 'email.example@example.com.br',
+    cargo: 'teste',
+    cliente: 2,
+  },
+  {
+    id: 4,
+    nome: 'qwedqw',
+    telefone: '2112112',
+    email: 'email.example2@example.com.br',
+    cargo: 'teste2',
+    cliente: 2,
+  },
+]
+   -->
   <ModalSide
     ref="modalContatos"
     text="Contatos"
     icon="svguse:/icons.svg#icon_users"
   >
-    <section class="flex flex-col p-24 gap-8">
-      <q-list class="-mx-16" :padding="false">
+    <section
+      class="flex flex-col p-24 gap-18 divide-y divide-neutral-30 dark:divide-white/10"
+    >
+      <q-list
+        class="-mx-16"
+        :padding="false"
+        v-for="item in contatosList"
+        :key="item.id"
+      >
         <q-item class="flex gap-8 items-center" clickable
           ><q-icon
             class="text-primary-pure h-24 w-24"
             name="svguse:/icons.svg#icon_users"
           ></q-icon>
-          <p class="text-paragraph-1">Andrei Muniz</p>
+          <p class="text-paragraph-1">{{ item.nome }}</p>
         </q-item>
         <q-item class="flex gap-8 items-center" clickable
           ><q-icon
             class="text-primary-pure h-24 w-24"
             name="svguse:/icons.svg#icon_mala"
           ></q-icon>
-          <p class="text-paragraph-1">Gerente de Projetos</p>
+          <p class="text-paragraph-1">{{ item.cargo }}</p>
         </q-item>
         <q-item class="flex gap-8 items-center" clickable
           ><q-icon
             class="text-primary-pure h-24 w-24"
             name="svguse:/icons.svg#ico_tel"
           ></q-icon>
-          <p class="text-paragraph-1">(00) 99882 8029</p>
+          <p class="text-paragraph-1">{{ item.telefone }}</p>
         </q-item>
 
         <q-item class="flex gap-8 items-center" clickable
           ><q-icon class="text-primary-pure h-24 w-24" name="mail"></q-icon>
-          <p class="text-paragraph-1">andrei.muniz@novadata.com.br</p>
+          <p class="text-paragraph-1">{{ item.email }}</p>
         </q-item>
       </q-list>
+    </section>
+  </ModalSide>
+
+  <!-- MODAL Briefing -->
+  <ModalSide
+    ref="modalBriefing"
+    text="Briefing"
+    icon="svguse:/icons.svg#icon_docs"
+  >
+    <section class="flex flex-col p-24 gap-18 divide-y divide-neutral-30">
+      <div
+        class="bg-neutral-20 p-16 border border-neutral-100/5 dark:bg-white/5 dark:border-white/10 text-neutral-70 dark:text-white/70 text-paragraph-2 rounded-generic"
+      >
+        <div v-html="projeto.briefing_text"></div>
+      </div>
+    </section>
+  </ModalSide>
+
+  <!-- MODAL Escopo -->
+  <ModalSide
+    ref="modalEscopo"
+    text="Escopo"
+    icon="svguse:/icons.svg#icon_paper"
+  >
+    <section class="flex flex-col p-24 gap-18 divide-y divide-neutral-30">
+      <div
+        class="bg-neutral-20 p-16 border border-neutral-100/5 dark:bg-white/5 dark:border-white/10 text-neutral-70 dark:text-white/70 text-paragraph-2 rounded-generic"
+      >
+        <div v-html="projeto.escopo"></div>
+      </div>
     </section>
   </ModalSide>
 
@@ -459,7 +537,6 @@ import OButton from 'src/components/Button/OButton.vue'
 import ModalSide from 'src/components/Modal/ModalSide.vue'
 import ModalCenter from 'src/components/Modal/ModalCenter.vue'
 import { useProjetoStore } from 'src/stores/projetos/projetos.store'
-import { useAcessoStore } from 'src/stores/acessos/acessos.store'
 
 import {
   onMounted,
@@ -489,8 +566,6 @@ import AvatarTextSubtext from 'src/components/Avatar/AvatarTextSubtext.vue'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import { columnsChamado, columnsTask } from './cols.js'
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
-import TaskCreateAttachmentCard from 'src/components/Task/TaskCreate/TaskCreateAttachmentCard.vue'
-import AttachmentFilepond from 'src/components/Attachment/AttachmentFilepond.vue'
 import { useAnexoStore } from 'src/stores/anexos/anexos.store'
 import ModalAddAnexo from 'src/components/Modal/ModalAddAnexo.vue'
 
@@ -500,12 +575,11 @@ const route = useRoute()
 const router = useRouter()
 
 // Stores
-const { getProjeto, getTempoProjeto } = useProjetoStore()
+const { getProjeto, getTempoProjeto, getContatos, getAcessos } =
+  useProjetoStore()
 const { projeto, tempoProjeto, isLoadingTempoProjeto } = storeToRefs(
   useProjetoStore()
 )
-const { getAcessos } = useAcessoStore()
-const { acessos } = storeToRefs(useAcessoStore())
 const { getTasks } = useTaskStore()
 // const { tasks } = storeToRefs(useTaskStore())
 const tasks = ref([])
@@ -521,6 +595,8 @@ const modalAnexo = ref(null)
 const modalAcessos = ref(null)
 const modalContatos = ref(null)
 const modalAddAnexoRef = ref(null)
+const modalBriefing = ref(null)
+const modalEscopo = ref(null)
 // Comments
 const {
   getComments,
@@ -657,6 +733,28 @@ async function handleShowAnexos() {
   modalAnexo.value.dialogRef.show()
 }
 
+const contatosList = ref([])
+async function handleShowContatos() {
+  contatosList.value = await getContatos(
+    `&cliente__id=${projeto.value.cliente}`
+  )
+  modalContatos.value.dialogRef.show()
+}
+
+const acessosList = ref([])
+async function handleShowAcessos() {
+  acessosList.value = await getAcessos(`&projeto__id=${projeto.value.id}`)
+  modalAcessos.value.dialogRef.show()
+}
+
+async function handleShowBriefing() {
+  modalBriefing.value.dialogRef.show()
+}
+
+async function handleShowEscopo() {
+  modalEscopo.value.dialogRef.show()
+}
+
 // Handles
 async function handleGetChamado(id, filters) {
   const req = await getChamados(id, filters)
@@ -686,7 +784,6 @@ async function requests() {
   await nextTick()
   populateChart(tempoProjeto.value)
   await handleGetChamado(pageID.value + '&status=abertos')
-  getAcessos('&projeto__id=' + pageID.value)
   tasks.value = await getTasks(
     '&status=abertas&projeto__id=' + pageID.value,
     false

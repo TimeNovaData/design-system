@@ -60,23 +60,33 @@
         </section>
       </div>
 
-      <div class="flex items-center gap-6 ml-auto flex-nowrap">
+      <div
+        class="flex items-end gap-6 ml-auto flex-nowrap w-full h-max justify-end"
+        :class="{ 'pointer-events-none': !projeto.id }"
+      >
         <OButton
-          class="dark:!bg-white/10 dark:shadow-[initial] dark:!border-0 shadow-sm !h-40 bg-white"
+          class="dark:!bg-white/10 dark:shadow-[initial] dark:!border-0 !h-40 btn-header bg-white"
           size="md"
           secondary
+          icon="svguse:/icons.svg#icon_paper"
+          @click="$emit('escopoClick')"
+          icon-size="1.25rem"
         >
           Escopo</OButton
         >
         <OButton
-          class="dark:!bg-white/10 dark:shadow-[initial] dark:!border-0 shadow-sm !h-40 bg-white"
+          class="dark:!bg-white/10 dark:shadow-[initial] dark:!border-0 !h-40 btn-header bg-white"
           size="md"
           secondary
+          icon="svguse:/icons.svg#icon_docs"
+          @click="$emit('briefingClick')"
+          icon-size="1.25rem"
         >
           Briefing</OButton
         >
+        <hr class="w-1 h-24 my-auto mx-4 bg-neutral-100/10" />
         <OButton
-          class="dark:!bg-white/10 dark:shadow-[initial] dark:!border-0 shadow-sm !h-40 bg-white"
+          class="dark:!bg-white/10 dark:shadow-[initial] dark:!border-0 !h-40 btn-header bg-white"
           size="md"
           secondary
           icon="svguse:/icons.svg#icon_attach"
@@ -86,14 +96,24 @@
           Anexos</OButton
         >
         <OButton
-          class="dark:!bg-white/10 dark:shadow-[initial] dark:!border-0 shadow-sm !h-40 bg-white"
+          class="dark:!bg-white/10 dark:shadow-[initial] dark:!border-0 !h-40 btn-header bg-white"
+          icon-size="1.25rem"
+          icon="svguse:/icons.svg#icon_cadeado"
+          size="md"
+          secondary
+          @click="$emit('acessosClick')"
+        >
+          <q-tooltip>Acessos</q-tooltip>
+        </OButton>
+        <OButton
+          class="dark:!bg-white/10 dark:shadow-[initial] dark:!border-0 !h-40 btn-header bg-white"
           icon-size="1.25rem"
           icon="svguse:/icons.svg#icon_users"
           size="md"
           secondary
-        >
-          Contatos</OButton
-        >
+          @click="$emit('contatosClick')"
+          ><q-tooltip>Contatos</q-tooltip>
+        </OButton>
       </div>
     </div>
   </header>
@@ -154,8 +174,8 @@ defineExpose({ itemEditableSelect, show })
       border-color: rgba(var(--white),0.2)
 
 .btn-header
-  flex: 1 1 100%
-  height: 108px !important
+  // flex: 1 1 100%
+  // height: 108px !important
   &:deep(.q-btn__content)
     flex-wrap: nowrap
 

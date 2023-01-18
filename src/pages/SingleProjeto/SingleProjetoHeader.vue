@@ -126,6 +126,7 @@
           secondary
           icon="svguse:/icons.svg#icon_paper"
           @click="$emit('escopoClick')"
+          icon-size="1.25rem"
         >
           Escopo</OButton
         >
@@ -133,11 +134,13 @@
           class="dark:!bg-white/10 dark:shadow-[initial] dark:!border-0 !h-40 btn-header bg-white"
           size="md"
           secondary
+          icon="svguse:/icons.svg#icon_docs"
           @click="$emit('briefingClick')"
+          icon-size="1.25rem"
         >
           Briefing</OButton
         >
-        <hr />
+        <hr class="w-1 h-24 my-auto mx-4 bg-neutral-100/10" />
         <OButton
           class="dark:!bg-white/10 dark:shadow-[initial] dark:!border-0 !h-40 btn-header bg-white"
           size="md"

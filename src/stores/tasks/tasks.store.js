@@ -57,9 +57,11 @@ export const useTaskStore = defineStore('taskstore', () => {
       console.log(data)
 
       const result = data.map((i) => {
-        i.nome_completo = `${i.ferramenta ? i.ferramenta + ' ⠂' : ''} ${
-          i.nome || ''
-        }`.trim()
+        i.nome_completo = `${
+          i.ferramenta?.nome_ferramenta
+            ? i.ferramenta?.nome_ferramenta + ' ⠂'
+            : ''
+        } ${i.nome || ''}`.trim()
         return i
       })
 
