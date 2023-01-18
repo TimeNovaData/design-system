@@ -239,7 +239,7 @@
                     <div
                       class="bg-neutral-100/10 w-full h-full justify-center flex text-center items-center rounded-generic dark:bg-white/10"
                     >
-                      {{ props.row.anexo || '-' }}
+                      {{ props.row?.quantidade_anexos || '-' }}
                     </div>
                   </q-td>
                   <!-- 
