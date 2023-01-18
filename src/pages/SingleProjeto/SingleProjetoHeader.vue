@@ -124,6 +124,7 @@
           class="dark:!bg-white/10 dark:shadow-[initial] dark:!border-0 !h-40 btn-header bg-white"
           size="md"
           secondary
+          icon="svguse:/icons.svg#icon_paper"
         >
           Escopo</OButton
         >
@@ -183,6 +184,7 @@ const header = ref(null)
 const itemEditableSelect = ref(null)
 const projetos = inject('projetos')
 const headerMinify = ref(false)
+
 defineProps({
   projeto: Object,
 })

@@ -13,6 +13,7 @@ import TaskCreateAttachmentCard from 'src/components/Task/TaskCreate/TaskCreateA
 import emitter from 'src/boot/emitter'
 import { ref } from 'vue'
 import { api } from 'src/boot/axios'
+import { NotifySucess } from 'src/boot/Notify'
 
 const API_URL = process.env.API_URL
 const TOKEN = Cookies.get('NDT_TOKEN')
@@ -41,6 +42,7 @@ const serverOpt = {
     if (id.id) {
       await api.delete(props.server.url + id.id)
       handleEmitRevert()
+      NotifySucess('Anexo removido com sucesso')
     }
   },
 }

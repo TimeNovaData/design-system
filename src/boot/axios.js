@@ -2,6 +2,7 @@ import { boot } from 'quasar/wrappers'
 import axios from 'axios'
 import { useAuthStore } from 'src/stores/auth.store'
 import { Cookies } from 'quasar'
+import { useRouter } from 'vue-router'
 
 const API_URL = process.env.API_URL
 const TOKEN = Cookies.get('NDT_TOKEN')
@@ -63,10 +64,10 @@ async function getToken(error) {
 
 api.interceptors.response.use(undefined, async (error) => await getToken(error))
 
-axios.interceptors.response.use(
-  undefined,
-  async (error) => await getToken(error)
-)
+axios.interceptors.response.use(undefined, async (error) => {
+  if (window.location.pathname.includes('login')) return error
+  else return await getToken(error)
+})
 
 // Add a request interceptor
 api.interceptors.request.use(
