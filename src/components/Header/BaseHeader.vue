@@ -13,6 +13,7 @@
         />
       </q-breadcrumbs>
       <q-space></q-space>
+      <TimerTask v-if="taskActive?.id" :task="taskActive" />
       <div class="flex gap-8 items-center" style="--neutral-100: var(--white)">
         <slot name="right"> </slot>
 
@@ -57,6 +58,9 @@ import { useRouter } from 'vue-router'
 import { inject } from 'vue'
 import GLOBAL from 'src/utils/GLOBAL'
 import gravatar from 'src/assets/image/gravatar.jpg'
+import TimerTask from 'src/components/TimerTask/TimerTask.vue'
+
+const taskActive = inject('taskActive')
 
 const userFoto = inject('userFoto')
 const user = inject('user')

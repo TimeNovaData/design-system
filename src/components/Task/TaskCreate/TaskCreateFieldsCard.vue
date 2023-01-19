@@ -17,7 +17,7 @@
       class="bg-white dark:!bg-transparent !p-0 label-transparent"
       :options="projectList"
       :modelValue="model.projeto"
-      :loading="!projectList.length"
+      :loading="!projectList.length && projetosLoading"
       fotoKey="logo"
       option-label="nome_completo"
       nomeKey="nome_completo"
@@ -215,6 +215,7 @@ const projectList = inject('projetos')
 const subProjectList = inject('subProjetos')
 const userList = inject('usuarios')
 const taskTypes = inject('taskTypes')
+const { projetosLoading } = inject('loading')
 const subProjectSelectList = ref([])
 const popUpDate = ref(null)
 
@@ -329,7 +330,7 @@ function updateProjectSelect(val) {
 
 function setTempoEstimado() {
   if (model.value.tipo_task.tempo_medio) {
-    model.value.tempo_estimado = model.value.tipo_task.tempo_medio
+    model.value.tempo_estimado = FTime(model.value.tipo_task.tempo_medio)
     NotifySucess('Tempo Estimado Aplicado')
   } else {
     NotifyAlert('Nao há tempo estimado para este tipo de task')

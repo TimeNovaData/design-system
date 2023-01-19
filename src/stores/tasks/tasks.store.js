@@ -15,6 +15,7 @@ export const useTaskStore = defineStore('taskstore', () => {
   const task = ref({})
   const tasksChamado = ref([])
   const taskTypes = ref([])
+  const taskActive = ref({})
 
   const tasksColaborador = ref({
     concluidas: [],
@@ -78,6 +79,22 @@ export const useTaskStore = defineStore('taskstore', () => {
     }
   }
 
+  async function postTempoTask(filters, task) {
+    try {
+      const { data } = await api.post(
+        URLS.tempotask + '?x=&no_loading' + filters,
+        {
+          task: task.id,
+        }
+      )
+      debugger
+      return data
+    } catch (e) {
+      console.log(e)
+      return e
+    }
+  }
+
   async function handleSaveTask(oldTask, newTask) {
     const oldTaskUnref = deepUnref(oldTask)
     const newTaskUnref = deepUnref(newTask)
@@ -97,7 +114,7 @@ export const useTaskStore = defineStore('taskstore', () => {
 
       const data = newTaskUnref
       try {
-        debugger
+        // debugger
         const newTask = await api.post(URLS.task, data)
         NotifySucess('Task Criada com sucesso')
         emitter.emit('modal:task:create')
@@ -151,8 +168,10 @@ export const useTaskStore = defineStore('taskstore', () => {
     setTasks,
     getTaskTypes,
     handleSaveTask,
+    postTempoTask,
     tasksChamado,
     tasksChamadoConcluido,
     tasksChamadoPendente,
+    taskActive,
   }
 })

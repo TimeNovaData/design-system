@@ -9,6 +9,8 @@ import routes from './routes'
 import { useAuthStore } from 'src/stores/auth.store'
 import { useBlurMode } from 'src/stores/blurMode'
 import emitter from 'src/boot/emitter'
+import { nextTick } from 'vue'
+import { useMeta } from 'quasar'
 /*
  * If not building with SSR mode, you can
  * directly export the Router instantiation;
@@ -58,6 +60,22 @@ export default route(function (/* { store, ssrContext } */) {
     } else {
       next()
     }
+  })
+
+  Router.afterEach(async (to, from) => {
+    // Use next tick to handle router history correctly
+    // see: https://github.com/vuejs/vue-router/issues/914#issuecomment-384477609
+    await nextTick()
+    // document.title = to.meta.title || DEFAULT_TITLE;
+
+    const metaData = {
+      // sets document title
+      title: 'HUB',
+      // optional; sets final title as "Index Page - My Website", useful for multiple level meta
+      titleTemplate: (title) => `${title} - ${to.meta.title}`,
+    }
+
+    useMeta(metaData)
   })
 
   return Router

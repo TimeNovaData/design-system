@@ -117,7 +117,9 @@ const {
 } = useComments()
 
 const modalChat = ref(null)
+
 function openModalChat(id) {
+  comments.value = []
   setIDComments(id)
   modalChat.value.dialogRef.show()
 }
