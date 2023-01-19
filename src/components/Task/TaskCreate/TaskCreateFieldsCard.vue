@@ -54,6 +54,7 @@
         option-value="id"
         :loading="chamadoLoading"
         option-label="titulo"
+        use-input
       >
         <template #selected-item="{ itemProps, opt }">
           <q-item v-bind="itemProps" class="translate-y-2 p-0 min-h-0">
@@ -178,6 +179,7 @@
         :modelValue="model.responsavel_task"
         :loading="!userList.length"
         nome-key="get_full_name"
+        option-label="get_full_name"
         @update-value="(value) => (model.responsavel_task = value)"
         :rules="[(val) => val || '']"
       />

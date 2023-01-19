@@ -6,13 +6,13 @@ import { useResetStore } from 'src/utils/useResetStore'
 
 const tokenOpt = {
   secure: process.env.HTTPS_MODE,
-  expires: '1m 0',
+  // expires: '1m 0',
   // path: '/',
 }
 
 const refreshTokenOpt = {
   secure: process.env.HTTPS_MODE,
-  expires: '1m 0',
+  // expires: '1m 0',
 }
 
 export const useAuthStore = defineStore('auth', () => {
@@ -63,6 +63,9 @@ export const useAuthStore = defineStore('auth', () => {
 
   async function refreshToken() {
     try {
+      if (window.location.pathname.includes('login'))
+        throw new Error('Nao é possivel atualizar  o token na rota de login')
+
       console.warn('Tentando atualizar o TOKEN')
       const { data } = await api.post(`token/refresh/`, {
         refresh: user.value.refresh,

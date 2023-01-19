@@ -48,7 +48,7 @@
                 selectLabel="Projeto"
                 :options="projetos"
                 :selected="projeto !== {} ? projeto : null"
-                @updateValue="(v) => $emit('updateSelect', v)"
+                @updateValue="(v) => $emit('select:update', v)"
                 :selectProps="{
                   clearable: false,
                   loading: !projetos.length,
@@ -130,7 +130,7 @@
           size="md"
           secondary
           icon="svguse:/icons.svg#icon_paper"
-          @click="$emit('escopoClick')"
+          @click="$emit('click:escopo')"
           icon-size="1.25rem"
         >
           Escopo</OButton
@@ -140,7 +140,7 @@
           size="md"
           secondary
           icon="svguse:/icons.svg#icon_docs"
-          @click="$emit('briefingClick')"
+          @click="$emit('click:briefing')"
           icon-size="1.25rem"
         >
           Briefing</OButton
@@ -154,7 +154,7 @@
           secondary
           icon="svguse:/icons.svg#icon_attach"
           icon-size="1.25rem"
-          @click="$emit('anexoClick')"
+          @click="$emit('click:anexo')"
         >
           Anexos</OButton
         >
@@ -164,7 +164,7 @@
           icon="svguse:/icons.svg#icon_cadeado"
           size="md"
           secondary
-          @click="$emit('acessosClick')"
+          @click="$emit('click:acessos')"
         >
           <q-tooltip>Acessos</q-tooltip>
         </OButton>
@@ -174,7 +174,7 @@
           icon="svguse:/icons.svg#icon_users"
           size="md"
           secondary
-          @click="$emit('contatosClick')"
+          @click="$emit('click:contatos')"
           ><q-tooltip>Contatos</q-tooltip>
         </OButton>
       </div>
@@ -183,12 +183,12 @@
   <SingleProjetoHeaderMinify
     :class="{ 'opacity-0': !headerMinify }"
     :projeto="projeto"
-    @updateSelect="(v) => $emit('updateSelect', v)"
-    @anexoClick="$emit('anexoClick')"
-    @contatosClick="$emit('contatosClick')"
-    @acessosClick="$emit('acessosClick')"
-    @briefingClick="$emit('briefingClick')"
-    @escopoClick="$emit('escopoClick')"
+    @select:update="(v) => $emit('select:update', v)"
+    @click:anexo="$emit('click:anexo')"
+    @click:contatos="$emit('click:contatos')"
+    @click:acessos="$emit('click:acessos')"
+    @click:briefing="$emit('click:briefing')"
+    @click:escopo="$emit('click:escopo')"
   ></SingleProjetoHeaderMinify>
 </template>
 
@@ -206,12 +206,12 @@ import SingleProjetoHeaderMinify from './SingleProjetoHeaderMinify.vue'
 const { FData } = GLOBAL
 
 const emit = defineEmits([
-  'updateSelect',
-  'anexoClick',
-  'escopoClick',
-  'briefingClick',
-  'contatosClick',
-  'acessosClick',
+  'select:update',
+  'click:anexo',
+  'click:escopo',
+  'click:briefing',
+  'click:contatos',
+  'click:acessos',
 ])
 const header = ref(null)
 

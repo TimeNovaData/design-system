@@ -29,7 +29,7 @@
                 selectLabel="Projeto"
                 :options="projetos"
                 :selected="projeto !== {} ? projeto : null"
-                @updateValue="(v) => $emit('updateSelect', v)"
+                @updateValue="(v) => $emit('select:update', v)"
                 :clearActive="false"
                 :select-props="{
                   clearable: false,
@@ -72,7 +72,7 @@
           size="md"
           secondary
           icon="svguse:/icons.svg#icon_paper"
-          @click="$emit('escopoClick')"
+          @click="$emit('click:escopo')"
           icon-size="1.25rem"
         >
           Escopo</OButton
@@ -82,7 +82,7 @@
           size="md"
           secondary
           icon="svguse:/icons.svg#icon_docs"
-          @click="$emit('briefingClick')"
+          @click="$emit('click:briefing')"
           icon-size="1.25rem"
         >
           Briefing</OButton
@@ -94,7 +94,7 @@
           secondary
           icon="svguse:/icons.svg#icon_attach"
           icon-size="1.25rem"
-          @click="$emit('anexoClick')"
+          @click="$emit('click:anexo')"
         >
           Anexos</OButton
         >
@@ -104,7 +104,7 @@
           icon="svguse:/icons.svg#icon_cadeado"
           size="md"
           secondary
-          @click="$emit('acessosClick')"
+          @click="$emit('click:acessos')"
         >
           <q-tooltip>Acessos</q-tooltip>
         </OButton>
@@ -114,7 +114,7 @@
           icon="svguse:/icons.svg#icon_users"
           size="md"
           secondary
-          @click="$emit('contatosClick')"
+          @click="$emit('click:contatos')"
           ><q-tooltip>Contatos</q-tooltip>
         </OButton>
       </div>
@@ -135,12 +135,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 const { FData } = GLOBAL
 
 const emit = defineEmits([
-  'updateSelect',
-  'anexoClick',
-  'escopoClick',
-  'briefingClick',
-  'contatosClick',
-  'acessosClick',
+  'select:update',
+  'click:anexo',
+  'click:escopo',
+  'click:briefing',
+  'click:contatos',
+  'click:acessos',
 ])
 const header = ref(null)
 

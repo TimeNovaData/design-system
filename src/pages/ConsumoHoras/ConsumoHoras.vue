@@ -66,6 +66,8 @@
                     :options="projetos"
                     :loading="!projetos"
                     fotoKey="logo"
+                    nomeKey="nome_completo"
+                    option-label="nome_completo"
                     clearable
                     @updateValue="(v) => (filtros.projeto.model = v)"
                   >
@@ -83,6 +85,8 @@
                     :loading="!usuarios"
                     clearable
                     @updateValue="(v) => (filtros.usuario.model = v)"
+                    nome-key="get_full_name"
+                    option-label="get_full_name"
                   >
                   </OSelectAvatar>
                 </q-item>

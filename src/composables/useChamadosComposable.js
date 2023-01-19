@@ -75,7 +75,7 @@ export default function useChamadosComposable() {
     commit()
     // console.log(history.value)
     await sendChamadoChange()
-    emitter.emit('chamadoAlterado')
+    emitter.emit('modal:chamado:update')
   }
 
   async function commitAltFront(val) {

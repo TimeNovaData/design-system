@@ -265,7 +265,7 @@ async function handleApplyFilters(filters) {
   setHeightInCol()
 }
 
-emitter.on('searchKanban', (value) => {
+emitter.on('kanban:search', (value) => {
   handleApplyFilters({ search: value })
 })
 

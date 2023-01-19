@@ -306,7 +306,7 @@ const profileTeam = computed(() => {
   }))
 })
 
-emitter.on('taskCreate', () => {
+emitter.on('modal:task:create', () => {
   // atualizar a lista
   console.log('CRIOU')
   handleGetTasks(userActiveID.value)

@@ -94,7 +94,7 @@ export const useTaskStore = defineStore('taskstore', () => {
       try {
         const newTask = await api.post(URLS.task, data)
         NotifySucess('Task Criada com sucesso')
-        emitter.emit('taskCreate')
+        emitter.emit('modal:task:create')
         return newTask
       } catch (e) {
         NotifyError('Erro ao Criar Tarefa')
@@ -112,7 +112,7 @@ export const useTaskStore = defineStore('taskstore', () => {
         )
 
         NotifySucess('Task Alterada com sucesso')
-        emitter.emit('taskEdit')
+        emitter.emit('modal:task:edit')
 
         return taskEditada
       } catch (e) {

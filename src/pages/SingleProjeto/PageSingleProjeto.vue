@@ -5,12 +5,12 @@
       <SingleProjetoHeader
         :projeto="projeto"
         ref="header"
-        @updateSelect="handleChangeProjeto"
-        @anexoClick="handleShowAnexos"
-        @contatosClick="handleShowContatos"
-        @acessosClick="handleShowAcessos"
-        @briefingClick="handleShowBriefing"
-        @escopoClick="handleShowEscopo"
+        @select:update="handleChangeProjeto"
+        @click:anexo="handleShowAnexos"
+        @click:contatos="handleShowContatos"
+        @click:acessos="handleShowAcessos"
+        @click:briefing="handleShowBriefing"
+        @click:escopo="handleShowEscopo"
       />
 
       <Transition name="fade" mode="out-in">
@@ -200,7 +200,6 @@
               :rows="chamadosList"
               :footer="false"
               :header="false"
-              f
             >
               <template #body="props">
                 <q-tr
@@ -375,7 +374,7 @@
         >
       </div>
 
-      <div v-if="anexosListReverse.length">
+      <div v-if="anexosListReverse.length" class="flex flex-col gap-8">
         <AnexoItem
           v-for="i in anexosListReverse"
           :key="i.id"
@@ -419,25 +418,8 @@
 
   <!-- 
 
-    
-const oi = [
-  {
-    id: 3,
-    nome: 'Telefone',
-    telefone: '999999999999999',
-    email: 'email.example@example.com.br',
-    cargo: 'teste',
-    cliente: 2,
-  },
-  {
-    id: 4,
-    nome: 'qwedqw',
-    telefone: '2112112',
-    email: 'email.example2@example.com.br',
-    cargo: 'teste2',
-    cliente: 2,
-  },
-]
+
+
    -->
   <ModalSide
     ref="modalContatos"
@@ -746,6 +728,7 @@ async function openNovoAnexo() {
   modalAddAnexoRef.value.modalAddAnexo.dialogRef.show()
 }
 
+// Handles
 async function handleShowAnexos() {
   anexosList.value = await getAnexos(
     '&projeto__id=' + pageID.value,
@@ -777,7 +760,6 @@ async function handleShowEscopo() {
   modalEscopo.value.dialogRef.show()
 }
 
-// Handles
 async function handleGetChamado(id, filters) {
   const req = await getChamados(id, filters)
   chamadosList.value = req.data
@@ -818,18 +800,19 @@ async function requests() {
 
 */
 // Atualiza chamados ao alterar algo no modal
-emitter.on('chamadoAlterado', () =>
+emitter.on('modal:chamado:update', () =>
   handleGetChamado(projeto.value.id, '&no_loading&status=abertos')
 )
 
 // Atualiza as tasks ao criar ou editar
-emitter.on('taskEdit', async () => {
+emitter.on('modal:task:edit', async () => {
   tasks.value = await getTasks(
     `&projeto__id=${pageID.value}&status=abertas`,
     false
   )
 })
-emitter.on('taskCreate', async () => {
+
+emitter.on('modal:task:create', async () => {
   tasks.value = await getTasks(
     `&projeto__id=${pageID.value}&status=abertas`,
     false
@@ -844,7 +827,8 @@ emitter.on(`filepond:projeto`, async () => {
     'projeto'
   )
 })
-emitter.on(`filepond:revert:projeto`, async () => {
+
+emitter.on(`filepond:projeto:revert`, async () => {
   anexosList.value = await getAnexos(
     '&projeto__id=' + pageID.value,
     false,
@@ -856,17 +840,18 @@ emitter.on(`filepond:revert:projeto`, async () => {
 const dataAtual = ref(date.formatDate(new Date(), 'YYYY/MM/DD'))
 
 // Draggable
-const drag = ref(false)
-const dragOptions = computed(() => ({
-  animation: 400,
-  group: 'description',
-  disabled: false,
-  ghostClass: 'ghost',
-}))
-function startAndEndDrag() {
-  console.log('arrastou')
-}
-// Init
+// const drag = ref(false)
+// const dragOptions = computed(() => ({
+//   animation: 400,
+//   group: 'description',
+//   disabled: false,
+//   ghostClass: 'ghost',
+// }))
+// function startAndEndDrag() {
+//   console.log('arrastou')
+// }
+
+//  Init
 async function created() {
   if (!routeIsZero) {
     pageID.value = route.params.id
@@ -874,6 +859,7 @@ async function created() {
     requests()
   }
 }
+
 created()
 
 onMounted(() => {

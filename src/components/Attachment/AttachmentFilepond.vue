@@ -59,7 +59,7 @@ function handleEmit(obj) {
   emitter.emit(`filepond:${props.server.key}`)
 }
 function handleEmitRevert() {
-  emitter.emit(`filepond:revert:${props.server.key}`)
+  emitter.emit(`filepond:${props.server.key}:revert`)
 }
 </script>
 

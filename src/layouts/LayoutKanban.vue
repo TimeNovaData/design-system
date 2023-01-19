@@ -69,7 +69,7 @@ provide('openTaskEditModal', openTaskEditModal)
 const searchKanban = ref('')
 
 function handleSearch() {
-  emitter.emit('searchKanban', searchKanban.value)
+  emitter.emit('kanban:search', searchKanban.value)
 }
 </script>
 

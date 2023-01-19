@@ -26,7 +26,7 @@
             use-input
             label="Projeto"
             size="md"
-            class="w-full"
+            class="w-full label-transparent"
             :modelValue="filtros.projeto.model"
             :options="projetos"
             :loading="!projetos"
@@ -34,6 +34,7 @@
             @updateValue="(v) => (filtros.projeto.model = v) && handleApply()"
             @clear="handleApply"
             fotoKey="logo"
+            nomeKey="nome_completo"
           >
           </OSelectAvatar>
         </q-item>
@@ -43,7 +44,7 @@
             use-input
             label="Usuário"
             size="md"
-            class="w-full"
+            class="w-full label-transparent"
             fotoKey="foto"
             :modelValue="filtros.usuario.model"
             :options="usuarios"
@@ -51,6 +52,7 @@
             clearable
             @updateValue="(v) => (filtros.usuario.model = v) && handleApply()"
             @clear="handleApply"
+            nomeKey="get_full_name"
           >
           </OSelectAvatar>
         </q-item>
@@ -60,9 +62,6 @@
         <OButton size="md" icon="close" tertiary @click="handleRemove">
           Remover Filtros</OButton
         >
-        <!-- <OButton size="md" icon="check" primary @click="handleApply"
-          >Aplicar</OButton
-        > -->
       </q-item>
     </q-form>
   </q-menu>

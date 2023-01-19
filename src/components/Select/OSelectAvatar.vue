@@ -76,10 +76,10 @@ defineExpose({ componentRef })
 </script>
 
 <style lang="sass" scoped>
-.select-avatar
-  :deep(.q-placeholder)
-    opacity: 0 !important
-  &.have-model
-    :deep(.q-placeholder)
-      opacity: 1 !important
+// .select-avatar
+//   :deep(.q-placeholder)
+//     opacity: 0 !important
+//   &.have-model
+//     :deep(.q-placeholder)
+//       opacity: 1 !important
 </style>
