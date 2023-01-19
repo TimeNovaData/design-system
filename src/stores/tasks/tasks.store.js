@@ -17,6 +17,11 @@ export const useTaskStore = defineStore('taskstore', () => {
   const taskTypes = ref([])
   const taskActive = ref({})
 
+  const tasksColaborador = ref({
+    concluidas: [],
+    pendentes: [],
+  })
+
   const tasksChamadoConcluido = computed(() =>
     tasksChamado.value.filter((t) => t.status === 'Concluído')
   )
@@ -157,6 +162,7 @@ export const useTaskStore = defineStore('taskstore', () => {
     task,
     tasks,
     taskTypes,
+    tasksColaborador,
     getTasks,
     getTask,
     setTasks,
