@@ -145,6 +145,18 @@ export const useTaskStore = defineStore('taskstore', () => {
     }
   }
 
+  async function pathTask(id, patchData) {
+    try {
+      const { data } = await api.patch(URLS.task + id + '/', patchData)
+      return data
+    } catch (e) {
+      console.log(e)
+      return e
+    } finally {
+      isLoading.value = false
+    }
+  }
+
   function setTasks(value) {
     tasks.value = value
   }
@@ -168,6 +180,7 @@ export const useTaskStore = defineStore('taskstore', () => {
     setTasks,
     getTaskTypes,
     handleSaveTask,
+    pathTask,
     postTempoTask,
     tasksChamado,
     tasksChamadoConcluido,

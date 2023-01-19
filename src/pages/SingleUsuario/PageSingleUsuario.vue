@@ -195,6 +195,7 @@
                           <TaskColaborador
                             :task="element"
                             @click:timer="handleClickTimer"
+                            @click:task:finished="handleTaskFinished"
                           />
                         </template>
                       </draggable>
@@ -227,10 +228,10 @@
             </div>
           </template>
 
-          <div v-if="tasks.concluidas?.length">
+          <div v-if="finishedTasks?.length">
             <q-virtual-scroll
               style="max-height: 450px"
-              :items="tasks.concluidas"
+              :items="finishedTasks"
               separator
               v-slot="{ item }"
               class="relative"
@@ -240,6 +241,7 @@
                 :hideDragIcon="true"
                 :completed="true"
                 @click:timer="handleClickTimer"
+                @click:task:restored="handleTaskRestored"
               />
             </q-virtual-scroll>
           </div>
@@ -265,6 +267,7 @@
 
 <script setup>
 import { ref, inject, onMounted, computed, unref, nextTick, watch } from 'vue'
+import { date } from 'quasar'
 import bg from 'src/assets/image/bg-single-usuario.png'
 import GLOBAL from 'src/utils/GLOBAL'
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
@@ -294,7 +297,7 @@ const taskActive = inject('taskActive')
 const loading = ref(true)
 const userActiveID = ref(null)
 
-const { getTasks } = useTaskStore()
+const { getTasks, pathTask } = useTaskStore()
 const { tasksColaborador: tasks } = storeToRefs(useTaskStore())
 
 const { getProfile } = useProfileStore()
@@ -320,6 +323,12 @@ async function handleChangeProfile(profileId) {
 }
 
 const accordionConcluidas = ref(null)
+
+const finishedTasks = computed(() => {
+  const arr = tasks.value.concluidas
+  const reversed = [...arr].reverse()
+  return reversed
+})
 
 const handleGetTasksConcluidas = async (userId) => {
   tasks.value.concluidas = []
@@ -422,6 +431,27 @@ const unWatch = watch(
 function handleClickTimer(v) {
   // tasks
   taskActive.value = v
+}
+
+async function handleTaskFinished(taskObj) {
+  const today = Date.now()
+  const dateFormated = date.formatDate(today, 'YYYY-MM-DD')
+
+  await pathTask(taskObj.id, { data_conclusao: dateFormated })
+
+  tasks.value.pendentes = tasks.value.pendentes.filter(
+    (i) => i.id !== taskObj.id
+  )
+  tasks.value.concluidas.unshift(taskObj)
+}
+
+async function handleTaskRestored(taskObj) {
+  await pathTask(taskObj.id, { data_conclusao: null })
+
+  tasks.value.concluidas = tasks.value.concluidas.filter(
+    (i) => i.id !== taskObj.id
+  )
+  tasks.value.pendentes.push(taskObj)
 }
 
 onMounted(async () => {})
