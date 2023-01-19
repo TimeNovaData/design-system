@@ -88,7 +88,8 @@ watch(
         }
         return t
       })
-      taskActive.value = taskReturn
+      taskActive.value.tempo_ao_vivo_formatado_hora_minuto_segundo =
+        taskReturn.tempo_ao_vivo_formatado_hora_minuto_segundo
     }, 10000)
   }
 )
