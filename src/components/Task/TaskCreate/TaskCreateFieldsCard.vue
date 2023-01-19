@@ -24,7 +24,8 @@
       @update-value="(value) => updateProjectSelect(value)"
       required
       :rules="[(val) => val || '']"
-    />
+    >
+    </OSelectAvatar>
     <!-- :rules="[(val) => val.length || '']" -->
 
     <OSelectAvatar
@@ -73,7 +74,15 @@
       v-model="model.tipo_task"
       option-label="nome_completo"
       :loading="!taskTypes.length"
-    ></OSelect>
+    >
+      <template #selected-item="{ itemProps, opt }">
+        <q-item v-bind="itemProps" class="px-2 flex-nowrap items-center">
+          <p class="one-line">
+            {{ opt?.nome_completo ? opt.nome_completo : opt.nome }}
+          </p>
+        </q-item>
+      </template>
+    </OSelect>
 
     <div class="grid grid-cols-2 gap-16">
       <div class="grid grid-cols-2 gap-16">
@@ -229,9 +238,8 @@ const setDeliveryDateModel = computed(() => {
 
 const setDeliveryTimeModel = computed(() => {
   const prop = props.taskValues?.entrega_data_desejada
-  const date = new Date(prop)
 
-  return prop ? `${date.getHours()}:${date.getMinutes()}` : '12:00'
+  return prop ? date.formatDate(prop, 'HH[:]mm') : '12:00'
 })
 
 const setTimeModel = computed(() => {
@@ -241,7 +249,9 @@ const setTimeModel = computed(() => {
 
 const model = ref({
   titulo: props.taskValues?.titulo || '',
-  projeto: props.taskValues?.projeto || null,
+  projeto:
+    projectList.value.filter((p) => p.id === props.taskValues?.projeto.id)[0] ||
+    null,
   sub_projeto: props.taskValues?.sub_projeto || null,
   tipo_task: props.taskValues?.tipo_task || null,
   responsavel_task: props.taskValues?.responsavel_task || null,
@@ -300,8 +310,6 @@ watch(
       ...deepUnref(vl),
       ...deepUnref(dadosAdicionais),
     }
-
-    !isEdit.value && (dataObj.ordem = -1)
 
     emit('update', dataObj)
   },

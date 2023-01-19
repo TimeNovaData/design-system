@@ -48,6 +48,9 @@ export const useTaskStore = defineStore('taskstore', () => {
     try {
       const { data } = await api.get(URLS.task + id + '?x=' + '&no_loading')
       setTask(data)
+
+      data.responsavel_task.foto = data.responsavel_task.profile?.foto
+
       return data
     } catch (e) {
       console.log(e)

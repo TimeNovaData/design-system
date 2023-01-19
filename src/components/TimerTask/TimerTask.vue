@@ -1,7 +1,7 @@
 <template>
   <div
     class="border border-neutral-100/10 rounded-[3px] p-6 flex items-center transition timer-task"
-    :class="{ idle: idle, isPlaying: isPlaying, hasStarted: hasStarted }"
+    :class="{ idle: idle, is_playing: is_playing, hasStarted: hasStarted }"
     @click="handlePlay"
   >
     <q-icon
@@ -11,7 +11,7 @@
     >
     </q-icon>
     <div class="text-timer text-headline-3">
-      {{ GLOBAL.FTime(taskState.timer) }}
+      {{ GLOBAL.FTime(taskState.tempo_total) }}
     </div>
   </div>
 </template>
@@ -24,61 +24,49 @@ const emit = defineEmits(['click:timer'])
 
 const props = defineProps({
   task: Object,
-  timer: {
-    type: String,
-    default: '00:00:00',
-  },
-  hasStarted: Boolean,
-
-  isPlaying: {
-    type: Boolean,
-    default: false,
-  },
 })
 
 watch(
   () => props,
-  () => (taskState.value = { ...props })
+  () => (taskState.value = { ...props.task })
 )
 
 // STATE
 const taskState = reactive({
-  timer: props.timer,
-  hasStarted: props.hasStarted,
-  isPlaying: props.isPlaying,
+  tempo_total: props.task.tempo_total,
+  is_playing: props.task.is_playing,
 })
 
 // COMPUTED
-const isPlaying = computed(() => {
-  return taskState.isPlaying
-})
-const hasStarted = computed(() => {
-  return taskState.hasStarted && !taskState.isPlaying
+const is_playing = computed(() => {
+  return taskState.is_playing
 })
 
+const hasStarted = computed(() => props.task.tempo_total !== '00:00:00')
+
 const idle = computed(() => {
-  return !taskState.hasStarted && !taskState.isPlaying
+  return !hasStarted.value && !taskState.is_playing
 })
 
 const playPausebtn = computed(() => {
-  return taskState.isPlaying
+  return taskState.is_playing
     ? 'svguse:/icons.svg#icon_pause'
     : 'svguse:/icons.svg#icon_play'
 })
 
 const idleText = computed(() => {
-  return !taskState.hasStarted && !taskState.isPlaying ? '' : ''
+  return !hasStarted.value && !taskState.is_playing ? '' : ''
 })
 
 // METHODS
 const handlePlay = (v) => {
-  if (!taskState.hasStarted && !taskState.isPlaying) {
-    taskState.hasStarted = true
-    taskState.isPlaying = true
-  } else if (taskState.hasStarted && !taskState.isPlaying) {
-    taskState.isPlaying = true
+  if (!hasStarted.value && !taskState.is_playing) {
+    hasStarted.value = true
+    taskState.is_playing = true
+  } else if (hasStarted.value && !taskState.is_playing) {
+    taskState.is_playing = true
   } else {
-    taskState.isPlaying = false
+    taskState.is_playing = false
   }
   emit('click:timer', props.task)
 }
@@ -90,7 +78,7 @@ const handlePlay = (v) => {
   background: rgba(var(--neutral-100), 0.05)
   color: rgba(var(--neutral-100), 1)
   border: 1px solid  rgba(var(--neutral-100), 0.05)
-.isPlaying
+.is_playing
   background: rgba(var(--alert-error), 0.1)
   color: rgba(var(--alert-error))
   border: 1px solid rgba(var(--alert-error), 0.1)
@@ -108,7 +96,7 @@ const handlePlay = (v) => {
 
 
 
-.timer-task.isPlaying
+.timer-task.is_playing
   --border-size: 1px
   --border-angle: 0turn
   background-image: conic-gradient( from var(--border-angle), rgba(var(--alert-error-10),1), rgba(var(--alert-error-10),1) 50%, rgba(var(--alert-error-10),1) ), conic-gradient(from var(--border-angle), transparent 20%, transparent, rgb(var(--alert-error))) !important
