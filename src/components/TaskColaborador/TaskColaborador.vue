@@ -23,11 +23,11 @@
           </div>
 
           <div
-            class="concluir_task"
+            class="concluir_task group"
             @click="() => (!completed ? showFinishTaskModal() : '')"
           >
             <q-icon
-              class="[--cor-bg:#F5F5F5] dark:[--cor-bg:#242424]"
+              class="[--cor-bg:#F5F5F5] dark:[--cor-bg:#242424] group-hover:!text-primary-pure transition"
               name="svguse:/icons.svg#icon_check_circle"
               size="22px"
             ></q-icon>

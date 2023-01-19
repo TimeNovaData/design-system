@@ -284,6 +284,7 @@ import emitter from 'src/boot/emitter'
 import KanbanItemEditableSelect from 'src/components/Kanban/KanbanItemEditableSelect.vue'
 
 import { useRoute, useRouter } from 'vue-router'
+import { NotifyError, NotifySucess } from 'src/boot/Notify'
 
 const route = useRoute()
 const router = useRouter()
@@ -437,21 +438,33 @@ async function handleTaskFinished(taskObj) {
   const today = Date.now()
   const dateFormated = date.formatDate(today, 'YYYY-MM-DD')
 
-  await pathTask(taskObj.id, { data_conclusao: dateFormated })
+  try {
+    await pathTask(taskObj.id, { data_conclusao: dateFormated })
 
-  tasks.value.pendentes = tasks.value.pendentes.filter(
-    (i) => i.id !== taskObj.id
-  )
-  tasks.value.concluidas.unshift(taskObj)
+    tasks.value.pendentes = tasks.value.pendentes.filter(
+      (i) => i.id !== taskObj.id
+    )
+    tasks.value.concluidas.unshift(taskObj)
+    NotifySucess('Task concluida com sucesso!')
+  } catch (err) {
+    console.log(err)
+    NotifyError('Erro ao concluir a tarefa')
+  }
 }
 
 async function handleTaskRestored(taskObj) {
-  await pathTask(taskObj.id, { data_conclusao: null })
+  try {
+    await pathTask(taskObj.id, { data_conclusao: null })
 
-  tasks.value.concluidas = tasks.value.concluidas.filter(
-    (i) => i.id !== taskObj.id
-  )
-  tasks.value.pendentes.push(taskObj)
+    tasks.value.concluidas = tasks.value.concluidas.filter(
+      (i) => i.id !== taskObj.id
+    )
+    tasks.value.pendentes.push(taskObj)
+    NotifySucess('Task restaurada com sucesso!')
+  } catch (err) {
+    console.log(err)
+    NotifyError('Erro ao restaurar a tarefa')
+  }
 }
 
 onMounted(async () => {})
