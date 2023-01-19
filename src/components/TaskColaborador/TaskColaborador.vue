@@ -22,7 +22,10 @@
             ></q-icon>
           </div>
 
-          <div class="concluir_task" @click="showFinishTaskModal">
+          <div
+            class="concluir_task"
+            @click="() => (!completed ? showFinishTaskModal() : '')"
+          >
             <q-icon
               class="[--cor-bg:#F5F5F5] dark:[--cor-bg:#242424]"
               name="svguse:/icons.svg#icon_check_circle"
@@ -189,7 +192,11 @@ const props = defineProps({
   completed: Boolean,
 })
 
-const emit = defineEmits(['click:timer'])
+const emit = defineEmits([
+  'click:timer',
+  'click:task:finished',
+  'click:task:restored',
+])
 
 const dataDesejada = computed(() => {
   return GLOBAL.FData(props.task.entrega_data_desejada, 'DD/MM')
@@ -220,39 +227,27 @@ function showFinishTaskModal() {
     component: ModalConfirm,
     componentProps: {
       title: 'Confirmar',
-      text: `Deseja marcar essa task como finalizada? (task ${props.task.id})`,
+      text: 'Deseja marcar essa task como finalizada?',
       persistent: true,
     },
   }).onOk(() => {
-    console.log(props.task)
+    emit('click:task:finished', props.task)
   })
-  // .onCancel(() => {
-  //   console.log('Cancel')
-  // })
-  // .onDismiss(() => {
-  //   console.log('Called on OK or Cancel')
-  // })
 }
 
 function showRestoreTaskModal(ev) {
-  console.log('FOI')
   ev.stopPropagation()
+
   $q.dialog({
     component: ModalConfirm,
     componentProps: {
       title: 'Confirmar',
-      text: `Deseja restaurar essa task? (task ${props.task.id})`,
+      text: 'Deseja restaurar essa task?',
       persistent: true,
     },
   }).onOk(() => {
-    console.log(props.task)
+    emit('click:task:restored', props.task)
   })
-  // .onCancel(() => {
-  //   console.log('Cancel')
-  // })
-  // .onDismiss(() => {
-  //   console.log('Called on OK or Cancel')
-  // })
 }
 
 function handleClickTimer(v) {
