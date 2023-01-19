@@ -71,6 +71,7 @@ const routes = [
             { label: 'Single Projeto', name: 'projeto' },
           ],
           title: 'Single Projeto',
+          bruno: 'a',
         },
       },
       {

@@ -122,6 +122,7 @@ export const useTaskStore = defineStore('taskstore', () => {
     } else {
       try {
         const data = GLOBAL.compareAndReturnDiff(oldTaskUnref, newTaskUnref)
+
         window._yellow('ALTERAR')
         console.log(data)
         const taskEditada = await api.patch(
