@@ -11,8 +11,7 @@
     >
     </q-icon>
     <div class="text-timer text-headline-3">
-      {{ GLOBAL.FTime(taskState.tempo_total) }}
-      {{ is_playing }} - {{ hasStarted }}
+      {{ GLOBAL.FTime(taskState.tempo_ao_vivo_formatado_hora_minuto_segundo) }}
     </div>
   </div>
 </template>
@@ -36,7 +35,8 @@ watch(
 
 // STATE
 const taskState = reactive({
-  tempo_total: props.task.tempo_total,
+  tempo_ao_vivo_formatado_hora_minuto_segundo:
+    props.task.tempo_ao_vivo_formatado_hora_minuto_segundo,
   is_playing: props.task.is_playing,
 })
 
@@ -45,10 +45,11 @@ const is_playing = computed(() => {
   return taskActive.value.id === props.task.id
 })
 
-const hasStarted = computed(() => props.task.tempo_total !== '00:00:00')
+// const hasStarted = computed(() => props.task.tempo_ao_vivo_formatado_hora_minuto_segundo !== '00:00:00')
+const hasStarted = computed(() => taskState.is_playing)
 
 const idle = computed(() => {
-  return !hasStarted.value && !taskState.is_playing
+  return !hasStarted.value && !is_playing.value
 })
 
 const playPausebtn = computed(() => {
@@ -71,6 +72,8 @@ const handlePlay = (v) => {
   } else {
     taskState.is_playing = false
   }
+
+  const taskMod = { ...props.task, is_playing: hasStarted.value }
   emit('click:timer', props.task)
 }
 </script>
@@ -82,9 +85,9 @@ const handlePlay = (v) => {
   color: rgba(var(--neutral-100), 1)
   border: 1px solid  rgba(var(--neutral-100), 0.05)
 .is_playing
-  background: rgba(var(--alert-error), 0.1)
-  color: rgba(var(--alert-error))
-  border: 1px solid rgba(var(--alert-error), 0.1)
+  background: rgba(var(--alert-error), 0.1) !important
+  color: rgba(var(--alert-error)) !important
+  border: 1px solid rgba(var(--alert-error), 0.1) !important
 .hasStarted
   background: rgba(var(--primary-pure), 0.1)
   color: rgba(var(--primary-pure), 1)
