@@ -99,7 +99,9 @@ export const useTaskStore = defineStore('taskstore', () => {
 
   async function getTempoTask(id) {
     try {
-      const { data } = await api.get(URLS.tempotask + id + '/?x=&no_loading')
+      const { data } = await api.get(
+        URLS.tempotask + id + '/continue_marcacao/?x=&no_loading'
+      )
       return data
     } catch (e) {
       console.log(e)

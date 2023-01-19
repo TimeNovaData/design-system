@@ -79,15 +79,16 @@ watch(
 
     setInterval(async () => {
       const taskReturn = await getTempoTask(id)
+      window._red('getTempoTask Return')
       console.log(taskReturn)
-      tasksColaborador.value.pendentes.map((t) => {
-        if (taskReturn.id === t.id) {
+      tasksColaborador.value.pendentes?.map((t) => {
+        if (taskReturn.task === t.id) {
           t = taskReturn
-          window._red('task Returned in map')
           console.log(taskReturn)
         }
         return t
       })
+      taskActive.value = taskReturn
     }, 10000)
   }
 )
