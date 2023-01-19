@@ -18,7 +18,7 @@
 
 <script setup>
 import GLOBAL from 'src/utils/GLOBAL'
-import { reactive, computed, watch, inject } from 'vue'
+import { reactive, computed, watch, inject, ref } from 'vue'
 
 const emit = defineEmits(['click:timer'])
 
@@ -29,12 +29,15 @@ const props = defineProps({
 })
 
 watch(
-  () => props,
-  () => (taskState.value = { ...props.task })
+  () => props.task,
+  () => (taskState.value = { ...props.task }),
+  {
+    deep: true,
+  }
 )
 
 // STATE
-const taskState = reactive({
+const taskState = ref({
   tempo_ao_vivo_formatado_hora_minuto_segundo:
     props.task.tempo_ao_vivo_formatado_hora_minuto_segundo,
   is_playing: props.task.is_playing,
@@ -45,8 +48,14 @@ const is_playing = computed(() => {
   return taskActive.value.id === props.task.id
 })
 
-// const hasStarted = computed(() => props.task.tempo_ao_vivo_formatado_hora_minuto_segundo !== '00:00:00')
-const hasStarted = computed(() => taskState.is_playing)
+const hasStarted = computed(
+  () =>
+    GLOBAL.zeroPad(
+      props.task.tempo_ao_vivo_formatado_hora_minuto_segundo,
+      8
+    ) !== '00:00:00'
+)
+// const hasStarted = computed(() => taskState.value.is_playing)
 
 const idle = computed(() => {
   return !hasStarted.value && !is_playing.value
@@ -59,23 +68,31 @@ const playPausebtn = computed(() => {
 })
 
 const idleText = computed(() => {
-  return !hasStarted.value && !taskState.is_playing ? '' : ''
+  return !hasStarted.value && !taskState.value.is_playing ? '' : ''
 })
 
 // METHODS
 const handlePlay = (v) => {
-  if (!hasStarted.value && !taskState.is_playing) {
+  if (!hasStarted.value && !taskState.value.is_playing) {
     hasStarted.value = true
-    taskState.is_playing = true
-  } else if (hasStarted.value && !taskState.is_playing) {
-    taskState.is_playing = true
+    taskState.value.is_playing = true
+  } else if (hasStarted.value && !taskState.value.is_playing) {
+    taskState.value.is_playing = true
   } else {
-    taskState.is_playing = false
+    taskState.value.is_playing = false
   }
 
   const taskMod = { ...props.task, is_playing: hasStarted.value }
   emit('click:timer', props.task)
 }
+
+// const formatDay = (v) => {
+//   const firstIndex = v.indexOf(':')
+//   const lastIndex = v.lastIndexOf(':')
+
+//   const timeFinal = v
+//     .slice(0, firstIndex)
+// }
 </script>
 
 <style scoped lang="sass">

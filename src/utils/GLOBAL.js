@@ -169,8 +169,8 @@ export default {
   },
 
   FTime(value /* 00:00:00 */) {
-    const hora = value?.slice(0, 2)
-    const minutos = value?.slice(3, 5)
+    const hora = GLOBAL.zeroPad(value, 8)?.slice(0, 2)
+    const minutos = GLOBAL.zeroPad(value, 8)?.slice(3, 5)
     const data = date.buildDate({ year: 2022, hours: hora, minutes: minutos })
 
     if (date.isValid(data)) {
@@ -193,6 +193,10 @@ export default {
     } else {
       return url
     }
+  },
+
+  zeroPad(num, count = 2) {
+    return num.toString().padStart(count, '0')
   },
 
   generateStringFilterFromObject(obj) {
