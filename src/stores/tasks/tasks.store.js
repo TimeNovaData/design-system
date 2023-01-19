@@ -15,6 +15,7 @@ export const useTaskStore = defineStore('taskstore', () => {
   const task = ref({})
   const tasksChamado = ref([])
   const taskTypes = ref([])
+  const taskActive = ref({})
 
   const tasksChamadoConcluido = computed(() =>
     tasksChamado.value.filter((t) => t.status === 'Concluído')
@@ -66,6 +67,22 @@ export const useTaskStore = defineStore('taskstore', () => {
       })
 
       setTaskTypes(result)
+      return data
+    } catch (e) {
+      console.log(e)
+      return e
+    }
+  }
+
+  async function postTempoTask(filters, task) {
+    try {
+      const { data } = await api.post(
+        URLS.tempotask + '?x=&no_loading' + filters,
+        {
+          task: task.id,
+        }
+      )
+      debugger
       return data
     } catch (e) {
       console.log(e)
@@ -145,8 +162,10 @@ export const useTaskStore = defineStore('taskstore', () => {
     setTasks,
     getTaskTypes,
     handleSaveTask,
+    postTempoTask,
     tasksChamado,
     tasksChamadoConcluido,
     tasksChamadoPendente,
+    taskActive,
   }
 })

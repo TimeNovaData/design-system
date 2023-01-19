@@ -126,7 +126,7 @@
           </div>
         </div>
         <div class="timer-wrapper pl-16">
-          <TimerTask />
+          <TimerTask @click:timer="handleClickTimer" :task="task" />
         </div>
       </div>
     </li>
@@ -160,7 +160,13 @@ import OButton from 'src/components/Button/OButton.vue'
 
 const openTaskViewModal = inject('openTaskViewModal')
 
-const props = defineProps(['task', 'hideDragIcon', 'completed'])
+const props = defineProps({
+  task: Object,
+  hideDragIcon: Boolean,
+  completed: Boolean,
+})
+
+const emit = defineEmits(['click:timer'])
 
 const dataDesejada = computed(() => {
   return GLOBAL.FData(props.task.entrega_data_desejada, 'DD/MM')
@@ -183,6 +189,10 @@ const handleView = (event, id) => {
 
   if (timerWrapper || iconsWrapper) return
   openTaskViewModal(+id)
+}
+
+function handleClickTimer(v) {
+  emit('click:timer', v)
 }
 </script>
 

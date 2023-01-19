@@ -17,7 +17,7 @@
       class="bg-white dark:!bg-transparent !p-0 label-transparent"
       :options="projectList"
       :modelValue="model.projeto"
-      :loading="!projectList.length"
+      :loading="!projectList.length && projetosLoading"
       fotoKey="logo"
       option-label="nome_completo"
       nomeKey="nome_completo"
@@ -215,6 +215,7 @@ const projectList = inject('projetos')
 const subProjectList = inject('subProjetos')
 const userList = inject('usuarios')
 const taskTypes = inject('taskTypes')
+const { projetosLoading } = inject('loading')
 const subProjectSelectList = ref([])
 const popUpDate = ref(null)
 

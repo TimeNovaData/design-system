@@ -39,13 +39,13 @@ const { projetos, subProjetos, projetosLoading } = storeToRefs(
   useProjetoStore()
 )
 const { clientes } = storeToRefs(useClientesStore())
-const { taskTypes } = storeToRefs(useTaskStore())
+const { taskTypes, taskActive } = storeToRefs(useTaskStore())
 
 const { getUser, getProfile, setProfile } = useUserStore()
 const { getUsuarios } = useUsuarioStore()
 const { getProjetos, getSubProjetos } = useProjetoStore()
 const { getClientes } = useClientesStore()
-const { getTaskTypes } = useTaskStore()
+const { getTaskTypes, postTempoTask } = useTaskStore()
 const { darkMode } = useDarkMode()
 
 const { user: userAuthStore } = storeToRefs(useAuthStore())
@@ -71,6 +71,13 @@ watch(
   { deep: true }
 )
 
+watch(
+  () => taskActive.value,
+  (v) => {
+    postTempoTask(``, v)
+  }
+)
+
 provide('darkMode', darkMode)
 provide('userProfile', userProfile)
 provide('user', user)
@@ -80,6 +87,7 @@ provide('clientes', readonly(clientes))
 provide('projetos', readonly(projetos))
 provide('subProjetos', readonly(subProjetos))
 provide('taskTypes', readonly(taskTypes))
+provide('taskActive', taskActive)
 
 provide('set', {
   setProfile,
@@ -90,6 +98,11 @@ provide('get', {
   getProjetos,
   getClientes,
 })
+
+provide('post', {
+  postTempoTask,
+})
+
 provide('loading', {
   projetosLoading,
 })

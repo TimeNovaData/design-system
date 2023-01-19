@@ -192,7 +192,10 @@
                         }"
                       >
                         <template #item="{ element }">
-                          <TaskColaborador :task="element" />
+                          <TaskColaborador
+                            :task="element"
+                            @click:timer="handleClickTimer"
+                          />
                         </template>
                       </draggable>
                     </div>
@@ -236,6 +239,7 @@
                 :task="item"
                 :hideDragIcon="true"
                 :completed="true"
+                @click:timer="handleClickTimer"
               />
             </q-virtual-scroll>
           </div>
@@ -285,6 +289,7 @@ const user = inject('user')
 const usuarios = inject('usuarios')
 const userProfile = inject('userProfile')
 const openTaskEditModal = inject('openTaskEditModal')
+const taskActive = inject('taskActive')
 
 const loading = ref(true)
 const userActiveID = ref(null)
@@ -416,6 +421,11 @@ const unWatch = watch(
     immediate: true,
   }
 )
+
+function handleClickTimer(v) {
+  // tasks
+  taskActive.value = v
+}
 
 onMounted(async () => {})
 </script>
