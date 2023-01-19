@@ -290,6 +290,7 @@ const loading = ref(true)
 const userActiveID = ref(null)
 
 const { getTasks } = useTaskStore()
+const { tasksColaborador: tasks } = storeToRefs(useTaskStore())
 
 const { getProfile } = useProfileStore()
 const { profileActive, isLoading } = storeToRefs(useProfileStore())
@@ -314,10 +315,6 @@ async function handleChangeProfile(profileId) {
 }
 
 const accordionConcluidas = ref(null)
-const tasks = ref({
-  concluidas: [],
-  pendentes: [],
-})
 
 const handleGetTasksConcluidas = async (userId) => {
   tasks.value.concluidas = []
