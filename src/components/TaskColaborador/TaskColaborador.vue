@@ -22,9 +22,9 @@
             ></q-icon>
           </div>
 
-          <div class="concluir_task">
+          <div class="concluir_task" @click="showFinishTaskModal">
             <q-icon
-              class="dark:[--cor-bg:_rgba(18,18,18,1)]"
+              class="[--cor-bg:#F5F5F5] dark:[--cor-bg:#242424]"
               name="svguse:/icons.svg#icon_check_circle"
               size="22px"
             ></q-icon>
@@ -77,6 +77,7 @@
             <template v-slot:content>Urgente</template>
           </o-badge>
         </div>
+
         <!-- <div class="pl-16">
           <div class="flex items-center">
             <q-icon
@@ -109,6 +110,7 @@
             </div>
           </div>
         </div>
+
         <div class="pl-16">
           <div class="flex items-center">
             <q-icon
@@ -125,13 +127,30 @@
             </div>
           </div>
         </div>
+
         <div class="timer-wrapper pl-16">
           <TimerTask @click:timer="handleClickTimer" :task="task" />
+        </div>
+
+        <div v-if="completed">
+          <OButton
+            size="md"
+            secondary
+            class="btn-restore dark:!bg-d-neutral-30"
+            @click="showRestoreTaskModal"
+          >
+            <q-icon
+              name="svguse:/icons.svg#icon_back"
+              size="24px"
+              color="text-neutral-100"
+            ></q-icon>
+            Restaurar Task
+          </OButton>
         </div>
       </div>
     </li>
 
-    <div class="restore-wrapper" v-if="completed">
+    <!-- <div class="restore-wrapper" v-if="completed">
       <div
         class="btn-wrapper flex items-center rounded-[3px] border border-neutral-100/10 absolute right-16 top-2 bottom-2"
       >
@@ -144,19 +163,23 @@
           Restaurar Task
         </OButton>
       </div>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script setup>
+import { ref, computed, inject } from 'vue'
+import { useQuasar } from 'quasar'
 import UrgenciaStatus from 'src/components/Urgencia/UrgenciaStatus.vue'
 import OBadge from 'src/components/Badge/OBadge.vue'
 import AvatarSingle from 'src/components/Avatar/AvatarSingle.vue'
 import TimerTask from 'src/components/TimerTask/TimerTask.vue'
 import GLOBAL from 'src/utils/GLOBAL'
-import { ref, computed, inject } from 'vue'
 import placeholderImg from 'src/assets/image/gravatar.jpg'
 import OButton from 'src/components/Button/OButton.vue'
+import ModalConfirm from 'src/components/Modal/ModalConfirm.vue'
+
+const $q = useQuasar()
 
 const openTaskViewModal = inject('openTaskViewModal')
 
@@ -175,6 +198,7 @@ const dataDesejada = computed(() => {
 const dataDesejadaDia = computed(() => {
   return GLOBAL.FData(props.task.entrega_data_desejada, 'dddd')
 })
+
 const dataPrevista = computed(() => {
   return GLOBAL.FData(props.task.data_final_previsto, 'DD/MM')
 })
@@ -191,6 +215,46 @@ const handleView = (event, id) => {
   openTaskViewModal(+id)
 }
 
+function showFinishTaskModal() {
+  $q.dialog({
+    component: ModalConfirm,
+    componentProps: {
+      title: 'Confirmar',
+      text: `Deseja marcar essa task como finalizada? (task ${props.task.id})`,
+      persistent: true,
+    },
+  }).onOk(() => {
+    console.log(props.task)
+  })
+  // .onCancel(() => {
+  //   console.log('Cancel')
+  // })
+  // .onDismiss(() => {
+  //   console.log('Called on OK or Cancel')
+  // })
+}
+
+function showRestoreTaskModal(ev) {
+  console.log('FOI')
+  ev.stopPropagation()
+  $q.dialog({
+    component: ModalConfirm,
+    componentProps: {
+      title: 'Confirmar',
+      text: `Deseja restaurar essa task? (task ${props.task.id})`,
+      persistent: true,
+    },
+  }).onOk(() => {
+    console.log(props.task)
+  })
+  // .onCancel(() => {
+  //   console.log('Cancel')
+  // })
+  // .onDismiss(() => {
+  //   console.log('Called on OK or Cancel')
+  // })
+}
+
 function handleClickTimer(v) {
   emit('click:timer', v)
 }
@@ -203,13 +267,27 @@ function handleClickTimer(v) {
   grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 230px) minmax(120px, 130px)  repeat(2, 100px) minmax(120px, 130px)
   align-items: center
 
-.task-group.show-restore:hover .task-item
-  opacity: 0.3
-
-.task-group.show-restore .btn-wrapper
+.btn-restore
+  height: 100%
+  position: absolute
+  right: 0
+  top: 0
+  z-index: 10
+  background: rgb(var(--neutral-30))
   opacity: 0
-.task-group:hover .btn-wrapper
+  transition: opacity 150ms
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1)
+
+.task-group.show-restore:hover .btn-restore
   opacity: 1
+
+// .task-group.show-restore:hover .task-item
+//   opacity: 0.3
+
+// .task-group.show-restore .btn-wrapper
+//   opacity: 0
+// .task-group:hover .btn-wrapper
+//   opacity: 1
 
 // .btn-wrapper
 //   position: absolute
@@ -228,12 +306,13 @@ function handleClickTimer(v) {
   //   width: 100%
   //   height: 100%
   //   backdrop-filter: blur(10px)
-.blurzin
-  backdrop-filter: blur(4px)
-  background: rgba(1, 7, 27, 0.05)
+// .blurzin
+//   backdrop-filter: blur(4px)
+//   background: rgba(1, 7, 27, 0.05)
 
 .concluir_task
   position: relative
+
   &::after
     content: ""
     display: block
