@@ -92,7 +92,7 @@ export const useTaskStore = defineStore('taskstore', () => {
 
       const data = newTaskUnref
       try {
-        debugger
+        // debugger
         const newTask = await api.post(URLS.task, data)
         NotifySucess('Task Criada com sucesso')
         emitter.emit('modal:task:create')
