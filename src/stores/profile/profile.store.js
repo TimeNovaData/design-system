@@ -16,7 +16,7 @@ export const useProfileStore = defineStore('profileStore', () => {
     projetos: [],
   })
 
-  const isLoading = ref(false)
+  const isLoading = ref(true)
 
   async function getProfile(id) {
     isLoading.value = true

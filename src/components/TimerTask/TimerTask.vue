@@ -5,7 +5,7 @@
   >
     <q-icon
       @click="handlePlay"
-      class="mr-6 cursor-pointer"
+      class="mr-6 cursor-pointer dark:[--cor-bg:_rgba(18,18,18,1)]"
       :name="playPausebtn"
       size="28px"
     >
@@ -73,4 +73,11 @@ const handlePlay = () => {
   background: rgba(var(--primary-pure), 0.1)
   color: rgba(var(--primary-pure), 1)
   border: 1px solid rgba(var(--primary-pure), 0.1)
+
+
+.body--dark
+  .idle
+    background: rgba(var(--white), 0.05)
+    color: rgb(var(--white))
+    border: 1px solid  rgba(var(--white), 0.1)
 </style>

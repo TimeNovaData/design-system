@@ -5,7 +5,7 @@
     @click="handleView($event, task.id)"
   >
     <li
-      class="task-item list-none cursor-pointer bg-white border border-neutral-100/10 rounded-[3px] dark:border-white/10 dark:!bg-d-neutral-20 overflow-hidden px-16 py-[7px] mb-2"
+      class="task-item list-none cursor-pointer bg-white border border-neutral-100/10 rounded-[3px] dark:border-white/5 dark:!bg-d-neutral-20 overflow-hidden px-16 py-[7px] mb-2"
       :class="{
         'border-l-0 , border-r-0 , rounded-none': hideDragIcon,
       }"
@@ -24,6 +24,7 @@
 
           <div class="concluir_task">
             <q-icon
+              class="dark:[--cor-bg:_rgba(18,18,18,1)]"
               name="svguse:/icons.svg#icon_check_circle"
               size="22px"
             ></q-icon>
@@ -31,10 +32,10 @@
         </div>
 
         <div class="pl-16">
-          <p class="text-paragraph-2 text-neutral-100 one-line">
+          <p class="text-paragraph-2 one-line">
             {{ task.titulo }}
           </p>
-          <p class="text-paragraph-3 text-neutral-70">
+          <p class="text-paragraph-3 text-neutral-70 dark:text-white/70">
             Projeto: {{ task?.projeto?.nome }}
           </p>
         </div>
@@ -54,10 +55,10 @@
               />
             </div>
             <div>
-              <p class="text-paragraph-2 text-neutral-100">
+              <p class="text-paragraph-2">
                 {{ task?.responsavel_task.get_full_name }}
               </p>
-              <p class="text-paragraph-3 text-neutral-70">
+              <p class="text-paragraph-3 text-neutral-70 dark:text-white/70">
                 <!-- Criado por: {{ task?.usuario_criacao?.get_full_name }} -->
               </p>
             </div>
@@ -99,10 +100,10 @@
             >
             </q-icon>
             <div>
-              <p class="text-paragraph-2 text-neutral-100">
+              <p class="text-paragraph-2">
                 {{ dataDesejada }}
               </p>
-              <p class="text-paragraph-3 text-neutral-70">
+              <p class="text-paragraph-3 text-neutral-70 dark:text-white/70">
                 {{ dataDesejadaDia }}
               </p>
             </div>
@@ -118,7 +119,7 @@
             </q-icon>
             <div>
               <p class="text-paragraph-2">{{ dataPrevista }}</p>
-              <p class="text-paragraph-3 text-neutral-70">
+              <p class="text-paragraph-3 text-neutral-70 dark:text-white/70">
                 {{ dataPrevistadaDia }}
               </p>
             </div>

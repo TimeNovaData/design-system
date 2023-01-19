@@ -417,7 +417,7 @@
 
 
 <symbol id="icon_check_circle" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="20" height="20" rx="10" fill="#F5F5F5"/>
+  <rect width="20" height="20" rx="10" fill="var(--cor-bg, #FFF)"/>
   <path d="M14 7.25L8.5 12.75L6 10.25" stroke="currentColor" stroke-opacity="0.4" stroke-linecap="round" stroke-linejoin="round"/>
   <rect x="0.5" y="0.5" width="19" height="19" rx="9.5" stroke="currentColor" stroke-opacity="0.4"/>
 </symbol>
@@ -447,14 +447,14 @@
 
 
 <symbol id="icon_play" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="0.5" y="0.5" width="27" height="27" rx="13.5" fill="white"/>
+  <rect x="0.5" y="0.5" width="27" height="27" rx="13.5" fill="var(--cor-bg, #FFF)"/>
   <path fill-rule="evenodd" clip-rule="evenodd" d="M11.8575 9.1734L18.2273 12.9408C19.0329 13.4167 19.0329 14.5833 18.2273 15.0592L11.8575 18.8266C11.037 19.3123 10 18.7199 10 17.7666V10.2334C10 9.28006 11.037 8.68771 11.8575 9.1734Z" fill="currentColor"/>
   <rect x="0.5" y="0.5" width="27" height="27" rx="13.5" stroke="currentColor"/>
 </symbol>
 
 
 <symbol id="icon_pause"  viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect x="0.5" y="0.5" width="27" height="27" rx="13.5" fill="white"/>
+  <rect x="0.5" y="0.5" width="27" height="27" rx="13.5" fill="var(--cor-bg, #FFF)"/>
   <rect x="9" y="9" width="3" height="10" rx="1.5" fill="currentColor"/>
   <rect x="16" y="9" width="3" height="10" rx="1.5" fill="currentColor"/>
   <rect x="0.5" y="0.5" width="27" height="27" rx="13.5" stroke="currentColor"/>

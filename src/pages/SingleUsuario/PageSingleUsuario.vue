@@ -164,19 +164,22 @@
                       <p class="text-headline-3 pl-16">Prevista</p>
                     </div>
                     <div
-                      v-if="!tasksTodo.length & loading"
+                      v-if="!tasks.pendentes.length & loading"
                       class="flex flex-col gap-4 mt-10"
                     >
-                      <q-skeleton type="rect" class="h-[3.75rem]" />
-                      <q-skeleton type="rect" class="h-[3.75rem]" />
-                      <q-skeleton type="rect" class="h-[3.75rem]" />
-                      <q-skeleton type="rect" class="h-[3.75rem]" />
+                      <q-skeleton
+                        :key="n"
+                        v-for="n in GLOBAL.getRandomInt(3, 6)"
+                        v-once
+                        type="rect"
+                        class="h-[3.25rem]"
+                      />
                     </div>
-                    <div class="overflow-hidden relative" v-else>
+                    <div class="overflow-hidden relative mt-6" v-else>
                       <!-- <template v-for="(task, index) in tasks" :key="task.id"> -->
                       <draggable
                         v-bind="dragOptions"
-                        :list="tasksTodo"
+                        :list="tasks.pendentes"
                         item-key="id"
                         :handle="'#drag-id'"
                         :component-data="{
@@ -201,7 +204,9 @@
 
       <!-- ✅ TASK FINALIZADAS -->
       <section id="tasks-finalizadas" class="bg-white dark:!bg-d-neutral-20">
-        <o-accordion
+        <OAccordion
+          ref="accordionConcluidas"
+          @before-show="() => handleGetTasksConcluidas(userActiveID)"
           class="border border-neutral-100/10 rounded-[3px] dark:border-white/10 overflow-hidden"
         >
           <template v-slot:header>
@@ -213,24 +218,36 @@
                   class="text-primary-pure mr-6"
                 />
               </q-item-section>
-              <q-item-section>Tasks Finalizadas </q-item-section>
+              <q-item-section>Tasks Finalizadas</q-item-section>
             </div>
           </template>
 
-          <q-virtual-scroll
-            style="max-height: 450px"
-            :items="tasksfinished"
-            separator
-            v-slot="{ item }"
-            class="relative"
-          >
-            <TaskColaborador
-              :task="item"
-              :hideDragIcon="true"
-              :completed="true"
+          <div v-if="tasks.concluidas?.length">
+            <q-virtual-scroll
+              style="max-height: 450px"
+              :items="tasks.concluidas"
+              separator
+              v-slot="{ item }"
+              class="relative"
+            >
+              <TaskColaborador
+                :task="item"
+                :hideDragIcon="true"
+                :completed="true"
+              />
+            </q-virtual-scroll>
+          </div>
+
+          <div v-else class="flex flex-col gap-4 mt-10">
+            <q-skeleton
+              :key="n"
+              v-for="n in GLOBAL.getRandomInt(3, 6)"
+              v-once
+              type="rect"
+              class="h-[3.25rem]"
             />
-          </q-virtual-scroll>
-        </o-accordion>
+          </div>
+        </OAccordion>
       </section>
 
       <section class="my-160">
@@ -243,6 +260,7 @@
 <script setup>
 import { ref, inject, onMounted, computed, unref, nextTick, watch } from 'vue'
 import bg from 'src/assets/image/bg-single-usuario.png'
+import GLOBAL from 'src/utils/GLOBAL'
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
 import avatar from 'src/assets/image/gravatar.jpg'
 import AvatarMultiple from 'src/components/Avatar/AvatarMultiple.vue'
@@ -270,28 +288,52 @@ const loading = ref(true)
 const userActiveID = ref(null)
 
 const { getTasks } = useTaskStore()
-const { tasks } = storeToRefs(useTaskStore())
 
 const { getProfile } = useProfileStore()
 const { profileActive, isLoading } = storeToRefs(useProfileStore())
 
 async function handleChangeSelect({ profile, id }) {
   loading.value = true
+  userActiveID.value = id
 
   await handleChangeProfile(profile.id)
-  await handleGetTasks(id)
+  await handleGetTasksPendentes(id)
+  // await handleGetTasksConcluidas(id)
+
+  tasks.value.concluidas = []
+  accordionConcluidas.value.componentRef.hide()
 
   loading.value = false
 }
 
 async function handleChangeProfile(profileId) {
+  profileActive.value = {}
   await getProfile(profileId)
 }
 
-const handleGetTasks = async (userId) => {
-  router.push({ params: { id: userId } })
+const accordionConcluidas = ref(null)
+const tasks = ref({
+  concluidas: [],
+  pendentes: [],
+})
 
-  return await getTasks(`&responsavel_task__id=${userId}&page_size=10`)
+const handleGetTasksConcluidas = async (userId) => {
+  tasks.value.concluidas = []
+
+  tasks.value.concluidas = await getTasks(
+    `&responsavel_task__id=${userId}&page_size=30&status=concluidas`,
+    false
+  )
+}
+
+const handleGetTasksPendentes = async (userId) => {
+  router.push({ params: { id: userId } })
+  tasks.value.pendentes = []
+
+  tasks.value.pendentes = await getTasks(
+    `&responsavel_task__id=${userId}&page_size=100&status=abertas`,
+    false
+  )
 }
 
 const profileProjects = computed(() => {
@@ -309,16 +351,16 @@ const profileTeam = computed(() => {
 emitter.on('modal:task:create', () => {
   // atualizar a lista
   console.log('CRIOU')
-  handleGetTasks(userActiveID.value)
+  handleGetTasksPendentes(userActiveID.value)
 })
 
-const tasksTodo = computed(() =>
-  tasks.value.filter((t) => t.status !== 'Concluído')
-)
+// const tasksTodo = computed(() =>
+//   tasks.value.filter((t) => t.status !== 'Concluído')
+// )
 
-const tasksfinished = computed(() =>
-  tasks.value.filter((t) => t.status === 'Concluído')
-)
+// const tasksfinished = computed(() =>
+//   tasks.value.filter((t) => t.status === 'Concluído')
+// )
 
 const dragOptions = computed(() => ({
   animation: 400,
@@ -352,9 +394,11 @@ async function init() {
 
   await nextTick()
 
-  await handleGetTasks(IDFinal)
+  await handleGetTasksPendentes(IDFinal)
   loading.value = false
 }
+
+const turnOff = () => unWatch && unWatch()
 
 const unWatch = watch(
   [userProfile, usuarios],
@@ -362,7 +406,7 @@ const unWatch = watch(
     if (userProfile.value.id && usuarios.value.length) {
       init()
       console.log('foi')
-      unWatch && unWatch()
+      turnOff()
     }
   },
   {

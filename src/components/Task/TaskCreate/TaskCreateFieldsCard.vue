@@ -270,6 +270,14 @@ watch(
   }
 )
 
+const isEdit = ref(false)
+watch(
+  () => props.taskValues,
+  () => {
+    isEdit.value = props.taskValues?.id
+  }
+)
+
 // Formatando os dados da model para enviar pro back
 watch(
   () => model,
@@ -291,6 +299,8 @@ watch(
       ...deepUnref(vl),
       ...deepUnref(dadosAdicionais),
     }
+
+    !isEdit.value && (dataObj.ordem = -1)
 
     emit('update', dataObj)
   },
