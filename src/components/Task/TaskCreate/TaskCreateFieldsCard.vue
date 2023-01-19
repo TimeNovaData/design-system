@@ -319,7 +319,7 @@ function updateProjectSelect(val) {
 
 function setTempoEstimado() {
   if (model.value.tipo_task.tempo_medio) {
-    model.value.tempo_estimado = model.value.tipo_task.tempo_medio
+    model.value.tempo_estimado = FTime(model.value.tipo_task.tempo_medio)
     NotifySucess('Tempo Estimado Aplicado')
   } else {
     NotifyAlert('Nao há tempo estimado para este tipo de task')

@@ -531,6 +531,7 @@ const tempoTask = ref([])
 isLoading.value = true
 
 async function getTempoTask() {
+  tempoTask.value = []
   isLoading.value = true
   menu.value.hide()
   filtroOBJ.value.agrupamento = FiltroInvestimentoPor.value

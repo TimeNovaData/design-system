@@ -53,6 +53,7 @@
             @updateValue="(v) => (filtros.usuario.model = v) && handleApply()"
             @clear="handleApply"
             nomeKey="get_full_name"
+            option-label="get_full_name"
           >
           </OSelectAvatar>
         </q-item>

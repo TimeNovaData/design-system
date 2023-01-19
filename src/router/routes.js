@@ -31,6 +31,7 @@ const routes = [
         component: PageHome,
         meta: {
           breadcrumbs: [{ label: 'Home', name: 'home' }],
+          title: 'Home',
         },
       },
 
@@ -43,6 +44,7 @@ const routes = [
             { label: 'Home', name: 'home' },
             { label: 'Horas Consumidas', name: 'consumo_horas' },
           ],
+          title: 'Horas Consumidas',
         },
       },
       {
@@ -68,6 +70,7 @@ const routes = [
             { label: 'Home', name: 'home' },
             { label: 'Single Projeto', name: 'projeto' },
           ],
+          title: 'Single Projeto',
         },
       },
       {
@@ -76,6 +79,7 @@ const routes = [
         component: PageSingleUsuario,
         meta: {
           breadcrumbs: [{ label: 'Home', name: 'Single Usuário' }],
+          title: 'Colaborador',
         },
       },
       {
@@ -87,6 +91,7 @@ const routes = [
             { label: 'Home', name: 'home' },
             { label: 'Visão Geral', name: 'visao_geral' },
           ],
+          title: 'Visão Geral',
         },
       },
     ],
@@ -115,6 +120,8 @@ const routes = [
             { label: 'Home', name: 'home' },
             { label: 'Kanban', name: 'kanban' },
           ],
+          title: 'Kanban - Board',
+
           tab: 'board',
         },
       },
@@ -128,6 +135,8 @@ const routes = [
             { label: 'Home', name: 'home' },
             { label: 'Kanban', name: 'kanban' },
           ],
+
+          title: 'Kanban - List',
           tab: 'list',
         },
       },
