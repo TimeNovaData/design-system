@@ -540,6 +540,7 @@ import {
   watch,
   onUnmounted,
   inject,
+  onUpdated,
 } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import SingleProjetoHeader from './SingleProjetoHeader.vue'
@@ -568,6 +569,7 @@ const { URLS } = api.defaults
 // Router
 const route = useRoute()
 const router = useRouter()
+const user = inject('user')
 
 // Stores
 const { getProjeto, getTempoProjeto, getContatos, getAcessos } =
@@ -874,6 +876,8 @@ onUnmounted(() => {
   projeto.value = {}
   tempoProjeto.value = {}
 })
+
+if (user.value.is_staff) router.push({ name: '404' })
 </script>
 
 <style lang="sass" scoped>

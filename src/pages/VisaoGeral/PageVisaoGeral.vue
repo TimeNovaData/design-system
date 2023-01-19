@@ -100,7 +100,7 @@ import useComments from 'src/composables/useComments'
 const { URLS } = api.defaults
 const { FData } = GLOBAL
 const projetos = inject('projetos')
-
+const user = inject('user')
 const bigNumbers = ref({})
 const projectFilter = ref('recorrente')
 
@@ -119,6 +119,7 @@ const {
 const modalChat = ref(null)
 
 function openModalChat(id) {
+  if (!user.value.is_staff) return
   comments.value = []
   setIDComments(id)
   modalChat.value.dialogRef.show()

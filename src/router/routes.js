@@ -150,7 +150,7 @@ const routes = [
     component: LayoutTest,
   },
 
-  { path: '/:pathMatch(.*)*', component: PageBlank },
+  { path: '/:pathMatch(.*)*', name: '404', component: PageBlank },
 ]
 
 export default routes
