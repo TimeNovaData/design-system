@@ -12,15 +12,18 @@
     </q-icon>
     <div class="text-timer text-headline-3">
       {{ GLOBAL.FTime(taskState.tempo_total) }}
+      {{ is_playing }} - {{ hasStarted }}
     </div>
   </div>
 </template>
 
 <script setup>
 import GLOBAL from 'src/utils/GLOBAL'
-import { reactive, computed, watch } from 'vue'
+import { reactive, computed, watch, inject } from 'vue'
 
 const emit = defineEmits(['click:timer'])
+
+const taskActive = inject('taskActive')
 
 const props = defineProps({
   task: Object,
@@ -39,7 +42,7 @@ const taskState = reactive({
 
 // COMPUTED
 const is_playing = computed(() => {
-  return taskState.is_playing
+  return taskActive.value.id === props.task.id
 })
 
 const hasStarted = computed(() => props.task.tempo_total !== '00:00:00')
@@ -49,7 +52,7 @@ const idle = computed(() => {
 })
 
 const playPausebtn = computed(() => {
-  return taskState.is_playing
+  return is_playing.value
     ? 'svguse:/icons.svg#icon_pause'
     : 'svguse:/icons.svg#icon_play'
 })
