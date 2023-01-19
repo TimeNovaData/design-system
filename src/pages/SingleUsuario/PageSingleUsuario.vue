@@ -23,9 +23,11 @@
 
             <div class="colaborador flex">
               <div class="item-editavel text-title-3 w-full h-40 text-white">
-                <span v-if="profileActive.nome">{{ profileActive.nome }}</span>
-                <span v-else>Selecione um usuário</span>
-                <q-icon name="expand_more"></q-icon>
+                <template v-if="profileActive.nome">
+                  <span>{{ profileActive.nome }}</span>
+                  <q-icon name="expand_more"></q-icon>
+                </template>
+                <q-skeleton v-else type="rect" height="2.5rem" width="100%" />
               </div>
 
               <KanbanItemEditableSelect
