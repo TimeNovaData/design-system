@@ -90,7 +90,16 @@ export const useTaskStore = defineStore('taskstore', () => {
           task: task.id,
         }
       )
-      debugger
+      return data
+    } catch (e) {
+      console.log(e)
+      return e
+    }
+  }
+
+  async function getTempoTask(id) {
+    try {
+      const { data } = await api.get(URLS.tempotask + id + '/?x=&no_loading')
       return data
     } catch (e) {
       console.log(e)
@@ -186,6 +195,7 @@ export const useTaskStore = defineStore('taskstore', () => {
     handleSaveTask,
     pathTask,
     postTempoTask,
+    getTempoTask,
     tasksChamado,
     tasksChamadoConcluido,
     tasksChamadoPendente,

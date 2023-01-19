@@ -39,13 +39,13 @@ const { projetos, subProjetos, projetosLoading } = storeToRefs(
   useProjetoStore()
 )
 const { clientes } = storeToRefs(useClientesStore())
-const { taskTypes, taskActive } = storeToRefs(useTaskStore())
+const { taskTypes, taskActive, tasksColaborador } = storeToRefs(useTaskStore())
 
 const { getUser, getProfile, setProfile } = useUserStore()
 const { getUsuarios } = useUsuarioStore()
 const { getProjetos, getSubProjetos } = useProjetoStore()
 const { getClientes } = useClientesStore()
-const { getTaskTypes, postTempoTask } = useTaskStore()
+const { getTaskTypes, postTempoTask, getTempoTask } = useTaskStore()
 const { darkMode } = useDarkMode()
 
 const { user: userAuthStore } = storeToRefs(useAuthStore())
@@ -73,9 +73,22 @@ watch(
 
 watch(
   () => taskActive.value,
-  (v) => {
-    debugger
-    postTempoTask(``, v)
+  async (v) => {
+    const { id } = await postTempoTask(``, v)
+    window._red(`id Do tempo ${id}`)
+
+    setInterval(async () => {
+      const taskReturn = await getTempoTask(id)
+      console.log(taskReturn)
+      tasksColaborador.value.pendentes.map((t) => {
+        if (taskReturn.id === t.id) {
+          t = taskReturn
+          window._red('task Returned in map')
+          console.log(taskReturn)
+        }
+        return t
+      })
+    }, 10000)
   }
 )
 
