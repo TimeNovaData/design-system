@@ -35,7 +35,9 @@ import { useRoute } from 'vue-router'
 
 const { user, userFoto, userProfile } = storeToRefs(useUserStore())
 const { usuarios } = storeToRefs(useUsuarioStore())
-const { projetos, subProjetos } = storeToRefs(useProjetoStore())
+const { projetos, subProjetos, projetosLoading } = storeToRefs(
+  useProjetoStore()
+)
 const { clientes } = storeToRefs(useClientesStore())
 const { taskTypes } = storeToRefs(useTaskStore())
 
@@ -87,6 +89,9 @@ provide('get', {
   getUsuarios,
   getProjetos,
   getClientes,
+})
+provide('loading', {
+  projetosLoading,
 })
 </script>
 

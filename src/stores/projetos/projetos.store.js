@@ -12,8 +12,11 @@ export const useProjetoStore = defineStore('projetoStore', () => {
 
   const projeto = ref([])
   const tempoProjeto = ref([])
+  const projetosLoading = ref(true)
 
   async function getProjetos() {
+    projetosLoading.value = true
+
     try {
       const { data } = await api.get(URLS.projeto + '?no_loading')
 
@@ -30,6 +33,8 @@ export const useProjetoStore = defineStore('projetoStore', () => {
     } catch (e) {
       console.log(e)
       return e
+    } finally {
+      projetosLoading.value = false
     }
   }
 
