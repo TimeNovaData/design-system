@@ -13,6 +13,7 @@ const menuList = [
     nivel: 0,
     icon: 'emoji_people',
     href: '/colaborador/user',
+    permissions: 'staff',
   },
   {
     title: 'Chamados',

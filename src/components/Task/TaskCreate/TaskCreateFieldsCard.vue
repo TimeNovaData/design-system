@@ -74,15 +74,7 @@
       v-model="model.tipo_task"
       option-label="nome_completo"
       :loading="!taskTypes.length"
-    >
-      <template #selected-item="{ itemProps, opt }">
-        <q-item v-bind="itemProps" class="px-2 flex-nowrap items-center">
-          <p class="one-line">
-            {{ opt?.nome_completo ? opt.nome_completo : opt.nome }}
-          </p>
-        </q-item>
-      </template>
-    </OSelect>
+    />
 
     <div class="grid grid-cols-2 gap-16">
       <div class="grid grid-cols-2 gap-16">
