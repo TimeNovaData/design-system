@@ -1,16 +1,16 @@
 <template>
   <div
-    class="border border-neutral-100/10 rounded-[3px] p-6 flex items-center transition timer-task"
+    class="border border-neutral-100/10 rounded-[3px] p-6 flex items-center transition timer-task w-120"
     :class="{ idle: idle, is_playing: is_playing, hasStarted: hasStarted }"
     @click="handlePlay"
   >
     <q-icon
       class="mr-6 cursor-pointer dark:[--cor-bg:_rgba(18,18,18,1)]"
       :name="playPausebtn"
-      size="28px"
+      :size="size"
     >
     </q-icon>
-    <div class="text-timer text-headline-3">
+    <div class="text-timer text-headline-3 mx-auto">
       {{ GLOBAL.FTime(taskState.tempo_ao_vivo_formatado_hora_minuto_segundo) }}
     </div>
   </div>
@@ -26,6 +26,10 @@ const taskActive = inject('taskActive')
 
 const props = defineProps({
   task: Object,
+  size: {
+    type: String,
+    default: '28px',
+  },
 })
 
 watch(
@@ -73,17 +77,16 @@ const idleText = computed(() => {
 
 // METHODS
 const handlePlay = (v) => {
-  if (!hasStarted.value && !taskState.value.is_playing) {
-    hasStarted.value = true
-    taskState.value.is_playing = true
-  } else if (hasStarted.value && !taskState.value.is_playing) {
-    taskState.value.is_playing = true
+  let taskMod
+  window._big(is_playing.value)
+  if (is_playing.value) {
+    taskMod = {}
+    taskActive.value = {}
   } else {
-    taskState.value.is_playing = false
+    taskMod = { ...props.task }
   }
 
-  const taskMod = { ...props.task, is_playing: hasStarted.value }
-  emit('click:timer', props.task)
+  emit('click:timer', taskMod)
 }
 
 // const formatDay = (v) => {
@@ -118,6 +121,8 @@ const handlePlay = (v) => {
     border: 1px solid  rgba(var(--white), 0.1)
 
 
+.timer-task.sm
+
 
 .timer-task.is_playing
   --border-size: 1px
@@ -140,4 +145,9 @@ const handlePlay = (v) => {
 @keyframes bg-spin
   to
     --border-angle: 1turn
+
+
+.body--dark
+  .timer-task.is_playing
+    background-image: conic-gradient( from var(--border-angle), #2e1b1b, #2e1b1b 50%, #2e1b1b ), conic-gradient(from var(--border-angle), transparent 20%, transparent, rgb(var(--alert-error))) !important
 </style>

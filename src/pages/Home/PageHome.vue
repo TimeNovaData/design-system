@@ -2,7 +2,7 @@
   <div class="max-w-[960px] mx-auto pt-42">
     <div class="grid grid-cols-3 gap-24 w-full">
       <q-item
-        v-for="item in menuList
+        v-for="item in menuAfterPermission
           .filter((_, n) => n !== 0)
           .filter((n) => n.type !== 'dev')"
         :key="item.href"
@@ -20,6 +20,16 @@
 
 <script setup>
 import menuList from 'src/utils/menuList'
+import { inject, computed } from 'vue'
+
+const user = inject('user')
+
+const menuAfterPermission = computed(() => {
+  return menuList.filter((i) => {
+    if (!user.value.is_staff && i.permissions === 'staff') return false
+    else return i
+  })
+})
 </script>
 
 <style lang="sass" scoped></style>

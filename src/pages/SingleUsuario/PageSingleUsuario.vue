@@ -412,22 +412,25 @@ async function init() {
   loading.value = false
 }
 
-const turnOff = () => unWatch && unWatch()
-
-const unWatch = watch(
+let iniciou
+watch(
   [userProfile, usuarios],
-  ([newX, newY]) => {
+  (/* [newX, newY] */) => {
+    if (iniciou) return
     if (userProfile.value.id && usuarios.value.length) {
       init()
-      console.log('foi')
-      turnOff()
+      iniciou = true
     }
   },
   {
-    deep: true,
     immediate: true,
   }
 )
+
+// if (userProfile.value.id && usuarios.value.length) {
+//   init()
+//   window._big('oi')
+// }
 
 function handleClickTimer(v) {
   // tasks

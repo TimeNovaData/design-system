@@ -196,7 +196,7 @@ export default {
   },
 
   zeroPad(num, count = 2) {
-    return num.toString().padStart(count, '0')
+    return num?.toString().padStart(count, '0')
   },
 
   generateStringFilterFromObject(obj) {

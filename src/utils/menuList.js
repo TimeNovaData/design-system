@@ -7,6 +7,13 @@ const menuList = [
     icon: 'home',
     href: '/home',
   },
+
+  {
+    title: 'Single Colaborador',
+    nivel: 0,
+    icon: 'emoji_people',
+    href: '/colaborador/user',
+  },
   {
     title: 'Kanban',
     nivel: 0,
@@ -32,6 +39,7 @@ const menuList = [
     nivel: 0,
     icon: 'web',
     href: '/projeto',
+    permissions: 'staff',
   },
 
   // {
@@ -116,16 +124,9 @@ if (dev)
       icon: 'bug_report',
       href: '/testes',
       type: 'dev',
-    },
+    }
 
     /* temporario */
-
-    {
-      title: 'Single Colaborador',
-      nivel: 0,
-      icon: 'emoji_people',
-      href: '/colaborador/user',
-    }
   )
 
 export default menuList

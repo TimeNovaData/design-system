@@ -79,7 +79,11 @@ const routes = [
         name: 'colaborador',
         component: PageSingleUsuario,
         meta: {
-          breadcrumbs: [{ label: 'Home', name: 'Single Usuário' }],
+          breadcrumbs: [
+            { label: 'Home', name: 'home' },
+            { label: 'Single Usuario', name: 'colaborador' },
+          ],
+
           title: 'Colaborador',
         },
       },

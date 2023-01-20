@@ -877,7 +877,7 @@ onUnmounted(() => {
   tempoProjeto.value = {}
 })
 
-if (user.value.is_staff) router.push({ name: '404' })
+if (!user.value.is_staff) router.push({ name: '404' })
 </script>
 
 <style lang="sass" scoped>

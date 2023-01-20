@@ -29,9 +29,9 @@
             <div class="item-editavel text-title-3 h-40">
               <div v-if="$route.params.id === '0'">
                 Selecione um projeto
-
                 <q-icon name="expand_more"></q-icon>
               </div>
+
               <q-skeleton
                 v-else-if="!projeto.id"
                 type="text"
@@ -39,6 +39,7 @@
                 height="2.3rem"
               >
               </q-skeleton>
+
               <div v-else>
                 {{ projeto.nome }}
               </div>

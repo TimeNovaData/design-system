@@ -15,7 +15,7 @@
     <q-list class="Nv0-ul flex flex-col h-full" tag="ul">
       <!-- :to="Nv0.userId ? `${Nv0.href}/${Nv0.userId}` : Nv0.href" -->
       <MenuLi
-        v-for="(Nv0, index) in props.menu"
+        v-for="(Nv0, index) in menuAfterPermission"
         :key="Nv0.title + index"
         :data="Nv0"
         :sidebar="sidebar"
@@ -52,14 +52,7 @@
 import MenuLogo from './MenuLogo.vue'
 import MenuLi from './MenuLi.vue'
 
-import {
-  onMounted,
-  onUnmounted,
-  ref,
-  watch,
-  onBeforeUnmount,
-  inject,
-} from 'vue'
+import { onMounted, onUnmounted, ref, watch, inject, computed } from 'vue'
 import { useRoute, onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router'
 
 import GLOBAL from 'src/utils/GLOBAL'
@@ -70,7 +63,15 @@ const router = useRoute()
 const props = defineProps({
   menu: Array,
 })
+
 const user = inject('user')
+
+const menuAfterPermission = computed(() => {
+  return props.menu.filter((i) => {
+    if (!user.value.is_staff && i.permissions === 'staff') return false
+    else return i
+  })
+})
 
 const pathTo = (i) => {
   const params = i.params || {}

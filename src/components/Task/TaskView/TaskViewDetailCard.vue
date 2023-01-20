@@ -53,7 +53,7 @@
     <div class="grid grid-cols-2 gap-16">
       <div class="flex flex-col py-20">
         <span class="text-caps-3 dark:text-white/40">GRUPO / TIPO</span>
-        <p class="text-paragraph-1 one-line">{{ details.tipo_task.nome }}</p>
+        <p class="text-paragraph-1 one-line">{{ details?.tipo_task?.nome }}</p>
       </div>
 
       <div class="grid grid-cols-2">

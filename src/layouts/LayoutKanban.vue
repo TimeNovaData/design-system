@@ -79,6 +79,7 @@ function handleSearch() {
   --breadcrumb-color: rgba(var(--white),0.7)
 
 
+
 .q-layout.layout-kanban
   background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0) 15.56%)
   --top-size: calc(var(--header-kanban-height) + var(--header-base-height))

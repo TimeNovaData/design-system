@@ -13,7 +13,23 @@
         />
       </q-breadcrumbs>
       <q-space></q-space>
-      <TimerTask v-if="taskActive?.id" :task="taskActive" />
+      <div
+        v-if="taskActive?.id && $route.name !== 'colaborador'"
+        class="timer-task-wrapper h-32 shadow-sm border border-neutral-100/10 rounded-generic bg-white dark:bg-neutral-40 flex items-center flex-nowrap gap-4 mr-12 dark:!bg-d-neutral-10 dark:border-white/10"
+      >
+        <div class="p-4 px-8 max-w-[90px]">
+          <p
+            class="text-paragraph-2 text-neutral-100 one-line dark:!text-white/80"
+          >
+            {{ taskActive.titulo }}
+          </p>
+        </div>
+        <TimerTask
+          size="16px"
+          class="!h-26 !py-0 cursor-pointer mr-2"
+          :task="taskActive"
+        />
+      </div>
       <div class="flex gap-8 items-center" style="--neutral-100: var(--white)">
         <slot name="right"> </slot>
 

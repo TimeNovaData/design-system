@@ -31,7 +31,6 @@ import { useProjetoStore } from 'src/stores/projetos/projetos.store'
 import useDarkMode from 'src/composables/useDarkMode'
 import { useClientesStore } from './stores/clientes/clientes.store'
 import { useTaskStore } from './stores/tasks/tasks.store'
-import { useRoute } from 'vue-router'
 
 const { user, userFoto, userProfile } = storeToRefs(useUserStore())
 const { usuarios } = storeToRefs(useUsuarioStore())
@@ -71,28 +70,48 @@ watch(
   { deep: true }
 )
 
+// depois remover do app ---------------------------------------
+const tempoTaskActiveID = ref(null)
+
 watch(
   () => taskActive.value,
   async (v) => {
-    const { id } = await postTempoTask(``, v)
-    window._red(`id Do tempo ${id}`)
-
-    setInterval(async () => {
-      const taskReturn = await getTempoTask(id)
-      window._red('getTempoTask Return')
-      console.log(taskReturn)
-      tasksColaborador.value.pendentes?.map((t) => {
-        if (taskReturn.task === t.id) {
-          t = taskReturn
-          console.log(taskReturn)
-        }
-        return t
-      })
-      taskActive.value.tempo_ao_vivo_formatado_hora_minuto_segundo =
-        taskReturn.tempo_ao_vivo_formatado_hora_minuto_segundo
-    }, 10000)
+    if (v.id) {
+      const { id } = await postTempoTask(``, v)
+      tempoTaskActiveID.value = id
+      intervalTempoTask()
+    } else {
+      tempoTaskActiveID.value = null
+    }
   }
 )
+
+let timeout
+
+async function intervalTempoTask() {
+  clearTimeout(timeout)
+  if (!tempoTaskActiveID.value) return
+
+  const taskReturn = await getTempoTask(tempoTaskActiveID.value)
+
+  console.log(taskReturn)
+
+  tasksColaborador.value.pendentes = tasksColaborador.value.pendentes.map(
+    (t) => {
+      if (taskReturn.id === t.id) {
+        t = taskReturn
+      }
+
+      return t
+    }
+  )
+
+  taskActive.value.tempo_ao_vivo_formatado_hora_minuto_segundo =
+    taskReturn.tempo_ao_vivo_formatado_hora_minuto_segundo
+
+  timeout = setTimeout(() => intervalTempoTask(), 5000)
+}
+//  ---------------------------------------
 
 provide('darkMode', darkMode)
 provide('userProfile', userProfile)
