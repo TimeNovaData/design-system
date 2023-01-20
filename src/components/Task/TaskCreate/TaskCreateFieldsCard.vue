@@ -128,13 +128,17 @@
           >
         </div>
 
-        <OButton
-          secondary
-          class="bg-white h-48 w-full opaque-icon dark:!bg-white/10 dark:!border-transparent dark:text-white"
-          icon="svguse:/icons.svg#icon_file_search"
-        >
-          Referência
-        </OButton>
+        <div>
+          <OButton
+            disable
+            secondary
+            class="bg-white h-48 w-full opaque-icon dark:!bg-white/10 dark:!border-transparent dark:text-white"
+            icon="svguse:/icons.svg#icon_file_search"
+          >
+            Referência
+          </OButton>
+          <q-tooltip v-bind="tooltipProps">Em Breve</q-tooltip>
+        </div>
       </div>
 
       <OInput
