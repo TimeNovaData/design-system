@@ -69,13 +69,18 @@ watch(
   (acess) => {
     acess && requests()
     if (!acess) {
+      // limpando estado ~temporario
       taskActive.value = {}
+      tasksColaborador.value = {
+        concluidas: [],
+        pendentes: [],
+      }
     }
   },
   { deep: true }
 )
 
-// depois remover do app ---------------------------------------
+// depois remover do app ~temporario ---------------------------------------
 const tempoTaskActiveID = ref(null)
 
 watch(

@@ -39,7 +39,7 @@
 <script setup>
 import { useAuthStore } from 'src/stores/auth.store'
 import { useRouter } from 'vue-router'
-import { inject, nextTick } from 'vue'
+import { inject } from 'vue'
 
 const user = inject('user')
 
@@ -50,8 +50,7 @@ const darkMode = inject('darkMode')
 const router = useRouter()
 async function logout() {
   auth.logout()
-  await nextTick()
-  setTimeout(() => window.location.reload(), 100)
+  router.push({ name: 'login' })
 }
 </script>
 
