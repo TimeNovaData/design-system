@@ -66,7 +66,12 @@ if (!window.location.href.includes('login')) requests()
 
 watch(
   () => userAuthStore.value.access,
-  (acess) => acess && requests(),
+  (acess) => {
+    acess && requests()
+    if (!acess) {
+      taskActive.value = {}
+    }
+  },
   { deep: true }
 )
 
