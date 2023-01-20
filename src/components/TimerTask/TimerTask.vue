@@ -121,8 +121,6 @@ const handlePlay = (v) => {
     border: 1px solid  rgba(var(--white), 0.1)
 
 
-.timer-task.sm
-
 
 .timer-task.is_playing
   --border-size: 1px
