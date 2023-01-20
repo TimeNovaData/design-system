@@ -132,12 +132,25 @@
             ></q-icon>
             <p class="text-title-4">Minhas Tasks</p>
           </div>
+
           <div class="item-2">
-            <OButton size="md" primary @click="openTaskEditModal">
+            <OButton
+              size="md"
+              secondary
+              @click="() => handleGetTasksPendentes(userActiveID)"
+            >
+              <q-icon
+                id="icon-reload-kanban"
+                size="1.5rem"
+                name="replay"
+              ></q-icon>
+            </OButton>
+
+            <OButton class="ml-8" size="md" primary @click="openTaskEditModal">
               <q-icon
                 name="svguse:/icons.svg#icon_add_task"
                 size="1.5rem"
-                color="text-neutral-100 "
+                color="text-neutral-100"
               ></q-icon>
               Nova Task
             </OButton>
@@ -268,7 +281,7 @@
 
 <script setup>
 import { ref, inject, onMounted, computed, unref, nextTick, watch } from 'vue'
-import { date } from 'quasar'
+import { date, LoadingBar } from 'quasar'
 import bg from 'src/assets/image/bg-single-usuario.png'
 import GLOBAL from 'src/utils/GLOBAL'
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
@@ -343,12 +356,15 @@ const handleGetTasksConcluidas = async (userId) => {
 
 const handleGetTasksPendentes = async (userId) => {
   router.push({ params: { id: userId } })
-  tasks.value.pendentes = []
+  LoadingBar.start()
+  // tasks.value.pendentes = []
 
   tasks.value.pendentes = await getTasks(
     `&responsavel_task__id=${userId}&page_size=100&status=abertas`,
     false
   )
+
+  LoadingBar.stop()
 }
 
 const profileProjects = computed(() => {
@@ -452,7 +468,7 @@ async function handleTaskFinished(taskObj) {
     tasks.value.pendentes = tasks.value.pendentes.filter(
       (i) => i.id !== taskObj.id
     )
-    tasks.value.concluidas.unshift(taskObj)
+    tasks.value.concluidas.push(taskObj)
     NotifySucess('Task concluida com sucesso!')
   } catch (err) {
     console.log(err)

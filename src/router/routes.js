@@ -42,9 +42,9 @@ const routes = [
         meta: {
           breadcrumbs: [
             { label: 'Home', name: 'home' },
-            { label: 'Horas Consumidas', name: 'consumo_horas' },
+            { label: 'Alocação de MDO', name: 'consumo_horas' },
           ],
-          title: 'Horas Consumidas',
+          title: 'Alocação de MDO',
         },
       },
       {
@@ -68,9 +68,9 @@ const routes = [
         meta: {
           breadcrumbs: [
             { label: 'Home', name: 'home' },
-            { label: 'Single Projeto', name: 'projeto' },
+            { label: 'Projeto', name: 'projeto' },
           ],
-          title: 'Single Projeto',
+          title: 'Projeto',
           bruno: 'a',
         },
       },
@@ -81,7 +81,7 @@ const routes = [
         meta: {
           breadcrumbs: [
             { label: 'Home', name: 'home' },
-            { label: 'Single Usuario', name: 'colaborador' },
+            { label: 'Colaborador', name: 'colaborador' },
           ],
 
           title: 'Colaborador',
@@ -94,9 +94,9 @@ const routes = [
         meta: {
           breadcrumbs: [
             { label: 'Home', name: 'home' },
-            { label: 'Visão Geral', name: 'visao_geral' },
+            { label: 'Painel de Projetos', name: 'visao_geral' },
           ],
-          title: 'Visão Geral',
+          title: 'Painel de Projetos',
         },
       },
     ],
@@ -123,9 +123,9 @@ const routes = [
         meta: {
           breadcrumbs: [
             { label: 'Home', name: 'home' },
-            { label: 'Kanban', name: 'kanban' },
+            { label: 'Chamados', name: 'chamados' },
           ],
-          title: 'Kanban - Board',
+          title: 'Chamados - Quadro',
 
           tab: 'board',
         },
@@ -138,10 +138,10 @@ const routes = [
         meta: {
           breadcrumbs: [
             { label: 'Home', name: 'home' },
-            { label: 'Kanban', name: 'kanban' },
+            { label: 'Chamados', name: 'chamados' },
           ],
 
-          title: 'Kanban - List',
+          title: 'Chamados - Lista',
           tab: 'list',
         },
       },
