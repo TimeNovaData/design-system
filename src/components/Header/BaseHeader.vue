@@ -14,7 +14,7 @@
       </q-breadcrumbs>
       <q-space></q-space>
       <div
-        v-if="taskActive?.id && $route.name !== 'colaborador'"
+        v-if="taskActive?.id"
         class="timer-task-wrapper h-32 shadow-sm border border-neutral-100/10 rounded-generic bg-white dark:bg-neutral-40 flex items-center flex-nowrap gap-4 mr-12 dark:!bg-d-neutral-10 dark:border-white/10"
       >
         <div class="p-4 px-8 max-w-[90px]">
