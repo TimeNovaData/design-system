@@ -55,6 +55,7 @@
                   loading: !projetos.length,
                   nomeKey: 'nome_completo',
                 }"
+                option-label="nome_completo"
                 ref="itemEditableSelect"
                 @clear:select="handleClear"
                 :clearActive="false"

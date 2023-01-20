@@ -46,6 +46,7 @@
                   nomeKey: 'get_full_name',
                   clearable: false,
                 }"
+                option-label="get_full_name"
                 :clearActive="false"
               />
             </div>
@@ -384,6 +385,10 @@ const dragOptions = computed(() => ({
 }))
 
 async function init() {
+  tasks.value = {
+    concluidas: [],
+    pendentes: [],
+  }
   const routeID = route.params.id
   const userRoute = routeID === 'user'
 
