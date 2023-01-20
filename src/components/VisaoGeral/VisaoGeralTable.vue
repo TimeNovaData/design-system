@@ -116,6 +116,7 @@
             class="w-[2.375rem] h-[2.375rem] icon-opacity"
           />
           <OButton
+            v-if="user.is_staff"
             :to="{ name: 'singleProjeto', params: { id: props.row.id } }"
             secondary
             icon="search"
@@ -129,7 +130,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, inject } from 'vue'
 import GLOBAL from 'src/utils/GLOBAL'
 import OTable from 'src/components/Table/OTable.vue'
 import OBadge from 'src/components/Badge/OBadge.vue'
@@ -138,6 +139,7 @@ import AvatarMultiple from 'src/components/Avatar/AvatarMultiple.vue'
 import OTableBase from 'src/components/Table/OTableBase.vue'
 
 const { returnRGB } = GLOBAL
+const user = inject('user')
 
 const props = defineProps({
   rows: Array,
