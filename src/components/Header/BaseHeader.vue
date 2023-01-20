@@ -17,7 +17,7 @@
         v-if="taskActive?.id"
         class="timer-task-wrapper h-32 shadow-sm border border-neutral-100/10 rounded-generic bg-white dark:bg-neutral-40 flex items-center flex-nowrap gap-4 mr-12 dark:!bg-d-neutral-10 dark:border-white/10"
       >
-        <div class="p-4 px-8 max-w-[90px]">
+        <div class="p-4 px-8 max-w-[160px]">
           <p
             class="text-paragraph-2 text-neutral-100 one-line dark:!text-white/80"
           >
