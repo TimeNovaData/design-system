@@ -4,7 +4,9 @@
     @processfile="handleEmit"
     @processfilerevert="handleEmitRevert"
     :server="serverOpt"
+    :openModal="false"
   />
+  <h1>ID {{ server.id }}</h1>
 </template>
 
 <script setup>

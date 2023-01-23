@@ -7,6 +7,13 @@
       v-if="($route.name === 'login' && !user?.id) || user?.id"
       :is="Component"
     />
+
+    <ModalAddAnexo
+      ref="modalAddAnexoRef"
+      :url="URLS.anexo"
+      keyProp="task"
+      :id="openTask"
+    />
   </router-view>
 </template>
 
@@ -32,13 +39,22 @@ import useDarkMode from 'src/composables/useDarkMode'
 import { useClientesStore } from './stores/clientes/clientes.store'
 import { useTaskStore } from './stores/tasks/tasks.store'
 
+import { api } from 'src/boot/axios'
+import emitter from 'src/boot/emitter'
+
+import ModalAddAnexo from './components/Modal/ModalAddAnexo.vue'
+
+const { URLS } = api.defaults
+
 const { user, userFoto, userProfile } = storeToRefs(useUserStore())
 const { usuarios } = storeToRefs(useUsuarioStore())
 const { projetos, subProjetos, projetosLoading } = storeToRefs(
   useProjetoStore()
 )
 const { clientes } = storeToRefs(useClientesStore())
-const { taskTypes, taskActive, tasksColaborador } = storeToRefs(useTaskStore())
+const { taskTypes, taskActive, openTask, tasksColaborador } = storeToRefs(
+  useTaskStore()
+)
 
 const { getUser, getProfile, setProfile } = useUserStore()
 const { getUsuarios } = useUsuarioStore()
@@ -121,6 +137,13 @@ async function intervalTempoTask() {
 
   timeout = setTimeout(() => intervalTempoTask(), 5000)
 }
+
+//  ---------------------------------------
+const modalAddAnexoRef = ref(null)
+
+emitter.on('modal:anexo:abrir', () =>
+  modalAddAnexoRef.value.modalAddAnexo.dialogRef.show()
+)
 //  ---------------------------------------
 
 provide('darkMode', darkMode)

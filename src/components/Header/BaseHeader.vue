@@ -17,7 +17,23 @@
         v-if="taskActive?.id"
         class="timer-task-wrapper h-32 shadow-sm border border-neutral-100/10 rounded-generic bg-white dark:bg-neutral-40 flex items-center flex-nowrap gap-4 mr-12 dark:!bg-d-neutral-10 dark:border-white/10"
       >
-        <div class="p-4 px-8 max-w-[160px]">
+        <div class="flex flex-nowrap gap-8 p-4 px-8 max-w-[160px]">
+          <q-avatar
+            v-if="user.id !== taskActive?.responsavel_task.id"
+            size="1.5rem"
+            class="border-d-neutral-10/10 !border-2 relative overflow-hidden dark:border-white/5 shrink-0"
+            style="border-style: unset"
+          >
+            <img
+              v-if="taskActive?.responsavel_task.profile.foto"
+              class="absolute w-full h-full left-0 right-0 object-cover"
+              :src="taskActive.responsavel_task.profile.foto"
+            />
+            <div
+              v-else
+              class="absolute inset-0 m-auto w-full h-full bg-neutral-100/10 dark:bg-white/10"
+            ></div>
+          </q-avatar>
           <p
             class="text-paragraph-2 text-neutral-100 one-line dark:!text-white/80"
           >

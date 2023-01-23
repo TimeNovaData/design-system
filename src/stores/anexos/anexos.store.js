@@ -11,7 +11,9 @@ export const useAnexoStore = defineStore('anexoStore', () => {
     projeto: {
       get: URLS.anexoprojeto + '?x=',
     },
-    task: {},
+    task: {
+      get: URLS.anexo + '?x=',
+    },
   })
 
   async function getAnexos(filtros = '', set = true, type) {

@@ -17,11 +17,21 @@
     </div>
 
     <div class="flex gap-8 h-full items-center self-center">
-      <OButton secondary class="!p-0 w-40 h-40" disable>
+      <OButton
+        secondary
+        class="!p-0 w-40 h-40"
+        :href="link"
+        target="_blank"
+        disabled
+      >
         <q-icon name="svguse:/icons.svg#icon_eye"></q-icon>
       </OButton>
 
-      <OButton secondary class="!p-0 w-40 h-40" :href="link" target="_blank">
+      <OButton
+        secondary
+        class="!p-0 w-40 h-40"
+        @click="GLOBAL.blobDownloadFile(anexo, nome)"
+      >
         <q-icon name="svguse:/icons.svg#icon_download"></q-icon>
       </OButton>
     </div>
@@ -29,6 +39,7 @@
 </template>
 
 <script setup>
+import GLOBAL from 'src/utils/GLOBAL'
 import OButton from 'src/components/Button/OButton.vue'
 import AnexoIcon from './AnexoIcon.vue'
 

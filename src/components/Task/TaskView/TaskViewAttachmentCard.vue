@@ -14,23 +14,31 @@
       </OButton>
     </header>
 
-    <q-scroll-area class="mt-16 !h-[9.5rem] pr-16">
+    <q-scroll-area class="mt-16 !h-[calc(100%-3rem)] pr-16">
       <div class="!flex !flex-col gap-8">
-        <TaskViewAttachmentFile
-          v-for="anexo in anexos"
-          :key="anexo.id"
-          :data="anexo"
-          :hasImage="true"
+        <AnexoItem
+          v-for="i in anexos"
+          :key="i.id"
+          :ext="i.anexo_thumb?.extensao?.replace('.', '')"
+          :thumb="i.anexo_thumb?.url || ''"
+          :link="i.attachments"
+          :size="i.anexo_tamanho"
+          :nome="i.anexo_nome"
         />
       </div>
     </q-scroll-area>
   </q-card>
+
+  <div v-else class="h-[150px]">
+    <EmptyItem text="Sem anexos no momento." />
+  </div>
 </template>
 
 <script setup>
 import GLOBAL from 'src/utils/GLOBAL'
 import OButton from 'src/components/Button/OButton.vue'
-import TaskViewAttachmentFile from './TaskViewAttachmentFile.vue'
+import AnexoItem from 'src/components/Anexo/AnexoItem.vue'
+import EmptyItem from 'src/components/Empty/EmptyItem.vue'
 
 const props = defineProps({
   anexos: Array,

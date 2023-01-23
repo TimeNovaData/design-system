@@ -24,18 +24,28 @@ export const useModalStore = defineStore('modalStore', () => {
     console.warn('resetou')
   }
 
+  async function getTaskAnexos(taskId) {
+    const anexosRes = await anexosStore.getAnexos(
+      `&task__id=${taskId}`,
+      false,
+      'task'
+    )
+
+    taskModalAnexos.value = anexosRes
+  }
+
   async function openTaskViewModal(taskId) {
     const taskRes = await taskStore.getTask(taskId)
-    const anexosRes = await anexosStore.getAnexos(`?task__id=${taskId}`)
+    await getTaskAnexos(taskId)
 
     taskModalObj.value = taskRes
-    taskModalAnexos.value = anexosRes
     modalTaskState.value = true
 
     const { isLoading, comments, getComments, sendComment, setID } =
       useComments()
 
     setID(taskId)
+    taskStore.setOpenTask(taskId)
 
     await getComments('task')
 
@@ -66,6 +76,7 @@ export const useModalStore = defineStore('modalStore', () => {
     taskModalObj,
     taskModalAnexos,
     taskModalCommentObj,
+    getTaskAnexos,
     openTaskViewModal,
     openTaskEditModal,
     closeTaskViewModal,
