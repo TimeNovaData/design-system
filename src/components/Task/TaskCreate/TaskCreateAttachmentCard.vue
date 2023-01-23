@@ -4,14 +4,13 @@
       <FilePond
         name="attachments"
         ref="pond"
-        :files="myFiles"
+        :files="filePondFiles"
         :allow-multiple="true"
         @init="handleFilePondInit"
         v-bind="filePondConfig"
         :server="server"
         @processfile="(obj) => $emit('processfile', obj)"
       />
-      de fora
     </div>
 
     <q-scroll-area class="!h-[calc(100%-9rem)] dark:!bg-d-neutral-10 px-16">
@@ -37,9 +36,11 @@ import emitter from 'src/boot/emitter'
 import 'src/css/vendor/filePond.sass'
 
 import AnexoItem from 'src/components/Anexo/AnexoItem.vue'
+import { useAnexoStore } from 'src/stores/anexos/anexos.store'
+
+const { setFilaAnexos } = useAnexoStore()
 
 const pond = ref(null)
-const myFiles = ref([])
 
 const props = defineProps({
   server: Object,
@@ -52,6 +53,7 @@ const props = defineProps({
     type: Boolean,
     default: true,
   },
+  filePondFiles: Array,
 })
 
 function handleFilePondInit() {
@@ -59,9 +61,10 @@ function handleFilePondInit() {
 }
 
 function openAttachmentModal(ev) {
-  console.log('CLICK', pond.value.getFiles())
-  myFiles.value = unref(pond.value.getFiles())
-  console.log('CLICK 2', myFiles.value)
+  const files = unref(pond.value.getFiles())
+  window._blue('openAttachmentModal')
+  console.log(files)
+  setFilaAnexos(files)
 
   if (props.preventEv) {
     ev.preventDefault()

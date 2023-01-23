@@ -6,6 +6,7 @@ const { URLS } = api.defaults
 
 export const useAnexoStore = defineStore('anexoStore', () => {
   const anexos = ref([])
+  const filaAnexos = ref([])
 
   const urlReq = () => ({
     projeto: {
@@ -30,10 +31,15 @@ export const useAnexoStore = defineStore('anexoStore', () => {
   function setAnexos(value) {
     anexos.value = value
   }
+  function setFilaAnexos(value) {
+    filaAnexos.value = value
+  }
 
   return {
     getAnexos,
     setAnexos,
+    setFilaAnexos,
     anexos,
+    filaAnexos,
   }
 })

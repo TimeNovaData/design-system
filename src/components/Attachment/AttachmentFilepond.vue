@@ -5,8 +5,8 @@
     @processfilerevert="handleEmitRevert"
     :server="serverOpt"
     :openModal="false"
+    :filePondFiles="filaAnexos"
   />
-  <h1>ID {{ server.id }}</h1>
 </template>
 
 <script setup>
@@ -16,6 +16,7 @@ import emitter from 'src/boot/emitter'
 import { ref } from 'vue'
 import { api } from 'src/boot/axios'
 import { NotifySucess } from 'src/boot/Notify'
+import { useAnexoStore } from 'src/stores/anexos/anexos.store'
 
 const API_URL = process.env.API_URL
 const TOKEN = Cookies.get('NDT_TOKEN')
@@ -25,6 +26,8 @@ const props = defineProps({
     type: Object,
   },
 })
+
+const { filaAnexos } = useAnexoStore()
 
 const serverOpt = {
   url: API_URL,
