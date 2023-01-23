@@ -20,17 +20,8 @@ export const useProjetoStore = defineStore('projetoStore', () => {
     try {
       const { data } = await api.get(URLS.projeto + '?no_loading')
 
-      // Remover quando resolver pello back
-      const result = data?.map((i) => {
-        i.nome_completo = `${i.nome_cliente ? i.nome_cliente + ' ⠂' : ''}  ${
-          i.nome || ''
-        }`.trim()
-
-        return i
-      })
-
-      setProjetos(result)
-      return result
+      setProjetos(data)
+      return data
     } catch (e) {
       console.log(e)
       return e
@@ -54,12 +45,6 @@ export const useProjetoStore = defineStore('projetoStore', () => {
     try {
       const { data } = await api.get(URLS.projeto + id)
 
-      if (data) {
-        // Remover quando resolver pello back
-        data.nome_completo = `${
-          data.nome_cliente ? data.nome_cliente + ' ⠂' : ''
-        }  ${data.nome || ''}`.trim()
-      }
       setProjeto(data)
       return data
     } catch (e) {

@@ -9,33 +9,34 @@ const menuList = [
   },
 
   {
-    title: 'Single Colaborador',
+    title: 'Colaborador',
     nivel: 0,
     icon: 'emoji_people',
     href: '/colaborador/user',
+    permissions: 'staff',
   },
   {
-    title: 'Kanban',
+    title: 'Chamados',
     nivel: 0,
     icon: 'view_kanban',
     href: '/kanban/',
   },
 
   {
-    title: 'Horas Consumidas',
+    title: 'Alocação de MDO',
     nivel: 0,
     icon: 'timelapse',
     href: '/consumo_horas',
   },
   {
-    title: 'Visão Geral',
+    title: 'Painel de Projetos',
     nivel: 0,
     icon: 'monitor_heart',
     href: '/visao_geral',
   },
 
   {
-    title: 'Single Projeto',
+    title: 'Projeto',
     nivel: 0,
     icon: 'web',
     href: '/projeto',

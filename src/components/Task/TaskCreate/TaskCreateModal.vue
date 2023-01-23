@@ -89,6 +89,12 @@
                   name="svguse:/icons.svg#icon_attachment"
                 />
                 <p class="text-paragraph-1">Anexos</p>
+                <OCounter
+                  v-if="taskModalAnexos?.length"
+                  class="!w-20 !h-20 bg-neutral-100/10 text-neutral-100 dark:bg-white/10 dark:text-white"
+                >
+                  {{ taskModalAnexos?.length }}
+                </OCounter>
               </template>
             </q-tab>
           </q-tabs>
@@ -111,7 +117,11 @@
               />
             </div>
 
-            <TaskCreateAttachmentCard name="attach" />
+            <TaskCreateAttachmentCard
+              name="attach"
+              :anexos="taskModalAnexos"
+              :preventEv="true"
+            />
           </q-tab-panels>
         </div>
       </section>
@@ -160,13 +170,17 @@ import { storeToRefs } from 'pinia'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import { useModalStore } from 'src/stores/modal/modal.store'
 import { onBeforeRouteUpdate } from 'vue-router'
+import emitter from 'src/boot/emitter'
 
 const { dialogRef } = useDialogPluginComponent()
 const { handleSaveTask } = useTaskStore()
-const { closeTaskEditModal } = useModalStore()
-const { modalEditTaskState, taskModalObj, taskModalCommentObj } = storeToRefs(
-  useModalStore()
-)
+const { getTaskAnexos, closeTaskEditModal } = useModalStore()
+const {
+  modalEditTaskState,
+  taskModalObj,
+  taskModalCommentObj,
+  taskModalAnexos,
+} = storeToRefs(useModalStore())
 
 const tabs = ref('desc')
 const newTaskScope = ref(null)
@@ -204,6 +218,15 @@ watch(modalEditTaskState, () =>
 
 onBeforeRouteUpdate(() => {
   modalEditTaskState.value = false
+})
+
+// atualiza os anexos ao enviar e reverter
+emitter.on(`filepond:task`, async () => {
+  await getTaskAnexos(taskModalObj.value.id)
+})
+
+emitter.on(`filepond:task:revert`, async () => {
+  await getTaskAnexos(taskModalObj.value.id)
 })
 
 defineExpose({ dialogRef })

@@ -16,6 +16,7 @@ export const useTaskStore = defineStore('taskstore', () => {
   const tasksChamado = ref([])
   const taskTypes = ref([])
   const taskActive = ref({})
+  const openTask = ref(null)
 
   const tasksColaborador = ref({
     concluidas: [],
@@ -63,18 +64,8 @@ export const useTaskStore = defineStore('taskstore', () => {
   async function getTaskTypes() {
     try {
       const { data } = await api.get(URLS.tipotask + '?no_loading')
-      console.log(data)
 
-      const result = data.map((i) => {
-        i.nome_completo = `${
-          i.ferramenta?.nome_ferramenta
-            ? i.ferramenta?.nome_ferramenta + ' ⠂'
-            : ''
-        } ${i.nome || ''}`.trim()
-        return i
-      })
-
-      setTaskTypes(result)
+      setTaskTypes(data)
       return data
     } catch (e) {
       console.log(e)
@@ -184,12 +175,17 @@ export const useTaskStore = defineStore('taskstore', () => {
   function setTaskTypes(value) {
     taskTypes.value = value
   }
+  function setOpenTask(value) {
+    // Passar o id da task para o ModalAddAnexo da App
+    openTask.value = value
+  }
 
   return {
     task,
     tasks,
     taskTypes,
     tasksColaborador,
+    openTask,
     getTasks,
     getTask,
     setTasks,
@@ -202,5 +198,6 @@ export const useTaskStore = defineStore('taskstore', () => {
     tasksChamadoConcluido,
     tasksChamadoPendente,
     taskActive,
+    setOpenTask,
   }
 })

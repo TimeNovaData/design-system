@@ -68,8 +68,7 @@
           </div>
         </div>
 
-        <div class="pl-16">
-          <!-- <UrgenciaStatus text="Moderada" /> -->
+        <!-- <div class="pl-16">
           <o-badge
             size="lg"
             square
@@ -79,7 +78,7 @@
           >
             <template v-slot:content>Urgente</template>
           </o-badge>
-        </div>
+        </div> -->
 
         <!-- <div class="pl-16">
           <div class="flex items-center">
@@ -259,7 +258,8 @@ function handleClickTimer(v) {
 
 .base-grid
   display: grid
-  grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 230px) minmax(120px, 130px)  repeat(2, 100px) minmax(120px, 130px)
+  // grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 230px) minmax(120px, 130px)  repeat(2, 100px) minmax(120px, 130px)
+  grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 230px) repeat(2, 100px) minmax(120px, 130px)
   align-items: center
 
 .btn-restore
