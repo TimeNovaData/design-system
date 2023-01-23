@@ -232,7 +232,7 @@
           <div v-if="finishedTasks?.length">
             <q-virtual-scroll
               style="max-height: 450px"
-              :items="finishedTasks"
+              :items="tasks.concluidas"
               separator
               v-slot="{ item }"
               class="relative"
