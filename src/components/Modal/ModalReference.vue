@@ -8,6 +8,7 @@
     <OTableBase
       :rows="tasksReference"
       :columns="columns"
+      :showDownloadButton="false"
       class="px-16 py-8 w-[1000px]"
     >
       <template v-slot:body="props">
@@ -73,10 +74,10 @@
               class="!p-0 w-40 h-40 dark:bg-white/10 bg-text-white dark:!border-transparent"
               icon="svguse:/icons.svg#icon_copy"
               @click="
-                emitter.emit(
-                  'modal:copy:reference',
-                  props.row.tempo_ao_vivo_formatado_hora_minuto_segundo
-                )
+                () =>
+                  handelCopyReference(
+                    props.row.tempo_ao_vivo_formatado_hora_minuto_segundo
+                  )
               "
             />
           </q-td>
@@ -92,6 +93,7 @@ import { storeToRefs } from 'pinia'
 import emitter from 'src/boot/emitter'
 
 import GLOBAL from 'src/utils/GLOBAL'
+import { NotifySucess } from 'src/boot/Notify'
 
 import OTableBase from 'src/components/Table/OTableBase.vue'
 import ModalCenter from './ModalCenter.vue'
@@ -146,6 +148,12 @@ const columns = ref([
 
 function handleCloseReferenceModal() {
   setTasksReference([])
+}
+
+function handelCopyReference(time) {
+  emitter.emit('modal:copy:reference', time)
+  NotifySucess('Tempo Estimado Aplicado')
+  modalReference.value.dialogRef.hide()
 }
 
 defineExpose({ modalReference })

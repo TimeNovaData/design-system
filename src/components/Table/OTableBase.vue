@@ -25,7 +25,7 @@
     <template v-slot:bottom="slotProps">
       <OTableFooterBase
         v-if="footer"
-        downloadable
+        :downloadable="props.showDownloadButton"
         :rows="props.rows"
         :columns="props.columns"
         :slotProps="slotProps"
@@ -59,6 +59,10 @@ const props = defineProps({
     default: true,
   },
   header: {
+    type: Boolean,
+    default: true,
+  },
+  showDownloadButton: {
     type: Boolean,
     default: true,
   },
