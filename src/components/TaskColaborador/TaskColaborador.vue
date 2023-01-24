@@ -51,15 +51,15 @@
                 :index="0"
                 side="left"
                 :href="
-                  task?.responsavel_task.profile.foto
-                    ? task?.responsavel_task.profile.foto
+                  task?.usuario_criacao.profile.foto
+                    ? task?.usuario_criacao.profile.foto
                     : placeholderImg
                 "
               />
             </div>
             <div>
               <p class="text-paragraph-2">
-                {{ task?.responsavel_task.get_full_name }}
+                {{ task?.usuario_criacao.get_full_name }}
               </p>
               <p class="text-paragraph-3 text-neutral-70 dark:text-white/70">
                 <!-- Criado por: {{ task?.usuario_criacao?.get_full_name }} -->
