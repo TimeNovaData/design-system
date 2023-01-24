@@ -14,6 +14,8 @@
       keyProp="task"
       :id="openTask"
     />
+
+    <ModalReference ref="modalReferenceRef" />
   </router-view>
 </template>
 
@@ -43,6 +45,7 @@ import { api } from 'src/boot/axios'
 import emitter from 'src/boot/emitter'
 
 import ModalAddAnexo from './components/Modal/ModalAddAnexo.vue'
+import ModalReference from './components/Modal/ModalReference.vue'
 
 const { URLS } = api.defaults
 
@@ -143,6 +146,12 @@ const modalAddAnexoRef = ref(null)
 
 emitter.on('modal:anexo:abrir', () =>
   modalAddAnexoRef.value?.modalAddAnexo.dialogRef.show()
+)
+//  ---------------------------------------
+const modalReferenceRef = ref(null)
+
+emitter.on('modal:referencia:abrir', () =>
+  modalReferenceRef.value?.modalReference.dialogRef.show()
 )
 //  ---------------------------------------
 

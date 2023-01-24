@@ -116,20 +116,23 @@
             Estimar
           </OButton>
           <q-tooltip v-if="!model.tipo_task" v-bind="tooltipProps"
-            >Escolha um Tipo para habilitar</q-tooltip
-          >
+            >Escolha um Tipo para habilitar
+          </q-tooltip>
         </div>
 
         <div>
           <OButton
-            disable
+            :disable="!model.tipo_task"
             secondary
             class="bg-white h-48 w-full opaque-icon dark:!bg-white/10 dark:!border-transparent dark:text-white"
             icon="svguse:/icons.svg#icon_file_search"
+            @click="handleOpenModalReferencia"
           >
             Referência
           </OButton>
-          <q-tooltip v-bind="tooltipProps">Em Breve</q-tooltip>
+          <q-tooltip v-if="!model.tipo_task" v-bind="tooltipProps"
+            >Escolha um Tipo para habilitar</q-tooltip
+          >
         </div>
       </div>
 
@@ -193,21 +196,30 @@
 </template>
 
 <script setup>
-import { date } from 'quasar'
+import { date, LoadingBar } from 'quasar'
 import { ref, computed, inject, watch, onMounted } from 'vue'
 import { deepUnref } from 'vue-deepunref'
+import { storeToRefs } from 'pinia'
+
 import GLOBAL from 'src/utils/GLOBAL'
+import { NotifyAlert, NotifySucess } from 'src/boot/Notify'
+import emitter from 'src/boot/emitter'
+
 import OInput from 'src/components/Input/OInput.vue'
 import OSelectAvatar from 'src/components/Select/OSelectAvatar.vue'
 import OSelect from 'src/components/Select/OSelect.vue'
 import OInputNumber from 'src/components/Input/OInputNumber.vue'
 import OButton from 'src/components/Button/OButton.vue'
+
 import { useChamadoStore } from 'src/stores/chamados/chamados.store'
-import { storeToRefs } from 'pinia'
-import { NotifyAlert, NotifySucess } from 'src/boot/Notify'
+import { useTaskStore } from 'src/stores/tasks/tasks.store'
+
+// ==========================================================================================
 
 const { FTime, FData, FTimeLong } = GLOBAL
 const emit = defineEmits(['update'])
+
+const { getTasks, setTasksReference } = useTaskStore()
 
 const props = defineProps({
   taskValues: Object,
@@ -342,6 +354,28 @@ function setTempoEstimado() {
 }
 
 setSubProjectList()
+
+async function handleOpenModalReferencia() {
+  LoadingBar.start()
+
+  const taskTypeId = model.value.tipo_task.id
+  const tasksReference = await getTasks(`&tipo_task__id=${taskTypeId}`, false)
+
+  LoadingBar.stop()
+  if (!tasksReference.length) {
+    NotifyAlert('Nao há referências para este tipo de task')
+    return
+  }
+
+  emitter.emit('modal:referencia:abrir', taskTypes.value.id)
+  setTasksReference(tasksReference)
+}
+
+emitter.on('modal:copy:reference', (val) => {
+  const newTime = val.split(':').slice(0, 2).join('')
+  model.value.tempo_estimado = newTime
+})
+
 onMounted(() => {
   if (model.value.projeto) setandGetChamados(model.value.projeto)
 })

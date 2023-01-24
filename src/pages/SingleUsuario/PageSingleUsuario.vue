@@ -527,7 +527,7 @@ async function populateChart(tempoTasks) {
 }
 
 // ==========================================================================================
-// INFORMAÇÕES DO HEADER =============================================
+// INFORMAÇÕES DO HEADER ====================================================================
 
 const profileProjects = computed(() => {
   const projects = profileActive.value.projetos.map((p) => p.nome)
