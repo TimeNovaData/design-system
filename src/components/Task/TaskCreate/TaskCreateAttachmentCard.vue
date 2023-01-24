@@ -10,6 +10,7 @@
         v-bind="filePondConfig"
         :server="server"
         @processfile="(obj) => $emit('processfile', obj)"
+        :instantUpload="openTask ? true : false"
       />
     </div>
 
@@ -37,8 +38,10 @@ import 'src/css/vendor/filePond.sass'
 
 import AnexoItem from 'src/components/Anexo/AnexoItem.vue'
 import { useAnexoStore } from 'src/stores/anexos/anexos.store'
+import { useTaskStore } from 'src/stores/tasks/tasks.store'
 
 const { setFilaAnexos } = useAnexoStore()
+const { openTask, setNewTaskFiles } = useTaskStore()
 
 const pond = ref(null)
 
@@ -57,14 +60,16 @@ const props = defineProps({
 })
 
 function handleFilePondInit() {
-  console.log('FilePond has initialized', filePondConfig)
+  // console.log('FilePond has initialized', filePondConfig)
 }
 
 function openAttachmentModal(ev) {
-  const files = unref(pond.value.getFiles())
+  setNewTaskFiles([])
+  const files = pond.value.getFiles()
   window._blue('openAttachmentModal')
-  console.log(files)
+
   setFilaAnexos(files)
+  setNewTaskFiles(files) // Anexos do modal de criaçao de task
 
   if (props.preventEv) {
     ev.preventDefault()

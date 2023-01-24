@@ -474,7 +474,7 @@ async function getTempoTask() {
   try {
     const { data } = await api.get(
       URLS.tempoProjeto +
-        `/?x=&userid=${user.value.id}&agrupamento=${filtroHoraConsumo.value.value}`
+        `/?x=&userid=${userActiveID.value}&agrupamento=${filtroHoraConsumo.value.value}`
     )
 
     populateChart(data)
@@ -535,6 +535,7 @@ async function handleChangeSelect({ profile, id }) {
 
   await handleChangeProfile(profile.id)
   await handleGetTasksPendentes(id)
+  await getTempoTask()
   // await handleGetTasksConcluidas(id)
 
   tasks.value.concluidas = []
