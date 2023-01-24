@@ -142,7 +142,7 @@ async function intervalTempoTask() {
 const modalAddAnexoRef = ref(null)
 
 emitter.on('modal:anexo:abrir', () =>
-  modalAddAnexoRef.value.modalAddAnexo.dialogRef.show()
+  modalAddAnexoRef.value?.modalAddAnexo.dialogRef.show()
 )
 //  ---------------------------------------
 

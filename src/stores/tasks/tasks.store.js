@@ -6,6 +6,7 @@ import { deepUnref } from 'vue-deepunref'
 import GLOBAL from 'src/utils/GLOBAL'
 import { NotifyError, NotifySucess } from 'src/boot/Notify'
 import emitter from 'src/boot/emitter'
+import { useAnexoStore } from 'src/stores/anexos/anexos.store'
 
 const { URLS } = api.defaults
 
@@ -17,6 +18,8 @@ export const useTaskStore = defineStore('taskstore', () => {
   const taskTypes = ref([])
   const taskActive = ref({})
   const openTask = ref(null)
+
+  const newTaskFiles = ref([])
 
   const tasksColaborador = ref({
     concluidas: [],
@@ -119,16 +122,25 @@ export const useTaskStore = defineStore('taskstore', () => {
 
       const data = newTaskUnref
       try {
-        // debugger
         const newTask = await api.post(URLS.task, data)
         NotifySucess('Task Criada com sucesso')
         emitter.emit('modal:task:create')
+
+        newTaskFiles.value.forEach(async (file) => {
+          const formData = new FormData()
+          formData.append('task', newTask.data.id)
+          formData.append('attachments', file)
+
+          await api.post(URLS.anexo, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+          })
+        })
+
         return newTask
       } catch (e) {
         NotifyError('Erro ao Criar Tarefa')
         console.log(e)
       }
-      //
     } else {
       try {
         const data = GLOBAL.compareAndReturnDiff(oldTaskUnref, newTaskUnref)
@@ -179,6 +191,9 @@ export const useTaskStore = defineStore('taskstore', () => {
     // Passar o id da task para o ModalAddAnexo da App
     openTask.value = value
   }
+  function setNewTaskFiles(value) {
+    newTaskFiles.value = value
+  }
 
   return {
     task,
@@ -199,5 +214,6 @@ export const useTaskStore = defineStore('taskstore', () => {
     tasksChamadoPendente,
     taskActive,
     setOpenTask,
+    setNewTaskFiles,
   }
 })

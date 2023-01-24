@@ -21,6 +21,7 @@ export const useModalStore = defineStore('modalStore', () => {
     taskModalObj.value = null
     taskModalAnexos.value = null
     taskModalCommentObj.value = null
+    taskStore.setOpenTask(null)
     console.warn('resetou')
   }
 
