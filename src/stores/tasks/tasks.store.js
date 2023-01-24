@@ -175,6 +175,16 @@ export const useTaskStore = defineStore('taskstore', () => {
     }
   }
 
+  let cacheOrder
+  async function updateTaskOrder(listTasksId) {
+    if (cacheOrder !== listTasksId) {
+      cacheOrder = listTasksId
+      await api.post(`${URLS.atualizar_ordem_task}?no_loading`, {
+        id_tasks: listTasksId,
+      })
+    }
+  }
+
   function setTasks(value) {
     tasks.value = value
   }
@@ -215,5 +225,6 @@ export const useTaskStore = defineStore('taskstore', () => {
     taskActive,
     setOpenTask,
     setNewTaskFiles,
+    updateTaskOrder,
   }
 })
