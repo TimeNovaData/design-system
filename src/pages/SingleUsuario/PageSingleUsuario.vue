@@ -211,6 +211,7 @@
                           name: 'flip-list',
                           class: `transition-div `,
                         }"
+                        @end="endDrag"
                       >
                         <template #item="{ element }">
                           <TaskColaborador
@@ -399,11 +400,29 @@ const taskActive = inject('taskActive')
 const loading = ref(true)
 const userActiveID = ref(null)
 
-const { getTasks, pathTask } = useTaskStore()
+const { getTasks, pathTask, updateTaskOrder } = useTaskStore()
 const { tasksColaborador: tasks } = storeToRefs(useTaskStore())
 
 const { getProfile } = useProfileStore()
 const { profileActive, isLoading } = storeToRefs(useProfileStore())
+
+// ==========================================================================================
+// DRAG AND DROP DAS TASKS ==================================================================
+const listIDSInOrder = ref([])
+
+function endDrag(ev) {
+  ev.stopImmediatePropagation()
+  ev.stopPropagation()
+
+  const { oldIndex, newIndex } = ev
+  const list = listIDSInOrder.value
+
+  const el = list[oldIndex]
+  list.splice(oldIndex, 1)
+  list.splice(newIndex, 0, el)
+
+  updateTaskOrder(list)
+}
 
 // ==========================================================================================
 // GRAFICO CONSUMO DE HORAS =================================================================
@@ -561,6 +580,8 @@ const handleGetTasksPendentes = async (userId) => {
     `&responsavel_task__id=${userId}&page_size=100&status=abertas`,
     false
   )
+
+  listIDSInOrder.value = tasks.value.pendentes.map((i) => i.id)
 
   LoadingBar.stop()
 }

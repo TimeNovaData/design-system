@@ -26,6 +26,7 @@ const api = axios.create({
     registrochamado: 'registrochamado/',
     areaatendimento: 'areaatendimento/',
     task: 'task/',
+    atualizar_ordem_task: 'task/atualizar_ordem_task/',
     tempotask: 'tempotask/',
     tempoProjeto: 'tempotask/tempo_projeto',
     tipotask: 'tipotask/',
