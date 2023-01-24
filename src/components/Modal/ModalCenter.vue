@@ -12,14 +12,22 @@
       class="q-dialog-plugin remove-styles content flex flex-col w-full flex-nowrap"
     >
       <header
-        class="h-80 bg-primary-pure flex items-center px-24 w-full shrink-0"
+        class="h-80 bg-primary-pure flex items-center pl-24 pr-8 w-full shrink-0"
       >
         <TextIcon
+          v-if="icon"
           v-bind="{ icon, text }"
           icon-class="text-neutral-100"
           class="text-neutral-100 dark:text-neutral-100"
         ></TextIcon>
+
+        <div v-else class="mr-24">
+          <span class="text-caps-3 text-neutral-100/50">{{ text }}</span>
+          <h4 class="text-title-4 text-neutral-100">{{ title }}</h4>
+        </div>
+
         <q-space></q-space>
+
         <OButton
           tertiary
           class="!p-0 place-items-center grid dark:text-neutral-100"
@@ -29,10 +37,10 @@
           <q-icon name="svguse:/icons.svg#icon_close"></q-icon
         ></OButton>
       </header>
-      <section class="flex-1">
-        <q-scroll-area class="fit scroll-area w-full">
-          <slot></slot>
-        </q-scroll-area>
+      <section class="flex-1 overflow-y-auto">
+        <slot></slot>
+        <!-- <q-scroll-area class="fit scroll-area w-full">
+        </q-scroll-area> -->
       </section>
     </q-card>
   </q-dialog>
@@ -47,6 +55,7 @@ import OButton from 'src/components/Button/OButton.vue'
 const props = defineProps({
   open: Boolean,
   text: String,
+  title: String,
   icon: String,
 })
 const dialogState = ref(props.open)
@@ -77,7 +86,7 @@ defineExpose({ dialogRef, dialogState })
   .content
     height: 100%
     min-height: 460px !important
-    max-height: 460px !important
+    max-height: 510px !important
     min-width: 460px
     width: max-content
     border-radius: 6px

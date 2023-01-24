@@ -16,6 +16,7 @@ export const useTaskStore = defineStore('taskstore', () => {
   const task = ref({})
   const tasksChamado = ref([])
   const taskTypes = ref([])
+  const tasksReference = ref([])
   const taskActive = ref({})
   const openTask = ref(null)
 
@@ -204,12 +205,16 @@ export const useTaskStore = defineStore('taskstore', () => {
   function setNewTaskFiles(value) {
     newTaskFiles.value = value
   }
+  function setTasksReference(value) {
+    tasksReference.value = value
+  }
 
   return {
     task,
     tasks,
     taskTypes,
     tasksColaborador,
+    tasksReference,
     openTask,
     getTasks,
     getTask,
@@ -225,6 +230,7 @@ export const useTaskStore = defineStore('taskstore', () => {
     taskActive,
     setOpenTask,
     setNewTaskFiles,
+    setTasksReference,
     updateTaskOrder,
   }
 })
