@@ -1,5 +1,9 @@
 <template>
-  <OTableBase :rows="rows" :columns="columns" class="px-16 py-8">
+  <OTableBase
+    :rows="rows"
+    :columns="columns"
+    class="visao-geral-table px-16 py-8"
+  >
     <template v-slot:body="props">
       <q-tr :props="props">
         <q-td
@@ -67,7 +71,16 @@
           class="text-right !border-r cursor-pointer"
           @click="$emit('click:acompanhamento', props.row.id)"
         >
-          {{ props.row.ultimo_acompanhamento }}
+          <OBadge
+            size="lg"
+            :color="returnRGB(props.row.ultimo_acompanhamento.cor)"
+            square
+            class="w-[8rem]"
+          >
+            <template v-slot:content>{{
+              props.row.ultimo_acompanhamento.data
+            }}</template>
+          </OBadge>
         </q-td>
 
         <q-td
