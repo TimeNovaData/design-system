@@ -19,7 +19,7 @@ export default function useComments() {
       get: URLS.comentario + `?task=${id}&no_loading${filters}`,
       post: URLS.comentario,
       data: (message) => ({
-        comentario: message,
+        comentario: message.txt,
         task: id,
       }),
     },
@@ -28,7 +28,8 @@ export default function useComments() {
       get: URLS.comentarioprojeto + `?projeto__id=${id}&no_loading${filters}`,
       post: URLS.comentarioprojeto,
       data: (message) => ({
-        comentario: message,
+        comentario: message.txt,
+        tipo_etapa: message.tipo_etapa,
         projeto: id,
         titulo: 'Acompanhamento do Projeto',
       }),
@@ -56,7 +57,7 @@ export default function useComments() {
   }
 
   async function sendComment(message, tipo) {
-    if (!id.value || !message.length) return
+    if (!id.value || !message.txt.length) return
 
     isLoading.value = true
 

@@ -44,23 +44,37 @@
       <slot name="top"></slot>
     </q-scroll-area>
 
-    <footer class="flex gap-8 pt-16" v-if="showInput">
-      <OInput
-        v-model="message"
+    <footer class="pt-16" v-if="showInput">
+      <OSelect
+        v-if="tipo === 'projeto'"
+        v-model="tipoetapa"
+        :options="tipoetapaOpts"
+        option-value="id"
+        option-label="tipo_etapa"
         size="md"
-        placeholder="Escreva sua mensagem"
-        class="h-40 flex-1 bg-white dark:!bg-transparent no-label"
-        autofocus
-        @keydown.enter="submitMessage"
-      ></OInput>
+        behavior="menu"
+        label="Etapa"
+        class="bg-white dark:!bg-white/5 mb-8"
+      ></OSelect>
 
-      <OButton
-        secondary
-        class="bg-white h-40 dark:!bg-white/10 dark:!border-transparent dark:text-white !min-w-[100px]"
-        @click="submitMessage"
-      >
-        Enviar
-      </OButton>
+      <div class="flex gap-8">
+        <OInput
+          v-model="message"
+          size="md"
+          placeholder="Escreva sua mensagem"
+          class="h-40 flex-1 bg-white dark:!bg-transparent no-label"
+          autofocus
+          @keydown.enter="submitMessage"
+        ></OInput>
+
+        <OButton
+          secondary
+          class="bg-white h-40 dark:!bg-white/10 dark:!border-transparent dark:text-white !min-w-[100px]"
+          @click="submitMessage"
+        >
+          Enviar
+        </OButton>
+      </div>
     </footer>
   </q-card>
 </template>
@@ -79,9 +93,15 @@ import {
 import OButton from 'src/components/Button/OButton.vue'
 import OInput from 'src/components/Input/OInput.vue'
 import OChatMessage from 'src/components/Chat/OChatMessage.vue'
+import OSelect from 'src/components/Select/OSelect.vue'
 import { scroll as qScroll } from 'quasar'
 import { deepUnref } from 'vue-deepunref'
+import { api } from 'src/boot/axios'
+import { NotifyAlert } from 'src/boot/Notify'
+import { useAxios } from '@vueuse/integrations/useAxios'
 // const { getScrollHeight, getVerticalScrollPosition, getScrollTarget } = scroll
+
+const { URLS } = api.defaults
 
 const cardChatBox = ref(null)
 const props = defineProps({
@@ -135,7 +155,15 @@ function handleScroll(v) {
   if (v.verticalPercentage) scroll.value = v.verticalPercentage
 }
 async function submitMessage() {
-  const mensagem = message.value
+  if (props.tipo === 'projeto' && !tipoetapa.value) {
+    NotifyAlert('Escolha uma etapa')
+    return
+  }
+
+  const mensagem = {
+    txt: message.value,
+    tipo_etapa: tipoetapa.value,
+  }
   message.value = ''
 
   await props.sendComment(mensagem, props.tipo)
@@ -170,6 +198,25 @@ async function updateChatInterval(container) {
   timeout = setTimeout(() => updateChatInterval(container), 15000)
 }
 
+// ==========================================================================================
+// GET TIPOETAPAs =================================================================
+const tipoetapa = ref(null)
+const tipoetapaOpts = ref([])
+
+async function getTipoetapa() {
+  window._red('getTipoetapa')
+  const { data, error } = await useAxios(URLS.tipoetapa, { method: 'GET' }, api)
+
+  try {
+    tipoetapaOpts.value = data.value
+    return data.value
+  } catch (e) {
+    return error
+  }
+}
+
+// ==========================================================================================
+
 onMounted(() => {
   chatContainer = cardChatBox.value.$el.querySelector(
     '.q-scrollarea__container'
@@ -177,6 +224,8 @@ onMounted(() => {
 
   updateChatInterval(chatContainer)
   scrollChatToBottom()
+
+  props.tipo === 'projeto' && getTipoetapa()
 })
 
 onUnmounted(() => {
