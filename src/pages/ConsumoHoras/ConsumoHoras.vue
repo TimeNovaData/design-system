@@ -196,7 +196,8 @@
             >
           </div>
         </div>
-        <div class="w-full px-16">
+        <!-- <pre>{{ series }}</pre> -->
+        <div class="w-full px-16 h-[465px]">
           <apexchart
             v-show="!isLoading && series.length"
             ref="chart"
@@ -207,10 +208,10 @@
             :series="series"
           ></apexchart>
           <SkeletonChart
-            class="h-[350px] flex flex-col"
-            v-show="isLoading && series.length === 0"
+            class="h-full flex flex-col pb-32"
+            v-show="isLoading"
           />
-          <div class="h-[350px]" v-show="!isLoading && series.length === 0">
+          <div class="h-full" v-show="!isLoading && series.length === 0">
             <div class="flex place-content-center h-full flex-1">
               <div class="flex flex-col gap-6 opacity-40">
                 <q-icon
