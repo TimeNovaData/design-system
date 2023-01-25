@@ -148,7 +148,10 @@ function setRowData(item) {
     responsaveis: item.responsaveis,
     responsaveis_atendimento: item.atendimento,
     data_entrega: FData(item.fim_contrato),
-    ultimo_acompanhamento: FData(item.ultimo_acompanhamento),
+    ultimo_acompanhamento: {
+      data: FData(item.ultimo_acompanhamento),
+      cor: item.status_acompanhamento.cor,
+    },
     status_andamento: item.status_andamento,
     chamado_pendentes: item.chamados_nao_concluidos,
     tasks_pendentes: item.tasks_nao_concluidas,

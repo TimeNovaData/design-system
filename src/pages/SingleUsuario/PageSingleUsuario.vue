@@ -237,9 +237,9 @@
       <section id="tasks-finalizadas" class="bg-white dark:!bg-d-neutral-20">
         <OAccordion
           ref="accordionConcluidas"
-          @before-show="() => handleGetTasksConcluidas(userActiveID)"
           class="border border-neutral-100/10 rounded-[3px] dark:border-white/10 overflow-hidden"
         >
+          <!-- @before-show="() => handleGetTasksConcluidas(userActiveID)" -->
           <template v-slot:header>
             <div class="flex items-center flex-1">
               <q-item-section avatar class="w-32">
@@ -253,7 +253,7 @@
             </div>
           </template>
 
-          <div v-if="finishedTasksLoading || finishedTasks?.length">
+          <div v-if="finishedTasks?.length">
             <q-virtual-scroll
               style="max-height: 450px"
               :items="tasks.concluidas"
@@ -555,7 +555,7 @@ async function handleChangeSelect({ profile, id }) {
   await handleChangeProfile(profile.id)
   await handleGetTasksPendentes(id)
   await getTempoTask()
-  // await handleGetTasksConcluidas(id)
+  await handleGetTasksConcluidas(id)
 
   tasks.value.concluidas = []
   accordionConcluidas.value.componentRef.hide()
@@ -590,7 +590,6 @@ const handleGetTasksPendentes = async (userId) => {
 // TASKS FINALIZADAS ========================================================================
 
 const accordionConcluidas = ref(null)
-const finishedTasksLoading = ref(true)
 
 const finishedTasks = computed(() => {
   const arr = tasks.value.concluidas
@@ -600,13 +599,11 @@ const finishedTasks = computed(() => {
 
 const handleGetTasksConcluidas = async (userId) => {
   tasks.value.concluidas = []
-  finishedTasksLoading.value = true
 
   tasks.value.concluidas = await getTasks(
-    `&responsavel_task__id=${userId}&page_size=30&status=concluidas`,
+    `&responsavel_task__id=${userId}&page_size=10&status=concluidas`,
     false
   )
-  finishedTasksLoading.value = false
 }
 
 // ==========================================================================================
@@ -696,6 +693,8 @@ async function init() {
   // Grafico Consumo de Horas
   await getTempoTask()
   loading.value = false
+
+  await handleGetTasksConcluidas(IDFinal)
 }
 
 let iniciou
