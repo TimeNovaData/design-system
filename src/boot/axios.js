@@ -49,6 +49,7 @@ const api = axios.create({
     visao_geral_big_numbers: '/projeto/visao_geral_big_numbers/',
     contato: 'contato/',
     acessos: 'acessos/',
+    tipoetapa: 'tipoetapa/',
   },
 })
 
