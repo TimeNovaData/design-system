@@ -40,6 +40,7 @@
           ref="taskFields"
           @update="(val) => handleUpdate(val)"
           :taskValues="taskModalObj"
+          :modalIsOpen="modalEditTaskState ? 'aberto' : ''"
         />
 
         <div class="flex flex-col">
@@ -99,7 +100,7 @@
             </q-tab>
           </q-tabs>
 
-          <q-tab-panels v-model="tabs" animated swipeable class="flex-1">
+          <q-tab-panels v-model="tabs" animated class="flex-1">
             <TaskCreateDescriptionCard
               name="desc"
               :description="taskModalObj?.observacoes"

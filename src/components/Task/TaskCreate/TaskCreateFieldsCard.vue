@@ -182,7 +182,7 @@
       <OSelectAvatar
         label="Responsável"
         size="lg"
-        class="bg-white dark:!bg-transparent label-transparent"
+        class="bg-white dark:!bg-transparent !p-0 label-transparent"
         :options="userList"
         :modelValue="model.responsavel_task"
         :loading="!userList.length"
@@ -213,6 +213,8 @@ import OButton from 'src/components/Button/OButton.vue'
 
 import { useChamadoStore } from 'src/stores/chamados/chamados.store'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
+import { useProjetoStore } from 'src/stores/projetos/projetos.store'
+import { useProfileStore } from 'src/stores/profile/profile.store'
 
 // ==========================================================================================
 
@@ -318,6 +320,7 @@ watch(
       ...deepUnref(vl),
       ...deepUnref(dadosAdicionais),
     }
+    console.log(dataObj)
 
     emit('update', dataObj)
   },
@@ -376,8 +379,32 @@ emitter.on('modal:copy:reference', (val) => {
   model.value.tempo_estimado = newTime
 })
 
+// ==========================================================================================
+// LOGICA DO MODAL CRIACAO ==================================================================
+const { projeto: selectedProject } = storeToRefs(useProjetoStore())
+// const { profileActive } = storeToRefs(useProfileStore())
+
+// function formatProfileActive(profile) {
+//   return {
+//     id: profile.user,
+//     username: '',
+//     get_full_name: profile.nome,
+//     profile: {
+//       id: profile.id,
+//       foto: profile.foto,
+//     },
+//     foto: profile.foto,
+//   }
+// }
+
 onMounted(() => {
   if (model.value.projeto) setandGetChamados(model.value.projeto)
+
+  if (selectedProject.value.length !== 0) {
+    model.value.projeto = selectedProject.value
+  }
+
+  // console.log(profileActive)
 })
 
 const tooltipProps = {
