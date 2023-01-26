@@ -43,6 +43,7 @@ import { useTaskStore } from './stores/tasks/tasks.store'
 
 import { api } from 'src/boot/axios'
 import emitter from 'src/boot/emitter'
+import GLOBAL from 'src/utils/GLOBAL'
 
 import ModalAddAnexo from './components/Modal/ModalAddAnexo.vue'
 import ModalReference from './components/Modal/ModalReference.vue'
@@ -111,11 +112,13 @@ watch(
       intervalTempoTask()
     } else {
       tempoTaskActiveID.value = null
+      emitter.emit('title:timer:update', '') // Removendo o timer do titulo
     }
   }
 )
 
 let timeout
+let timerCache
 
 async function intervalTempoTask() {
   clearTimeout(timeout)
@@ -123,7 +126,20 @@ async function intervalTempoTask() {
 
   const taskReturn = await getTempoTask(tempoTaskActiveID.value)
 
-  console.log(taskReturn)
+  const timer = taskReturn.tempo_ao_vivo_formatado_hora_minuto_segundo
+    .split(':')
+    .slice(0, 2)
+    .join(':')
+
+  if (timer !== timerCache) {
+    const formatedTimer = GLOBAL.FTime(
+      taskReturn.tempo_ao_vivo_formatado_hora_minuto_segundo
+    ) // Atualiza timer do titulo
+
+    emitter.emit('title:timer:update', `${formatedTimer} - `)
+  }
+
+  timerCache = timer
 
   tasksColaborador.value.pendentes = tasksColaborador.value.pendentes.map(
     (t) => {

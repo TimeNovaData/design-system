@@ -253,7 +253,7 @@
             </div>
           </template>
 
-          <div v-if="finishedTasks?.length">
+          <div v-if="tasks.concluidas.length">
             <q-virtual-scroll
               style="max-height: 450px"
               :items="tasks.concluidas"
@@ -591,15 +591,7 @@ const handleGetTasksPendentes = async (userId) => {
 
 const accordionConcluidas = ref(null)
 
-const finishedTasks = computed(() => {
-  const arr = tasks.value.concluidas
-  const reversed = [...arr].reverse()
-  return reversed
-})
-
 const handleGetTasksConcluidas = async (userId) => {
-  tasks.value.concluidas = []
-
   tasks.value.concluidas = await getTasks(
     `&responsavel_task__id=${userId}&page_size=10&status=concluidas`,
     false

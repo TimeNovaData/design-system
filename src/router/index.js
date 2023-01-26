@@ -38,7 +38,7 @@ export default route(function (/* { store, ssrContext } */) {
   })
 
   Router.beforeEach(async (to, from, next) => {
-    console.log(to)
+    // console.log(to)
     emitter.emit('loader', 'stop')
     // redirect to login page if not logged in and trying to access a restricted page
     const auth = useAuthStore()
@@ -61,10 +61,19 @@ export default route(function (/* { store, ssrContext } */) {
     }
   })
 
+  const title = 'HUB'
+  const setTitle = (to, timer = '') => {
+    document.title = to.meta.title
+      ? `${timer} ${title} - ${to.meta.title}`
+      : title
+  }
+
   Router.afterEach(async (to, from) => {
     await nextTick()
-    const title = 'HUB'
-    document.title = to.meta.title ? `${title} - ${to.meta.title}` : title
+    setTitle(to)
+
+    // Atualizar titulo com o tempo da task ativa
+    emitter.on('title:timer:update', (timer) => setTitle(to, timer))
   })
 
   return Router

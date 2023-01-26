@@ -91,7 +91,7 @@
             </q-tab>
           </q-tabs>
 
-          <q-tab-panels v-model="tabs" animated swipeable class="flex-1">
+          <q-tab-panels v-model="tabs" animated class="flex-1">
             <TaskViewDescriptionCard
               name="desc"
               :description="taskModalObj.observacoes"
