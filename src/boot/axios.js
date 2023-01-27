@@ -50,6 +50,7 @@ const api = axios.create({
     contato: 'contato/',
     acessos: 'acessos/',
     tipoetapa: 'tipoetapa/',
+    ferramenta: 'ferramenta/',
   },
 })
 

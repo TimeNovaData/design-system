@@ -96,7 +96,7 @@ import GLOBAL from 'src/utils/GLOBAL'
 import { NotifySucess } from 'src/boot/Notify'
 
 import OTableBase from 'src/components/Table/OTableBase.vue'
-import ModalCenter from './ModalCenter.vue'
+import ModalCenter from 'src/components/Modal/ModalCenter.vue'
 import AvatarSingle from 'src/components/Avatar/AvatarSingle.vue'
 import OButton from 'src/components/Button/OButton.vue'
 
@@ -151,7 +151,7 @@ function handleCloseReferenceModal() {
 }
 
 function handelCopyReference(time) {
-  emitter.emit('modal:copy:reference', time)
+  emitter.emit('modal:reference:copy', time)
   NotifySucess('Tempo Estimado Aplicado')
   modalReference.value.dialogRef.hide()
 }

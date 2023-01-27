@@ -16,6 +16,8 @@
     />
 
     <ModalReference ref="modalReferenceRef" />
+
+    <ModalTaskType ref="modalTaskTypeRef" />
   </router-view>
 </template>
 
@@ -47,6 +49,7 @@ import GLOBAL from 'src/utils/GLOBAL'
 
 import ModalAddAnexo from './components/Modal/ModalAddAnexo.vue'
 import ModalReference from './components/Modal/ModalReference.vue'
+import ModalTaskType from './components/Modal/ModalTaskType.vue'
 
 const { URLS } = api.defaults
 
@@ -166,8 +169,14 @@ emitter.on('modal:anexo:abrir', () =>
 //  ---------------------------------------
 const modalReferenceRef = ref(null)
 
-emitter.on('modal:referencia:abrir', () =>
+emitter.on('modal:reference:open', () =>
   modalReferenceRef.value?.modalReference.dialogRef.show()
+)
+//  ---------------------------------------
+const modalTaskTypeRef = ref(null)
+
+emitter.on('modal:tasktype:open', () =>
+  modalTaskTypeRef.value?.modalReference.dialogRef.show()
 )
 //  ---------------------------------------
 

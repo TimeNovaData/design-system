@@ -65,16 +65,25 @@
       </OSelect>
     </div>
 
-    <OSelect
-      use-input
-      label="Grupo / Tipo"
-      size="lg"
-      class="bg-white dark:!bg-transparent label-transparent"
-      :options="taskTypes"
-      v-model="model.tipo_task"
-      option-label="nome_completo"
-      :loading="!taskTypes.length"
-    />
+    <div class="flex gap-16">
+      <OSelect
+        use-input
+        label="Grupo / Tipo"
+        size="lg"
+        class="bg-white dark:!bg-transparent label-transparent flex-1"
+        :options="taskTypes"
+        v-model="model.tipo_task"
+        option-label="nome_completo"
+        :loading="!taskTypes.length"
+      />
+
+      <OButton
+        secondary
+        class="w-[3.125rem] h-[3.125rem] bg-white dark:!bg-white/10 dark:!border-transparent dark:text-white"
+        icon="svguse:/icons.svg#icon_add"
+        @click="handleOpenModalAddTipoTask"
+      />
+    </div>
 
     <div class="grid grid-cols-2 gap-16">
       <div class="grid grid-cols-2 gap-16">
@@ -370,14 +379,18 @@ async function handleOpenModalReferencia() {
     return
   }
 
-  emitter.emit('modal:referencia:abrir', taskTypes.value.id)
+  emitter.emit('modal:reference:open', taskTypes.value.id)
   setTasksReference(tasksReference)
 }
 
-emitter.on('modal:copy:reference', (val) => {
+emitter.on('modal:reference:copy', (val) => {
   const newTime = val.split(':').slice(0, 2).join('')
   model.value.tempo_estimado = newTime
 })
+
+function handleOpenModalAddTipoTask() {
+  emitter.emit('modal:tasktype:open')
+}
 
 // ==========================================================================================
 // LOGICA DO MODAL CRIACAO ==================================================================

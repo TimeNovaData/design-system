@@ -12,7 +12,7 @@
 <script setup>
 import { ref } from 'vue'
 import AttachmentFilepond from 'src/components/Attachment/AttachmentFilepond.vue'
-import ModalCenter from './ModalCenter.vue'
+import ModalCenter from 'src/components/Modal/ModalCenter.vue'
 
 import { useAnexoStore } from 'src/stores/anexos/anexos.store'
 
