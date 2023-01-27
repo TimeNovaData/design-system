@@ -5,7 +5,10 @@
     title="Novo Grupo / Tipo"
   >
     <!-- @hide="handleCloseTaskTypeModal" -->
-    <q-form ref="form" class="bg-neutral-10 p-24 h-full w-[600px]">
+    <q-form
+      ref="form"
+      class="bg-neutral-10 dark:bg-d-neutral-20 p-24 h-full w-[600px]"
+    >
       <OInput
         label="Nome do tipo"
         size="lg"
@@ -29,7 +32,9 @@
         :rules="[(val) => val || '']"
       />
 
-      <h4 class="text-paragraph-2 text-neutral-100/70 mt-16">Descrição</h4>
+      <h4 class="text-paragraph-2 text-neutral-100/70 mt-16 dark:text-white/70">
+        Descrição
+      </h4>
       <q-editor
         max-height="none"
         class="dark:bg-d-neutral-10 mt-4"
