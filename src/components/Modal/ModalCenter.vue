@@ -84,9 +84,10 @@ defineExpose({ dialogRef, dialogState })
     justify-content: center
     padding: 0 !important
   .content
-    height: 100%
-    min-height: 460px !important
-    max-height: 510px !important
+    // height: 100%
+    // min-height: 460px !important
+    // max-height: 510px !important
+    max-height: 580px !important
     min-width: 460px
     width: max-content
     border-radius: 6px
