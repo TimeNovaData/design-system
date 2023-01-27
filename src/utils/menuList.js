@@ -42,13 +42,6 @@ const menuList = [
     href: '/projeto',
     permissions: 'staff',
   },
-  {
-    title: 'Teste de cache',
-    nivel: 0,
-    icon: 'web',
-    href: '/projeto',
-    permissions: 'staff',
-  },
 
   // {
   //   title: 'Financeiro',

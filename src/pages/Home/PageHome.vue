@@ -11,7 +11,7 @@
       >
         <div class="flex flex-col gap-4 opacity-80">
           <q-icon :name="item.icon" size="24px"> </q-icon>
-          <p class="block text-headline-2">{{ item.title }} - dev</p>
+          <p class="block text-headline-2">{{ item.title }}</p>
         </div>
       </q-item>
     </div>
