@@ -107,13 +107,13 @@ export const useTaskStore = defineStore('taskstore', () => {
   async function handleSaveTask(oldTask, newTask) {
     const oldTaskUnref = deepUnref(oldTask)
     const newTaskUnref = deepUnref(newTask)
-
     const objIsEmpty = (obj) => Object.keys(obj).length === 0
 
     if (!newTaskUnref && objIsEmpty(oldTaskUnref)) {
       window._red('PREENCHA OS CAMPOS')
       return
-    } else if (!newTaskUnref) {
+    } else if (!newTaskUnref && !newTaskFiles.value.length) {
+      console.log('ARR FILES dentro else', newTaskFiles)
       window._red('NENHUM DADO FOI ALTERADO')
       return
     }
@@ -128,10 +128,8 @@ export const useTaskStore = defineStore('taskstore', () => {
         emitter.emit('modal:task:create')
         newTaskFiles.value.forEach(async (meta) => {
           const formData = new FormData()
-          console.log('FILEEEEEE', meta.file)
           formData.append('task', newTask.data.id)
           formData.append('attachments', meta.file)
-
           await api.post(URLS.anexo, formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
           })
@@ -148,10 +146,21 @@ export const useTaskStore = defineStore('taskstore', () => {
 
         window._yellow('ALTERAR')
         console.log(data)
-        const taskEditada = await api.patch(
-          URLS.task + task.value.id + '/',
-          data
-        )
+        console.log('ARR FILES', newTaskFiles)
+
+        let taskEditada
+        if (data) {
+          taskEditada = await api.patch(URLS.task + task.value.id + '/', data)
+        }
+
+        newTaskFiles.value.forEach(async (meta) => {
+          const formData = new FormData()
+          formData.append('task', task.value.id)
+          formData.append('attachments', meta.file)
+          await api.post(URLS.anexo, formData, {
+            headers: { 'Content-Type': 'multipart/form-data' },
+          })
+        })
 
         NotifySucess('Task Alterada com sucesso')
         emitter.emit('modal:task:edit')

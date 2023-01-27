@@ -704,6 +704,13 @@ watch(
   }
 )
 
+// Atualiza as tasks ao criar ou editar
+emitter.on('modal:task:edit', async () => {
+  console.log('EMITTER', userActiveID.value)
+  handleGetTasksPendentes(userActiveID.value)
+  // handleGetTasksConcluidas(userActiveID.value)
+})
+
 // Redirecionar usuário caso não tenha o status de staff
 if (!user.value.is_staff) router.push({ name: '404' })
 </script>
