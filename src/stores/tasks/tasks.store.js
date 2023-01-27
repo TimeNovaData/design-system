@@ -126,11 +126,11 @@ export const useTaskStore = defineStore('taskstore', () => {
         const newTask = await api.post(URLS.task, data)
         NotifySucess('Task Criada com sucesso')
         emitter.emit('modal:task:create')
-
-        newTaskFiles.value.forEach(async (file) => {
+        newTaskFiles.value.forEach(async (meta) => {
           const formData = new FormData()
+          console.log('FILEEEEEE', meta.file)
           formData.append('task', newTask.data.id)
-          formData.append('attachments', file)
+          formData.append('attachments', meta.file)
 
           await api.post(URLS.anexo, formData, {
             headers: { 'Content-Type': 'multipart/form-data' },
