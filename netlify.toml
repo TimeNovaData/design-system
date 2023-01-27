@@ -5,7 +5,7 @@
   status = 200
 
 [[headers]]
-  for = "/*.html"
+  for = "/*"
   [headers.values]
   cache-control = '''
   max-age=0,

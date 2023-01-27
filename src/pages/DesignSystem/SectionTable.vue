@@ -35,7 +35,7 @@
                       <p
                         class="text-paragraph-3 text-neutral-70 dark:text-white/50"
                       >
-                        Colaborador
+                        Colaborador (dev)
                       </p>
                     </div>
                   </div>
