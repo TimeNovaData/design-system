@@ -58,6 +58,20 @@ export const useUserStore = defineStore('userStore', () => {
     }
   }
 
+  async function getUserById(id) {
+    const { data, error } = await useAxios(
+      URLS.usuario + id + '/?no_loading',
+      { method: 'GET' },
+      api
+    )
+
+    try {
+      return data.value
+    } catch (e) {
+      return error
+    }
+  }
+
   function setUser(value) {
     user.value = value
   }
@@ -81,6 +95,7 @@ export const useUserStore = defineStore('userStore', () => {
     $reset,
     getUser,
     getProfile,
+    getUserById,
     setUser,
     setProfile,
     user,

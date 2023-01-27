@@ -224,6 +224,7 @@ import { useChamadoStore } from 'src/stores/chamados/chamados.store'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import { useProjetoStore } from 'src/stores/projetos/projetos.store'
 import { useProfileStore } from 'src/stores/profile/profile.store'
+import { useUserStore } from 'src/stores/usuarios/user.store'
 
 // ==========================================================================================
 
@@ -231,6 +232,7 @@ const { FTime, FData, FTimeLong } = GLOBAL
 const emit = defineEmits(['update'])
 
 const { getTasks, setTasksReference } = useTaskStore()
+const { getUserById } = useUserStore()
 
 const props = defineProps({
   taskValues: Object,
@@ -395,29 +397,36 @@ function handleOpenModalAddTipoTask() {
 // ==========================================================================================
 // LOGICA DO MODAL CRIACAO ==================================================================
 const { projeto: selectedProject } = storeToRefs(useProjetoStore())
-// const { profileActive } = storeToRefs(useProfileStore())
+const { profileActive } = storeToRefs(useProfileStore())
 
-// function formatProfileActive(profile) {
-//   return {
-//     id: profile.user,
-//     username: '',
-//     get_full_name: profile.nome,
-//     profile: {
-//       id: profile.id,
-//       foto: profile.foto,
-//     },
-//     foto: profile.foto,
-//   }
-// }
+function formatProfileActive(profile, user) {
+  return {
+    id: user.id,
+    username: user.username,
+    get_full_name: profile.nome,
+    profile: {
+      id: profile.id,
+      foto: profile.foto,
+    },
+    foto: profile.foto,
+  }
+}
 
-onMounted(() => {
+onMounted(async () => {
   if (model.value.projeto) setandGetChamados(model.value.projeto)
 
   if (selectedProject.value.length !== 0) {
     model.value.projeto = selectedProject.value
   }
 
-  // console.log(profileActive)
+  if (profileActive.value.id) {
+    const userActive = await getUserById(profileActive.value.user)
+
+    model.value.responsavel_task = formatProfileActive(
+      profileActive.value,
+      userActive
+    )
+  }
 })
 
 const tooltipProps = {

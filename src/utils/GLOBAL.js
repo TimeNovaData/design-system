@@ -177,7 +177,8 @@ export default {
     const data = date.buildDate({ year: 2022, hours: hora, minutes: minutos })
 
     if (date.isValid(data)) {
-      return date.formatDate(data, 'HH[h] mm[m]')
+      return `${hora}h ${minutos}m`
+      // return date.formatDate(data, 'HH[h] mm[m]')
     } else {
       return '-'
     }
