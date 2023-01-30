@@ -200,6 +200,8 @@
               :rows="chamadosList"
               :footer="false"
               :header="false"
+              :isFetching="isLoadingAll"
+              labelNotData="Chamados: não existem chamados."
             >
               <template #body="props">
                 <q-tr
@@ -262,6 +264,8 @@
               :rows="tasks"
               :footer="false"
               :header="false"
+              labelNotData="Tasks: não existem tasks."
+              :isFetching="isLoadingAll"
             >
               <template #body="props">
                 <q-tr
@@ -610,6 +614,8 @@ watch(
   { deep: true }
 )
 
+const isLoadingAll = ref(false)
+
 // Chamado
 const chamadosList = ref([])
 const handleClickChamado = inject('handleClickChamado')
@@ -763,8 +769,10 @@ async function handleShowEscopo() {
 }
 
 async function handleGetChamado(id, filters) {
+  isLoadingAll.value = true
   const req = await getChamados(id, filters)
   chamadosList.value = req.data
+  isLoadingAll.value = false
 }
 
 async function handleChangeProjeto(p) {
@@ -784,6 +792,7 @@ function resetDados() {
 }
 
 async function requests() {
+  isLoadingAll.value = true
   resetDados()
   await getProjeto(pageID.value)
   await getTempoProjeto(pageID.value, filtros.value)
@@ -794,6 +803,7 @@ async function requests() {
     '&status=abertas&projeto__id=' + pageID.value,
     false
   )
+  isLoadingAll.value = false
 }
 
 /*

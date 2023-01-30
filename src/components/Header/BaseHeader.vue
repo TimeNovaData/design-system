@@ -19,7 +19,10 @@
       >
         <div class="flex flex-nowrap gap-8 p-4 px-8 max-w-[160px]">
           <q-avatar
-            v-if="user.id !== taskActive?.responsavel_task.id"
+            v-if="
+              user.id !== taskActive?.responsavel_task.id &&
+              taskActive?.is_playing
+            "
             size="1.5rem"
             class="border-d-neutral-10/10 !border-2 relative overflow-hidden dark:border-white/5 shrink-0"
             style="border-style: unset"

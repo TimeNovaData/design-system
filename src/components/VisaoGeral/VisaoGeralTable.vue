@@ -6,6 +6,24 @@
   >
     <template v-slot:body="props">
       <q-tr :props="props">
+        <q-td class="text-center !px-6">
+          <OButton
+            :href="adminUrl(props.row.id)"
+            target="_blank"
+            secondary
+            icon="svguse:/icons.svg#icon_config"
+            size="sm"
+            class="w-[2.375rem] h-[2.375rem] icon-opacity"
+          />
+          <OButton
+            v-if="user.is_staff"
+            :to="{ name: 'singleProjeto', params: { id: props.row.id } }"
+            secondary
+            icon="search"
+            size="sm"
+            class="w-[2.375rem] h-[2.375rem] icon-opacity ml-6"
+          />
+        </q-td>
         <q-td
           key="projeto"
           :auto-width="false"
@@ -117,25 +135,6 @@
           class="text-right !border-r w-96"
         >
           {{ props.row.tasks_pendentes }}
-        </q-td>
-
-        <q-td class="text-center !px-6">
-          <OButton
-            :href="adminUrl(props.row.id)"
-            target="_blank"
-            secondary
-            icon="svguse:/icons.svg#icon_config"
-            size="sm"
-            class="w-[2.375rem] h-[2.375rem] icon-opacity"
-          />
-          <OButton
-            v-if="user.is_staff"
-            :to="{ name: 'singleProjeto', params: { id: props.row.id } }"
-            secondary
-            icon="search"
-            size="sm"
-            class="w-[2.375rem] h-[2.375rem] icon-opacity ml-6"
-          />
         </q-td>
       </q-tr>
     </template>

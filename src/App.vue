@@ -109,7 +109,7 @@ const tempoTaskActiveID = ref(null)
 watch(
   () => taskActive.value,
   async (v) => {
-    if (v.id) {
+    if (v?.id) {
       const { id } = await postTempoTask(``, v)
       tempoTaskActiveID.value = id
       intervalTempoTask()
@@ -154,8 +154,10 @@ async function intervalTempoTask() {
     }
   )
 
-  taskActive.value.tempo_ao_vivo_formatado_hora_minuto_segundo =
-    taskReturn.tempo_ao_vivo_formatado_hora_minuto_segundo
+  if (taskActive.value) {
+    taskActive.value.tempo_ao_vivo_formatado_hora_minuto_segundo =
+      taskReturn.tempo_ao_vivo_formatado_hora_minuto_segundo
+  }
 
   timeout = setTimeout(() => intervalTempoTask(), 5000)
 }
