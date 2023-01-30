@@ -218,6 +218,7 @@
                             :task="element"
                             @click:timer="handleClickTimer"
                             @click:task:finished="handleTaskFinished"
+                            @click:task:delete="handleTaskDelete"
                           />
                         </template>
                       </draggable>
@@ -604,7 +605,7 @@ const handleGetTasksConcluidas = async (userId) => {
 }
 
 // ==========================================================================================
-// FINALIZAR E RESTAURAR TASK ===============================================================
+// FINALIZAR, DELETAR E RESTAURAR TASK ===============================================================
 
 async function handleTaskFinished(taskObj) {
   const today = Date.now()
@@ -625,6 +626,21 @@ async function handleTaskFinished(taskObj) {
   }
 }
 
+async function handleTaskDelete(taskId) {
+  try {
+    api.delete(URLS.task + taskId)
+
+    tasks.value.pendentes = tasks.value?.pendentes?.filter(
+      (task) => task.id !== taskId
+    )
+
+    NotifySucess('Tarefa deletada com sucesso!')
+  } catch (err) {
+    console.log(err)
+    NotifyError('Erro ao deletar a tarefa')
+  }
+}
+
 async function handleTaskRestored(taskObj) {
   try {
     await pathTask(taskObj.id, { data_conclusao: null })
@@ -633,7 +649,7 @@ async function handleTaskRestored(taskObj) {
       (i) => i.id !== taskObj.id
     )
     tasks.value.pendentes.push(taskObj)
-    NotifySucess('Task restaurada com sucesso!')
+    NotifySucess('Tarefa restaurada com sucesso!')
   } catch (err) {
     console.log(err)
     NotifyError('Erro ao restaurar a tarefa')
@@ -727,8 +743,7 @@ if (!user.value.is_staff) router.push({ name: '404' })
 
 .base-grid
   display: grid
-  grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 230px) repeat(2, 100px) minmax(120px, 130px)
-  // grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 230px) minmax(120px, 130px)  repeat(2, 100px) minmax(120px, 130px)
+  grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 250px) repeat(3, minmax(120px, 130px)) 56px
   align-items: center
 
 .item-editavel

@@ -118,7 +118,7 @@
             <q-icon
               name="svguse:/icons.svg#icon_date_time"
               size="24px"
-              class="mr-8 text-neutral-100/40"
+              class="mr-8 text-neutral-100/40 dark:text-white/40"
             >
             </q-icon>
             <div>
@@ -132,6 +132,16 @@
 
         <div class="timer-wrapper pl-16">
           <TimerTask @click:timer="handleClickTimer" :task="task" />
+        </div>
+
+        <div class="pl-16">
+          <OButton
+            size="md"
+            secondary
+            class="dark:!bg-d-neutral-30 !text-alert-error"
+            @click.stop="() => (!completed ? showDeleteTaskModal() : '')"
+            icon="svguse:/icons.svg#icon_trash"
+          ></OButton>
         </div>
 
         <div v-if="completed">
@@ -194,6 +204,7 @@ const props = defineProps({
 const emit = defineEmits([
   'click:timer',
   'click:task:finished',
+  'click:task:delete',
   'click:task:restored',
 ])
 
@@ -234,6 +245,19 @@ function showFinishTaskModal() {
   })
 }
 
+function showDeleteTaskModal() {
+  $q.dialog({
+    component: ModalConfirm,
+    componentProps: {
+      title: 'Confirmar',
+      text: 'Deseja deletar essa task?',
+      persistent: true,
+    },
+  }).onOk(() => {
+    emit('click:task:delete', props.task.id)
+  })
+}
+
 function showRestoreTaskModal(ev) {
   ev.stopPropagation()
 
@@ -258,8 +282,7 @@ function handleClickTimer(v) {
 
 .base-grid
   display: grid
-  // grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 230px) minmax(120px, 130px)  repeat(2, 100px) minmax(120px, 130px)
-  grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 230px) repeat(2, 100px) minmax(120px, 130px)
+  grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 250px) repeat(3, minmax(120px, 130px)) 56px
   align-items: center
 
 .btn-restore

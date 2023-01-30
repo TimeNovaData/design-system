@@ -93,20 +93,28 @@ const model = ref({
   descricao: '',
 })
 
-const handleCloseModal = () => modalReference.value.dialogRef.hide()
+function handleCloseModal() {
+  modalReference.value.dialogRef.hide()
+
+  model.value = {
+    nome: '',
+    ferramenta: '',
+    descricao: '',
+  }
+}
 
 async function handleCreateTaskType() {
   const valid = await form.value.validate(true)
-
   if (!valid) {
     NotifyAlert('Preencha os campos obrigatórios')
     return
   }
 
   try {
-    const req = await api.post(URLS.ferramenta, model.value)
-
-    console.log(req)
+    const { data } = await api.post(URLS.tipotask, model.value)
+    emitter.emit('modal:tasktype:create', data)
+    handleCloseModal()
+    NotifySucess('Tipo de task criada com sucesso')
   } catch (e) {
     console.log(e)
     return e

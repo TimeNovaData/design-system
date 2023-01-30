@@ -583,6 +583,12 @@
 </symbol>
 
 
+<symbol id='icon_trash' viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M15.5479 21.0087H8.46209C7.28589 21.0087 6.308 20.1032 6.21778 18.9305L5.25218 6.37766H18.7578L17.7922 18.9305C17.702 20.1032 16.7241 21.0087 15.5479 21.0087V21.0087Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M20.0083 6.37766H4.00166" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M9.19131 3.00125H14.8187C15.4402 3.00125 15.9441 3.50514 15.9441 4.12672V6.37766H8.06584V4.12672C8.06584 3.82823 8.18442 3.54196 8.39548 3.33089C8.60655 3.11983 8.89282 3.00125 9.19131 3.00125Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M10.0042 17.0071H14.0058" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
 
 
 </svg>
