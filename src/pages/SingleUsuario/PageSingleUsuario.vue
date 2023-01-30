@@ -218,6 +218,7 @@
                             :task="element"
                             @click:timer="handleClickTimer"
                             @click:task:finished="handleTaskFinished"
+                            @click:task:delete="handleTaskDelete"
                           />
                         </template>
                       </draggable>
@@ -704,6 +705,14 @@ watch(
   }
 )
 
+async function handleTaskDelete(taskId) {
+  api.delete(URLS.task + taskId)
+
+  tasks.value.pendentes = tasks.value?.pendentes?.filter(
+    (task) => task.id !== taskId
+  )
+}
+
 // Redirecionar usuário caso não tenha o status de staff
 if (!user.value.is_staff) router.push({ name: '404' })
 </script>
@@ -714,7 +723,7 @@ if (!user.value.is_staff) router.push({ name: '404' })
 
 .base-grid
   display: grid
-  grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 230px) repeat(2, 100px) minmax(120px, 130px)
+  grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 230px) repeat(2, 100px) minmax(120px, 130px) auto
   // grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 230px) minmax(120px, 130px)  repeat(2, 100px) minmax(120px, 130px)
   align-items: center
 

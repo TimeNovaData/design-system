@@ -96,21 +96,18 @@ const model = ref({
 const handleCloseModal = () => modalReference.value.dialogRef.hide()
 
 async function handleCreateTaskType() {
-  const valid = await form.value.validate(true)
-
-  if (!valid) {
-    NotifyAlert('Preencha os campos obrigatórios')
-    return
-  }
-
-  try {
-    const req = await api.post(URLS.ferramenta, model.value)
-
-    console.log(req)
-  } catch (e) {
-    console.log(e)
-    return e
-  }
+  // const valid = await form.value.validate(true)
+  // if (!valid) {
+  //   NotifyAlert('Preencha os campos obrigatórios')
+  //   return
+  // }
+  // try {
+  //   const { data } = await api.post(URLS.tipotask, model.value)
+  //   emitter.emit('modal:tasktype:create', data)
+  // } catch (e) {
+  //   console.log(e)
+  //   return e
+  // }
 }
 
 async function getFerramentas() {
