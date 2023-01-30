@@ -11,6 +11,7 @@
 
 <script setup>
 import { ref, watch } from 'vue'
+import emitter from 'src/boot/emitter'
 import editorToobar from 'src/utils/editorToolbar'
 
 const emit = defineEmits(['update'])
@@ -24,6 +25,10 @@ const descriptionModel = ref(props.description || '')
 
 watch(descriptionModel, () => {
   emit('update', descriptionModel.value)
+})
+
+emitter.on(`modal:tasktype:create`, (tasktype) => {
+  descriptionModel.value = tasktype.descricao
 })
 </script>
 

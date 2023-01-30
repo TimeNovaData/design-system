@@ -231,7 +231,7 @@ import { useUserStore } from 'src/stores/usuarios/user.store'
 const { FTime, FData, FTimeLong } = GLOBAL
 const emit = defineEmits(['update'])
 
-const { getTasks, setTasksReference } = useTaskStore()
+const { getTasks, setTasksReference, getTaskTypes } = useTaskStore()
 const { getUserById } = useUserStore()
 
 const props = defineProps({
@@ -281,6 +281,7 @@ const model = ref({
   entrega_data_desejada_hora: setDeliveryTimeModel.value,
   tempo_estimado: setTimeModel.value || '00:00',
   chamado: props.taskValues?.chamado || null,
+  model: props.taskValues?.observacoes || '',
 })
 
 // Chamado
@@ -393,6 +394,13 @@ emitter.on('modal:reference:copy', (val) => {
 function handleOpenModalAddTipoTask() {
   emitter.emit('modal:tasktype:open')
 }
+
+emitter.on(`modal:tasktype:create`, (tasktype) => {
+  // Selecionando tipo de task criado
+  model.value.observacoes = tasktype.descricao
+  model.value.tipo_task = tasktype
+  getTaskTypes()
+})
 
 // ==========================================================================================
 // LOGICA DO MODAL CRIACAO ==================================================================
