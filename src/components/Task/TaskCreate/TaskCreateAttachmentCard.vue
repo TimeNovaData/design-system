@@ -1,6 +1,6 @@
 <template>
   <q-card class="dark:bg-d-neutral-10">
-    <div class="p-16" @click="openAttachmentModal" @drop="openAttachmentModal">
+    <div class="p-16">
       <FilePond
         name="attachments"
         ref="pond"
@@ -9,7 +9,7 @@
         @init="handleFilePondInit"
         v-bind="filePondConfig"
         :server="server"
-        @processfile="(obj) => $emit('processfile', obj)"
+        @updatefiles="handleFilePondUpdatefile"
         :instantUpload="openTask ? true : false"
       />
     </div>
@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { ref, unref } from 'vue'
+import { ref, unref, nextTick } from 'vue'
 import { filePondConfig } from 'src/boot/filepond'
 import emitter from 'src/boot/emitter'
 import 'src/css/vendor/filePond.sass'
@@ -63,19 +63,14 @@ function handleFilePondInit() {
   // console.log('FilePond has initialized', filePondConfig)
 }
 
-function openAttachmentModal(ev) {
-  setNewTaskFiles([])
-  const files = pond.value.getFiles()
-  window._blue('openAttachmentModal')
+async function handleFilePondUpdatefile(ev) {
+  // setNewTaskFiles([])
+  await nextTick()
+  let files = pond.value.getFiles()
+  window._blue('SETANDO ANEXOS, update')
+  setNewTaskFiles(files)
 
-  setFilaAnexos(files)
-  setNewTaskFiles(files) // Anexos do modal de criaçao de task
-
-  if (props.preventEv) {
-    ev.preventDefault()
-  }
-
-  props.openModal && emitter.emit('modal:anexo:abrir')
+  console.log(files)
 }
 </script>
 

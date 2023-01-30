@@ -31,11 +31,12 @@ export const useModalStore = defineStore('modalStore', () => {
       false,
       'task'
     )
-
+    console.log('anexossssss', anexosRes)
     taskModalAnexos.value = anexosRes
   }
 
   async function openTaskViewModal(taskId) {
+    console.log('ABRI ESSE MODAL DE BOSTA')
     const taskRes = await taskStore.getTask(taskId)
     await getTaskAnexos(taskId)
 
@@ -71,6 +72,14 @@ export const useModalStore = defineStore('modalStore', () => {
     modalEditTaskState.value = false
   }
 
+  const setNewValueModal = async (taskId) => {
+    console.log('id', taskId)
+    const taskRes = await taskStore.getTask(taskId)
+    await getTaskAnexos(taskId)
+
+    taskModalObj.value = taskRes
+  }
+
   return {
     modalTaskState,
     modalEditTaskState,
@@ -82,5 +91,6 @@ export const useModalStore = defineStore('modalStore', () => {
     openTaskEditModal,
     closeTaskViewModal,
     closeTaskEditModal,
+    setNewValueModal,
   }
 })

@@ -71,6 +71,9 @@ export default {
   // compara dois objetos e retorna a diferença
   compareAndReturnDiff: (oldv = {}, newv = {}) => {
     const modificado = {}
+    if (!oldv || !newv) {
+      return null
+    }
     Object.entries(unref(newv)).forEach(([key, v]) => {
       const a = oldv[key]
       const b = newv[key]

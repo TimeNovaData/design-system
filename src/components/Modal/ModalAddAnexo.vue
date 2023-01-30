@@ -27,7 +27,7 @@ defineProps({
 const modalAddAnexo = ref(null)
 
 function handleCloseAnexoModal() {
-  setFilaAnexos([])
+  // setFilaAnexos([])
 }
 
 defineExpose({ modalAddAnexo })

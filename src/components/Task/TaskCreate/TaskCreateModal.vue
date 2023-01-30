@@ -175,7 +175,7 @@ import emitter from 'src/boot/emitter'
 
 const { dialogRef } = useDialogPluginComponent()
 const { handleSaveTask } = useTaskStore()
-const { getTaskAnexos, closeTaskEditModal } = useModalStore()
+const { getTaskAnexos, closeTaskEditModal, setNewValueModal } = useModalStore()
 const {
   modalEditTaskState,
   taskModalObj,
@@ -198,7 +198,11 @@ async function validateOnCreate() {
 async function validateOnEdit() {
   const valid = await taskFields.value.form.validate(true)
   if (valid) {
-    await handleSaveTask(taskModalObj.value, newTaskScope.value)
+    const { data: taskEditada } = await handleSaveTask(
+      taskModalObj.value,
+      newTaskScope.value
+    )
+    await setNewValueModal(taskEditada.id)
     dialogRef.value.hide()
   }
 }

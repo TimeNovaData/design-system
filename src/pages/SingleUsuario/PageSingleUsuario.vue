@@ -705,6 +705,7 @@ watch(
   }
 )
 
+
 async function handleTaskDelete(taskId) {
   api.delete(URLS.task + taskId)
 
@@ -712,6 +713,14 @@ async function handleTaskDelete(taskId) {
     (task) => task.id !== taskId
   )
 }
+
+// Atualiza as tasks ao criar ou editar
+emitter.on('modal:task:edit', async () => {
+  console.log('EMITTER', userActiveID.value)
+  handleGetTasksPendentes(userActiveID.value)
+  // handleGetTasksConcluidas(userActiveID.value)
+})
+
 
 // Redirecionar usuário caso não tenha o status de staff
 if (!user.value.is_staff) router.push({ name: '404' })
