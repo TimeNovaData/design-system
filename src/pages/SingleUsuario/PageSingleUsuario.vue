@@ -407,7 +407,12 @@
     </div>
   </q-scroll-area>
 
-  <ModalAddPhoto title="Alterar foto da capa" ref="modalChangeBGRef" />
+  <ModalAddPhoto
+    title="Alterar foto da capa"
+    ref="modalChangeBGRef"
+    uploadFieldName="capa"
+    :profileId="profileActive.id"
+  />
 </template>
 
 <script setup>
@@ -607,7 +612,7 @@ const profileTeam = computed(() => {
 })
 
 const profileBackground = computed(() =>
-  profileActive?.capa ? profileActive.capa : bg
+  profileActive.value.capa ? profileActive.value.capa : bg
 )
 
 // ==========================================================================================
