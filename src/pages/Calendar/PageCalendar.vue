@@ -36,6 +36,8 @@
             </q-menu>
           </OButton>
         </div>
+
+        <!-- <BaseCalendar2 /> -->
       </q-card>
     </div>
   </q-scroll-area>
@@ -46,6 +48,7 @@ import { ref } from 'vue'
 
 import OButton from 'src/components/Button/OButton.vue'
 import TextIcon from 'src/components/Text/TextIcon.vue'
+import BaseCalendar2 from 'src/components/Calendar/BaseCalendar2.vue'
 
 const menu = ref(null)
 const form = ref(null)
