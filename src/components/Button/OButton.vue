@@ -36,7 +36,6 @@ const iconSize = computed(() =>
 
 const setPadding = padding[attrs.size]
 const setSize = sizes[attrs.size]
-
 const setHeight = height[attrs.size]
 </script>
 

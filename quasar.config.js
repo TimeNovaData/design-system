@@ -66,6 +66,9 @@ module.exports = configure(function (ctx) {
 
       vueRouterMode: 'history', // available values: 'hash', 'history'
       rebuildCache: true, // rebuilds Vite/linter/etc cache on startup
+      transpile: true,
+      transpileDependencies: [/quasar-ui-qcalendar[\\/]src/],
+
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,

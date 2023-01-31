@@ -12,9 +12,7 @@
   </q-layout>
 
   <TaskCreateModal />
-
   <TaskViewModal />
-
   <KanbanModal
     ref="modalChamado"
     @changed="commitAlt(colunasWithCards)"

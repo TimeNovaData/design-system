@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.15.8",
+    "@quasar/quasar-ui-qcalendar": "^4.0.0-beta.15",
     "@vueuse/core": "^9.6.0",
     "@vueuse/integrations": "^9.6.0",
     "apexcharts": "^3.36.3",
