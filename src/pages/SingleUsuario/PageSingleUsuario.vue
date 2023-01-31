@@ -165,20 +165,16 @@
           </q-tab>
         </q-tabs>
 
-        <div class="item-2">
+        <div class="item-2 flex gap-8">
           <OButton
             size="md"
             secondary
             @click="() => handleGetTasksPendentes(userActiveID)"
           >
-            <q-icon
-              id="icon-reload-kanban"
-              size="1.5rem"
-              name="replay"
-            ></q-icon>
+            <q-icon size="1.5rem" name="replay"></q-icon>
           </OButton>
 
-          <OButton class="ml-8" size="md" primary @click="openTaskEditModal">
+          <OButton size="md" primary @click="openTaskEditModal">
             <q-icon
               name="svguse:/icons.svg#icon_add_task"
               size="1.5rem"
@@ -186,10 +182,28 @@
             ></q-icon>
             Nova Task
           </OButton>
-          <OButton class="ml-8" disable size="md" secondary>
-            <q-icon name="svguse:/icons.svg#icon_filtros"></q-icon>
 
+          <OButton disable size="md" secondary>
+            <q-icon name="svguse:/icons.svg#icon_filtros"></q-icon>
             Filtrar
+          </OButton>
+
+          <OButton size="md" secondary v-if="user.id === profileActive.user">
+            <q-icon
+              size="1.5rem"
+              name="svguse:/icons.svg#icon_tree_points"
+            ></q-icon>
+
+            <q-menu class="p-12 pb-0">
+              <q-list>
+                <q-item class="px-0 w-full mb-8" dense>
+                  <OButton size="sm" secondary @click="openModalChangeBGRef">
+                    <q-icon name="svguse:/icons.svg#icon_file_add"></q-icon>
+                    Alterar foto da capa
+                  </OButton>
+                </q-item>
+              </q-list>
+            </q-menu>
           </OButton>
         </div>
       </div>
@@ -392,6 +406,8 @@
       </q-tab-panels>
     </div>
   </q-scroll-area>
+
+  <ModalAddPhoto title="Alterar foto da capa" ref="modalChangeBGRef" />
 </template>
 
 <script setup>
@@ -421,9 +437,16 @@ import TagBase from 'src/components/Tag/TagBase.vue'
 import KanbanItemEditableSelect from 'src/components/Kanban/KanbanItemEditableSelect.vue'
 import SkeletonChart from 'src/components/Skeleton/SkeletonChart.vue'
 import EmptyItem from 'src/components/Empty/EmptyItem.vue'
+import ModalAddPhoto from 'src/components/Modal/ModalAddPhoto.vue'
 
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import { useProfileStore } from 'src/stores/profile/profile.store'
+
+const modalChangeBGRef = ref(null)
+
+function openModalChangeBGRef() {
+  modalChangeBGRef.value.modalAddPhoto.dialogRef.show()
+}
 
 // ==========================================================================================
 
