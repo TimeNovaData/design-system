@@ -194,13 +194,28 @@
               name="svguse:/icons.svg#icon_tree_points"
             ></q-icon>
 
-            <q-menu class="p-12 pb-0">
+            <q-menu
+              class="min-w-[190px] py-8"
+              :persistent="false"
+              :auto-close="true"
+              padding
+            >
               <q-list>
-                <q-item class="px-0 w-full mb-8" dense>
-                  <OButton size="sm" secondary @click="openModalChangeBGRef">
-                    <q-icon name="svguse:/icons.svg#icon_file_add"></q-icon>
-                    Alterar foto da capa
-                  </OButton>
+                <q-item
+                  clickable
+                  @click="openModalChangeBGRef"
+                  class="flex flex-nowrap items-center gap-8"
+                >
+                  <q-icon name="badge"></q-icon>
+                  <p class="whitespace-nowrap">Alterar foto da capa</p>
+                </q-item>
+                <q-item
+                  clickable
+                  @click="openModalChangeAvatarRef"
+                  class="flex flex-nowrap items-center gap-8"
+                >
+                  <q-icon name="account_box"></q-icon>
+                  <p class="whitespace-nowrap">Alterar avatar</p>
                 </q-item>
               </q-list>
             </q-menu>
@@ -411,7 +426,16 @@
     title="Alterar foto da capa"
     ref="modalChangeBGRef"
     uploadFieldName="capa"
-    :profileId="profileActive.id"
+    :saveUploadedFile="saveProfileBackground"
+    :loading="loadingPhoto"
+  />
+
+  <ModalAddPhoto
+    title="Alterar avatar"
+    ref="modalChangeAvatarRef"
+    uploadFieldName="avatar"
+    :saveUploadedFile="saveProfileAvatar"
+    :loading="loadingPhoto"
   />
 </template>
 
@@ -446,12 +470,6 @@ import ModalAddPhoto from 'src/components/Modal/ModalAddPhoto.vue'
 
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import { useProfileStore } from 'src/stores/profile/profile.store'
-
-const modalChangeBGRef = ref(null)
-
-function openModalChangeBGRef() {
-  modalChangeBGRef.value.modalAddPhoto.dialogRef.show()
-}
 
 // ==========================================================================================
 
@@ -722,6 +740,60 @@ async function handleTaskRestored(taskObj) {
   } catch (err) {
     console.log(err)
     NotifyError('Erro ao restaurar a tarefa')
+  }
+}
+
+// ==========================================================================================
+// ALTERAR CAPA E FOTO DO USUARIO ===================================================================================
+
+const modalChangeBGRef = ref(null)
+const modalChangeAvatarRef = ref(null)
+const loadingPhoto = ref(false)
+
+function openModalChangeBGRef() {
+  modalChangeBGRef.value.modalAddPhoto.dialogRef.show()
+}
+
+function openModalChangeAvatarRef() {
+  modalChangeAvatarRef.value.modalAddPhoto.dialogRef.show()
+}
+
+async function saveProfileBackground(formData) {
+  const reqUrl = URLS.profile + `${profileActive.value.id}/`
+
+  try {
+    loadingPhoto.value = true
+    await api.patch(reqUrl, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+
+    modalChangeBGRef.value.modalAddPhoto.dialogRef.hide()
+    handleChangeProfile(profileActive.value.id)
+  } catch (err) {
+    console.log(err)
+  } finally {
+    loadingPhoto.value = false
+  }
+}
+
+async function saveProfileAvatar(formData) {
+  const reqUrl = URLS.avatar
+
+  formData.append('user', profileActive.value.user)
+  formData.append('primary', true)
+
+  try {
+    loadingPhoto.value = true
+    await api.post(reqUrl, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+
+    modalChangeAvatarRef.value.modalAddPhoto.dialogRef.hide()
+    handleChangeProfile(profileActive.value.id)
+  } catch (err) {
+    console.log(err)
+  } finally {
+    loadingPhoto.value = false
   }
 }
 
