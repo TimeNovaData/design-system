@@ -189,10 +189,10 @@
         </div>
       </div>
 
-      <q-tab-panels v-model="tabs" animated>
+      <q-tab-panels v-model="tabs" animated class="bg-transparent">
         <div name="list">
+          <!-- 🟡 TASK PENDENTES -->
           <section id="tasks" class="bg-neutral-10 dark:bg-d-neutral-10 mb-16">
-            <!-- 🟡 TASK PENDENTES -->
             <div class="tasks-grid">
               <div class="flex w-full">
                 <div class="flex items-center w-full">
@@ -218,32 +218,6 @@
                             v-once
                             type="rect"
                             class="h-[3.25rem]"
-                      />
-                    </div>
-                    <div
-                      class="overflow-hidden relative mt-6"
-                      v-else-if="tasks.pendentes.length"
-                    >
-                      <!-- <template v-for="(task, index) in tasks" :key="task.id"> -->
-                      <draggable
-                        v-bind="dragOptions"
-                        :list="tasks.pendentes"
-                        item-key="id"
-                        :handle="'#drag-id'"
-                        :component-data="{
-                          tag: 'div',
-                          type: 'transition-group',
-                          name: 'flip-list',
-                          class: `transition-div `,
-                        }"
-                        @end="endDrag"
-                      >
-                        <template #item="{ element }">
-                          <TaskColaborador
-                            :task="element"
-                            @click:timer="handleClickTimer"
-                            @click:task:finished="handleTaskFinished"
-                            @click:task:delete="handleTaskDelete"
                           />
                         </div>
                         <div
@@ -269,7 +243,6 @@
                                 :task="element"
                                 @click:timer="handleClickTimer"
                                 @click:task:finished="handleTaskFinished"
-                                @click:task:delete="handleTaskDelete"
                               />
                             </template>
                           </draggable>
