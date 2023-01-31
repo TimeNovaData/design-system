@@ -62,6 +62,7 @@ export default route(function (/* { store, ssrContext } */) {
   })
 
   const title = 'HUB'
+
   const setTitle = (to, timer = '') => {
     document.title = to.meta.title
       ? `${timer} ${title} - ${to.meta.title}`

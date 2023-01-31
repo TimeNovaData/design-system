@@ -16,7 +16,6 @@
     />
 
     <ModalReference ref="modalReferenceRef" />
-
     <ModalTaskType ref="modalTaskTypeRef" />
   </router-view>
 </template>
@@ -129,15 +128,10 @@ async function intervalTempoTask() {
 
   const taskReturn = await getTempoTask(tempoTaskActiveID.value)
 
-  const timer = taskReturn.tempo_ao_vivo_formatado_hora_minuto_segundo
-    .split(':')
-    .slice(0, 2)
-    .join(':')
+  const timer = taskReturn.tempo_total.split(':').slice(0, 2).join(':')
 
   if (timer !== timerCache) {
-    const formatedTimer = GLOBAL.FTime(
-      taskReturn.tempo_ao_vivo_formatado_hora_minuto_segundo
-    ) // Atualiza timer do titulo
+    const formatedTimer = GLOBAL.FTime(taskReturn.tempo_total) // Atualiza timer do titulo
 
     emitter.emit('title:timer:update', `${formatedTimer} - `)
   }
@@ -155,8 +149,7 @@ async function intervalTempoTask() {
   )
 
   if (taskActive.value) {
-    taskActive.value.tempo_ao_vivo_formatado_hora_minuto_segundo =
-      taskReturn.tempo_ao_vivo_formatado_hora_minuto_segundo
+    taskActive.value.tempo_total = taskReturn.tempo_total
   }
 
   timeout = setTimeout(() => intervalTempoTask(), 5000)

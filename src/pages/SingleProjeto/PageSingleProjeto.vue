@@ -523,6 +523,7 @@
     :url="URLS.anexoprojeto"
     keyProp="projeto"
     :id="pageID"
+    :instantUpload="true"
   />
 </template>
 
@@ -623,6 +624,11 @@ const getChamados = async (id, filters = '') =>
   api.get(`${URLS.chamado}?projeto__id=${id}${filters}`)
 
 const routeIsZero = Number(route.params.id) === 0
+
+function handleUpdateFiles(v) {
+  window._red('olo')
+  console.log(v)
+}
 
 // Chart Tempo Projeto
 const chart = ref(null)

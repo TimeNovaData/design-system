@@ -7,10 +7,10 @@
         :files="filePondFiles"
         :allow-multiple="true"
         @init="handleFilePondInit"
-        v-bind="filePondConfig"
+        v-bind="{ ...filePondConfig, ...attrs }"
         :server="server"
         @updatefiles="handleFilePondUpdatefile"
-        :instantUpload="openTask ? true : false"
+        :instantUpload="openTask || instantUpload ? true : false"
       />
     </div>
 
@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-import { ref, unref, nextTick } from 'vue'
+import { ref, unref, nextTick, useAttrs, onMounted } from 'vue'
 import { filePondConfig } from 'src/boot/filepond'
 import emitter from 'src/boot/emitter'
 import 'src/css/vendor/filePond.sass'
@@ -43,11 +43,19 @@ import { useTaskStore } from 'src/stores/tasks/tasks.store'
 const { setFilaAnexos } = useAnexoStore()
 const { openTask, setNewTaskFiles } = useTaskStore()
 
+const attrs = useAttrs()
+const emit = defineEmits(['update:files'])
+
 const pond = ref(null)
 
 const props = defineProps({
   server: Object,
   anexos: Array,
+
+  instantUpload: {
+    type: Boolean,
+    default: false,
+  },
   preventEv: {
     type: Boolean,
     default: false,
@@ -66,12 +74,17 @@ function handleFilePondInit() {
 async function handleFilePondUpdatefile(ev) {
   // setNewTaskFiles([])
   await nextTick()
-  let files = pond.value.getFiles()
-  window._blue('SETANDO ANEXOS, update')
+  const files = pond.value.getFiles()
+
+  emit('update:files', files)
+  window._blue('TaskCreateAttachmentCard:UPDATE')
+
   setNewTaskFiles(files)
 
   console.log(files)
 }
+
+defineExpose({ pond })
 </script>
 
 <style lang="scss" scoped>

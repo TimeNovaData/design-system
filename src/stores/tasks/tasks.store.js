@@ -126,6 +126,7 @@ export const useTaskStore = defineStore('taskstore', () => {
         const newTask = await api.post(URLS.task, data)
         NotifySucess('Task Criada com sucesso')
         emitter.emit('modal:task:create')
+
         newTaskFiles.value.forEach(async (meta) => {
           const formData = new FormData()
           formData.append('task', newTask.data.id)

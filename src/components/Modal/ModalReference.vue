@@ -61,11 +61,7 @@
             :auto-width="false"
             class="!border-r cursor-pointer text-right"
           >
-            {{
-              GLOBAL.FTime(
-                props.row.tempo_ao_vivo_formatado_hora_minuto_segundo
-              )
-            }}
+            {{ GLOBAL.FTime(props.row.tempo_total) }}
           </q-td>
 
           <q-td key="copy">
@@ -73,12 +69,7 @@
               secondary
               class="!p-0 w-40 h-40 dark:bg-white/10 bg-text-white dark:!border-transparent"
               icon="svguse:/icons.svg#icon_copy"
-              @click="
-                () =>
-                  handelCopyReference(
-                    props.row.tempo_ao_vivo_formatado_hora_minuto_segundo
-                  )
-              "
+              @click="() => handelCopyReference(props.row.tempo_total)"
             />
           </q-td>
         </q-tr>

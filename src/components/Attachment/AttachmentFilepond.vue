@@ -6,6 +6,8 @@
     :server="serverOpt"
     :openModal="false"
     :filePondFiles="filaAnexos"
+    :instantUpload="instantUpload"
+    @update:files="(v) => $emit('update:files', v)"
   />
 </template>
 
@@ -13,7 +15,7 @@
 import { Cookies } from 'quasar'
 import TaskCreateAttachmentCard from 'src/components/Task/TaskCreate/TaskCreateAttachmentCard.vue'
 import emitter from 'src/boot/emitter'
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { api } from 'src/boot/axios'
 import { NotifySucess } from 'src/boot/Notify'
 import { useAnexoStore } from 'src/stores/anexos/anexos.store'
@@ -21,11 +23,18 @@ import { useAnexoStore } from 'src/stores/anexos/anexos.store'
 const API_URL = process.env.API_URL
 const TOKEN = Cookies.get('NDT_TOKEN')
 
+const pond = ref(null)
+
 const props = defineProps({
   server: {
     type: Object,
   },
+  instantUpload: {
+    type: Boolean,
+    default: false,
+  },
 })
+const emit = defineEmits(['update:files'])
 
 const { filaAnexos } = useAnexoStore()
 
@@ -48,7 +57,7 @@ const serverOpt = {
     },
   },
 
-  revert: async (uniqueID) => {
+  revert: async (uniqueID, a, b) => {
     const id = JSON.parse(uniqueID)
     if (id.id) {
       await api.delete(props.server.url + id.id)
@@ -57,8 +66,6 @@ const serverOpt = {
     }
   },
 }
-
-const uniqueFileId = ref(null)
 
 function handleEmit(obj) {
   emitter.emit(`filepond:${props.server.key}`)

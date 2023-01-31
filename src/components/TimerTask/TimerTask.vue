@@ -11,7 +11,7 @@
     >
     </q-icon>
     <div class="text-timer text-headline-3 mx-auto">
-      {{ GLOBAL.FTime(taskState.tempo_ao_vivo_formatado_hora_minuto_segundo) }}
+      {{ GLOBAL.FTime(taskState.tempo_total) }}
     </div>
   </div>
 </template>
@@ -42,8 +42,8 @@ watch(
 
 // STATE
 const taskState = ref({
-  tempo_ao_vivo_formatado_hora_minuto_segundo:
-    props.task.tempo_ao_vivo_formatado_hora_minuto_segundo,
+  tempo_total:
+    props.task.tempo_total,
   is_playing: props.task.is_playing,
 })
 
@@ -55,7 +55,7 @@ const is_playing = computed(() => {
 const hasStarted = computed(
   () =>
     GLOBAL.zeroPad(
-      props.task?.tempo_ao_vivo_formatado_hora_minuto_segundo,
+      props.task?.tempo_total,
       8
     ) !== '00:00:00'
 )
