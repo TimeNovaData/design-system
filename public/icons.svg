@@ -116,16 +116,16 @@
   </symbol>
 
 
-  <symbol id="icon_date" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M13.3333 1.66699V5.00033" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-    <path d="M6.66667 1.66699V5.00033" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-    <path d="M2.5 7.49967H17.5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M15.8333 3.33301H4.16667C3.24583 3.33301 2.5 4.07884 2.5 4.99967V15.833C2.5 16.7538 3.24583 17.4997 4.16667 17.4997H15.8333C16.7542 17.4997 17.5 16.7538 17.5 15.833V4.99967C17.5 4.07884 16.7542 3.33301 15.8333 3.33301Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-    <path d="M5.84417 10.6077C5.72917 10.6077 5.63583 10.7011 5.63667 10.8161C5.63667 10.9311 5.73 11.0244 5.845 11.0244C5.96 11.0244 6.05333 10.9311 6.05333 10.8161C6.05333 10.7011 5.96 10.6077 5.84417 10.6077" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-    <path d="M10.0108 10.6077C9.89583 10.6077 9.8025 10.7011 9.80333 10.8161C9.80333 10.9311 9.89667 11.0244 10.0117 11.0244C10.1267 11.0244 10.22 10.9311 10.22 10.8161C10.22 10.7011 10.1267 10.6077 10.0108 10.6077" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-    <path d="M14.1775 10.6077C14.0625 10.6077 13.9692 10.7011 13.97 10.8161C13.97 10.9311 14.0633 11.0244 14.1783 11.0244C14.2933 11.0244 14.3867 10.9311 14.3867 10.8161C14.3867 10.7011 14.2933 10.6077 14.1775 10.6077" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-    <path d="M5.84417 13.9408C5.72917 13.9408 5.63583 14.0341 5.63667 14.1491C5.63667 14.2641 5.73 14.3574 5.845 14.3574C5.96 14.3574 6.05333 14.2641 6.05333 14.1491C6.05333 14.0341 5.96 13.9408 5.84417 13.9408" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-    <path d="M10.0108 13.9408C9.89583 13.9408 9.8025 14.0341 9.80333 14.1491C9.80333 14.2641 9.89667 14.3574 10.0117 14.3574C10.1267 14.3574 10.22 14.2641 10.22 14.1491C10.22 14.0341 10.1267 13.9408 10.0108 13.9408" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+  <symbol id="icon_date" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M16 2V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M8 2V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M3 9H21" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M19 4H5C3.895 4 3 4.895 3 6V19C3 20.105 3.895 21 5 21H19C20.105 21 21 20.105 21 19V6C21 4.895 20.105 4 19 4Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M7.01301 12.729C6.87501 12.729 6.76301 12.841 6.76401 12.979C6.76401 13.117 6.87601 13.229 7.01401 13.229C7.15201 13.229 7.26401 13.117 7.26401 12.979C7.26401 12.841 7.15201 12.729 7.01301 12.729" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12.013 12.729C11.875 12.729 11.763 12.841 11.764 12.979C11.764 13.117 11.876 13.229 12.014 13.229C12.152 13.229 12.264 13.117 12.264 12.979C12.264 12.841 12.152 12.729 12.013 12.729" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M17.013 12.729C16.875 12.729 16.763 12.841 16.764 12.979C16.764 13.117 16.876 13.229 17.014 13.229C17.152 13.229 17.264 13.117 17.264 12.979C17.264 12.841 17.152 12.729 17.013 12.729" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M7.01301 16.729C6.87501 16.729 6.76301 16.841 6.76401 16.979C6.76401 17.117 6.87601 17.229 7.01401 17.229C7.15201 17.229 7.26401 17.117 7.26401 16.979C7.26401 16.841 7.15201 16.729 7.01301 16.729" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12.013 16.729C11.875 16.729 11.763 16.841 11.764 16.979C11.764 17.117 11.876 17.229 12.014 17.229C12.152 17.229 12.264 17.117 12.264 16.979C12.264 16.841 12.152 16.729 12.013 16.729" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
   </symbol>
 
 
@@ -316,15 +316,14 @@
 
 
   <symbol id="icon_calendar" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M16 2V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M8 2V6" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M3 9H21" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M19 4H5C3.895 4 3 4.895 3 6V19C3 20.105 3.895 21 5 21H19C20.105 21 21 20.105 21 19V6C21 4.895 20.105 4 19 4Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M7.01301 12.729C6.87501 12.729 6.76301 12.841 6.76401 12.979C6.76401 13.117 6.87601 13.229 7.01401 13.229C7.15201 13.229 7.26401 13.117 7.26401 12.979C7.26401 12.841 7.15201 12.729 7.01301 12.729" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M12.013 12.729C11.875 12.729 11.763 12.841 11.764 12.979C11.764 13.117 11.876 13.229 12.014 13.229C12.152 13.229 12.264 13.117 12.264 12.979C12.264 12.841 12.152 12.729 12.013 12.729" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M17.013 12.729C16.875 12.729 16.763 12.841 16.764 12.979C16.764 13.117 16.876 13.229 17.014 13.229C17.152 13.229 17.264 13.117 17.264 12.979C17.264 12.841 17.152 12.729 17.013 12.729" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M7.01301 16.729C6.87501 16.729 6.76301 16.841 6.76401 16.979C6.76401 17.117 6.87601 17.229 7.01401 17.229C7.15201 17.229 7.26401 17.117 7.26401 16.979C7.26401 16.841 7.15201 16.729 7.01301 16.729" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
-    <path d="M12.013 16.729C11.875 16.729 11.763 16.841 11.764 16.979C11.764 17.117 11.876 17.229 12.014 17.229C12.152 17.229 12.264 17.117 12.264 16.979C12.264 16.841 12.152 16.729 12.013 16.729" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12.5002 13.0007H17.0021" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="2.99634" y="2.99658" width="18.0075" height="18.0075" rx="3" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M21.0038 7.99826H2.99634" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6.99801 1.99609V3.99693" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M17.0022 1.99609V3.99693" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6.99805 12.7265L7.91743 13.5549L9.7682 11.8882" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M12.5002 17.0022H17.0021" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6.99805 16.728L7.91743 17.5563L9.7692 15.8896" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
   </symbol>
 
 
@@ -588,6 +587,16 @@
 <path d="M20.0083 6.37766H4.00166" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
 <path fill-rule="evenodd" clip-rule="evenodd" d="M9.19131 3.00125H14.8187C15.4402 3.00125 15.9441 3.50514 15.9441 4.12672V6.37766H8.06584V4.12672C8.06584 3.82823 8.18442 3.54196 8.39548 3.33089C8.60655 3.11983 8.89282 3.00125 9.19131 3.00125Z" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
 <path d="M10.0042 17.0071H14.0058" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+</symbol>
+
+
+<symbol id='icon_checklist' viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M5.04175 2.75H16.9584C17.7178 2.75 18.3334 3.36561 18.3334 4.125V17.875C18.3334 18.6344 17.7178 19.25 16.9584 19.25H5.04175C4.28236 19.25 3.66675 18.6344 3.66675 17.875V4.125C3.66675 3.36561 4.28236 2.75 5.04175 2.75" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.5791 15.1251H15.2458" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.87524 14.9007L7.48371 15.4474L8.70858 14.3474" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M11.5791 11.4583H15.2458" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M8.25 6.41659H13.75" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M6.87524 11.234L7.48371 11.7807L8.70858 10.6807" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/>
 </symbol>
 
 

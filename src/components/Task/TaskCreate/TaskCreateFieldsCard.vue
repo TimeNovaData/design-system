@@ -181,10 +181,7 @@
         </q-popup-proxy>
 
         <template v-slot:append>
-          <q-icon
-            name="svguse:/icons.svg#icon_calendar"
-            class="cursor-pointer"
-          />
+          <q-icon name="svguse:/icons.svg#icon_date" class="cursor-pointer" />
         </template>
       </OInput>
 

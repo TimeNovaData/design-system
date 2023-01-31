@@ -12,6 +12,7 @@ import PageSvgs from 'src/pages/svg/PageSvgs.vue'
 import PageSingleProjeto from 'src/pages/SingleProjeto/PageSingleProjeto.vue'
 import PageSingleUsuario from 'src/pages/SingleUsuario/PageSingleUsuario.vue'
 import PageVisaoGeral from 'src/pages/VisaoGeral/PageVisaoGeral.vue'
+import PageCalendar from 'src/pages/Calendar/PageCalendar.vue'
 
 const routes = [
   {
@@ -97,6 +98,18 @@ const routes = [
             { label: 'Painel de Projetos', name: 'visao_geral' },
           ],
           title: 'Painel de Projetos',
+        },
+      },
+      {
+        name: 'agenda',
+        path: '/agenda',
+        component: PageCalendar,
+        meta: {
+          breadcrumbs: [
+            { label: 'Home', name: 'home' },
+            { label: 'Agenda', name: 'agenda' },
+          ],
+          title: 'Agenda',
         },
       },
     ],

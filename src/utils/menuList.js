@@ -120,6 +120,13 @@ if (dev)
       type: 'dev',
     },
     {
+      title: 'Agenda',
+      nivel: 0,
+      icon: 'svguse:/icons.svg#icon_calendar',
+      href: '/agenda',
+      type: 'dev',
+    },
+    {
       title: 'Testes',
       nivel: 0,
       icon: 'bug_report',

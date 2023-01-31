@@ -9,6 +9,7 @@
         />
       </div>
     </header>
+
     <div class="container relative">
       <div class="flex items-end mt-[-255px] mb-32">
         <div class="mr-24">
@@ -127,72 +128,96 @@
         </div>
       </div>
 
-      <section id="tasks" class="bg-neutral-10 dark:bg-d-neutral-10 mb-16">
-        <div class="header-wrapper flex items-center justify-between p-16">
-          <div class="item-1 flex items-center">
-            <q-icon
-              name="svguse:/icons.svg#icon_menu_tasks"
-              class="text-primary-pure mr-6"
-              size="1.5rem"
-            ></q-icon>
-            <p class="text-title-4">Minhas Tasks</p>
-          </div>
-
-          <div class="item-2">
-            <OButton
-              size="md"
-              secondary
-              @click="() => handleGetTasksPendentes(userActiveID)"
-            >
-              <q-icon
-                id="icon-reload-kanban"
-                size="1.5rem"
-                name="replay"
-              ></q-icon>
-            </OButton>
-
-            <OButton class="ml-8" size="md" primary @click="openTaskEditModal">
-              <q-icon
-                name="svguse:/icons.svg#icon_add_task"
-                size="1.5rem"
-                color="text-neutral-100"
-              ></q-icon>
-              Nova Task
-            </OButton>
-            <OButton class="ml-8" disable size="md" secondary>
-              <q-icon name="svguse:/icons.svg#icon_filtros"></q-icon>
-
-              Filtrar
-            </OButton>
-          </div>
+      <div
+        class="header-wrapper flex items-center justify-between p-16 bg-neutral-10 dark:bg-d-neutral-10"
+      >
+        <div class="item-1 flex items-center">
+          <q-icon
+            name="svguse:/icons.svg#icon_menu_tasks"
+            class="text-primary-pure mr-6"
+            size="1.5rem"
+          ></q-icon>
+          <p class="text-title-4">Minhas Tasks</p>
         </div>
 
-        <!-- 🟡 TASK PENDENTES -->
-        <div class="tasks-grid">
-          <div class="flex w-full">
-            <div class="flex items-center w-full">
-              <div class="mx-auto w-full">
-                <div class="grid grid-cols-1 gap-2 py-4">
-                  <div class="">
-                    <div class="base-grid px-16">
-                      <p class="empty-col"></p>
-                      <p class="text-headline-3 pl-16">Task</p>
-                      <p class="text-headline-3 pl-16">Solicitante</p>
-                      <!-- <p class="text-headline-3 pl-16">Urgência</p> -->
-                      <!-- <p class="text-headline-3 pl-16">Data de Criação</p> -->
-                      <p class="text-headline-3 pl-16">Desejada</p>
-                      <p class="text-headline-3 pl-16">Prevista</p>
-                    </div>
-                    <div
-                      v-if="!tasks.pendentes.length & loading"
-                      class="flex flex-col gap-4 mt-10"
-                    >
-                      <q-skeleton
-                        :key="n"
-                        v-for="n in GLOBAL.getRandomInt(3, 6)"
-                        v-once
-                        type="rect"
-                        class="h-[3.25rem]"
+        <q-tabs v-model="tabs" class="flex gap-16">
+          <q-tab name="list">
+            <OButton
+              secondary
+              icon="svguse:/icons.svg#icon_checklist"
+              class="w-full text-neutral-70"
+              >Lista
+            </OButton>
+          </q-tab>
+
+          <q-tab name="calendar" class="ml-6">
+            <OButton
+              secondary
+              icon="svguse:/icons.svg#icon_calendar"
+              class="w-full text-neutral-70"
+              >Calendário
+            </OButton>
+          </q-tab>
+        </q-tabs>
+
+        <div class="item-2">
+          <OButton
+            size="md"
+            secondary
+            @click="() => handleGetTasksPendentes(userActiveID)"
+          >
+            <q-icon
+              id="icon-reload-kanban"
+              size="1.5rem"
+              name="replay"
+            ></q-icon>
+          </OButton>
+
+          <OButton class="ml-8" size="md" primary @click="openTaskEditModal">
+            <q-icon
+              name="svguse:/icons.svg#icon_add_task"
+              size="1.5rem"
+              color="text-neutral-100"
+            ></q-icon>
+            Nova Task
+          </OButton>
+          <OButton class="ml-8" disable size="md" secondary>
+            <q-icon name="svguse:/icons.svg#icon_filtros"></q-icon>
+
+            Filtrar
+          </OButton>
+        </div>
+      </div>
+
+      <q-tab-panels v-model="tabs" animated>
+        <div name="list">
+          <section id="tasks" class="bg-neutral-10 dark:bg-d-neutral-10 mb-16">
+            <!-- 🟡 TASK PENDENTES -->
+            <div class="tasks-grid">
+              <div class="flex w-full">
+                <div class="flex items-center w-full">
+                  <div class="mx-auto w-full">
+                    <div class="grid grid-cols-1 gap-2 py-4">
+                      <div class="">
+                        <div class="base-grid px-16">
+                          <p class="empty-col"></p>
+                          <p class="text-headline-3 pl-16">Task</p>
+                          <p class="text-headline-3 pl-16">Solicitante</p>
+                          <!-- <p class="text-headline-3 pl-16">Urgência</p> -->
+                          <!-- <p class="text-headline-3 pl-16">Data de Criação</p> -->
+                          <p class="text-headline-3 pl-16">Desejada</p>
+                          <p class="text-headline-3 pl-16">Prevista</p>
+                        </div>
+                        <div
+                          v-if="!tasks.pendentes.length & loading"
+                          class="flex flex-col gap-4 mt-10"
+                        >
+                          <q-skeleton
+                            :key="n"
+                            v-for="n in GLOBAL.getRandomInt(3, 6)"
+                            v-once
+                            type="rect"
+                            class="h-[3.25rem]"
                       />
                     </div>
                     <div
@@ -220,136 +245,173 @@
                             @click:task:finished="handleTaskFinished"
                             @click:task:delete="handleTaskDelete"
                           />
-                        </template>
-                      </draggable>
-                    </div>
-                    <div v-else class="h-[150px]">
-                      <EmptyItem text="Lista de tasks vazia." />
+                        </div>
+                        <div
+                          class="overflow-hidden relative mt-6"
+                          v-else-if="tasks.pendentes.length"
+                        >
+                          <!-- <template v-for="(task, index) in tasks" :key="task.id"> -->
+                          <draggable
+                            v-bind="dragOptions"
+                            :list="tasks.pendentes"
+                            item-key="id"
+                            :handle="'#drag-id'"
+                            :component-data="{
+                              tag: 'div',
+                              type: 'transition-group',
+                              name: 'flip-list',
+                              class: `transition-div `,
+                            }"
+                            @end="endDrag"
+                          >
+                            <template #item="{ element }">
+                              <TaskColaborador
+                                :task="element"
+                                @click:timer="handleClickTimer"
+                                @click:task:finished="handleTaskFinished"
+                                @click:task:delete="handleTaskDelete"
+                              />
+                            </template>
+                          </draggable>
+                        </div>
+                        <div v-else class="h-[150px]">
+                          <EmptyItem text="Lista de tasks vazia." />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+          </section>
+
+          <!-- ✅ TASK FINALIZADAS -->
+          <section
+            id="tasks-finalizadas"
+            class="bg-white dark:!bg-d-neutral-20"
+          >
+            <OAccordion
+              ref="accordionConcluidas"
+              class="border border-neutral-100/10 rounded-[3px] dark:border-white/10 overflow-hidden"
+            >
+              <!-- @before-show="() => handleGetTasksConcluidas(userActiveID)" -->
+              <template v-slot:header>
+                <div class="flex items-center flex-1">
+                  <q-item-section avatar class="w-32">
+                    <q-icon
+                      name="svguse:/icons.svg#icon_concluido"
+                      size="sm"
+                      class="text-primary-pure mr-6"
+                    />
+                  </q-item-section>
+                  <p class="text-title-4">Tasks Finalizadas</p>
+                </div>
+              </template>
+
+              <div v-if="tasks.concluidas.length">
+                <q-virtual-scroll
+                  style="max-height: 450px"
+                  :items="tasks.concluidas"
+                  separator
+                  v-slot="{ item }"
+                  class="relative"
+                >
+                  <TaskColaborador
+                    :task="item"
+                    :hideDragIcon="true"
+                    :completed="true"
+                    @click:timer="handleClickTimer"
+                    @click:task:restored="handleTaskRestored"
+                  />
+                </q-virtual-scroll>
+              </div>
+
+              <div v-else class="h-[250px]">
+                <EmptyItem text="Nenhuma task finalizada." />
+              </div>
+            </OAccordion>
+          </section>
+
+          <section id="consumo-horas">
+            <q-card class="mt-16 mb-48 flex flex-col">
+              <div class="flex items-center justify-between w-full">
+                <TextIcon
+                  class="pt-24 mx-16 mb-24 text-title-4"
+                  icon="svguse:/icons.svg#icon_date_time"
+                  text="Consumo de Horas"
+                ></TextIcon>
+
+                <div>
+                  <TagBase
+                    class="mr-16 bg-alert-success/10 text-alert-success dark:text-white/90 dark:!bg-alert-success/30"
+                    :nome="`Filtrando por ⠂<span class='font-semibold'>${filtroHoraConsumo.label}</span>`"
+                    type="projeto"
+                  />
+
+                  <OButton
+                    secondary
+                    size="md"
+                    icon="svguse:/icons.svg#icon_filtros"
+                    class="mr-16"
+                  >
+                    Definições do gráfico
+                    <q-menu class="p-12 pb-0">
+                      <q-form ref="form">
+                        <q-list class="w-[23.5rem]">
+                          <q-item
+                            class="px-0 text-headline-3 text-neutral-60 dark:text-white/60 justify-between flex items-center w-full mb-8"
+                            dense
+                          >
+                            Filtrando por
+                          </q-item>
+
+                          <q-item class="px-0 w-full mb-8" dense>
+                            <OSelect
+                              size="md"
+                              class="w-full"
+                              :options="filtroHoraConsumoOptions"
+                              v-model="filtroHoraConsumo"
+                              @update:model-value="handleChangeHoraConsumo"
+                            />
+                          </q-item>
+                        </q-list>
+                      </q-form>
+                    </q-menu>
+                  </OButton>
+                </div>
+              </div>
+
+              <div class="w-full min-h-[280px] flex flex-col">
+                <apexchart
+                  ref="chart"
+                  width="100%"
+                  height="250px"
+                  type="bar"
+                  :options="optionsChart"
+                  :series="seriesChart"
+                  v-show="!isLoadingHoraConsumo && seriesChart.length"
+                ></apexchart>
+                <SkeletonChart
+                  class="h-[250px] flex flex-col"
+                  v-show="isLoadingHoraConsumo && seriesChart.length === 0"
+                />
+                <div
+                  class="h-[250px]"
+                  v-show="!isLoadingHoraConsumo && seriesChart.length === 0"
+                >
+                  <EmptyItem text="Sem dados para visualizar o grafico." />
+                </div>
+              </div>
+            </q-card>
+          </section>
+        </div>
+
+        <div name="calendar">
+          <div class="h-[400px]">
+            <EmptyItem text="Calendário em desenvolvimento." />
           </div>
         </div>
-      </section>
-
-      <!-- ✅ TASK FINALIZADAS -->
-      <section id="tasks-finalizadas" class="bg-white dark:!bg-d-neutral-20">
-        <OAccordion
-          ref="accordionConcluidas"
-          class="border border-neutral-100/10 rounded-[3px] dark:border-white/10 overflow-hidden"
-        >
-          <!-- @before-show="() => handleGetTasksConcluidas(userActiveID)" -->
-          <template v-slot:header>
-            <div class="flex items-center flex-1">
-              <q-item-section avatar class="w-32">
-                <q-icon
-                  name="svguse:/icons.svg#icon_concluido"
-                  size="sm"
-                  class="text-primary-pure mr-6"
-                />
-              </q-item-section>
-              <p class="text-title-4">Tasks Finalizadas</p>
-            </div>
-          </template>
-
-          <div v-if="tasks.concluidas.length">
-            <q-virtual-scroll
-              style="max-height: 450px"
-              :items="tasks.concluidas"
-              separator
-              v-slot="{ item }"
-              class="relative"
-            >
-              <TaskColaborador
-                :task="item"
-                :hideDragIcon="true"
-                :completed="true"
-                @click:timer="handleClickTimer"
-                @click:task:restored="handleTaskRestored"
-              />
-            </q-virtual-scroll>
-          </div>
-
-          <div v-else class="h-[250px]">
-            <EmptyItem text="Nenhuma task finalizada." />
-          </div>
-        </OAccordion>
-      </section>
-
-      <section id="consumo-horas">
-        <q-card class="mt-16 mb-48 flex flex-col">
-          <div class="flex items-center justify-between w-full">
-            <TextIcon
-              class="pt-24 mx-16 mb-24 text-title-4"
-              icon="svguse:/icons.svg#icon_date_time"
-              text="Consumo de Horas"
-            ></TextIcon>
-
-            <div>
-              <TagBase
-                class="mr-16 bg-alert-success/10 text-alert-success dark:text-white/90 dark:!bg-alert-success/30"
-                :nome="`Filtrando por ⠂<span class='font-semibold'>${filtroHoraConsumo.label}</span>`"
-                type="projeto"
-              />
-
-              <OButton
-                secondary
-                size="md"
-                icon="svguse:/icons.svg#icon_filtros"
-                class="mr-16"
-              >
-                Definições do gráfico
-                <q-menu class="p-12 pb-0">
-                  <q-form ref="form">
-                    <q-list class="w-[23.5rem]">
-                      <q-item
-                        class="px-0 text-headline-3 text-neutral-60 dark:text-white/60 justify-between flex items-center w-full mb-8"
-                        dense
-                      >
-                        Filtrando por
-                      </q-item>
-
-                      <q-item class="px-0 w-full mb-8" dense>
-                        <OSelect
-                          size="md"
-                          class="w-full"
-                          :options="filtroHoraConsumoOptions"
-                          v-model="filtroHoraConsumo"
-                          @update:model-value="handleChangeHoraConsumo"
-                        />
-                      </q-item>
-                    </q-list>
-                  </q-form>
-                </q-menu>
-              </OButton>
-            </div>
-          </div>
-
-          <div class="w-full min-h-[280px] flex flex-col">
-            <apexchart
-              ref="chart"
-              width="100%"
-              height="250px"
-              type="bar"
-              :options="optionsChart"
-              :series="seriesChart"
-              v-show="!isLoadingHoraConsumo && seriesChart.length"
-            ></apexchart>
-            <SkeletonChart
-              class="h-[250px] flex flex-col"
-              v-show="isLoadingHoraConsumo && seriesChart.length === 0"
-            />
-            <div
-              class="h-[250px]"
-              v-show="!isLoadingHoraConsumo && seriesChart.length === 0"
-            >
-              <EmptyItem text="Sem dados para visualizar o grafico." />
-            </div>
-          </div>
-        </q-card>
-      </section>
+      </q-tab-panels>
     </div>
   </q-scroll-area>
 </template>
@@ -398,6 +460,7 @@ const userProfile = inject('userProfile')
 const openTaskEditModal = inject('openTaskEditModal')
 const taskActive = inject('taskActive')
 
+const tabs = ref('list')
 const loading = ref(true)
 const userActiveID = ref(null)
 
@@ -757,4 +820,24 @@ if (!user.value.is_staff) router.push({ name: '404' })
   transition: .3s ease
   &:hover
     border-color: rgba(var(--white),0.2)
+
+.header-wrapper
+  border-radius: 6px 6px 0 0
+
+.q-tab
+  color: transparent
+  padding: 0
+
+  &.q-tab--active .q-btn
+    color: rgb(var(--primary-pure))
+    border-color: rgb(var(--primary-pure))
+    background: rgba(var(--primary-pure-10))
+
+
+  :deep(.q-tab__content)
+    padding: 0 !important
+
+.body--dark
+  .q-tab--active .q-btn
+    background: rgba(var(--primary-pure), 0.1)
 </style>
