@@ -140,12 +140,16 @@
           <p class="text-title-4">Minhas Tasks</p>
         </div>
 
-        <q-tabs v-model="tabs" class="flex gap-16">
+        <q-tabs
+          v-model="tabs"
+          class="flex gap-16 absolute left-0 right-0 mx-auto"
+        >
           <q-tab name="list">
             <OButton
               secondary
               icon="svguse:/icons.svg#icon_checklist"
               class="w-full text-neutral-70"
+              size="sm"
               >Lista
             </OButton>
           </q-tab>
@@ -155,6 +159,7 @@
               secondary
               icon="svguse:/icons.svg#icon_calendar"
               class="w-full text-neutral-70"
+              size="sm"
               >Calendário
             </OButton>
           </q-tab>
@@ -380,7 +385,7 @@
         </div>
 
         <div name="calendar">
-          <div class="h-[400px]">
+          <div class="h-[400px] bg-white dark:!bg-d-neutral-30">
             <EmptyItem text="Calendário em desenvolvimento." />
           </div>
         </div>
