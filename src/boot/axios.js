@@ -51,6 +51,7 @@ const api = axios.create({
     acessos: 'acessos/',
     tipoetapa: 'tipoetapa/',
     ferramenta: 'ferramenta/',
+    avatar: 'avatar/',
   },
 })
 

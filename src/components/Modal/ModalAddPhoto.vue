@@ -5,8 +5,8 @@
     icon="svguse:/icons.svg#icon_attachment"
     @hide="handleClosePhotoModal"
   >
-    <div class="p-16">
-      <div class="input-container">
+    <div class="p-16 flex justify-center">
+      <div v-if="!loading" class="input-container">
         <div class="input-box">
           <input
             type="file"
@@ -15,26 +15,34 @@
             accept="image/*"
             class="absolute inset-0 opacity-0 cursor-pointer"
           />
-          <p v-if="isUploading">Enviando o arquivo...</p>
-          <p v-else>Arraste e jogue o arquivo aqui</p>
+          <p>Arraste e jogue o arquivo aqui</p>
 
           <button>Selecione o arquivo</button>
         </div>
       </div>
+
+      <q-spinner
+        v-else
+        color="primary"
+        size="3em"
+        :thickness="2"
+        class="h-[5.625rem]"
+      />
     </div>
   </ModalCenter>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { api } from 'src/boot/axios'
 import ModalCenter from 'src/components/Modal/ModalCenter.vue'
-
-const { URLS } = api.defaults
 
 const props = defineProps({
   title: String,
-  profileId: Number,
+  saveUploadedFile: Function,
+  loading: {
+    type: Boolean,
+    default: false,
+  },
   uploadFieldName: {
     type: String,
     default: 'foto',
@@ -42,7 +50,7 @@ const props = defineProps({
 })
 
 const modalAddPhoto = ref(null)
-const isUploading = ref(false)
+// const isUploading = ref(false)
 
 function handleChangeUploadField(ev) {
   const fieldName = ev.target.name
@@ -53,28 +61,7 @@ function handleChangeUploadField(ev) {
   const formData = new FormData()
   formData.append(fieldName, files[0])
 
-  saveUploadedFile(formData)
-}
-
-async function saveUploadedFile(formData) {
-  isUploading.value = true
-  const reqUrl = URLS.profile + `${props.profileId}/`
-
-  try {
-    const req = await api.patch(reqUrl, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    })
-
-    console.log(req)
-  } catch (err) {
-    console.log(err)
-  } finally {
-    isUploading.value = false
-  }
-
-  // for (const pair of formData.entries()) {
-  //   console.log(pair[0] + ', ' + pair[1])
-  // }
+  props.saveUploadedFile(formData)
 }
 
 function handleClosePhotoModal() {}
@@ -86,6 +73,7 @@ defineExpose({ modalAddPhoto })
 
 .input-container
   cursor: pointer
+  width: 100%
 
   &:hover .input-box
     border-color: rgba(var(--neutral-100), 0.3)
@@ -119,4 +107,23 @@ defineExpose({ modalAddPhoto })
     color: rgb(var(--neutral-100))
     line-height: 167%
     pointer-events: none
+
+.body--dark
+  .input-container
+    cursor: pointer
+
+    &:hover .input-box
+      border-color: rgba(var(--white), 0.7)
+
+  .input-box
+    background: rgb(var(--d-neutral-20))
+    border: dashed 1px rgba(var(--white), 0.5)
+
+    p
+      color: rgba(var(--white), 0.7)
+
+    button
+      background: rgba(var(--white), 0.1)
+      border-color: transparent
+      color: rgb(var(--white))
 </style>
