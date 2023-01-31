@@ -220,6 +220,7 @@ function handleUpdate(val) {
     ...taskModalObj.value,
     ...val,
   }
+  console.log({taskModalObj: taskModalObj.value, val, newTaskScope: newTaskScope.value})
 }
 
 // Limpa o estado da task ao abrir o modal

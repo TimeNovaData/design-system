@@ -165,20 +165,16 @@
           </q-tab>
         </q-tabs>
 
-        <div class="item-2">
+        <div class="item-2 flex gap-8">
           <OButton
             size="md"
             secondary
             @click="() => handleGetTasksPendentes(userActiveID)"
           >
-            <q-icon
-              id="icon-reload-kanban"
-              size="1.5rem"
-              name="replay"
-            ></q-icon>
+            <q-icon size="1.5rem" name="replay"></q-icon>
           </OButton>
 
-          <OButton class="ml-8" size="md" primary @click="openTaskEditModal">
+          <OButton size="md" primary @click="openTaskEditModal">
             <q-icon
               name="svguse:/icons.svg#icon_add_task"
               size="1.5rem"
@@ -186,10 +182,43 @@
             ></q-icon>
             Nova Task
           </OButton>
-          <OButton class="ml-8" disable size="md" secondary>
-            <q-icon name="svguse:/icons.svg#icon_filtros"></q-icon>
 
+          <OButton disable size="md" secondary>
+            <q-icon name="svguse:/icons.svg#icon_filtros"></q-icon>
             Filtrar
+          </OButton>
+
+          <OButton size="md" secondary v-if="user.id === profileActive.user">
+            <q-icon
+              size="1.5rem"
+              name="svguse:/icons.svg#icon_tree_points"
+            ></q-icon>
+
+            <q-menu
+              class="min-w-[190px] py-8"
+              :persistent="false"
+              :auto-close="true"
+              padding
+            >
+              <q-list>
+                <q-item
+                  clickable
+                  @click="openModalChangeBGRef"
+                  class="flex flex-nowrap items-center gap-8"
+                >
+                  <q-icon name="badge"></q-icon>
+                  <p class="whitespace-nowrap">Alterar foto da capa</p>
+                </q-item>
+                <q-item
+                  clickable
+                  @click="openModalChangeAvatarRef"
+                  class="flex flex-nowrap items-center gap-8"
+                >
+                  <q-icon name="account_box"></q-icon>
+                  <p class="whitespace-nowrap">Alterar avatar</p>
+                </q-item>
+              </q-list>
+            </q-menu>
           </OButton>
         </div>
       </div>
@@ -392,6 +421,22 @@
       </q-tab-panels>
     </div>
   </q-scroll-area>
+
+  <ModalAddPhoto
+    title="Alterar foto da capa"
+    ref="modalChangeBGRef"
+    uploadFieldName="capa"
+    :saveUploadedFile="saveProfileBackground"
+    :loading="loadingPhoto"
+  />
+
+  <ModalAddPhoto
+    title="Alterar avatar"
+    ref="modalChangeAvatarRef"
+    uploadFieldName="avatar"
+    :saveUploadedFile="saveProfileAvatar"
+    :loading="loadingPhoto"
+  />
 </template>
 
 <script setup>
@@ -421,6 +466,7 @@ import TagBase from 'src/components/Tag/TagBase.vue'
 import KanbanItemEditableSelect from 'src/components/Kanban/KanbanItemEditableSelect.vue'
 import SkeletonChart from 'src/components/Skeleton/SkeletonChart.vue'
 import EmptyItem from 'src/components/Empty/EmptyItem.vue'
+import ModalAddPhoto from 'src/components/Modal/ModalAddPhoto.vue'
 
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import { useProfileStore } from 'src/stores/profile/profile.store'
@@ -584,7 +630,7 @@ const profileTeam = computed(() => {
 })
 
 const profileBackground = computed(() =>
-  profileActive?.capa ? profileActive.capa : bg
+  profileActive.value.capa ? profileActive.value.capa : bg
 )
 
 // ==========================================================================================
@@ -694,6 +740,60 @@ async function handleTaskRestored(taskObj) {
   } catch (err) {
     console.log(err)
     NotifyError('Erro ao restaurar a tarefa')
+  }
+}
+
+// ==========================================================================================
+// ALTERAR CAPA E FOTO DO USUARIO ===================================================================================
+
+const modalChangeBGRef = ref(null)
+const modalChangeAvatarRef = ref(null)
+const loadingPhoto = ref(false)
+
+function openModalChangeBGRef() {
+  modalChangeBGRef.value.modalAddPhoto.dialogRef.show()
+}
+
+function openModalChangeAvatarRef() {
+  modalChangeAvatarRef.value.modalAddPhoto.dialogRef.show()
+}
+
+async function saveProfileBackground(formData) {
+  const reqUrl = URLS.profile + `${profileActive.value.id}/`
+
+  try {
+    loadingPhoto.value = true
+    await api.patch(reqUrl, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+
+    modalChangeBGRef.value.modalAddPhoto.dialogRef.hide()
+    handleChangeProfile(profileActive.value.id)
+  } catch (err) {
+    console.log(err)
+  } finally {
+    loadingPhoto.value = false
+  }
+}
+
+async function saveProfileAvatar(formData) {
+  const reqUrl = URLS.avatar
+
+  formData.append('user', profileActive.value.user)
+  formData.append('primary', true)
+
+  try {
+    loadingPhoto.value = true
+    await api.post(reqUrl, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    })
+
+    modalChangeAvatarRef.value.modalAddPhoto.dialogRef.hide()
+    handleChangeProfile(profileActive.value.id)
+  } catch (err) {
+    console.log(err)
+  } finally {
+    loadingPhoto.value = false
   }
 }
 
