@@ -131,7 +131,7 @@
         <OButton
           secondary
           icon="svguse:/icons.svg#icon_close"
-          @click="closeTaskEditModal"
+          @click="handleCloseModal"
         >
           Cancelar
         </OButton>
@@ -193,6 +193,12 @@ async function validateOnCreate() {
     await handleSaveTask({}, newTaskScope.value)
     dialogRef.value.hide()
   }
+}
+
+const handleCloseModal = () => {
+  // alert('test close')
+
+  closeTaskEditModal()
 }
 
 async function validateOnEdit() {

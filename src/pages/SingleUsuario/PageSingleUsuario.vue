@@ -41,11 +41,7 @@
                 :options="usuarios.filter((i) => i.profile)"
                 ref="itemEditableSelect"
                 @updateValue="handleChangeSelect"
-                :selected="
-                  profileActive !== {}
-                    ? usuarios.filter((i) => i.id === profileActive.user)[0]
-                    : null
-                "
+                @keydown="clearInputProfile"
                 :selectProps="{
                   fotoKey: 'foto',
                   nomeKey: 'get_full_name',
@@ -54,6 +50,11 @@
                 option-label="get_full_name"
                 :clearActive="false"
               />
+              <!-- :selected="
+                  profileActive !== {}
+                    ? usuarios.filter((i) => i.id === profileActive.user)[0]
+                    : null
+                " -->
             </div>
           </div>
           <div class="user-infos mt-16 flex gap-32">
@@ -217,6 +218,32 @@
                             v-once
                             type="rect"
                             class="h-[3.25rem]"
+                      />
+                    </div>
+                    <div
+                      class="overflow-hidden relative mt-6"
+                      v-else-if="tasks.pendentes.length"
+                    >
+                      <!-- <template v-for="(task, index) in tasks" :key="task.id"> -->
+                      <draggable
+                        v-bind="dragOptions"
+                        :list="tasks.pendentes"
+                        item-key="id"
+                        :handle="'#drag-id'"
+                        :component-data="{
+                          tag: 'div',
+                          type: 'transition-group',
+                          name: 'flip-list',
+                          class: `transition-div `,
+                        }"
+                        @end="endDrag"
+                      >
+                        <template #item="{ element }">
+                          <TaskColaborador
+                            :task="element"
+                            @click:timer="handleClickTimer"
+                            @click:task:finished="handleTaskFinished"
+                            @click:task:delete="handleTaskDelete"
                           />
                         </div>
                         <div
@@ -584,7 +611,12 @@ const profileBackground = computed(() =>
 
 // ==========================================================================================
 // MUDANÇA DO PROFILE (HANDLE CHANDE FUNCTIONS) =============================================
-
+const clearInputProfile = () => {
+  if (profileActive.value) {
+    // profileActive.value = {}
+    console.log('AqqqqqIII', profileActive.value)
+  }
+}
 async function handleChangeSelect({ profile, id }) {
   loading.value = true
   userActiveID.value = id
@@ -641,7 +673,6 @@ const handleGetTasksConcluidas = async (userId) => {
 async function handleTaskFinished(taskObj) {
   const today = Date.now()
   const dateFormated = date.formatDate(today, 'YYYY-MM-DD')
-
   try {
     await pathTask(taskObj.id, { data_conclusao: dateFormated })
 
@@ -649,7 +680,9 @@ async function handleTaskFinished(taskObj) {
       (i) => i.id !== taskObj.id
     )
     tasks.value.concluidas.push(taskObj)
-    NotifySucess('Tarefa concluida com sucesso!')
+    console.log('OBJ DA TASK', taskObj)
+    taskActive.value = null
+    NotifySucess('Task concluida com sucesso!')
   } catch (err) {
     console.log(err)
     NotifyError('Erro ao concluir a tarefa')

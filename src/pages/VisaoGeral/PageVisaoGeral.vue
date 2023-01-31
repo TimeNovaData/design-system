@@ -169,6 +169,7 @@ const rowsOneShot = computed(() => {
 })
 
 const columns = [
+  { name: 'acoes', field: 'acoes', label: 'Ações', align: 'center' },
   {
     name: 'projeto',
     field: 'projeto',
@@ -238,7 +239,6 @@ const columns = [
     align: 'right',
     sortable: true,
   },
-  { name: 'acoes', field: 'acoes', label: 'Ações', align: 'center' },
 ]
 
 onMounted(() => {

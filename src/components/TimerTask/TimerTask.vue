@@ -49,13 +49,13 @@ const taskState = ref({
 
 // COMPUTED
 const is_playing = computed(() => {
-  return taskActive.value.id === props.task.id
+  return taskActive.value?.id === props.task?.id
 })
 
 const hasStarted = computed(
   () =>
     GLOBAL.zeroPad(
-      props.task.tempo_ao_vivo_formatado_hora_minuto_segundo,
+      props.task?.tempo_ao_vivo_formatado_hora_minuto_segundo,
       8
     ) !== '00:00:00'
 )
@@ -72,13 +72,13 @@ const playPausebtn = computed(() => {
 })
 
 const idleText = computed(() => {
-  return !hasStarted.value && !taskState.value.is_playing ? '' : ''
+  return !hasStarted.value && !taskState.value?.is_playing ? '' : ''
 })
 
 // METHODS
 const handlePlay = (v) => {
   let taskMod
-  window._big(is_playing.value)
+  window._big(is_playing.value, 'brunin')
   if (is_playing.value) {
     taskMod = {}
     taskActive.value = {}

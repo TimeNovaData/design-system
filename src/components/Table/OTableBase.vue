@@ -1,7 +1,7 @@
 <template>
   <OTable
     v-bind="attrs"
-    v-show="rows.length"
+    v-show="rows?.length"
     :rows="rows"
     :columns="columns"
     v-model:pagination="pagination"
@@ -35,7 +35,13 @@
     </template>
   </OTable>
 
-  <SkeletonTable v-if="!rows.length" class="mt-20 px-16" />
+  <h1
+    v-if="!rows?.length && !isFetching"
+    class="w-full text-center md:text-left text-18"
+  >
+    {{ labelNotData }}
+  </h1>
+  <SkeletonTable v-if="isFetching" class="mt-20 px-16" />
 </template>
 
 <script setup>
@@ -65,6 +71,11 @@ const props = defineProps({
   showDownloadButton: {
     type: Boolean,
     default: true,
+  },
+  labelNotData: String,
+  isFetching: {
+    type: Boolean,
+    default: false,
   },
 })
 
