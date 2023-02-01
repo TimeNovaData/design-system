@@ -74,14 +74,30 @@
                   height="1.5rem"
                   width="170px"
                 />
-                <p
+                <div
                   v-else-if="profileProjects"
-                  class="text-headline-4 text-white"
+                  class="text-headline-4 text-white flex"
                 >
                   <span>
-                    {{ profileProjects }}
+                    {{ profileProjects.firstThree }}
                   </span>
-                </p>
+                  <div
+                    v-if="profileProjects.remaining.length"
+                    class="ml-8 cursor-pointer"
+                  >
+                    <span class="tracking-widest">...</span>
+                    <q-tooltip>
+                      <ul class="flex flex-col gap-4 p-4">
+                        <li
+                          v-for="(item, i) in profileProjects.remaining"
+                          :key="i"
+                        >
+                          {{ item }}
+                        </li>
+                      </ul>
+                    </q-tooltip>
+                  </div>
+                </div>
                 <p v-else class="text-headline-4 text-white">-</p>
               </div>
             </div>
@@ -235,7 +251,7 @@
                       <div class="">
                         <div class="base-grid px-16">
                           <p class="empty-col"></p>
-                          <p class="text-headline-3 pl-16">Task</p>
+                          <p class="text-headline-3">Task</p>
                           <p class="text-headline-3 pl-16">Solicitante</p>
                           <!-- <p class="text-headline-3 pl-16">Urgência</p> -->
                           <!-- <p class="text-headline-3 pl-16">Data de Criação</p> -->
@@ -454,7 +470,6 @@ import emitter from 'src/boot/emitter'
 import { api } from 'src/boot/axios'
 
 import bg from 'src/assets/image/bg-single-usuario.png'
-import avatar from 'src/assets/image/gravatar.jpg'
 
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
 import OAccordion from 'src/components/Accordion/OAccordion.vue'
@@ -620,7 +635,11 @@ async function populateChart(tempoTasks) {
 
 const profileProjects = computed(() => {
   const projects = profileActive.value.projetos.map((p) => p.nome)
-  return projects.join(' • ')
+
+  return {
+    firstThree: projects.slice(0, 3).join(' • '),
+    remaining: projects.slice(3, projects.length),
+  }
 })
 
 const profileTeam = computed(() => {
@@ -906,7 +925,7 @@ if (!user.value.is_staff) router.push({ name: '404' })
 
 .base-grid
   display: grid
-  grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 250px) repeat(3, minmax(120px, 130px)) 56px
+  grid-template-columns: minmax(70px, 75px)  minmax(200px, 1fr) minmax(170px, 250px) repeat(3, minmax(120px, 130px)) 56px
   align-items: center
 
 .item-editavel
