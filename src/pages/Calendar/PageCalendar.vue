@@ -145,7 +145,7 @@
 </template>
 
 <script setup>
-import { ref, computed, reactive, onMounted } from 'vue'
+import { ref, computed, reactive, onMounted, nextTick } from 'vue'
 
 import OButton from 'src/components/Button/OButton.vue'
 import TextIcon from 'src/components/Text/TextIcon.vue'
@@ -237,6 +237,8 @@ onMounted(async () => {
       bgcolor: 'green',
       icon: 'svguse:/icons.svg#icon_calendar',
     }))
+  await nextTick()
+  console.log(events.value)
 })
 
 const events = ref([
