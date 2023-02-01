@@ -117,7 +117,7 @@
             icon="more_horiz"
             @click.stop
           >
-            <q-menu padding class="min-w-[250px] py-12 min-h-[80px]">
+            <q-menu padding class="min-w-[250px] py-12">
               <q-list>
                 <q-item
                   class="items-center gap-8 text-alert-error"
