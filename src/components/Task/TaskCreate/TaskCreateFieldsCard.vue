@@ -300,6 +300,16 @@ watch(
   }
 )
 
+watch(
+  () => model.value.tipo_task,
+  (tipo_task) => {
+    if (!props.taskValues?.observacoes && tipo_task.descricao)
+      model.value.observacoes = tipo_task.descricao
+    else if (!props.taskValues?.observacoes && !tipo_task.descricao)
+      model.value.observacoes = ''
+  }
+)
+
 const isEdit = ref(false)
 watch(
   () => props.taskValues,
@@ -329,7 +339,7 @@ watch(
       ...deepUnref(vl),
       ...deepUnref(dadosAdicionais),
     }
-    console.log(dataObj)
+    // console.log(dataObj)
 
     emit('update', dataObj)
   },

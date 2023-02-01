@@ -29,6 +29,7 @@ const api = axios.create({
     atualizar_ordem_task: 'task/atualizar_ordem_task/',
     tempotask: 'tempotask/',
     tempoProjeto: 'tempotask/tempo_projeto',
+    andamento_periodo: 'tempotask/andamento_periodo',
     tipotask: 'tipotask/',
     anexo: 'anexo/',
     comentario: 'comentario/',

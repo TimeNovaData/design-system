@@ -35,12 +35,10 @@
     </template>
   </OTable>
 
-  <h1
-    v-if="!rows?.length && !isFetching"
-    class="w-full text-center md:text-left text-18"
-  >
-    {{ labelNotData }}
-  </h1>
+  <div v-if="!rows?.length && !isFetching" class="w-full h-[300px]">
+    <EmptyItem :text="labelNotData" />
+  </div>
+
   <SkeletonTable v-if="isFetching" class="mt-20 px-16" />
 </template>
 
@@ -52,6 +50,7 @@ import OTable from 'src/components/Table/OTable.vue'
 import OTableHeaderBase from 'src/components/Table/OTableHeaderBase.vue'
 import OTableFooterBase from 'src/components/Table/OTableFooterBase.vue'
 import SkeletonTable from 'src/components/Skeleton/SkeletonTable.vue'
+import EmptyItem from 'src/components/Empty/EmptyItem.vue'
 const slots = useSlots()
 const attrs = useAttrs()
 
