@@ -54,7 +54,7 @@
                 mode="month"
                 ref="calendar"
                 locale="pt-BR"
-                class="rounded-generic overflow-hidden"
+                class="rounded-generic overflow-hidden calendario"
                 v-model="selectedDate"
                 animated
                 bordered
@@ -515,4 +515,7 @@ function onClickHeadWorkweek(data) {
 }
 </script>
 
-<style lang="sass" scoped></style>
+<style lang="sass" scoped>
+
+// .calendario
+</style>
