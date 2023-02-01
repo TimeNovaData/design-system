@@ -14,7 +14,7 @@
         <div class="icons-wrapper flex justify-between items-center">
           <div
             id="drag-id"
-            class="move_task cursor-grab w-[50px] h-56 grid place-content-center"
+            class="cursor-grab w-[50px] h-56 grid place-content-center"
           >
             <q-icon
               :class="{ 'opacity-0 , cursor-auto': hideDragIcon }"
@@ -112,7 +112,7 @@
           <TimerTask @click:timer="handleClickTimer" :task="task" />
         </div>
 
-        <div class="pl-8">
+        <div class="pl-16">
           <OButton
             size="md"
             secondary
@@ -281,7 +281,7 @@ function handleClickTimer(v) {
 
 .base-grid
   display: grid
-  grid-template-columns: minmax(70px, 75px)  minmax(200px, 1fr) minmax(170px, 250px) repeat(3, minmax(120px, 130px)) 56px
+  grid-template-columns: minmax(70px, 80px)  minmax(200px, 1fr) minmax(170px, 250px) repeat(3, minmax(120px, 130px)) 56px
   align-items: center
 
 .btn-restore
