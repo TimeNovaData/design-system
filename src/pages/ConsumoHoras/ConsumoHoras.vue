@@ -130,7 +130,7 @@
                     icon="check"
                     primary
                     :loading="isLoading"
-                    @click="getTempoTask"
+                    @click="handleApplyFilters"
                     >Aplicar</OButton
                   >
                 </q-item>
@@ -219,7 +219,7 @@
                   name="fluorescent"
                   size="2.5rem"
                 ></q-icon>
-                <p>Sem dados para visualizar o grafico.</p>
+                <p>Sem dados para visualizar no grafico.</p>
               </div>
             </div>
           </div>
@@ -235,36 +235,14 @@
             text="Tempo por atividade"
             icon="svguse:/icons.svg#icon_tempo_atividade"
           />
-          <div class="flex items-center gap-6">
-            <p class="mr-6 text-caps-3">visualizando por:</p>
-            <OButton
-              class="text-neutral-70"
-              :class="{ active: FiltroTempoAtividade === 'projeto' }"
-              size="md"
-              secondary
-              @click="handleChangeFiltroTempoAtividade('projeto')"
-              >Projeto</OButton
-            >
-            <OButton
-              class="text-neutral-70"
-              :class="{ active: FiltroTempoAtividade === 'subprojeto' }"
-              size="md"
-              secondary
-              @click="handleChangeFiltroTempoAtividade('subprojeto')"
-              >Subprojeto</OButton
-            >
-            <OButton
-              class="text-neutral-70"
-              :class="{ active: FiltroTempoAtividade === 'usuario' }"
-              size="md"
-              secondary
-              @click="handleChangeFiltroTempoAtividade('usuario')"
-              >Usuário</OButton
-            >
-          </div>
         </div>
 
-        <OTableBase :loading="chamadoLoading" :rows="rows" :columns="columns">
+        <OTableBase
+          :isFetching="tableIsLoading"
+          :rows="rows"
+          :columns="columns"
+          labelNotData="Sem dados para visualizar na tabela."
+        >
           <template v-slot:body="props">
             <q-tr :props="props" class="cursor-pointer">
               <q-td
@@ -399,18 +377,11 @@ const {
 } = GLOBAL
 //
 const FiltroInvestimentoPor = ref('projeto')
-const FiltroTempoAtividade = ref('projeto')
 
 async function handleChangeFiltroInvestimento(tipo) {
   FiltroInvestimentoPor.value = tipo
   await nextTick()
   getTempoTask()
-}
-function handleChangeFiltroTempoAtividade(tipo) {
-  window._red(tipo)
-  FiltroTempoAtividade.value = tipo
-
-  getChamadoTable()
 }
 
 // elementos
@@ -426,19 +397,9 @@ const projetos = inject('projetos')
 // const initialLoad = inject('initialLoad')
 const { getUsuarios, getProjetos, getClientes } = inject('get')
 
-const { getChamado } = useChamadoStore()
-const { chamados, isLoading: chamadoLoading } = storeToRefs(useChamadoStore())
-
 const isLoading = ref(true)
 
 let filtrosAplicados = {}
-
-watch(
-  () => chamados.value,
-  () => {
-    rows.value = chamados.value
-  }
-)
 
 const dataAtual = date.formatDate(new Date(), 'YYYY/MM/DD')
 const seteDias = date.formatDate(
@@ -526,6 +487,11 @@ watch(
   { deep: true }
 )
 
+function handleApplyFilters() {
+  getTempoTask()
+  getChamadoTable()
+}
+
 // tempoTask ----------------------------------
 
 const tempoTask = ref([])
@@ -578,13 +544,17 @@ async function populateChart(tempoProjetos) {
   }
 }
 
-function getChamadoTable() {
-  const projeto = filtros.value.projeto.model.id
-  chamados.value = []
-  getChamado(
-    `${projeto ? `&projeto__id=${projeto}` : ''}` +
-      `&agrupamento=${FiltroTempoAtividade.value}`
-  )
+async function getChamadoTable() {
+  // const projeto = filtros.value.projeto.model.id
+  // chamados.value = []
+  // const a = await getChamado(
+  //   `${projeto ? `&projeto__id=${projeto}` : ''}` +
+  //     `&agrupamento=${FiltroTempoAtividade.value}`
+  // )
+  const filters = { ...filtroOBJ.value }
+  delete filters.agrupamento
+
+  getAndamentoPeriodo(generateStringFilterFromObject(filters))
 }
 
 async function handleRemoveFilters() {
@@ -595,18 +565,42 @@ async function handleRemoveFilters() {
   getTempoTask()
 }
 
-// CHART
+// TABLE
 const columns = columns1
 const rows = ref([])
 const options = { ...stackedChartBar }
 const series = ref([])
+const tableIsLoading = ref(false)
+
+async function getAndamentoPeriodo(filters = '') {
+  window._blue('getAndamentoPeriodo')
+  console.log(URLS.andamento_periodo + filters)
+  tableIsLoading.value = true
+
+  const { data, error } = await useAxios(
+    URLS.andamento_periodo + filters,
+    { method: 'GET' },
+    api
+  )
+
+  try {
+    rows.value = data.value
+    console.log(data.value)
+    return data.value
+  } catch (e) {
+    rows.value = []
+    console.log(error)
+  } finally {
+    tableIsLoading.value = false
+  }
+}
 
 async function initialRequests() {
-  await getChamado()
   await getUsuarios()
   await getTempoTask()
   getProjetos()
   getClientes()
+  getAndamentoPeriodo()
   filtros.value.projeto.options = projetos.value
   filtros.value.cliente.options = clientes.value
   filtros.value.usuario.options = usuarios.value

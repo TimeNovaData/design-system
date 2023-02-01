@@ -149,7 +149,7 @@
               secondary
               icon="svguse:/icons.svg#icon_checklist"
               class="w-full text-neutral-70"
-              size="sm"
+              size="md"
               >Lista
             </OButton>
           </q-tab>
@@ -159,7 +159,7 @@
               secondary
               icon="svguse:/icons.svg#icon_calendar"
               class="w-full text-neutral-70"
-              size="sm"
+              size="md"
               >Calendário
             </OButton>
           </q-tab>
@@ -277,6 +277,7 @@
                                 :task="element"
                                 @click:timer="handleClickTimer"
                                 @click:task:finished="handleTaskFinished"
+                                @click:task:delete="handleTaskDelete"
                               />
                             </template>
                           </draggable>
@@ -744,7 +745,7 @@ async function handleTaskRestored(taskObj) {
 }
 
 // ==========================================================================================
-// ALTERAR CAPA E FOTO DO USUARIO ===================================================================================
+// ALTERAR CAPA E FOTO DO USUARIO ===========================================================
 
 const modalChangeBGRef = ref(null)
 const modalChangeAvatarRef = ref(null)
@@ -760,17 +761,18 @@ function openModalChangeAvatarRef() {
 
 async function saveProfileBackground(formData) {
   const reqUrl = URLS.profile + `${profileActive.value.id}/`
+  loadingPhoto.value = true
 
   try {
-    loadingPhoto.value = true
     await api.patch(reqUrl, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
 
     modalChangeBGRef.value.modalAddPhoto.dialogRef.hide()
     handleChangeProfile(profileActive.value.id)
+    NotifySucess('Capa alterada com sucesso')
   } catch (err) {
-    console.log(err)
+    NotifyError('Erro ao salvar! Certifique-se que o arquivo é uma imagem')
   } finally {
     loadingPhoto.value = false
   }
@@ -778,20 +780,21 @@ async function saveProfileBackground(formData) {
 
 async function saveProfileAvatar(formData) {
   const reqUrl = URLS.avatar
+  loadingPhoto.value = true
 
   formData.append('user', profileActive.value.user)
   formData.append('primary', true)
 
   try {
-    loadingPhoto.value = true
     await api.post(reqUrl, formData, {
       headers: { 'Content-Type': 'multipart/form-data' },
     })
 
     modalChangeAvatarRef.value.modalAddPhoto.dialogRef.hide()
     handleChangeProfile(profileActive.value.id)
+    NotifySucess('Avatar alterado com sucesso')
   } catch (err) {
-    console.log(err)
+    NotifyError('Erro ao salvar! Certifique-se que o arquivo é uma imagem')
   } finally {
     loadingPhoto.value = false
   }

@@ -1,10 +1,10 @@
 <template>
   <q-card class="flex-1 p-24 dark:bg-d-neutral-10">
-    <p
+    <div
       v-if="description"
-      class="text-paragraph-2 text-neutral-70 dark:text-white/70"
+      class="text-paragraph-2 text-neutral-70 dark:text-white/70 descricao"
       v-html="description"
-    ></p>
+    ></div>
 
     <div v-else class="flex place-content-center h-full">
       <div class="flex flex-col gap-6 opacity-30 dark:opacity-40">
@@ -21,4 +21,7 @@ defineProps({
 })
 </script>
 
-<style lang="sass" scoped></style>
+<style lang="sass" scoped>
+.descricao :deep(*)
+  white-space: break-spaces !important
+</style>

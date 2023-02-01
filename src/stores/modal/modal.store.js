@@ -31,12 +31,11 @@ export const useModalStore = defineStore('modalStore', () => {
       false,
       'task'
     )
-    console.log('anexossssss', anexosRes)
+
     taskModalAnexos.value = anexosRes
   }
 
   async function openTaskViewModal(taskId) {
-    console.log('ABRI ESSE MODAL DE BOSTA')
     const taskRes = await taskStore.getTask(taskId)
     await getTaskAnexos(taskId)
 

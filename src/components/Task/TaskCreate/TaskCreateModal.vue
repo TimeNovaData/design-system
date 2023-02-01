@@ -5,6 +5,7 @@
     ref="dialogRef"
     transition-hide="fade"
     transition-duration="200"
+    :persistent="true"
   >
     <q-card class="add-task-modal">
       <header class="modal-header">
@@ -24,7 +25,7 @@
           class="!w-max !h-max !p-0"
           size="lg"
           tertiary
-          @click="closeTaskEditModal"
+          @click="handleCloseModal"
         >
           <q-icon
             class="w-48 h-48 dark:text-neutral-100"
@@ -101,13 +102,15 @@
           </q-tabs>
 
           <q-tab-panels v-model="tabs" animated class="flex-1">
-            <TaskCreateDescriptionCard
-              name="desc"
-              :description="taskModalObj?.observacoes"
-              @update="
-                (val) => handleUpdate({ ...newTaskScope, observacoes: val })
-              "
-            />
+            <div name="desc">
+              <TaskCreateDescriptionCard
+                :description="newTaskScope ? newTaskScope.observacoes : ''"
+                @update="
+                  (val) => handleUpdate({ ...newTaskScope, observacoes: val })
+                "
+              />
+            </div>
+
             <div name="chat">
               <OChatBox
                 v-if="taskModalObj"
@@ -160,18 +163,21 @@
 
 <script setup>
 import { ref, watch, computed, unref } from 'vue'
-import { useDialogPluginComponent } from 'quasar'
+import { useDialogPluginComponent, useQuasar } from 'quasar'
 import OButton from 'src/components/Button/OButton.vue'
 import OChatBox from 'src/components/Chat/OChatBox.vue'
 import TaskCreateFieldsCard from './TaskCreateFieldsCard.vue'
 import TaskCreateDescriptionCard from './TaskCreateDescriptionCard.vue'
 import TaskCreateAttachmentCard from './TaskCreateAttachmentCard.vue'
+import ModalConfirm from 'src/components/Modal/ModalConfirm.vue'
 import OCounter from 'src/components/Counter/OCounter.vue'
 import { storeToRefs } from 'pinia'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import { useModalStore } from 'src/stores/modal/modal.store'
 import { onBeforeRouteUpdate } from 'vue-router'
 import emitter from 'src/boot/emitter'
+
+const $q = useQuasar()
 
 const { dialogRef } = useDialogPluginComponent()
 const { handleSaveTask } = useTaskStore()
@@ -196,9 +202,16 @@ async function validateOnCreate() {
 }
 
 const handleCloseModal = () => {
-  // alert('test close')
-
-  closeTaskEditModal()
+  $q.dialog({
+    component: ModalConfirm,
+    componentProps: {
+      title: 'Confirmar',
+      text: 'Deseja sair sem salvar as alterações?',
+      persistent: true,
+    },
+  }).onOk(() => {
+    closeTaskEditModal()
+  })
 }
 
 async function validateOnEdit() {
@@ -220,7 +233,6 @@ function handleUpdate(val) {
     ...taskModalObj.value,
     ...val,
   }
-  console.log({taskModalObj: taskModalObj.value, val, newTaskScope: newTaskScope.value})
 }
 
 // Limpa o estado da task ao abrir o modal
