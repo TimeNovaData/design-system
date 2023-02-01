@@ -227,6 +227,12 @@ onMounted(async () => {
     data_final_previsto: null,
     tempo_ao_vivo_formatado_hora_minuto_segundo: '1:00:17',
   } */
+  console.log(
+    tasks.value.filter(
+      (i) => i.data_inicial_previsto && i.entrega_data_desejada
+    ),
+    'filtradas'
+  )
   events.value = tasks.value
     .filter((i) => i.data_inicial_previsto && i.entrega_data_desejada)
     .map((i) => ({
@@ -238,7 +244,7 @@ onMounted(async () => {
       icon: 'svguse:/icons.svg#icon_calendar',
     }))
   await nextTick()
-  console.log(events.value)
+  console.log(events.value, 'final')
 })
 
 const events = ref([
