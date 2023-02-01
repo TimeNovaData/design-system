@@ -1,6 +1,6 @@
 <template>
   <q-scroll-area>
-    <header class="foto-capa">
+    <header class="foto-capa" :class="{ haveProjeto: !isLoading }">
       <div class="h-full">
         <img
           class="h-full object-cover w-full object-right"
@@ -279,7 +279,7 @@
                             v-bind="dragOptions"
                             :list="tasks.pendentes"
                             item-key="id"
-                            :handle="'#drag-id'"
+                            :handle="'.drag-id'"
                             :component-data="{
                               tag: 'div',
                               type: 'transition-group',
@@ -903,7 +903,22 @@ if (!user.value.is_staff) router.push({ name: '404' })
 <style lang="sass" scoped>
 
 .foto-capa
-  height:404px
+  height: clamp(330px,50vh,404px)
+  position: relative
+  &:after
+    content:""
+    position: absolute
+    width:100%
+    height:100%
+    top: 0
+    left: 0
+    transition: background .3s ease
+    background: transparent
+
+  &.haveProjeto
+    &::after
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.8) 81.46%, #000000 100%)
+
 
 #tasks
   border-radius: 6px 6px 0 0

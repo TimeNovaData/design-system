@@ -11,7 +11,7 @@
         <div class="pl-16">
           <span class="text-caps-3 text-neutral-100/50">TASK</span>
           <h2 class="text-title-4 text-neutral-100">
-            {{ taskModalObj.titulo }}
+            {{ taskModalObj.id }} - {{ taskModalObj.titulo }}
           </h2>
         </div>
 

@@ -69,32 +69,6 @@
           </div>
         </div>
 
-        <!-- <div class="pl-16">
-          <o-badge
-            size="lg"
-            square
-            class="!px-32"
-            :badge="false"
-            :color="GLOBAL.returnRGB('#E92C2C')"
-          >
-            <template v-slot:content>Urgente</template>
-          </o-badge>
-        </div> -->
-
-        <!-- <div class="pl-16">
-          <div class="flex items-center">
-            <q-icon
-              name="svguse:/icons.svg#icon_calendar_create"
-              size="24px"
-              class="mr-8"
-            >
-            </q-icon>
-            <div>
-              <p class="text-paragraph-2 text-neutral-100">09/12/2022</p>
-              <p class="text-paragraph-3 text-neutral-70">Sexta</p>
-            </div>
-          </div>
-        </div> -->
         <div class="pl-16">
           <div class="flex items-center">
             <q-icon
@@ -131,18 +105,37 @@
           </div>
         </div>
 
-        <div class="timer-wrapper pl-16">
+        <div
+          class="timer-wrapper pl-16"
+          :class="{ 'pointer-events-none': completed }"
+        >
           <TimerTask @click:timer="handleClickTimer" :task="task" />
         </div>
 
-        <div class="pl-16">
+        <div class="pl-8">
           <OButton
             size="md"
             secondary
-            class="dark:!bg-d-neutral-30 !text-alert-error"
-            @click.stop="() => (!completed ? showDeleteTaskModal() : '')"
-            icon="svguse:/icons.svg#icon_trash"
-          ></OButton>
+            class="dark:!bg-d-neutral-30"
+            icon="more_horiz"
+            @click.stop
+          >
+            <q-menu padding class="min-w-[250px] py-12">
+              <q-list>
+                <q-item
+                  class="items-center gap-8 text-alert-error"
+                  clickable
+                  @click.stop="() => (!completed ? showDeleteTaskModal() : '')"
+                >
+                  <q-icon
+                    size="1rem"
+                    name="svguse:/icons.svg#icon_trash"
+                  ></q-icon>
+                  <p>Excluir task</p>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </OButton>
         </div>
 
         <div v-if="completed">
@@ -246,12 +239,17 @@ function showFinishTaskModal() {
   })
 }
 
+const text = computed(
+  () =>
+    `Deseja deletar a task <bold class='font-semibold'>${props.task.titulo}</bold> ?`
+)
+
 function showDeleteTaskModal() {
   $q.dialog({
     component: ModalConfirm,
     componentProps: {
       title: 'Confirmar',
-      text: 'Deseja deletar essa task?',
+      text: text.value,
       persistent: true,
     },
   }).onOk(() => {
@@ -331,7 +329,6 @@ function handleClickTimer(v) {
 
 .concluir_task
   position: relative
-
   &::after
     content: ""
     display: block
