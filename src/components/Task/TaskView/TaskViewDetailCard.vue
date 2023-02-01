@@ -1,8 +1,22 @@
 <template>
   <q-card class="detail-card px-16">
-    <div class="flex flex-col py-20">
-      <span class="text-caps-3 dark:text-white/40">TÍTULO</span>
-      <p class="text-paragraph-1 two-lines">{{ details.titulo }}</p>
+    <div class="flex justify-between items-center">
+      <div class="flex flex-col py-20">
+        <span class="text-caps-3 dark:text-white/40">TÍTULO</span>
+        <p class="text-paragraph-1 two-lines">{{ details.titulo }}</p>
+      </div>
+
+      <OButton
+        secondary
+        icon="svguse:/icons.svg#icon_github"
+        class="text-neutral-100/70 dark:text-white/70"
+        @click="
+          $NotifySucess('Commit copiado') &&
+            copyToClipboard(`${details.id} - ${details.titulo}`)
+        "
+      >
+        <q-tooltip v-bind="tooltipProps">Copiar commit</q-tooltip>
+      </OButton>
     </div>
 
     <hr />
@@ -95,13 +109,21 @@
 </template>
 
 <script setup>
+import { copyToClipboard } from 'quasar'
 import GLOBAL from 'src/utils/GLOBAL'
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
 import OBadge from 'src/components/Badge/OBadge.vue'
+import OButton from 'src/components/Button/OButton.vue'
 
 const props = defineProps({
   details: Object,
 })
+
+const tooltipProps = {
+  anchor: 'top middle',
+  self: 'bottom middle',
+  offset: [10, 10],
+}
 
 // Formatando tempo e data
 const estimatedTime = GLOBAL.FTime(props.details.tempo_estimado)

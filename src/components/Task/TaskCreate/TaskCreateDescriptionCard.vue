@@ -5,7 +5,7 @@
     height="90%"
     max-height="none"
     :toolbar="editorToobar()"
-    class="dark:bg-d-neutral-10"
+    class="editor h-full dark:bg-d-neutral-10"
   />
 </template>
 
@@ -27,9 +27,19 @@ watch(descriptionModel, () => {
   emit('update', descriptionModel.value)
 })
 
+watch(
+  () => props.description,
+  (v) => {
+    if (v) descriptionModel.value = v
+  }
+)
+
 emitter.on(`modal:tasktype:create`, (tasktype) => {
   descriptionModel.value = tasktype.descricao
 })
 </script>
 
-<style lang="sass" scoped></style>
+<style lang="sass" scoped>
+.editor :deep(.q-editor__content *)
+  white-space: break-spaces !important
+</style>
