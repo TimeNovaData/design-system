@@ -44,14 +44,12 @@ export const useUserStore = defineStore('userStore', () => {
     const id = user.value?.id
     if (!id) return
     try {
-      const { data, error } = await useAxios(
-        `${URLS.profile}?user__id=${id}&no_loading`,
-        { method: 'GET' },
-        api
+      const { data } = await api.get(
+        `${URLS.profile}?user__id=${id}&no_loading`
       )
 
-      userProfile.value = data.value[0]
-      return data.value
+      userProfile.value = data[0]
+      return data[0]
     } catch (e) {
       console.log(e)
       return e

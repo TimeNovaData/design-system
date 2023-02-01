@@ -1,5 +1,5 @@
 <template>
-  <q-card class="detail-card px-16">
+  <q-card class="detail-card px-16 pb-24">
     <div class="flex justify-between items-center">
       <div class="flex flex-col py-20">
         <span class="text-caps-3 dark:text-white/40">TÍTULO</span>

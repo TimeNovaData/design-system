@@ -263,7 +263,7 @@
                             v-bind="dragOptions"
                             :list="tasks.pendentes"
                             item-key="id"
-                            :handle="'#drag-id'"
+                            :handle="'.drag-id'"
                             :component-data="{
                               tag: 'div',
                               type: 'transition-group',
@@ -884,7 +884,7 @@ if (!user.value.is_staff) router.push({ name: '404' })
 <style lang="sass" scoped>
 
 .foto-capa
-  height:404px
+  height: clamp(330px,50vh,404px)
   position: relative
   &:after
     content:""

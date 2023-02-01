@@ -3,7 +3,7 @@
     <q-card class="q-dialog-plugin p-16">
       <h1 class="text-headline-1 mb-16">{{ title }}</h1>
 
-      <p class="text-paragraph-2 mb-16">{{ text }}</p>
+      <p class="text-paragraph-2 mb-16" v-html="text"></p>
 
       <div class="flex items-center gap-8 justify-end">
         <OButton
