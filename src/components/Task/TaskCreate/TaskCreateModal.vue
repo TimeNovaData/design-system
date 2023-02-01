@@ -174,6 +174,7 @@ import { onBeforeRouteUpdate } from 'vue-router'
 import emitter from 'src/boot/emitter'
 
 const { dialogRef } = useDialogPluginComponent()
+
 const { handleSaveTask } = useTaskStore()
 const { getTaskAnexos, closeTaskEditModal, setNewValueModal } = useModalStore()
 const {
@@ -220,7 +221,11 @@ function handleUpdate(val) {
     ...taskModalObj.value,
     ...val,
   }
-  console.log({taskModalObj: taskModalObj.value, val, newTaskScope: newTaskScope.value})
+  console.log({
+    taskModalObj: taskModalObj.value,
+    val,
+    newTaskScope: newTaskScope.value,
+  })
 }
 
 // Limpa o estado da task ao abrir o modal

@@ -1,6 +1,6 @@
 <template>
   <q-scroll-area>
-    <header class="h-[404px]">
+    <header class="foto-capa">
       <div class="h-full">
         <img
           class="h-full object-cover w-full object-right"
@@ -879,6 +879,10 @@ if (!user.value.is_staff) router.push({ name: '404' })
 </script>
 
 <style lang="sass" scoped>
+
+.foto-capa
+  height:404px
+
 #tasks
   border-radius: 6px 6px 0 0
 
