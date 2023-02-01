@@ -278,7 +278,6 @@ const model = ref({
   entrega_data_desejada_hora: setDeliveryTimeModel.value,
   tempo_estimado: setTimeModel.value || '00:00',
   chamado: props.taskValues?.chamado || null,
-  model: props.taskValues?.observacoes || '',
 })
 
 // Chamado
@@ -297,16 +296,6 @@ watch(
   async (v) => {
     model.value.chamado = null
     setandGetChamados(v)
-  }
-)
-
-watch(
-  () => model.value.tipo_task,
-  (tipo_task) => {
-    if (!props.taskValues?.observacoes && tipo_task.descricao)
-      model.value.observacoes = tipo_task.descricao
-    else if (!props.taskValues?.observacoes && !tipo_task.descricao)
-      model.value.observacoes = ''
   }
 )
 

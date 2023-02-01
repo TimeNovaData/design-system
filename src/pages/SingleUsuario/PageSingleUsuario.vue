@@ -824,11 +824,6 @@ async function saveProfileAvatar(formData) {
 
 const handleClickTimer = (v) => (taskActive.value = v)
 
-emitter.on('modal:task:create', () => {
-  // Atualizar lista de task ao criar uma nova task no modal
-  handleGetTasksPendentes(userActiveID.value)
-})
-
 const dragOptions = computed(() => ({
   animation: 400,
   group: 'description',
@@ -891,9 +886,12 @@ watch(
 
 // Atualiza as tasks ao criar ou editar
 emitter.on('modal:task:edit', async () => {
-  console.log('EMITTER', userActiveID.value)
   handleGetTasksPendentes(userActiveID.value)
-  // handleGetTasksConcluidas(userActiveID.value)
+})
+
+emitter.on('modal:task:create', () => {
+  // Atualizar lista de task ao criar uma nova task no modal
+  handleGetTasksPendentes(userActiveID.value)
 })
 
 // Redirecionar usuário caso não tenha o status de staff

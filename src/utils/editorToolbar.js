@@ -22,7 +22,7 @@ export default function editorToobar() {
       },
     ],
     ['bold', 'italic', 'underline'], // sahudsauhdshua
-    ['hr', 'unordered', 'ordered'],
+    ['hr', 'unordered', 'ordered', 'left', 'center', 'right'],
     ['link'],
     ['removeFormat'],
   ]
