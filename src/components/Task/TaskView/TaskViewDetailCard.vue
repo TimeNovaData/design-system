@@ -100,10 +100,19 @@
         />
       </div>
     </div>
+
     <hr />
-    <div class="flex flex-col py-20" v-if="details?.chamado">
-      <span class="text-caps-3 dark:text-white/40">CHAMADO</span>
-      <p class="text-paragraph-1 two-lines">{{ details.chamado.titulo }}</p>
+
+    <div class="grid grid-cols-2 gap-16">
+      <div class="flex flex-col py-20" v-if="details?.chamado">
+        <span class="text-caps-3 dark:text-white/40">CHAMADO</span>
+        <p class="text-paragraph-1 two-lines">{{ details.chamado.titulo }}</p>
+      </div>
+
+      <div class="flex flex-col py-20">
+        <span class="text-caps-3 dark:text-white/40"> DATA DE CRIAÇÃO </span>
+        <p class="text-paragraph-1">{{ creationDate }}</p>
+      </div>
     </div>
   </q-card>
 </template>
@@ -128,6 +137,7 @@ const tooltipProps = {
 // Formatando tempo e data
 const estimatedTime = GLOBAL.FTime(props.details.tempo_estimado)
 const revisedDate = GLOBAL.FData(props.details.entrega_data_desejada)
+const creationDate = GLOBAL.FData(props.details.data_criacao)
 </script>
 
 <style lang="sass" scoped>
