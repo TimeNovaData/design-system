@@ -8,12 +8,17 @@
     <div class="flex relative -top-32 gap-32 flex-nowrap justify-between">
       <div class="flex flex-nowrap w-full">
         <OAvatar
-          :foto="avatar"
+          v-if="projeto.logo"
+          :foto="projeto.logo"
           size="160px"
           class-avatar="border-2 border-white"
           class="shadow-lg"
           style="box-sizing: initial"
         ></OAvatar>
+
+        <div v-else class="w-[165px] h-[165px] rounded-full bg-neutral-20">
+          <q-skeleton type="circle" size="165px" />
+        </div>
 
         <!-- mt pra compensar o relative -->
         <section class="flex flex-col gap-16 mt-32 pt-24 pl-24 shrink-0 flex-1">

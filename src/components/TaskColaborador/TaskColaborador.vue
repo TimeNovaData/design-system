@@ -5,17 +5,18 @@
     @click="handleView($event, task.id)"
   >
     <li
-      class="task-item list-none cursor-pointer bg-white border border-neutral-100/10 rounded-[3px] dark:border-white/5 dark:!bg-d-neutral-20 overflow-hidden px-16 py-[7px] mb-2"
+      class="task-item list-none cursor-pointer bg-white border border-neutral-100/10 rounded-[3px] dark:border-white/5 dark:!bg-d-neutral-20 overflow-hidden mb-2 pr-12"
       :class="{
         'border-l-0 , border-r-0 , rounded-none': hideDragIcon,
       }"
     >
       <div class="base-grid">
         <div class="icons-wrapper flex justify-between items-center">
-          <div class="move_task">
+          <div
+            id="drag-id"
+            class="move_task cursor-grab w-[50px] h-56 grid place-content-center"
+          >
             <q-icon
-              id="drag-id"
-              class="cursor-grab"
               :class="{ 'opacity-0 , cursor-auto': hideDragIcon }"
               name="svguse:/icons.svg#icon_drag"
               size="22px"
@@ -282,7 +283,7 @@ function handleClickTimer(v) {
 
 .base-grid
   display: grid
-  grid-template-columns: minmax(55px, 65px)  minmax(200px, 1fr) minmax(170px, 250px) repeat(3, minmax(120px, 130px)) 56px
+  grid-template-columns: minmax(70px, 75px)  minmax(200px, 1fr) minmax(170px, 250px) repeat(3, minmax(120px, 130px)) 56px
   align-items: center
 
 .btn-restore

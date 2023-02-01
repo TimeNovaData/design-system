@@ -1,6 +1,7 @@
 <template>
   <q-dialog ref="dialogRef">
     <q-card class="q-dialog-plugin p-16">
+      <!-- <header class="modal-header"></header> -->
       <h1 class="text-headline-1 mb-16">{{ title }}</h1>
 
       <p class="text-paragraph-2 mb-16">{{ text }}</p>
