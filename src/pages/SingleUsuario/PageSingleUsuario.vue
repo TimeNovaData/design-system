@@ -279,7 +279,7 @@
                             v-bind="dragOptions"
                             :list="tasks.pendentes"
                             item-key="id"
-                            :handle="'.drag-id'"
+                            :handle="'#drag-id'"
                             :component-data="{
                               tag: 'div',
                               type: 'transition-group',
@@ -925,7 +925,7 @@ if (!user.value.is_staff) router.push({ name: '404' })
 
 .base-grid
   display: grid
-  grid-template-columns: minmax(70px, 75px)  minmax(200px, 1fr) minmax(170px, 250px) repeat(3, minmax(120px, 130px)) 56px
+  grid-template-columns: minmax(70px, 80px)  minmax(200px, 1fr) minmax(170px, 250px) repeat(3, minmax(120px, 130px)) 56px
   align-items: center
 
 .item-editavel
