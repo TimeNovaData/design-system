@@ -499,5 +499,16 @@ function onClickHeadWorkweek(data) {
 
 <style lang="sass" scoped>
 
-// .calendario
+.calendario
+  --calendar-border-dark: 1px solid rgba(var(--white),0.15 )
+  --calendar-border-current-dark:1px solid rgb(var(--primary-pure))
+  --calendar-current-color-dark: rgb(var(--primary-pure))
+
+  --calendar-border-current:1px solid rgb(var(--primary-pure))
+  --calendar-current-color: rgb(var(--primary-pure))
+
+  :deep(.q-current-day)
+    color: var(--calendar-current-color)
+
+  // --calendar-border-current-dark: #fff
 </style>

@@ -112,7 +112,7 @@
           <TimerTask @click:timer="handleClickTimer" :task="task" />
         </div>
 
-        <div class="pl-8">
+        <div class="ml-12">
           <OButton
             size="md"
             secondary
@@ -290,7 +290,7 @@ function handleClickTimer(v) {
 
 .base-grid
   display: grid
-  grid-template-columns: minmax(70px, 75px)  minmax(200px, 1fr) minmax(170px, 250px) repeat(3, minmax(120px, 130px)) 56px
+  grid-template-columns: minmax(70px, 75px)  minmax(200px, 1fr) minmax(170px, 250px) repeat(2, minmax(120px, 130px)) 8.5rem 3.5rem
   align-items: center
 
 .btn-restore

@@ -32,7 +32,7 @@
       </q-popup-proxy>
 
       <template v-slot:append>
-        <q-icon name="svguse:/icons.svg#icon_date" class="cursor-pointer" />
+        <q-icon :name="icon" class="cursor-pointer" />
       </template>
     </OInput>
   </div>
@@ -49,21 +49,25 @@ const { FData } = GLOBAL
 const props = defineProps({
   data: String,
   label: String,
+  icon: {
+    type: String,
+    default: 'svguse:/icons.svg#icon_date',
+  },
 })
 
 const emit = defineEmits(['update:date'])
 
 const popUpDate = ref(Element)
 
-const dateComplete = computed(
-  () => `${FData(model.value.data)} - ${model.value.hora}`
+const dateComplete = computed(() =>
+  model.value.data ? `${FData(model.value.data)} - ${model.value.hora}` : null
 )
 
 const initialDate = computed(() => {
   const prop = props.data
   const today = new Date()
   const myDate = date.formatDate(prop, 'YYYY/MM/DD')
-  const result = prop ? myDate : today.toDateString()
+  const result = prop ? myDate : null
   return result
 })
 

@@ -2,7 +2,7 @@
   <q-form autofocus ref="form" class="fields-cards flex flex-col gap-16">
     <OInput
       v-model="model.titulo"
-      label="Título"
+      label="Título * "
       size="lg"
       class="bg-white dark:!bg-transparent !p-0 label-transparent"
       required
@@ -12,7 +12,7 @@
     />
 
     <OSelectAvatar
-      label="Cliente - Projeto"
+      label="Cliente - Projeto *"
       size="lg"
       class="bg-white dark:!bg-transparent !p-0 label-transparent"
       :options="projectList"
@@ -40,29 +40,44 @@
       @update-value="(value) => (model.sub_projeto = value)"
     />
 
-    <div>
-      <q-tooltip v-if="chamados.length === 0" v-bind="tooltipProps"
-        >Escolha um projeto para habilitar</q-tooltip
-      >
-      <OSelect
-        :disable="chamados.length === 0"
-        label="Chamado"
+    <div class="grid grid-cols-2 gap-16">
+      <OSelectAvatar
+        label="Responsável *"
         size="lg"
-        class="bg-white dark:!bg-transparent label-transparent"
-        :options="chamados"
-        v-model="model.chamado"
-        @update:model-value="(value) => (model.chamado = value)"
-        option-value="id"
-        :loading="chamadoLoading"
-        option-label="titulo"
-        use-input
-      >
-        <template #selected-item="{ itemProps, opt }">
-          <q-item v-bind="itemProps" class="translate-y-2 p-0 min-h-0">
-            <p>{{ opt.titulo }}</p>
-          </q-item>
-        </template>
-      </OSelect>
+        class="bg-white dark:!bg-transparent !p-0 label-transparent"
+        :options="userList"
+        :modelValue="model.responsavel_task"
+        :loading="!userList.length"
+        nome-key="get_full_name"
+        option-label="get_full_name"
+        @update-value="(value) => (model.responsavel_task = value)"
+        :rules="[(val) => val || '']"
+      />
+
+      <div>
+        <q-tooltip v-if="chamados.length === 0" v-bind="tooltipProps"
+          >Escolha um projeto para habilitar</q-tooltip
+        >
+        <OSelect
+          :disable="chamados.length === 0"
+          label="Chamado"
+          size="lg"
+          class="bg-white dark:!bg-transparent label-transparent"
+          :options="chamados"
+          v-model="model.chamado"
+          @update:model-value="(value) => (model.chamado = value)"
+          option-value="id"
+          :loading="chamadoLoading"
+          option-label="titulo"
+          use-input
+        >
+          <template #selected-item="{ itemProps, opt }">
+            <q-item v-bind="itemProps" class="translate-y-2 p-0 min-h-0">
+              <p>{{ opt.titulo }}</p>
+            </q-item>
+          </template>
+        </OSelect>
+      </div>
     </div>
 
     <div class="flex gap-16">
@@ -184,28 +199,18 @@
           <q-icon name="svguse:/icons.svg#icon_date" class="cursor-pointer" />
         </template>
       </OInput> -->
-      <OSelectAvatar
-        label="Responsável"
-        size="lg"
-        class="bg-white dark:!bg-transparent !p-0 label-transparent col-span-2"
-        :options="userList"
-        :modelValue="model.responsavel_task"
-        :loading="!userList.length"
-        nome-key="get_full_name"
-        option-label="get_full_name"
-        @update-value="(value) => (model.responsavel_task = value)"
-        :rules="[(val) => val || '']"
-      />
 
       <OInputDateTime
         :data="model.data_inicial_previsto"
-        label="Data de inicio"
+        label="Data de inicio desejada"
+        icon="today"
         @update:date="(v) => (model.data_inicial_previsto = v)"
       />
 
       <OInputDateTime
         :data="model.entrega_data_desejada"
         label="Data de entrega desejada"
+        icon="event"
         @update:date="(v) => (model.entrega_data_desejada = v)"
       />
     </div>
