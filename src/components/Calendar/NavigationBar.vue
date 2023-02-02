@@ -14,16 +14,16 @@
       icon="chevron_left"
       @click="$emit('prev')"
       icon-size="1rem"
-      >Anterior</OButton
-    >
+      class="!h-32 !w-32 !p-0"
+    ></OButton>
     <OButton
       size="sm"
       secondary
       icon-right="chevron_right"
       @click="$emit('next')"
       icon-size="1rem"
-      >Proximo</OButton
-    >
+      class="!h-32 !w-32 !p-0"
+    ></OButton>
   </div>
 </template>
 
