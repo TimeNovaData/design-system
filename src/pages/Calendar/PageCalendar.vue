@@ -65,9 +65,7 @@ const { getTasks } = useTaskStore()
 const { tasks } = storeToRefs(useTaskStore())
 
 onMounted(async () => {
-  await getTasks(
-    `&responsavel_task__id=${user.value.id}&page_size=100&status=abertas`
-  )
+  await getTasks(`&page_size=1000&status=abertas`)
   const formato = 'YYYY-MM-DD[T]HH:mm:ss' /* '2023-02-09T12:30:00' */
 
   events.value = tasks.value
@@ -80,7 +78,7 @@ onMounted(async () => {
         end: date.formatDate(i.entrega_data_desejada, formato),
         // allDay: false,
         extendedProps: {
-          foto: i.usuario_criacao.profile.foto,
+          ...i,
         },
       }
     })
