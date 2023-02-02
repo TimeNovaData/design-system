@@ -247,7 +247,7 @@ watch(
     // !taskModalObj.value?.observacoes &&
     if (!tipo_task?.descricao) return
 
-    if (tipo_task.descricao !== old.descricao) {
+    if (tipo_task.descricao !== old?.descricao) {
       newTaskScope.value.observacoes = tipo_task.descricao
     }
   }
