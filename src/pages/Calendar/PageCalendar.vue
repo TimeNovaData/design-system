@@ -90,6 +90,7 @@
                     <div
                       :class="badgeClasses(computedEvent)"
                       :style="badgeStyles(computedEvent, week.length)"
+                      @click="openTaskViewModal(computedEvent.event.id)"
                     >
                       <div
                         v-if="
@@ -143,7 +144,7 @@ import { date } from 'quasar'
 const menu = ref(null)
 const form = ref(null)
 const user = inject('user')
-
+const openTaskViewModal = inject('openTaskViewModal')
 const CURRENT_DAY = new Date()
 
 const { tasks } = storeToRefs(useTaskStore())
@@ -214,7 +215,7 @@ onMounted(async () => {
   const final = tasks.value
     .filter((i) => i.data_inicial_previsto && i.entrega_data_desejada)
     .map((i, index) => ({
-      id: index,
+      id: i.id,
       title: i.titulo,
       details: i.titulo,
       start: date.formatDate(i.data_inicial_previsto, 'YYYY-MM-DD'),
