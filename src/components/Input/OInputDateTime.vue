@@ -43,6 +43,7 @@ import { date } from 'quasar'
 import OButton from 'src/components/Button/OButton.vue'
 import GLOBAL from 'src/utils/GLOBAL'
 import { computed, ref, watch } from 'vue'
+import { useRefHistory } from '@vueuse/core'
 import OInput from './OInput.vue'
 const { FData } = GLOBAL
 
@@ -81,6 +82,12 @@ const model = ref({
   hora: initialTime.value,
 })
 
+const history = useRefHistory(model, {
+  capacity: 1,
+  deep: true,
+  flush: 'sync',
+})
+
 watch(
   () => [model.value.data, model.value.hora],
   ([data, hora]) => {
@@ -90,6 +97,8 @@ watch(
     console.log(dataFinal)
   }
 )
+
+defineExpose({ history })
 </script>
 
 <style lang="scss" scoped></style>

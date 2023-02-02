@@ -671,6 +671,7 @@ async function handleChangeSelect({ profile, id }) {
 
   await handleChangeProfile(profile.id)
   await handleGetTasksPendentes(id)
+  console.log('handleChangeSelect', id)
   await getTempoTask()
   await handleGetTasksConcluidas(id)
 
@@ -866,6 +867,7 @@ async function init() {
   await nextTick()
 
   await handleGetTasksPendentes(IDFinal)
+  console.log('IDFinal', IDFinal)
 
   // Grafico Consumo de Horas
   await getTempoTask()
@@ -891,12 +893,13 @@ watch(
 
 // Atualiza as tasks ao criar ou editar
 emitter.on('modal:task:edit', async () => {
-  handleGetTasksPendentes(userActiveID.value)
+  // handleGetTasksPendentes(userActiveID.value)
+  console.log('userActiveID', userActiveID)
 })
 
 emitter.on('modal:task:create', () => {
   // Atualizar lista de task ao criar uma nova task no modal
-  handleGetTasksPendentes(userActiveID.value)
+  // handleGetTasksPendentes(userActiveID.value)
 })
 
 // Redirecionar usuário caso não tenha o status de staff

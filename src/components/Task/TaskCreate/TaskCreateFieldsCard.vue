@@ -208,18 +208,20 @@
       />
 
       <OInputDateTime
+        ref="inputDataDesejada"
         :data="model.entrega_data_desejada"
         label="Data de entrega desejada"
         icon="event"
-        @update:date="(v) => (model.entrega_data_desejada = v)"
+        @update:date="(v) => verifyEntregadesejada(v)"
       />
+      <button @click="limpar">Limpar</button>
     </div>
   </q-form>
 </template>
 
 <script setup>
 import { date, LoadingBar } from 'quasar'
-import { ref, computed, inject, watch, onMounted } from 'vue'
+import { ref, computed, inject, watch, onMounted, nextTick } from 'vue'
 import { deepUnref } from 'vue-deepunref'
 import { storeToRefs } from 'pinia'
 
@@ -278,7 +280,7 @@ const setDeliveryTimeModel = computed(() => {
 })
 
 const setTimeModel = computed(() => {
-  const formatedTime = FTime(props.taskValues?.tempo_estimado)
+  const formatedTime = FTime(props.taskValues?.tempo_estimado || '00:00:00')
   return formatedTime === '-' ? '' : formatedTime
 })
 
@@ -296,6 +298,34 @@ const model = ref({
   tempo_estimado: setTimeModel.value || '00:00',
   chamado: props.taskValues?.chamado || null,
 })
+
+const inputDataDesejada = ref(Element)
+
+function verifyEntregadesejada(value) {
+  console.log(inputDataDesejada.value.history.history.value.length)
+  if (inputDataDesejada.value.history.history.value.length < 2) return
+
+  if (!model.value.data_inicial_previsto) {
+    inputDataDesejada.value.history.undo()
+    NotifyAlert('Preencha o campo Data de inicio desejada')
+    return
+  }
+
+  const data1 = new Date(model.value.data_inicial_previsto)
+  const data2 = new Date(value)
+
+  if (data1 < data2) {
+    console.log('altera')
+  } else {
+    NotifyAlert('A data de entrega deve ser maior que a de inicio')
+    inputDataDesejada.value.history.undo()
+  }
+}
+
+function limpar() {
+  model.value.data_inicial_previsto = null
+  console.log('limpo', model)
+}
 
 // Chamado
 const chamados = ref([])
