@@ -174,7 +174,7 @@ const GLOBAL = {
   FTime(value /* 00:00:00 */) {
     const len8 = value.length === 8
 
-    const hora = value?.slice(0, len8 ? 2 : 3) /* 4,6 */
+    const hora = value?.slice(0, len8 ? 2 : 3)
     const minutos = value?.slice(len8 ? 3 : 4, len8 ? 5 : 6)
 
     const data = date.buildDate({ year: 2022, hours: hora, minutes: minutos })
