@@ -42,8 +42,7 @@ watch(
 
 // STATE
 const taskState = ref({
-  tempo_total:
-    props.task.tempo_total,
+  tempo_total: props.task.tempo_total,
   is_playing: props.task.is_playing,
 })
 
@@ -53,11 +52,7 @@ const is_playing = computed(() => {
 })
 
 const hasStarted = computed(
-  () =>
-    GLOBAL.zeroPad(
-      props.task?.tempo_total,
-      8
-    ) !== '00:00:00'
+  () => GLOBAL.zeroPad(props.task?.tempo_total, 8) !== '00:00:00'
 )
 // const hasStarted = computed(() => taskState.value.is_playing)
 
@@ -78,7 +73,6 @@ const idleText = computed(() => {
 // METHODS
 const handlePlay = (v) => {
   let taskMod
-  window._big(is_playing.value, 'brunin')
   if (is_playing.value) {
     taskMod = {}
     taskActive.value = {}

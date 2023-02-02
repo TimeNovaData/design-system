@@ -12,7 +12,7 @@
         transition-show="scale"
         transition-hide="scale"
       >
-        <q-date v-model="model.data" landscape today-btn>
+        <q-date v-model="model.data" today-btn>
           <div class="flex flex-col w-full">
             <OInput
               size="md"
@@ -24,8 +24,8 @@
               @click="popUpDate.hide()"
               size="md"
               tertiary
-              class="mt-8 ml-auto -mb-8"
-              >Fechar</OButton
+              class="mt-8 ml-auto -mb-8 !min-w-full"
+              >Confirmar</OButton
             >
           </div>
         </q-date>

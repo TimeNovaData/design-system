@@ -172,6 +172,7 @@ const GLOBAL = {
   },
 
   FTime(value /* 00:00:00 */) {
+    if (!value) return '-'
     const len8 = value.length === 8
 
     const hora = value?.slice(0, len8 ? 2 : 3)
