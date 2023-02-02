@@ -287,7 +287,6 @@ const model = ref({
   entrega_data_desejada: props.taskValues?.entrega_data_desejada || null,
   tempo_estimado: setTimeModel.value || '00:00',
   chamado: props.taskValues?.chamado || null,
-  model: props.taskValues?.observacoes || '',
 })
 
 // Chamado

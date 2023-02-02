@@ -105,9 +105,7 @@
             <div name="desc">
               <TaskCreateDescriptionCard
                 :description="newTaskScope ? newTaskScope.observacoes : ''"
-                @update="
-                  (val) => handleUpdate({ ...newTaskScope, observacoes: val })
-                "
+                @update="(val) => handleUpdate({ observacoes: val })"
               />
             </div>
 
@@ -230,16 +228,30 @@ async function validateOnEdit() {
 // Função chamada quando qualquer dado do modal for alterado
 function handleUpdate(val) {
   window._blue('UPDATE')
-  newTaskScope.value = {
+
+  const dados = {
     ...taskModalObj.value,
+    ...newTaskScope.value,
     ...val,
   }
-  console.log({
-    taskModalObj: taskModalObj.value,
-    val,
-    newTaskScope: newTaskScope.value,
-  })
+
+  newTaskScope.value = dados
+  // debugger
+
+  console.log(newTaskScope.value)
 }
+
+watch(
+  () => newTaskScope.value?.tipo_task,
+  (tipo_task, old) => {
+    // !taskModalObj.value?.observacoes &&
+    if (!tipo_task?.descricao) return
+
+    if (tipo_task.descricao !== old.descricao) {
+      newTaskScope.value.observacoes = tipo_task.descricao
+    }
+  }
+)
 
 // Limpa o estado da task ao abrir o modal
 watch(modalEditTaskState, () =>

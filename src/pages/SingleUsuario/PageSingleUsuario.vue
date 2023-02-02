@@ -279,7 +279,7 @@
                             v-bind="dragOptions"
                             :list="tasks.pendentes"
                             item-key="id"
-                            :handle="'.drag-id'"
+                            :handle="'#drag-id'"
                             :component-data="{
                               tag: 'div',
                               type: 'transition-group',
@@ -824,11 +824,6 @@ async function saveProfileAvatar(formData) {
 
 const handleClickTimer = (v) => (taskActive.value = v)
 
-emitter.on('modal:task:create', () => {
-  // Atualizar lista de task ao criar uma nova task no modal
-  handleGetTasksPendentes(userActiveID.value)
-})
-
 const dragOptions = computed(() => ({
   animation: 400,
   group: 'description',
@@ -891,9 +886,12 @@ watch(
 
 // Atualiza as tasks ao criar ou editar
 emitter.on('modal:task:edit', async () => {
-  console.log('EMITTER', userActiveID.value)
   handleGetTasksPendentes(userActiveID.value)
-  // handleGetTasksConcluidas(userActiveID.value)
+})
+
+emitter.on('modal:task:create', () => {
+  // Atualizar lista de task ao criar uma nova task no modal
+  handleGetTasksPendentes(userActiveID.value)
 })
 
 // Redirecionar usuário caso não tenha o status de staff
@@ -925,7 +923,7 @@ if (!user.value.is_staff) router.push({ name: '404' })
 
 .base-grid
   display: grid
-  grid-template-columns: minmax(70px, 75px)  minmax(200px, 1fr) minmax(170px, 250px) repeat(3, minmax(120px, 130px)) 56px
+  grid-template-columns: minmax(70px, 80px)  minmax(200px, 1fr) minmax(170px, 250px) repeat(3, minmax(120px, 130px)) 56px
   align-items: center
 
 .item-editavel
