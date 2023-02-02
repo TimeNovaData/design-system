@@ -133,7 +133,7 @@
                 <q-item
                   class="items-center gap-8 text-alert-error"
                   clickable
-                  @click.stop="() => (!completed ? showDeleteTaskModal() : '')"
+                  @click="() => (!completed ? showDeleteTaskModal() : '')"
                 >
                   <q-icon
                     size="1rem"
