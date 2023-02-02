@@ -34,6 +34,10 @@
       >
         <q-icon name="svguse:/icons.svg#icon_download"></q-icon>
       </OButton>
+
+      <!-- <OButton v-if="deleteFn" secondary class="!p-0 h-40" @click="deleteFn">
+        deletar
+      </OButton> -->
     </div>
   </article>
 </template>
@@ -49,6 +53,7 @@ defineProps({
   thumb: String,
   size: String,
   nome: String,
+  deleteFn: Function,
 })
 </script>
 

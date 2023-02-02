@@ -1,5 +1,6 @@
 <template>
-  <q-card class="attachment-card flex-1 p-16 pb-0 pr-0" v-if="anexos.length">
+  <!--** Estava v-if="anexos.length" -->
+  <q-card class="attachment-card flex-1 p-16 pb-0 pr-0" v-if="anexos?.[0]">
     <header class="flex justify-between">
       <span class="text-caps-3 dark:text-white/40">ANEXOS</span>
 

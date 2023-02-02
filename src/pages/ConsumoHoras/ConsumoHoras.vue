@@ -290,13 +290,12 @@
                 key="tempo_estimado"
               >
                 <p class="whitespace-nowrap text-paragraph-2">
-                  {{ GLOBAL.FTime(props.row.tempo_estimado) }}
+                  {{ GLOBAL.FTime(props.row.orcado) }}
                 </p>
                 <p
                   class="whitespace-nowrap text-paragraph-3 text-neutral-70 dark:text-white/70"
                 >
-                  <!-- {{ props.row.tempo_total }} -->
-                  00h 00m
+                  {{ GLOBAL.FTime(props.row.tempo_decorrido) }}
                 </p>
               </q-td>
 
