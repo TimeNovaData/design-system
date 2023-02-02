@@ -3,10 +3,10 @@ import { date, is, colors, exportFile } from 'quasar'
 import { unref } from 'vue'
 import DOMPurify from 'dompurify'
 import { NotifyError } from 'src/boot/Notify'
-import GLOBAL from 'src/utils/GLOBAL'
+
 import { deepUnref } from 'vue-deepunref'
 
-export default {
+const GLOBAL = {
   debounce: (time, fn, name) => {
     return (...args) => {
       clearTimeout(window[name])
@@ -172,8 +172,11 @@ export default {
   },
 
   FTime(value /* 00:00:00 */) {
-    const hora = GLOBAL.zeroPad(value, 8)?.slice(0, 2)
-    const minutos = GLOBAL.zeroPad(value, 8)?.slice(3, 5)
+    const len8 = value.length === 8
+
+    const hora = value?.slice(0, len8 ? 2 : 3)
+    const minutos = value?.slice(len8 ? 3 : 4, len8 ? 5 : 6)
+
     const data = date.buildDate({ year: 2022, hours: hora, minutes: minutos })
 
     if (date.isValid(data)) {
@@ -302,3 +305,6 @@ export default {
     return Math.floor(Math.random() * (max - min + 1)) + min
   },
 }
+// eslint-disable-next-line n/no-deprecated-api
+window.GLOBAL = GLOBAL
+export default GLOBAL

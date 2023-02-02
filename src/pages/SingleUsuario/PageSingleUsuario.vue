@@ -667,6 +667,8 @@ async function handleChangeSelect({ profile, id }) {
   loading.value = true
   userActiveID.value = id
   tasks.value.pendentes = []
+  isLoadingHoraConsumo.value = true
+
   await handleChangeProfile(profile.id)
   await handleGetTasksPendentes(id)
   await getTempoTask()

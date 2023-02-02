@@ -18,8 +18,7 @@ export const useBlurMode = defineStore('blurMode', () => {
 
   watch(blurMode, (v) => {
     toggleClassBody()
-    if (v !== user.userProfile.blur_mode)
-      user.setProfile({ ...user.userProfile, blur_mode: v })
+    if (v !== user.userProfile.blur_mode) user.setProfile({ blur_mode: v })
   })
 
   watch(pageWithBlur, () => toggleClassBody())

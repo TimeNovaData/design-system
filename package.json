@@ -11,8 +11,10 @@
     "dev": "yarn quasar dev"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.1",
+    "@fullcalendar/daygrid": "^6.1.1",
+    "@fullcalendar/vue3": "^6.1.2",
     "@quasar/extras": "^1.15.8",
-    "@quasar/quasar-ui-qcalendar": "^4.0.0-beta.15",
     "@vueuse/core": "^9.6.0",
     "@vueuse/integrations": "^9.6.0",
     "apexcharts": "^3.36.3",
