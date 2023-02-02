@@ -174,7 +174,7 @@
           <q-tab name="calendar" class="ml-6">
             <OButton
               secondary
-              icon="svguse:/icons.svg#icon_calendar pointer-events-none"
+              icon="svguse:/icons.svg#icon_calendar"
               class="w-full text-neutral-70"
               size="md"
               >Calendário
