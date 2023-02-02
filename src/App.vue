@@ -76,9 +76,7 @@ async function requests() {
   await nextTick()
   await getProfile()
   await getUsuarios()
-
   await getProjetos()
-
   await getClientes()
   await getSubProjetos()
   await getTaskTypes()
@@ -128,7 +126,7 @@ async function intervalTempoTask() {
 
   const taskReturn = await getTempoTask(tempoTaskActiveID.value)
 
-  const timer = taskReturn.tempo_total.split(':').slice(0, 2).join(':')
+  const timer = GLOBAL.FTime(taskReturn.tempo_total)
 
   if (timer !== timerCache) {
     const formatedTimer = GLOBAL.FTime(taskReturn.tempo_total) // Atualiza timer do titulo
@@ -137,6 +135,7 @@ async function intervalTempoTask() {
   }
 
   timerCache = timer
+  window._red(taskReturn.tempo_total, 'tempo retornado')
 
   tasksColaborador.value.pendentes = tasksColaborador.value.pendentes.map(
     (t) => {
@@ -152,7 +151,7 @@ async function intervalTempoTask() {
     taskActive.value.tempo_total = taskReturn.tempo_total
   }
 
-  timeout = setTimeout(() => intervalTempoTask(), 5000)
+  timeout = setTimeout(() => intervalTempoTask(), 10000)
 }
 
 //  ---------------------------------------

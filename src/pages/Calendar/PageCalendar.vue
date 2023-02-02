@@ -68,19 +68,17 @@ onMounted(async () => {
   await getTasks(
     `&responsavel_task__id=${user.value.id}&page_size=100&status=abertas`
   )
+  const formato = 'YYYY-MM-DD[T]HH:mm:ss' /* '2023-02-09T12:30:00' */
+
   events.value = tasks.value
     .filter((i) => i.data_inicial_previsto && i.entrega_data_desejada)
     .map((i) => {
       return {
         id: i.id,
         title: i.titulo,
-        start: date.formatDate(
-          i.data_inicial_previsto,
-          'YYYY-MM-DD[T]HH:mm:ss'
-        ),
-        end: date.formatDate(i.entrega_data_desejada, 'YYYY-MM-DD[T]HH:mm:ss'),
-        /* '2023-02-09T12:30:00' */
-        allDay: false,
+        start: date.formatDate(i.data_inicial_previsto, formato),
+        end: date.formatDate(i.entrega_data_desejada, formato),
+        // allDay: false,
         extendedProps: {
           foto: i.usuario_criacao.profile.foto,
         },

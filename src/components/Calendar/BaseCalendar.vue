@@ -6,10 +6,7 @@
       :options="calendarOptions"
     >
       <template v-slot:eventContent="arg">
-        <div
-          @click="handleClick(arg)"
-          class="flex items-center gap-4 cursor-pointer"
-        >
+        <div class="flex items-center gap-4 cursor-pointer">
           <OAvatar size="1.5rem" :foto="arg.event.extendedProps.foto" />
           {{ arg.event.title }}
         </div>
@@ -20,7 +17,10 @@
 
 <script setup>
 import FullCalendar from '@fullcalendar/vue3'
+
 import dayGridPlugin from '@fullcalendar/daygrid'
+import timeGridPlugin from '@fullcalendar/timegrid'
+
 import { ref, onMounted, watch, inject } from 'vue'
 import ptLocale from '@fullcalendar/core/locales/pt-br'
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
@@ -30,6 +30,7 @@ const props = defineProps({
 })
 const openTaskViewModal = inject('openTaskViewModal')
 function handleClick(arg) {
+  console.log(arg)
   openTaskViewModal(arg.event.id)
   window._red(arg.event.start)
   window._blue(arg.event.end)
@@ -54,27 +55,33 @@ watch(
 )
 
 const calendarOptions = ref({
-  plugins: [dayGridPlugin],
+  plugins: [dayGridPlugin, timeGridPlugin],
   initialView: 'dayGridMonth',
   weekends: false, // initial value
   locales: [ptLocale],
+  headerToolbar: {
+    left: 'today prev,next',
+    center: 'title',
+    right: 'dayGridMonth timeGridWeek timeGridDay',
+  },
+  eventClick: handleClick,
 })
 
 const events = ref([
-  {
-    title: 'event1',
-    start: '2023-02-01',
-  },
-  {
-    title: 'event2',
-    start: '2023-02-05',
-    end: '2023-02-07',
-  },
-  {
-    title: 'event3',
-    start: '2023-02-09T12:30:00',
-    allDay: false, // will make the time show
-  },
+  // {
+  //   title: 'event1',
+  //   start: '2023-02-01',
+  // },
+  // {
+  //   title: 'event2',
+  //   start: '2023-02-05',
+  //   end: '2023-02-07',
+  // },
+  // {
+  //   title: 'event3',
+  //   start: '2023-02-09T12:30:00',
+  //   allDay: false, // will make the time show
+  // },
 ])
 </script>
 
