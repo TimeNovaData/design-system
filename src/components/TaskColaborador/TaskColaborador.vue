@@ -121,7 +121,14 @@
             @click.stop
             :class="{ 'dark:!bg-white/20 !bg-neutral-30': showing }"
           >
-            <q-menu ref="menu" padding class="min-w-[250px]" v-model="showing">
+            <q-menu
+              ref="menu"
+              padding
+              class="min-w-[250px]"
+              v-model="showing"
+              :persistent="false"
+              :auto-close="true"
+            >
               <q-list>
                 <q-item
                   class="items-center gap-8 text-alert-error"
