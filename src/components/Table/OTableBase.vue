@@ -9,7 +9,7 @@
     class="table-base"
     primary
   >
-    <template v-slot:top>
+    <template #top>
       <OTableHeaderBase
         v-if="header"
         @update="updateModels"
@@ -22,7 +22,7 @@
       <slot :name="slot" v-bind="slotProps"></slot>
     </template>
 
-    <template v-slot:bottom="slotProps">
+    <template #bottom="slotProps">
       <OTableFooterBase
         v-if="footer"
         :downloadable="props.showDownloadButton"

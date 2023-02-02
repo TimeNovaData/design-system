@@ -145,7 +145,7 @@
         </div>
       </div>
 
-      <OInput
+      <!-- <OInput
         size="lg"
         class="bg-white dark:!bg-transparent w-full cursor-pointer label-transparent"
         label="Data de entrega desejada"
@@ -183,12 +183,11 @@
         <template v-slot:append>
           <q-icon name="svguse:/icons.svg#icon_date" class="cursor-pointer" />
         </template>
-      </OInput>
-
+      </OInput> -->
       <OSelectAvatar
         label="Responsável"
         size="lg"
-        class="bg-white dark:!bg-transparent !p-0 label-transparent"
+        class="bg-white dark:!bg-transparent !p-0 label-transparent col-span-2"
         :options="userList"
         :modelValue="model.responsavel_task"
         :loading="!userList.length"
@@ -196,6 +195,16 @@
         option-label="get_full_name"
         @update-value="(value) => (model.responsavel_task = value)"
         :rules="[(val) => val || '']"
+      />
+
+      <OInputDateTime
+        :data="model.entrega_data_desejada"
+        label="Data de inicio"
+      />
+
+      <OInputDateTime
+        :data="model.entrega_data_desejada"
+        label="Data de entrega desejada"
       />
     </div>
   </q-form>
@@ -222,6 +231,7 @@ import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import { useProjetoStore } from 'src/stores/projetos/projetos.store'
 import { useProfileStore } from 'src/stores/profile/profile.store'
 import { useUserStore } from 'src/stores/usuarios/user.store'
+import OInputDateTime from 'src/components/Input/OInputDateTime.vue'
 
 // ==========================================================================================
 
@@ -274,8 +284,7 @@ const model = ref({
   tipo_task: props.taskValues?.tipo_task || null,
   responsavel_task: props.taskValues?.responsavel_task || null,
   quantidade: props.taskValues?.quantidade || 1,
-  entrega_data_desejada_data: setDeliveryDateModel.value,
-  entrega_data_desejada_hora: setDeliveryTimeModel.value,
+  entrega_data_desejada: props.taskValues?.entrega_data_desejada || null,
   tempo_estimado: setTimeModel.value || '00:00',
   chamado: props.taskValues?.chamado || null,
   model: props.taskValues?.observacoes || '',
@@ -297,16 +306,6 @@ watch(
   async (v) => {
     model.value.chamado = null
     setandGetChamados(v)
-  }
-)
-
-watch(
-  () => model.value.tipo_task,
-  (tipo_task) => {
-    if (!props.taskValues?.observacoes && tipo_task.descricao)
-      model.value.observacoes = tipo_task.descricao
-    else if (!props.taskValues?.observacoes && !tipo_task.descricao)
-      model.value.observacoes = ''
   }
 )
 
@@ -339,7 +338,7 @@ watch(
       ...deepUnref(vl),
       ...deepUnref(dadosAdicionais),
     }
-    // console.log(dataObj)
+    console.log(dataObj)
 
     emit('update', dataObj)
   },
@@ -347,11 +346,11 @@ watch(
 )
 
 // Visualizaçao do input de entrega desejada
-const deliveryDateComplete = computed(() => {
-  return `${FData(model.value.entrega_data_desejada_data)} - ${
-    model.value.entrega_data_desejada_hora
-  }`
-})
+// const deliveryDateComplete = computed(() => {
+//   return `${FData(model.value.entrega_data_desejada_data)} - ${
+//     model.value.entrega_data_desejada_hora
+//   }`
+// })
 
 // Subprojeto select
 const setSubProjectList = () => {

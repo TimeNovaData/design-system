@@ -39,13 +39,21 @@
 
         <!-- <BaseCalendar2 /> -->
         <div>
-          <div class="flex items-end w-full flex-nowrap mt-32 mb-16">
-            <q-space />
-            <p class="capitalize text-title-3 mr-24 text-neutral-70">
+          <div
+            class="flex items-end w-full flex-nowrap mt-32 mb-16 justify-center relative"
+          >
+            <p
+              class="capitalize text-title-3 mr-24 text-neutral-70 dark:text-white/80"
+            >
               {{ formattedMonth }}
             </p>
 
-            <NavigationBar @today="onToday" @prev="onPrev" @next="onNext" />
+            <NavigationBar
+              @today="onToday"
+              @prev="onPrev"
+              @next="onNext"
+              class="absolute right-0"
+            />
           </div>
 
           <div class="row justify-center">
@@ -90,10 +98,11 @@
                         class="title q-calendar__ellipsis"
                       >
                         {{
-                          computedEvent.event.title +
-                          (computedEvent.event.time
-                            ? ' - ' + computedEvent.event.time
-                            : '')
+                          `${computedEvent.event.title} ${
+                            computedEvent.event.time
+                              ? ' - ' + computedEvent.event.time
+                              : ''
+                          }`
                         }}
                         <q-tooltip>{{ computedEvent.event.details }}</q-tooltip>
                       </div>
@@ -103,41 +112,6 @@
               </QCalendar>
             </div>
           </div>
-
-          <!-- <QCalendar
-            class="mt-32"
-            locale="pt-BR"
-            mode="month"
-            :day-min-height="70"
-            animated
-            bordered
-            :task-width="240"
-            :min-weekday-length="2"
-          >
-          
-
-            <template #title-task="{ scope }">
-              <div class="summary ellipsis">
-                <div class="title ellipsis">{{ scope.title.label }}</div>
-              </div>
-            </template>
-
-   
-
-            <template
-              #head-tasks="{
-                /* scope */
-              }"
-            >
-              <div class="header ellipsis" style="font-weight: 600">
-                <div class="issue ellipsis">Issue</div>
-                <div class="key">Key</div>
-                <div class="logged">Logged</div>
-              </div>
-            </template>
-
-           
-          </QCalendar> -->
         </div>
       </q-card>
     </div>
@@ -233,7 +207,7 @@ onMounted(async () => {
     ),
     'filtradas'
   )
-  events.value = tasks.value
+  const final = tasks.value
     .filter((i) => i.data_inicial_previsto && i.entrega_data_desejada)
     .map((i) => ({
       id: i.id,
@@ -242,9 +216,10 @@ onMounted(async () => {
       end: date.formatDate(i.entrega_data_desejada, 'YYYY-MM-DD'),
       bgcolor: 'green',
       icon: 'svguse:/icons.svg#icon_calendar',
+      details: 'details',
     }))
-  await nextTick()
-  console.log(events.value, 'final')
+
+  console.log(final, 'final')
 })
 
 const events = ref([

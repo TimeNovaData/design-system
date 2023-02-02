@@ -241,7 +241,7 @@ function showFinishTaskModal() {
 
 const text = computed(
   () =>
-    `Deseja deletar a task <bold class='font-semibold'>${props.task.titulo}</bold> ?`
+    `Deseja <span class='text-alert-error'>EXCLUIR</span> a task <bold class='font-semibold'>${props.task.titulo}</bold> ?`
 )
 
 function showDeleteTaskModal() {
