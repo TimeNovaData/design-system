@@ -178,7 +178,7 @@ const GLOBAL = {
     const minutos = value?.slice(len8 ? 3 : 4, len8 ? 5 : 6)
 
     const data = date.buildDate({ year: 2022, hours: hora, minutes: minutos })
-    debugger
+
     if (date.isValid(data)) {
       return `${hora}h ${minutos}m`
       // return date.formatDate(data, 'HH[h] mm[m]')
