@@ -9,7 +9,6 @@ export default function useDarkMode() {
   watch(darkMode, async (v) => {
     await nextTick()
     if (v === user.userProfile.dark_mode) return
-    console.log(v, user.userProfile.dark_mode)
     Dark.set(v)
     LocalStorage.set('darkMode', v)
     user.setProfile({ dark_mode: v })
