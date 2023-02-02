@@ -127,6 +127,7 @@
 
 <script setup>
 import { copyToClipboard } from 'quasar'
+import { computed } from 'vue'
 import GLOBAL from 'src/utils/GLOBAL'
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
 import OBadge from 'src/components/Badge/OBadge.vue'
@@ -143,10 +144,17 @@ const tooltipProps = {
 }
 
 // Formatando tempo e data
-const estimatedTime = GLOBAL.FTime(props.details.tempo_estimado)
-const revisedDate = GLOBAL.FData(props.details.entrega_data_desejada)
-const initDate = GLOBAL.FData(props.details.data_inicial_previsto)
 const creationDate = GLOBAL.FData(props.details.data_criacao)
+
+const estimatedTime = computed(() => GLOBAL.FTime(props.details.tempo_estimado))
+
+const revisedDate = computed(() =>
+  GLOBAL.FData(props.details.entrega_data_desejada)
+)
+
+const initDate = computed(() =>
+  GLOBAL.FData(props.details.data_inicial_previsto)
+)
 </script>
 
 <style lang="sass" scoped>

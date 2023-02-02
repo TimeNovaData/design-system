@@ -142,6 +142,7 @@
           @click="() => validateOnEdit()"
           primary
           icon="svguse:/icons.svg#icon_check"
+          :loading="savingTask"
         >
           Salvar Alterações
         </OButton>
@@ -151,6 +152,7 @@
           @click="() => validateOnCreate()"
           primary
           icon="svguse:/icons.svg#icon_check"
+          :loading="savingTask"
         >
           Adicionar Nova Task
         </OButton>
@@ -191,13 +193,16 @@ const {
 const tabs = ref('desc')
 const newTaskScope = ref(null)
 const taskFields = ref(null)
+const savingTask = ref(false)
 
 async function validateOnCreate() {
+  savingTask.value = true
   const valid = await taskFields.value.form.validate(true)
   if (valid) {
     await handleSaveTask({}, newTaskScope.value)
     dialogRef.value.hide()
   }
+  savingTask.value = false
 }
 
 const handleCloseModal = () => {
@@ -214,6 +219,7 @@ const handleCloseModal = () => {
 }
 
 async function validateOnEdit() {
+  savingTask.value = true
   const valid = await taskFields.value.form.validate(true)
   if (valid) {
     const { data: taskEditada } = await handleSaveTask(
@@ -223,6 +229,7 @@ async function validateOnEdit() {
     await setNewValueModal(taskEditada.id)
     dialogRef.value.hide()
   }
+  savingTask.value = false
 }
 
 // Função chamada quando qualquer dado do modal for alterado
@@ -237,8 +244,7 @@ function handleUpdate(val) {
 
   newTaskScope.value = dados
   // debugger
-
-  console.log(newTaskScope.value)
+  // console.log(newTaskScope.value)
 }
 
 watch(
