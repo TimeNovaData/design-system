@@ -145,7 +145,7 @@
       </div>
 
       <div
-        class="header-wrapper flex items-center justify-between p-16 bg-neutral-10 dark:bg-d-neutral-10"
+        class="header-wrapper flex items-center p-16 bg-neutral-10 dark:bg-d-neutral-10"
       >
         <div class="item-1 flex items-center">
           <q-icon
@@ -153,13 +153,14 @@
             class="text-primary-pure mr-6"
             size="1.5rem"
           ></q-icon>
-          <p class="text-title-4">Minhas Tasks</p>
+          <p class="text-title-4" v-if="user.id === profileActive.user">
+            Minhas Tasks
+          </p>
+          <p class="text-title-4" v-else>Tasks</p>
         </div>
 
-        <q-tabs
-          v-model="tabs"
-          class="flex gap-16 absolute left-0 right-0 mx-auto"
-        >
+        <q-tabs v-model="tabs" class="flex gap-16 ml-24">
+          <!--  class="flex gap-16 absolute left-0 right-0 mx-auto" -->
           <q-tab name="list">
             <OButton
               secondary
@@ -173,13 +174,14 @@
           <q-tab name="calendar" class="ml-6">
             <OButton
               secondary
-              icon="svguse:/icons.svg#icon_calendar"
+              icon="svguse:/icons.svg#icon_calendar pointer-events-none"
               class="w-full text-neutral-70"
               size="md"
               >Calendário
             </OButton>
           </q-tab>
         </q-tabs>
+        <q-space />
 
         <div class="item-2 flex gap-8">
           <OButton
@@ -211,7 +213,7 @@
             ></q-icon>
 
             <q-menu
-              class="min-w-[190px] py-8"
+              class="min-w-[190px]"
               :persistent="false"
               :auto-close="true"
               padding
@@ -664,7 +666,7 @@ const clearInputProfile = () => {
 async function handleChangeSelect({ profile, id }) {
   loading.value = true
   userActiveID.value = id
-
+  tasks.value.pendentes = []
   await handleChangeProfile(profile.id)
   await handleGetTasksPendentes(id)
   await getTempoTask()
@@ -677,7 +679,8 @@ async function handleChangeSelect({ profile, id }) {
 }
 
 async function handleChangeProfile(profileId) {
-  profileActive.value = {}
+  const foto = profileActive.value.foto
+  profileActive.value = { foto }
   await getProfile(profileId)
 }
 

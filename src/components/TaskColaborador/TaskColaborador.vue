@@ -5,7 +5,7 @@
     @click="handleView($event, task.id)"
   >
     <li
-      class="task-item list-none cursor-pointer bg-white border border-neutral-100/10 rounded-[3px] dark:border-white/5 dark:!bg-d-neutral-20 overflow-hidden mb-2 pr-12"
+      class="task-item list-none cursor-pointer bg-white border border-neutral-100/10 rounded-[3px] dark:border-white/5 dark:!bg-d-neutral-20 overflow-hidden mb-2 pr-12 hover:!bg-neutral-10 transition-colors"
       :class="{
         'border-l-0 , border-r-0 , rounded-none': hideDragIcon,
       }"
@@ -14,7 +14,7 @@
         <div class="icons-wrapper flex justify-between items-center">
           <div
             id="drag-id"
-            class="cursor-grab w-[50px] h-56 grid place-content-center"
+            class="move_task cursor-grab w-[50px] h-56 grid place-content-center"
           >
             <q-icon
               :class="{ 'opacity-0 , cursor-auto': hideDragIcon }"
@@ -112,15 +112,16 @@
           <TimerTask @click:timer="handleClickTimer" :task="task" />
         </div>
 
-        <div class="pl-16">
+        <div class="pl-8">
           <OButton
             size="md"
             secondary
             class="dark:!bg-d-neutral-30"
             icon="more_horiz"
             @click.stop
+            :class="{ 'dark:!bg-white/20 !bg-neutral-30': showing }"
           >
-            <q-menu padding class="min-w-[250px] py-12">
+            <q-menu ref="menu" padding class="min-w-[250px]" v-model="showing">
               <q-list>
                 <q-item
                   class="items-center gap-8 text-alert-error"
@@ -186,7 +187,8 @@ import OButton from 'src/components/Button/OButton.vue'
 import ModalConfirm from 'src/components/Modal/ModalConfirm.vue'
 
 const $q = useQuasar()
-
+const menu = ref(Element)
+const showing = ref(false)
 const openTaskViewModal = inject('openTaskViewModal')
 
 const props = defineProps({
@@ -241,7 +243,7 @@ function showFinishTaskModal() {
 
 const text = computed(
   () =>
-    `Deseja <span class='text-alert-error'>EXCLUIR</span> a task <bold class='font-semibold'>${props.task.titulo}</bold> ?`
+    `Deseja deletar a task <bold class='font-semibold'>${props.task.titulo}</bold> ?`
 )
 
 function showDeleteTaskModal() {
@@ -281,7 +283,7 @@ function handleClickTimer(v) {
 
 .base-grid
   display: grid
-  grid-template-columns: minmax(70px, 80px)  minmax(200px, 1fr) minmax(170px, 250px) repeat(3, minmax(120px, 130px)) 56px
+  grid-template-columns: minmax(70px, 75px)  minmax(200px, 1fr) minmax(170px, 250px) repeat(3, minmax(120px, 130px)) 56px
   align-items: center
 
 .btn-restore

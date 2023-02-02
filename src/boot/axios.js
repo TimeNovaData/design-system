@@ -6,12 +6,9 @@ import { useRouter } from 'vue-router'
 
 const API_URL = process.env.API_URL
 const TOKEN = Cookies.get('NDT_TOKEN')
-const axiosController = new AbortController()
 
 const api = axios.create({
   baseURL: API_URL,
-
-  signal: axiosController.signal,
 
   headers: {
     Authorization: `Bearer ${TOKEN}`,
@@ -93,4 +90,4 @@ export default boot(({ app }) => {
   app.config.globalProperties.$API_URL = API_URL
 })
 
-export { api, API_URL, axiosController }
+export { api, API_URL }

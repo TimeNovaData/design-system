@@ -37,7 +37,6 @@ export const useModalStore = defineStore('modalStore', () => {
 
   async function openTaskViewModal(taskId) {
     const taskRes = await taskStore.getTask(taskId)
-    await getTaskAnexos(taskId)
 
     taskModalObj.value = taskRes
     modalTaskState.value = true
@@ -48,7 +47,8 @@ export const useModalStore = defineStore('modalStore', () => {
     setID(taskId)
     taskStore.setOpenTask(taskId)
 
-    await getComments('task')
+    getComments('task')
+    getTaskAnexos(taskId)
 
     taskModalCommentObj.value = {
       isLoading: isLoading.value,
@@ -74,7 +74,7 @@ export const useModalStore = defineStore('modalStore', () => {
   const setNewValueModal = async (taskId) => {
     console.log('id', taskId)
     const taskRes = await taskStore.getTask(taskId)
-    await getTaskAnexos(taskId)
+    getTaskAnexos(taskId)
 
     taskModalObj.value = taskRes
   }

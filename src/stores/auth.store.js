@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { api, axiosController } from 'src/boot/axios'
+import { api } from 'src/boot/axios'
 import { nextTick, ref, watch } from 'vue'
 import { Cookies, Notify, LoadingBar } from 'quasar'
 import { useResetStore } from 'src/utils/useResetStore'

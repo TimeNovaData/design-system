@@ -1,46 +1,48 @@
 <template>
-  <OInput
-    size="lg"
-    class="bg-white dark:!bg-transparent w-full cursor-pointer label-transparent"
-    :label="label"
-    v-model="dateComplete"
-  >
-    <q-popup-proxy
-      ref="popUpDate"
-      cover
-      transition-show="scale"
-      transition-hide="scale"
+  <div>
+    <OInput
+      size="lg"
+      class="bg-white dark:!bg-transparent w-full cursor-pointer label-transparent"
+      :label="label"
+      v-model="dateComplete"
     >
-      <q-date v-model="model.data" landscape today-btn>
-        <div class="flex flex-col w-full">
-          <OInput
-            size="md"
-            type="time"
-            v-model="model.hora"
-            class="label-transparent"
-          />
-          <OButton
-            @click="popUpDate.hide()"
-            size="md"
-            tertiary
-            class="mt-8 ml-auto -mb-8"
-            >Fechar</OButton
-          >
-        </div>
-      </q-date>
-    </q-popup-proxy>
+      <q-popup-proxy
+        ref="popUpDate"
+        cover
+        transition-show="scale"
+        transition-hide="scale"
+      >
+        <q-date v-model="model.data" landscape today-btn>
+          <div class="flex flex-col w-full">
+            <OInput
+              size="md"
+              type="time"
+              v-model="model.hora"
+              class="label-transparent"
+            />
+            <OButton
+              @click="popUpDate.hide()"
+              size="md"
+              tertiary
+              class="mt-8 ml-auto -mb-8"
+              >Fechar</OButton
+            >
+          </div>
+        </q-date>
+      </q-popup-proxy>
 
-    <template v-slot:append>
-      <q-icon name="svguse:/icons.svg#icon_date" class="cursor-pointer" />
-    </template>
-  </OInput>
+      <template v-slot:append>
+        <q-icon name="svguse:/icons.svg#icon_date" class="cursor-pointer" />
+      </template>
+    </OInput>
+  </div>
 </template>
 
 <script setup>
 import { date } from 'quasar'
 import OButton from 'src/components/Button/OButton.vue'
 import GLOBAL from 'src/utils/GLOBAL'
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import OInput from './OInput.vue'
 const { FData } = GLOBAL
 
@@ -48,6 +50,8 @@ const props = defineProps({
   data: String,
   label: String,
 })
+
+const emit = defineEmits(['update:date'])
 
 const popUpDate = ref(Element)
 
@@ -72,6 +76,16 @@ const model = ref({
   data: initialDate.value,
   hora: initialTime.value,
 })
+
+watch(
+  () => [model.value.data, model.value.hora],
+  ([data, hora]) => {
+    const dateTime = new Date(`${data} ${hora}`)
+    const dataFinal = date?.formatDate(dateTime)
+    emit('update:date', dataFinal)
+    console.log(dataFinal)
+  }
+)
 </script>
 
 <style lang="scss" scoped></style>

@@ -84,7 +84,14 @@
 
     <hr />
 
-    <div class="grid grid-cols-2 gap-16">
+    <div class="grid grid-cols-3 gap-16">
+      <div class="flex flex-col py-20">
+        <span class="text-caps-3 dark:text-white/40">
+          DATA DE INICIO DESEJADA
+        </span>
+        <p class="text-paragraph-1">{{ initDate }}</p>
+      </div>
+
       <div class="flex flex-col py-20">
         <span class="text-caps-3 dark:text-white/40">
           DATA DE ENTREGA DESEJADA
@@ -101,6 +108,7 @@
       </div>
     </div>
 
+    <!-- data_inicial_previsto -->
     <hr />
 
     <div class="grid grid-cols-2 gap-16">
@@ -137,6 +145,7 @@ const tooltipProps = {
 // Formatando tempo e data
 const estimatedTime = GLOBAL.FTime(props.details.tempo_estimado)
 const revisedDate = GLOBAL.FData(props.details.entrega_data_desejada)
+const initDate = GLOBAL.FData(props.details.data_inicial_previsto)
 const creationDate = GLOBAL.FData(props.details.data_criacao)
 </script>
 

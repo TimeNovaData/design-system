@@ -146,7 +146,8 @@ import TaskViewDetailCard from './TaskViewDetailCard.vue'
 import TaskViewDescriptionCard from './TaskViewDescriptionCard.vue'
 
 const { dialogRef } = useDialogPluginComponent()
-const { closeTaskViewModal, openTaskEditModal } = useModalStore()
+const { closeTaskViewModal, openTaskEditModal, openTaskViewModal } =
+  useModalStore()
 const { modalTaskState, taskModalObj, taskModalAnexos, taskModalCommentObj } =
   storeToRefs(useModalStore())
 

@@ -119,7 +119,7 @@
 </template>
 
 <script setup>
-import { ref, computed, reactive, onMounted, nextTick } from 'vue'
+import { ref, computed, reactive, onMounted, nextTick, inject } from 'vue'
 
 import OButton from 'src/components/Button/OButton.vue'
 import TextIcon from 'src/components/Text/TextIcon.vue'
@@ -142,6 +142,7 @@ import { date } from 'quasar'
 
 const menu = ref(null)
 const form = ref(null)
+const user = inject('user')
 
 const CURRENT_DAY = new Date()
 
@@ -149,7 +150,10 @@ const { tasks } = storeToRefs(useTaskStore())
 const { getTasks } = useTaskStore()
 
 onMounted(async () => {
-  await getTasks()
+  console.log('inicio', events.value)
+  await getTasks(
+    `&responsavel_task__id=${user.value.id}&page_size=100&status=abertas`
+  )
   /*  {
     id: 166,
     chamado: null,
@@ -209,17 +213,20 @@ onMounted(async () => {
   )
   const final = tasks.value
     .filter((i) => i.data_inicial_previsto && i.entrega_data_desejada)
-    .map((i) => ({
-      id: i.id,
+    .map((i, index) => ({
+      id: index,
       title: i.titulo,
+      details: i.titulo,
       start: date.formatDate(i.data_inicial_previsto, 'YYYY-MM-DD'),
       end: date.formatDate(i.entrega_data_desejada, 'YYYY-MM-DD'),
-      bgcolor: 'green',
-      icon: 'svguse:/icons.svg#icon_calendar',
-      details: 'details',
+      bgcolor: 'orange',
+      icon: 'fas fa-birthday-cake',
     }))
 
-  console.log(final, 'final')
+  console.log('diff', final, events.value)
+
+  events.value = final
+  // calendar.value.updateCurrent()
 })
 
 const events = ref([

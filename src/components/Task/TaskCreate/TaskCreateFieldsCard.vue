@@ -198,13 +198,15 @@
       />
 
       <OInputDateTime
-        :data="model.entrega_data_desejada"
+        :data="model.data_inicial_previsto"
         label="Data de inicio"
+        @update:date="(v) => (model.data_inicial_previsto = v)"
       />
 
       <OInputDateTime
         :data="model.entrega_data_desejada"
         label="Data de entrega desejada"
+        @update:date="(v) => (model.entrega_data_desejada = v)"
       />
     </div>
   </q-form>
@@ -285,6 +287,7 @@ const model = ref({
   responsavel_task: props.taskValues?.responsavel_task || null,
   quantidade: props.taskValues?.quantidade || 1,
   entrega_data_desejada: props.taskValues?.entrega_data_desejada || null,
+  data_inicial_previsto: props.taskValues?.data_inicial_previsto || null,
   tempo_estimado: setTimeModel.value || '00:00',
   chamado: props.taskValues?.chamado || null,
 })
@@ -321,16 +324,16 @@ watch(
   () => model,
   (v) => {
     const vl = v.value
-    const date_entrega = new Date(
-      `${vl.entrega_data_desejada_data} ${vl.entrega_data_desejada_hora}`
-    )
+    // const date_entrega = new Date(
+    //   `${vl.entrega_data_desejada_data} ${vl.entrega_data_desejada_hora}`
+    // )
 
     const tempo_estimado = FTimeLong(vl.tempo_estimado)
-    const entrega_data_desejada = date?.formatDate(date_entrega)
+    // const entrega_data_desejada = date?.formatDate(date_entrega)
 
     const dadosAdicionais = {
       tempo_estimado,
-      entrega_data_desejada,
+      // entrega_data_desejada,
     }
 
     const dataObj = {
