@@ -672,6 +672,7 @@ async function handleChangeSelect({ profile, id }) {
   loading.value = true
   userActiveID.value = id
   tasks.value.pendentes = []
+  tasks.value.concluidas = []
   isLoadingHoraConsumo.value = true
 
   await handleChangeProfile(profile.id)
@@ -679,7 +680,6 @@ async function handleChangeSelect({ profile, id }) {
   await getTempoTask()
   await handleGetTasksConcluidas(id)
 
-  tasks.value.concluidas = []
   accordionConcluidas.value.componentRef.hide()
 
   loading.value = false
@@ -720,8 +720,6 @@ const handleGetTasksConcluidas = async (userId) => {
     `&responsavel_task__id=${userId}&page_size=10&status=concluidas`,
     false
   )
-  window._blue('Tasks concluidas')
-  console.log(tasks.value)
 }
 
 // ==========================================================================================
