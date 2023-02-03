@@ -90,6 +90,8 @@
         v-model="model.tipo_task"
         option-label="nome_completo"
         :loading="!taskTypes.length"
+        @popup-show="$emit('udate:tipo:usuario', true)"
+        @popup-hide="$emit('udate:tipo:usuario', false)"
       />
 
       <OButton
@@ -281,7 +283,7 @@ import { useUserStore } from 'src/stores/usuarios/user.store'
 const $q = useQuasar()
 
 const { FTime, FData, FTimeLong } = GLOBAL
-const emit = defineEmits(['update'])
+const emit = defineEmits(['update', 'udate:tipo:usuario'])
 
 const { getTasks, setTasksReference, getTaskTypes, deleteTaskType } =
   useTaskStore()

@@ -39,9 +39,10 @@
       >
         <TaskCreateFieldsCard
           ref="taskFields"
-          @update="(val) => handleUpdate(val)"
           :taskValues="taskModalObj"
           :modalIsOpen="modalEditTaskState ? 'aberto' : ''"
+          @update="(val) => handleUpdate(val)"
+          @udate:tipo:usuario="(v) => (enableTipoTask = v)"
         />
 
         <div class="flex flex-col">
@@ -243,15 +244,17 @@ function handleUpdate(val) {
   }
 
   newTaskScope.value = dados
-  // debugger
   // console.log(newTaskScope.value)
 }
+
+const enableTipoTask = ref(false)
 
 watch(
   () => newTaskScope.value?.tipo_task,
   (tipo_task, old) => {
     // !taskModalObj.value?.observacoes &&
     if (!tipo_task?.descricao) return
+    if (!enableTipoTask.value) return
 
     if (tipo_task.descricao !== old?.descricao) {
       newTaskScope.value.observacoes = tipo_task.descricao
