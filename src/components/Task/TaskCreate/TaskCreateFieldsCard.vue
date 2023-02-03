@@ -93,11 +93,44 @@
       />
 
       <OButton
+        v-if="user.is_staff"
+        icon="svguse:/icons.svg#icon_tree_points"
         secondary
-        class="w-[3.125rem] h-[3.125rem] bg-white dark:!bg-white/10 dark:!border-transparent dark:text-white"
-        icon="svguse:/icons.svg#icon_add"
-        @click="handleOpenModalAddTipoTask"
-      />
+        class="w-[3.125rem] h-[3.125rem]"
+      >
+        <q-menu :auto-close="true" padding class="min-w-[180px]">
+          <q-list>
+            <q-item
+              clickable
+              @click="handleAddTipoTask"
+              class="flex flex-nowrap items-center gap-8"
+            >
+              <q-icon name="svguse:/icons.svg#icon_add" size="xs"></q-icon>
+              <p class="whitespace-nowrap">Adicionar tipo</p>
+            </q-item>
+
+            <q-item
+              v-if="model.tipo_task"
+              clickable
+              @click="handleEditTipoTask"
+              class="flex flex-nowrap items-center gap-8"
+            >
+              <q-icon name="svguse:/icons.svg#icon_edit" size="xs"></q-icon>
+              <p class="whitespace-nowrap">Editar tipo</p>
+            </q-item>
+
+            <q-item
+              v-if="model.tipo_task"
+              clickable
+              @click="handleDeleteTaskType"
+              class="flex flex-nowrap items-center gap-8 text-alert-error"
+            >
+              <q-icon name="svguse:/icons.svg#icon_trash" size="xs"></q-icon>
+              <p class="whitespace-nowrap">Deletar tipo</p>
+            </q-item>
+          </q-list>
+        </q-menu>
+      </OButton>
     </div>
 
     <div class="grid grid-cols-2 gap-16">
@@ -220,7 +253,7 @@
 </template>
 
 <script setup>
-import { date, LoadingBar } from 'quasar'
+import { date, LoadingBar, useQuasar } from 'quasar'
 import { ref, computed, inject, watch, onMounted, nextTick } from 'vue'
 import { deepUnref } from 'vue-deepunref'
 import { storeToRefs } from 'pinia'
@@ -234,21 +267,25 @@ import OSelectAvatar from 'src/components/Select/OSelectAvatar.vue'
 import OSelect from 'src/components/Select/OSelect.vue'
 import OInputNumber from 'src/components/Input/OInputNumber.vue'
 import OButton from 'src/components/Button/OButton.vue'
+import OInputDateTime from 'src/components/Input/OInputDateTime.vue'
+import ModalConfirm from 'src/components/Modal/ModalConfirm.vue'
 
 import { useChamadoStore } from 'src/stores/chamados/chamados.store'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import { useProjetoStore } from 'src/stores/projetos/projetos.store'
 import { useProfileStore } from 'src/stores/profile/profile.store'
 import { useUserStore } from 'src/stores/usuarios/user.store'
-import OInputDateTime from 'src/components/Input/OInputDateTime.vue'
 
 // ==========================================================================================
+
+const $q = useQuasar()
 
 const { FTime, FData, FTimeLong } = GLOBAL
 const emit = defineEmits(['update'])
 
-const { getTasks, setTasksReference, getTaskTypes } = useTaskStore()
-const { getUserById } = useUserStore()
+const { getTasks, setTasksReference, getTaskTypes, deleteTaskType } =
+  useTaskStore()
+const { user, getUserById } = useUserStore()
 
 const props = defineProps({
   taskValues: Object,
@@ -393,13 +430,6 @@ watch(
   { deep: true }
 )
 
-// Visualizaçao do input de entrega desejada
-// const deliveryDateComplete = computed(() => {
-//   return `${FData(model.value.entrega_data_desejada_data)} - ${
-//     model.value.entrega_data_desejada_hora
-//   }`
-// })
-
 // Subprojeto select
 const setSubProjectList = () => {
   const list = subProjectList.value.filter(
@@ -445,16 +475,37 @@ emitter.on('modal:reference:copy', (val) => {
   model.value.tempo_estimado = newTime
 })
 
-function handleOpenModalAddTipoTask() {
-  emitter.emit('modal:tasktype:open')
-}
-
 emitter.on(`modal:tasktype:create`, (tasktype) => {
   // Selecionando tipo de task criado
   model.value.observacoes = tasktype.descricao
   model.value.tipo_task = tasktype
   getTaskTypes()
 })
+
+// ==========================================================================================
+// Criar, Editar e Deletar tipo_task ========================================================
+
+function handleAddTipoTask() {
+  emitter.emit('modal:tasktype:open', {})
+}
+
+function handleEditTipoTask() {
+  emitter.emit('modal:tasktype:open', model.value.tipo_task)
+}
+
+function handleDeleteTaskType() {
+  $q.dialog({
+    component: ModalConfirm,
+    componentProps: {
+      title: 'Confirmar',
+      text: 'Deseja deletar esse tipo de task?',
+      persistent: true,
+    },
+  }).onOk(async () => {
+    await deleteTaskType(model.value.tipo_task.id)
+    model.value.tipo_task = null
+  })
+}
 
 // ==========================================================================================
 // LOGICA DO MODAL CRIACAO ==================================================================
