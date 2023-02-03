@@ -9,7 +9,7 @@
       :rows="tasksReference"
       :columns="columns"
       :showDownloadButton="false"
-      class="px-16 py-8 w-[1000px]"
+      class="px-16 py-8 w-[1000px] max-h-[490px]"
     >
       <template v-slot:body="props">
         <q-tr :props="props">
@@ -47,7 +47,7 @@
                 class="!w-32 !h-32 overflow-hidden mr-2 ajuste-img"
                 :estatic="true"
                 :item="{
-                  foto: props.row.responsavel_task?.profile.foto,
+                  foto: props.row.responsavel_task?.profile?.foto,
                 }"
               ></AvatarSingle>
               <p class="pl-8">
