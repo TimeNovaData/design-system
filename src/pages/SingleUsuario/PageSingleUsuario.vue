@@ -565,7 +565,6 @@ const optionsChart = ref({
         fontFamily: 'Inter',
       },
       formatter: function (value) {
-        debugger
         return value ? GLOBAL.FData(value, 'DD/MM') : value
       },
     },
