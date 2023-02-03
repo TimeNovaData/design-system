@@ -24,7 +24,6 @@
           :link="i.attachments"
           :size="i.anexo_tamanho"
           :nome="i.anexo_nome"
-          :deleteFn="() => handleDeleteAnexo(i.id)"
         />
       </div>
     </q-scroll-area>
@@ -34,14 +33,11 @@
 <script setup>
 import { ref, unref, nextTick, useAttrs, onMounted } from 'vue'
 import { filePondConfig } from 'src/boot/filepond'
-import emitter from 'src/boot/emitter'
 import 'src/css/vendor/filePond.sass'
 
 import AnexoItem from 'src/components/Anexo/AnexoItem.vue'
-import { useAnexoStore } from 'src/stores/anexos/anexos.store'
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 
-const { deleteAnexo } = useAnexoStore()
 const { openTask, setNewTaskFiles } = useTaskStore()
 
 const attrs = useAttrs()
@@ -83,13 +79,6 @@ async function handleFilePondUpdatefile(ev) {
   setNewTaskFiles(files)
 
   console.log(files)
-}
-
-async function handleDeleteAnexo(id) {
-  console.log('MODO STONE', id)
-  await deleteAnexo('task', id)
-
-  // setNewValueModal
 }
 
 defineExpose({ pond })

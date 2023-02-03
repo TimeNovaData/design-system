@@ -107,7 +107,11 @@
               />
             </div>
 
-            <TaskViewAttachmentCard name="anexos" :anexos="taskModalAnexos" />
+            <TaskViewAttachmentCard
+              name="anexos"
+              :anexos="taskModalAnexos"
+              :deleteFn="handleDeleteAnexo"
+            />
           </q-tab-panels>
         </div>
       </section>
@@ -135,24 +139,49 @@
 
 <script setup>
 import { ref, inject, watch, unref } from 'vue'
-import { useDialogPluginComponent } from 'quasar'
+import { useDialogPluginComponent, useQuasar } from 'quasar'
 import { storeToRefs } from 'pinia'
 import { useModalStore } from 'src/stores/modal/modal.store'
+import { useAnexoStore } from 'src/stores/anexos/anexos.store'
 import OButton from 'src/components/Button/OButton.vue'
 import OCounter from 'src/components/Counter/OCounter.vue'
 import OChatBox from 'src/components/Chat/OChatBox.vue'
+import ModalConfirm from 'src/components/Modal/ModalConfirm.vue'
 import TaskViewAttachmentCard from './TaskViewAttachmentCard.vue'
 import TaskViewDetailCard from './TaskViewDetailCard.vue'
 import TaskViewDescriptionCard from './TaskViewDescriptionCard.vue'
 
+const $q = useQuasar()
+
 const { dialogRef } = useDialogPluginComponent()
-const { closeTaskViewModal, openTaskEditModal, openTaskViewModal } =
-  useModalStore()
+const {
+  closeTaskViewModal,
+  openTaskEditModal,
+  openTaskViewModal,
+  setTaskModalAnexos,
+} = useModalStore()
 const { modalTaskState, taskModalObj, taskModalAnexos, taskModalCommentObj } =
   storeToRefs(useModalStore())
 
+const { deleteAnexo } = useAnexoStore()
+
 const tabs = ref('desc')
 const user = inject('user')
+
+function handleDeleteAnexo(id) {
+  $q.dialog({
+    component: ModalConfirm,
+    componentProps: {
+      title: 'Confirmar',
+      text: 'Deseja deletar este anexo?',
+      persistent: true,
+    },
+  }).onOk(async () => {
+    const newList = taskModalAnexos.value.filter((anexo) => anexo.id !== id)
+    await deleteAnexo('task', id)
+    setTaskModalAnexos(newList)
+  })
+}
 
 defineExpose({ dialogRef })
 </script>
