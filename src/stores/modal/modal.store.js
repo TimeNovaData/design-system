@@ -71,6 +71,10 @@ export const useModalStore = defineStore('modalStore', () => {
     modalEditTaskState.value = false
   }
 
+  const setTaskModalAnexos = (val) => {
+    taskModalAnexos.value = val
+  }
+
   const setNewValueModal = async (taskId) => {
     console.log('id', taskId)
     const taskRes = await taskStore.getTask(taskId)
@@ -90,6 +94,7 @@ export const useModalStore = defineStore('modalStore', () => {
     openTaskEditModal,
     closeTaskViewModal,
     closeTaskEditModal,
+    setTaskModalAnexos,
     setNewValueModal,
   }
 })

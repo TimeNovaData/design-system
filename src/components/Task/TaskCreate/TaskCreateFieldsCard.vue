@@ -201,10 +201,11 @@
       </OInput> -->
 
       <OInputDateTime
+        ref="inputDataInicial"
         :data="model.data_inicial_previsto"
         label="Data de inicio desejada"
         icon="today"
-        @update:date="(v) => (model.data_inicial_previsto = v)"
+        @update:date="verifyDataInicial"
       />
 
       <OInputDateTime
@@ -212,7 +213,7 @@
         :data="model.entrega_data_desejada"
         label="Data de entrega desejada"
         icon="event"
-        @update:date="(v) => verifyEntregadesejada(v)"
+        @update:date="verifyDataDesejada"
       />
     </div>
   </q-form>
@@ -298,10 +299,26 @@ const model = ref({
   chamado: props.taskValues?.chamado || null,
 })
 
+const inputDataInicial = ref(Element)
 const inputDataDesejada = ref(Element)
 
-function verifyEntregadesejada(value) {
-  console.log(inputDataDesejada.value.history.history.value.length)
+function verifyDataInicial(value) {
+  if (inputDataInicial.value.history.history.value.length < 2) return
+
+  const data1 = new Date(value)
+  const data2 =
+    model.value.entrega_data_desejada &&
+    new Date(model.value.entrega_data_desejada)
+
+  if (!data2 || data1 < data2) {
+    model.value.data_inicial_previsto = value
+  } else {
+    NotifyAlert('A data de inicio deve ser menor que a de entrega')
+    inputDataInicial.value.history.undo()
+  }
+}
+
+function verifyDataDesejada(value) {
   if (inputDataDesejada.value.history.history.value.length < 2) return
 
   // if (!model.value.data_inicial_previsto) {
@@ -314,7 +331,7 @@ function verifyEntregadesejada(value) {
   const data2 = new Date(value)
 
   if (data1 < data2) {
-    console.log('altera')
+    model.value.entrega_data_desejada = value
   } else {
     NotifyAlert('A data de entrega deve ser maior que a de inicio')
     inputDataDesejada.value.history.undo()

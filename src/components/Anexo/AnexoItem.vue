@@ -1,6 +1,6 @@
 <template>
   <article
-    class="p-8 border border-neutral-100/10 dark:border-white/10 rounded-generic flex gap-8 dark:hover:bg-white/5 hover:bg-neutral-20 transition bg-white shadow-sm dark:!bg-d-neutral-20"
+    class="p-8 border border-neutral-100/10 dark:border-white/10 rounded-generic flex gap-8 dark:hover:bg-white/5 hover:bg-neutral-20 transition bg-white shadow-sm dark:!bg-d-neutral-20 relative group"
   >
     <AnexoIcon :ext="ext" :thumb="thumb" />
 
@@ -35,9 +35,12 @@
         <q-icon name="svguse:/icons.svg#icon_download"></q-icon>
       </OButton>
 
-      <!-- <OButton v-if="deleteFn" secondary class="!p-0 h-40" @click="deleteFn">
-        deletar
-      </OButton> -->
+      <q-icon
+        name="svguse:/icons.svg#icon_plus_circle"
+        class="text-alert-error rotate-45 w-24 h-24 rounded-full absolute left-0 -top-12 transition-all cursor-pointer bg-neutral-10 dark:bg-d-neutral-40 opacity-0 group-hover:opacity-100"
+        v-if="deleteFn"
+        @click="deleteFn"
+      ></q-icon>
     </div>
   </article>
 </template>

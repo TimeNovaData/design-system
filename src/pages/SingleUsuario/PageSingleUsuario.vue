@@ -900,13 +900,12 @@ watch(
 
 // Atualiza as tasks ao criar ou editar
 emitter.on('modal:task:edit', async () => {
-  // handleGetTasksPendentes(userActiveID.value)
-  console.log('userActiveID', userActiveID)
+  handleGetTasksPendentes(userActiveID.value)
 })
 
 emitter.on('modal:task:create', () => {
   // Atualizar lista de task ao criar uma nova task no modal
-  // handleGetTasksPendentes(userActiveID.value)
+  handleGetTasksPendentes(userActiveID.value)
 })
 
 // Redirecionar usuário caso não tenha o status de staff

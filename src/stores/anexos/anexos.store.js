@@ -33,14 +33,14 @@ export const useAnexoStore = defineStore('anexoStore', () => {
 
   async function deleteAnexo(type, id) {
     console.log('deleteAnexo', { type, id })
-    // try {
-    //   await api.delete(urlReq()[type].delete + id)
+    try {
+      await api.delete(urlReq()[type].delete + id)
 
-    //   NotifySucess('Anexo Removido com sucesso')
-    // } catch (err) {
-    //   NotifyError('Erro ao Remover anexo')
-    //   console.log(err)
-    // }
+      NotifySucess('Anexo Removido com sucesso')
+    } catch (err) {
+      NotifyError('Erro ao Remover anexo')
+      console.log(err)
+    }
   }
 
   function setAnexos(value) {
