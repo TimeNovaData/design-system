@@ -46,12 +46,7 @@
       rel="stylesheet"
     />
 
-    <!-- <link
-      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:wght@200"
-      rel="stylesheet"
-    /> -->
-
-    <script src="https://cdn.jsdelivr.net/npm/@yaireo/console-colors"></script>
+    <script src="src/boot/consoleColors.js"></script>
 
     <script>
       window.log = consoleColor()
@@ -62,6 +57,20 @@
       window._green = (...params) => log.green.log(...params)()
       window._logsimple = (...params) => log(...params)()
       window._big = (...params) => log.big.bold.log(...params)()
+    </script>
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-7TL01LXYFJ"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || []
+      function gtag() {
+        dataLayer.push(arguments)
+      }
+      gtag('js', new Date())
+
+      gtag('config', 'G-7TL01LXYFJ')
     </script>
   </head>
 
