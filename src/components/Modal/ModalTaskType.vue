@@ -1,8 +1,8 @@
 <template>
   <ModalCenter
     ref="modalReference"
-    text="ADICIONAR TIPO DE TASK"
-    title="Novo Grupo / Tipo"
+    :text="isToCreate ? 'ADICIONAR TIPO DE TASK' : 'EDITAR TIPO DE TASK'"
+    title="Grupo / Tipo"
   >
     <!-- @hide="handleCloseTaskTypeModal" -->
     <q-form
@@ -75,7 +75,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onUpdated } from 'vue'
+import { ref } from 'vue'
 
 import editorToobar from 'src/utils/editorToolbar'
 import { api } from 'src/boot/axios'
@@ -167,18 +167,19 @@ async function getFerramentas() {
 }
 
 function getTaskTypeValues(v) {
-  if (!v) {
+  if (v.method === 'post') {
     isToCreate.value = true
     return
   }
 
+  const taskType = v.obj
   isToCreate.value = false
-  taskTypeEditId.value = v.id
+  taskTypeEditId.value = taskType.id
 
   model.value = {
-    nome: v.nome,
-    ferramenta: v.ferramenta,
-    descricao: v.descricao ? v.descricao : '',
+    nome: taskType.nome,
+    ferramenta: taskType.ferramenta,
+    descricao: taskType.descricao ? taskType.descricao : '',
   }
 }
 
