@@ -39,7 +39,4 @@ emitter.on(`modal:tasktype:create`, (tasktype) => {
 })
 </script>
 
-<style lang="sass" scoped>
-.editor :deep(.q-editor__content *)
-  white-space: break-spaces !important
-</style>
+<style lang="sass" scoped></style>

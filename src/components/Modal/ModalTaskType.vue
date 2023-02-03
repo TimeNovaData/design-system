@@ -53,11 +53,21 @@
         </OButton>
 
         <OButton
+          v-if="isToCreate"
           @click="() => handleCreateTaskType()"
           primary
           icon="svguse:/icons.svg#icon_check"
         >
           Adicionar Novo Tipo
+        </OButton>
+
+        <OButton
+          v-else
+          @click="() => handleEditTaskType()"
+          primary
+          icon="svguse:/icons.svg#icon_check"
+        >
+          Salvar alteração
         </OButton>
       </footer>
     </q-form>
@@ -69,7 +79,7 @@ import { ref, watch, onUpdated } from 'vue'
 
 import editorToobar from 'src/utils/editorToolbar'
 import { api } from 'src/boot/axios'
-import { NotifyAlert, NotifySucess } from 'src/boot/Notify'
+import { NotifyAlert, NotifyError, NotifySucess } from 'src/boot/Notify'
 
 import ModalCenter from 'src/components/Modal/ModalCenter.vue'
 import OInput from 'src/components/Input/OInput.vue'
@@ -83,6 +93,9 @@ const { URLS } = api.defaults
 const modalReference = ref(null)
 const editor = ref(null)
 const form = ref(null)
+
+const isToCreate = ref(null)
+const taskTypeEditId = ref(null)
 
 // Model values
 const ferramentaList = ref([])
@@ -116,6 +129,29 @@ async function handleCreateTaskType() {
     handleCloseModal()
     NotifySucess('Tipo de task criada com sucesso')
   } catch (e) {
+    NotifyError('Erro ao Criar o Tipo de task')
+    console.log(e)
+    return e
+  }
+}
+
+async function handleEditTaskType() {
+  const valid = await form.value.validate(true)
+  if (!valid) {
+    NotifyAlert('Preencha os campos obrigatórios')
+    return
+  }
+
+  try {
+    const { data } = await api.patch(
+      URLS.tipotask + taskTypeEditId.value + '/',
+      model.value
+    )
+    emitter.emit('modal:tasktype:create', data)
+    handleCloseModal()
+    NotifySucess('Tipo de task editada com sucesso')
+  } catch (e) {
+    NotifyError('Erro ao Editar o Tipo de task')
     console.log(e)
     return e
   }
@@ -130,7 +166,26 @@ async function getFerramentas() {
   }
 }
 
-emitter.on('modal:tasktype:open', () => getFerramentas())
+function getTaskTypeValues(v) {
+  if (!v) {
+    isToCreate.value = true
+    return
+  }
+
+  isToCreate.value = false
+  taskTypeEditId.value = v.id
+
+  model.value = {
+    nome: v.nome,
+    ferramenta: v.ferramenta,
+    descricao: v.descricao ? v.descricao : '',
+  }
+}
+
+emitter.on('modal:tasktype:open', (tipo_task) => {
+  getTaskTypeValues(tipo_task)
+  getFerramentas()
+})
 
 defineExpose({ modalReference })
 </script>

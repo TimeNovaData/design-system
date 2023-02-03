@@ -565,7 +565,8 @@ const optionsChart = ref({
         fontFamily: 'Inter',
       },
       formatter: function (value) {
-        return value ? GLOBAL.FData(value, 'DD/MM') : value
+        const date = GLOBAL.FDateBRtoEU(value)
+        return value ? GLOBAL.FData(date, 'DD/MM') : value
       },
     },
   },
@@ -665,7 +666,6 @@ const profileBackground = computed(() =>
 const clearInputProfile = () => {
   if (profileActive.value) {
     // profileActive.value = {}
-    console.log('AqqqqqIII', profileActive.value)
   }
 }
 async function handleChangeSelect({ profile, id }) {
@@ -676,7 +676,6 @@ async function handleChangeSelect({ profile, id }) {
 
   await handleChangeProfile(profile.id)
   await handleGetTasksPendentes(id)
-  console.log('handleChangeSelect', id)
   await getTempoTask()
   await handleGetTasksConcluidas(id)
 
@@ -721,6 +720,8 @@ const handleGetTasksConcluidas = async (userId) => {
     `&responsavel_task__id=${userId}&page_size=10&status=concluidas`,
     false
   )
+  window._blue('Tasks concluidas')
+  console.log(tasks.value)
 }
 
 // ==========================================================================================
@@ -736,7 +737,6 @@ async function handleTaskFinished(taskObj) {
       (i) => i.id !== taskObj.id
     )
     tasks.value.concluidas.push(taskObj)
-    console.log('OBJ DA TASK', taskObj)
     taskActive.value = null
     NotifySucess('Task concluida com sucesso!')
   } catch (err) {
@@ -873,7 +873,6 @@ async function init() {
   await nextTick()
 
   await handleGetTasksPendentes(IDFinal)
-  console.log('IDFinal', IDFinal)
 
   // Grafico Consumo de Horas
   await getTempoTask()

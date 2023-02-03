@@ -1,4 +1,5 @@
 <template>
+  {{ comentariosResult?.length }} {{ isLoading }}
   <q-card
     ref="cardChatBox"
     class="q-chat p-16 flex flex-col bg-neutral-20 dark:bg-d-neutral-10 flex-1 flex-nowrap h-full"

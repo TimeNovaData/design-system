@@ -77,6 +77,19 @@ export const useTaskStore = defineStore('taskstore', () => {
     }
   }
 
+  async function deleteTaskType(id) {
+    try {
+      await api.delete(URLS.tipotask + id)
+      await getTaskTypes()
+
+      NotifySucess('Tipo de task Excluido com sucesso')
+    } catch (e) {
+      NotifyError('Erro ao Deletar tipo de task')
+      console.log(e)
+      return e
+    }
+  }
+
   async function postTempoTask(filters, task) {
     try {
       const { data } = await api.post(
@@ -230,6 +243,7 @@ export const useTaskStore = defineStore('taskstore', () => {
     getTask,
     setTasks,
     getTaskTypes,
+    deleteTaskType,
     handleSaveTask,
     pathTask,
     postTempoTask,

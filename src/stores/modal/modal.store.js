@@ -47,8 +47,8 @@ export const useModalStore = defineStore('modalStore', () => {
     setID(taskId)
     taskStore.setOpenTask(taskId)
 
-    getComments('task')
     getTaskAnexos(taskId)
+    await getComments('task')
 
     taskModalCommentObj.value = {
       isLoading: isLoading.value,
