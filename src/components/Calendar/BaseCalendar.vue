@@ -209,7 +209,7 @@ defineExpose({ setLoading })
       >span
         margin: auto
         display: block
-        &.before
+
 
   .fc-toolbar-title:first-letter
     text-transform: capitalize
@@ -223,27 +223,26 @@ defineExpose({ setLoading })
     --fc-page-bg-color:rgba(var(--d-neutral-30),1)
 
     .fc-header-toolbar
-    button
-      border-color: rgba(var(--white),0.1) !important
-      box-shadow: initial !important
-      &:hover
-        background: rgba(var(--white),0.1) !important
+      button
+        border-color: rgba(var(--white),0.1) !important
+        box-shadow: initial !important
+        &:hover
+          background: rgba(var(--white),0.1) !important
 
-      &:active
-        background: rgba(var(--white),0.2) !important
+        &:active
+          background: rgba(var(--white),0.2) !important
 
-      &.fc-button-active
-        background: rgba(var(--white),0.1) !important
-        border-color: rgba(var(--white),0.3) !important
+        &.fc-button-active
+          background: rgba(var(--white),0.1) !important
+          border-color: rgba(var(--white),0.3) !important
 
-      &.fc-next-button,
-      &.fc-prev-button
-        width: 32px !important
+        &.fc-next-button,
+        &.fc-prev-button
+          width: 32px !important
 
-        padding: 0 !important
+          padding: 0 !important
 
-        >span
-          margin: auto
-          display: block
-          // &.before
+          >span
+            margin: auto
+            display: block
 </style>
