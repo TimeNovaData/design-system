@@ -15,8 +15,8 @@
       </OButton>
     </header>
 
-    <q-scroll-area class="mt-16 !h-[calc(100%-3rem)] pr-16">
-      <div class="!flex !flex-col gap-8">
+    <q-scroll-area class="mt-8 !h-[calc(100%-3rem)] pr-16">
+      <div class="!flex !flex-col gap-8 pt-10">
         <AnexoItem
           v-for="i in anexos"
           :key="i.id"
@@ -25,6 +25,7 @@
           :link="i.attachments"
           :size="i.anexo_tamanho"
           :nome="i.anexo_nome"
+          :deleteFn="() => deleteFn(i.id)"
         />
       </div>
     </q-scroll-area>
@@ -43,6 +44,7 @@ import EmptyItem from 'src/components/Empty/EmptyItem.vue'
 
 const props = defineProps({
   anexos: Array,
+  deleteFn: Function,
 })
 
 function downloadAllFiles() {

@@ -387,6 +387,7 @@
           :link="i.attachments"
           :size="i.anexo_tamanho"
           :nome="i.anexo_nome"
+          :deleteFn="() => handleDeleteAnexo(i.id)"
         />
       </div>
       <div v-else>
@@ -548,9 +549,9 @@ import {
   onUpdated,
 } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import { useQuasar, Cookies, date } from 'quasar'
 import SingleProjetoHeader from './SingleProjetoHeader.vue'
 import stackedChartBar from 'src/utils/chart/stackedChartBar'
-import { Cookies, date } from 'quasar'
 import OChatBox from 'src/components/Chat/OChatBox.vue'
 import { api } from 'src/boot/axios'
 import useComments from 'src/composables/useComments'
@@ -559,6 +560,7 @@ import AcessoItem from 'src/components/Acesso/AcessoItem.vue'
 import GLOBAL from 'src/utils/GLOBAL'
 import emitter from 'src/boot/emitter'
 import OSelect from 'src/components/Select/OSelect.vue'
+import ModalConfirm from 'src/components/Modal/ModalConfirm.vue'
 import SkeletonChart from 'src/components/Skeleton/SkeletonChart.vue'
 import TagBase from 'src/components/Tag/TagBase.vue'
 import OTableBase from 'src/components/Table/OTableBase.vue'
@@ -569,6 +571,8 @@ import OAvatar from 'src/components/Avatar/OAvatar.vue'
 import { useAnexoStore } from 'src/stores/anexos/anexos.store'
 import ModalAddAnexo from 'src/components/Modal/ModalAddAnexo.vue'
 import EmptyItem from 'src/components/Empty/EmptyItem.vue'
+
+const $q = useQuasar()
 
 const { URLS } = api.defaults
 // Router
@@ -734,12 +738,26 @@ const tempoProjetoOptions = [
 const openTaskViewModal = inject('openTaskViewModal')
 
 // Anexos ------------------------------
-const { getAnexos } = useAnexoStore()
+const { getAnexos, deleteAnexo } = useAnexoStore()
 const anexosList = ref([])
 const anexosListReverse = computed(() => [...anexosList.value].reverse())
 
 async function openNovoAnexo() {
   modalAddAnexoRef.value.modalAddAnexo.dialogRef.show()
+}
+
+async function handleDeleteAnexo(id) {
+  $q.dialog({
+    component: ModalConfirm,
+    componentProps: {
+      title: 'Confirmar',
+      text: 'Deseja deletar este anexo?',
+      persistent: true,
+    },
+  }).onOk(async () => {
+    await deleteAnexo('projeto', id)
+    anexosList.value = anexosList.value.filter((anexo) => anexo.id !== id)
+  })
 }
 
 // Handles
