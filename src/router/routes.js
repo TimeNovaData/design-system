@@ -84,7 +84,6 @@ const routes = [
             { label: 'Home', name: 'home' },
             { label: 'Colaborador', name: 'colaborador' },
           ],
-
           title: 'Colaborador',
         },
       },

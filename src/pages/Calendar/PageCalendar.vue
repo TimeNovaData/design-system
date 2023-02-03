@@ -11,7 +11,11 @@
             icon="svguse:/icons.svg#icon_calendar"
           />
 
-          <OButton secondary size="md" icon="svguse:/icons.svg#icon_filtros"
+          <OButton
+            secondary
+            size="md"
+            icon="svguse:/icons.svg#icon_filtros"
+            disable
             >Filtros
             <q-menu
               ref="menu"
@@ -38,7 +42,7 @@
         </div>
 
         <div class="mt-24">
-          <BaseCalendar :events="events" />
+          <BaseCalendar :events="events" ref="baseCalendar" />
         </div>
       </q-card>
     </div>
@@ -52,110 +56,37 @@ import OButton from 'src/components/Button/OButton.vue'
 import TextIcon from 'src/components/Text/TextIcon.vue'
 
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
-import { storeToRefs } from 'pinia'
-import { date } from 'quasar'
 import BaseCalendar from 'src/components/Calendar/BaseCalendar.vue'
+import emitter from 'src/boot/emitter'
+import GLOBAL from 'src/utils/GLOBAL'
 
 const menu = ref(null)
 const form = ref(null)
-const user = inject('user')
 
-const events = ref([])
 const { getTasks } = useTaskStore()
-const { tasks } = storeToRefs(useTaskStore())
+
+const tasks = ref([])
+const events = ref([])
+const baseCalendar = ref(Element)
 
 onMounted(async () => {
-  await getTasks(`&page_size=1000&status=abertas`)
   const formato = 'YYYY-MM-DD[T]HH:mm:ss' /* '2023-02-09T12:30:00' */
+  await handleGetTasks()
+  await nextTick()
+  events.value = GLOBAL.formatToCalendar(tasks.value, formato)
+})
 
-  events.value = tasks.value
-    .filter((i) => i.data_inicial_previsto && i.entrega_data_desejada)
-    .map((i) => {
-      return {
-        id: i.id,
-        title: i.titulo,
-        start: date.formatDate(i.data_inicial_previsto, formato),
-        end: date.formatDate(i.entrega_data_desejada, formato),
-        // allDay: false,
-        extendedProps: {
-          ...i,
-        },
-      }
-    })
+const handleGetTasks = async () => {
+  baseCalendar.value.setLoading(true)
+  tasks.value = await getTasks(`&page_size=1000&status=abertas`, false)
+  baseCalendar.value.setLoading(false)
+}
 
-  /*  {
-    id: 166,
-    chamado: null,
-    tag: [],
-    projeto: {
-      id: 1,
-      nome: '#dicasolar#',
-      nome_completo: 'Adriano O cliente - #dicasolar#',
-      cor: '#0D0FD2',
-      tem_subprojetos: false,
-    },
-    sub_projeto: null,
-    tipo_task: null,
-    ordem: 1,
-    ordem_caso: 2,
-    titulo: 'teste 123',
-    observacoes: null,
-    tempo_estimado: '00:00:00',
-    link: null,
-    entrega_data_desejada: null,
-    data_inicial_previsto: null,
-    data_conclusao: '2021-08-27',
-    responsavel_task: {
-      id: 2,
-      username: 'emanuel2',
-      get_full_name: 'emanuel morais',
-      profile: {
-        id: 7,
-        foto: 'http://localhost:8000/media/avatars/emanuel2/resized/500/arara-azul.jpg',
-      },
-    },
-    data_criacao: '2021-08-19T13:49:19.304865-03:00',
-    is_playing: false,
-    ultima_contagem: null,
-    data_atualizacao: '2021-08-27T08:30:22.486585-03:00',
-    quantidade: 1,
-    usuario_criacao: {
-      id: 2,
-      username: 'emanuel2',
-      get_full_name: 'emanuel morais',
-      profile: {
-        id: 7,
-        foto: 'http://localhost:8000/media/avatars/emanuel2/resized/500/arara-azul.jpg',
-      },
-    },
-    usuario_atualizacao: 2,
-    status: 'Concluído',
-    tempo_total: '00:00:00',
-    data_final_previsto: null,
-    tempo_ao_vivo_formatado_hora_minuto_segundo: '1:00:17',
-  } */
-  // console.log(
-  //   tasks.value.filter(
-  //     (i) => i.data_inicial_previsto && i.entrega_data_desejada
-  //   ),
-  //   'filtradas'
-  // )
-  // const final = tasks.value
-  //   .filter((i) => i.data_inicial_previsto && i.entrega_data_desejada)
-  //   .map((i, index) => ({
-  //     id: i.id,
-  //     title: i.titulo,
-  //     details: i.titulo,
-  //     start: date.formatDate(i.data_inicial_previsto, 'YYYY-MM-DD'),
-  //     end: date.formatDate(i.entrega_data_desejada, 'YYYY-MM-DD'),
-  //     bgcolor: 'orange',
-  //     icon: 'fas fa-birthday-cake',
-  //   }))
-
-  // console.log('diff', final, events.value)
-
-  // events.value = final
-  // calendar.value.updateCurrent()
+emitter.on('modal:task:create', async () => {
+  await handleGetTasks()
+})
+emitter.on('modal:task:edit', async () => {
+  await handleGetTasks()
 })
 </script>
 

@@ -433,8 +433,12 @@
         </div>
 
         <div name="calendar">
-          <div class="h-[400px] bg-white dark:!bg-d-neutral-30">
-            <EmptyItem text="Calendário em desenvolvimento." />
+          <div class="bg-white dark:!bg-d-neutral-30 mb-80">
+            <BaseCalendar
+              :events="events"
+              ref="baseCalendar"
+              :loadingProp="calendarLoader"
+            />
           </div>
         </div>
       </q-tab-panels>
@@ -488,6 +492,7 @@ import ModalAddPhoto from 'src/components/Modal/ModalAddPhoto.vue'
 
 import { useTaskStore } from 'src/stores/tasks/tasks.store'
 import { useProfileStore } from 'src/stores/profile/profile.store'
+import BaseCalendar from 'src/components/Calendar/BaseCalendar.vue'
 
 // ==========================================================================================
 
@@ -560,7 +565,8 @@ const optionsChart = ref({
         fontFamily: 'Inter',
       },
       formatter: function (value) {
-        return value ? String(value).slice(0, -5) : value
+        debugger
+        return value ? GLOBAL.FData(value, 'DD/MM') : value
       },
     },
   },
@@ -693,13 +699,14 @@ async function handleChangeProfile(profileId) {
 const handleGetTasksPendentes = async (userId) => {
   router.push({ params: { id: userId } })
   LoadingBar.start()
-  // tasks.value.pendentes = []
 
+  calendarLoader.value = true
   tasks.value.pendentes = await getTasks(
     `&responsavel_task__id=${userId}&page_size=100&status=abertas`,
     false
   )
 
+  calendarLoader.value = false
   listIDSInOrder.value = tasks.value.pendentes.map((i) => i.id)
 
   LoadingBar.stop()
@@ -904,6 +911,22 @@ emitter.on('modal:task:create', () => {
 
 // Redirecionar usuário caso não tenha o status de staff
 if (!user.value.is_staff) router.push({ name: '404' })
+
+// CALENDARIO ----------------------
+const events = ref([])
+const baseCalendar = ref(Element)
+const calendarLoader = ref(true)
+
+watch(
+  () => tasks.value.pendentes,
+  (v) => {
+    if (!v.length) return
+    const formato = 'YYYY-MM-DD[T]HH:mm:ss' /* '2023-02-09T12:30:00' */
+    events.value = GLOBAL.formatToCalendar(v, formato)
+    calendarLoader.value = false
+  },
+  { deep: true }
+)
 </script>
 
 <style lang="sass" scoped>

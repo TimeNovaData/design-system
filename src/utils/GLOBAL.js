@@ -305,6 +305,39 @@ const GLOBAL = {
     max = Math.floor(max)
     return Math.floor(Math.random() * (max - min + 1)) + min
   },
+
+  formatToCalendar(arr, formato) {
+    const result = arr
+      .filter((i) => i.entrega_data_desejada)
+      .map((i) => {
+        const entregaUmaHoraAMenos = date.subtractFromDate(
+          i.entrega_data_desejada,
+          {
+            hours: -1,
+          }
+        )
+        const entregaDataFormated = date.formatDate(i.entrega_data_desejada)
+
+        const UmaHoraMenorFormated = date.formatDate(
+          entregaUmaHoraAMenos,
+          formato
+        )
+
+        const initDate = i.data_inicial_previsto
+          ? date.formatDate(i.data_inicial_previsto, formato)
+          : UmaHoraMenorFormated
+
+        return {
+          id: i.id,
+          title: i.titulo,
+          start: initDate,
+          end: entregaDataFormated,
+          extendedProps: { ...i },
+          allDay: false,
+        }
+      })
+    return result
+  },
 }
 // eslint-disable-next-line n/no-deprecated-api
 window.GLOBAL = GLOBAL

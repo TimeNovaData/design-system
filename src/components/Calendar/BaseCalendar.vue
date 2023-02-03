@@ -1,6 +1,28 @@
 <template>
   <div class="fullcalendar">
+    <!--  -->
+    <div
+      class="h-[490px] w-full grid place-items-center"
+      v-show="!loading && !events.length"
+    >
+      <div class="flex flex-col items-center">
+        <p class="text-neutral-60 text-center block mx-auto mb-8">
+          <EmptyItem text="Sem dados para visualizar o calendario." />
+        </p>
+      </div>
+    </div>
+    <!--  -->
+    <div class="h-[490px] w-full grid place-items-center" v-show="loading">
+      <div class="flex flex-col items-center">
+        <p class="text-neutral-60 text-center block mx-auto mb-8">
+          Carregando Calendario
+        </p>
+        <q-spinner size="2rem" color="primary" />
+      </div>
+    </div>
+    <!--  -->
     <FullCalendar
+      v-show="!loading && events.length > 0"
       :events="events"
       ref="fullCalendar"
       :options="calendarOptions"
@@ -84,34 +106,52 @@ import timeGridPlugin from '@fullcalendar/timegrid'
 import { ref, onMounted, watch, inject } from 'vue'
 import ptLocale from '@fullcalendar/core/locales/pt-br'
 import OAvatar from 'src/components/Avatar/OAvatar.vue'
+import EmptyItem from 'src/components/Empty/EmptyItem.vue'
 
 const props = defineProps({
   events: Array,
+  loadingProp: {
+    type: Boolean,
+    default: true,
+  },
 })
+const loading = ref(props.loadingProp)
+
+// const events = ref([])
+
 const openTaskViewModal = inject('openTaskViewModal')
-function handleClick(arg) {
-  console.log(arg)
-  openTaskViewModal(arg.event.id)
-  window._red(arg.event.start)
-  window._blue(arg.event.end)
-}
+
 const fullCalendar = ref(Element)
 let calendarAPI
 
+function handleClick(arg) {
+  openTaskViewModal(arg.event.id)
+
+  // console.log(arg)
+  // window._red(arg.event.start)
+  // window._blue(arg.event.end)
+}
+
 onMounted(() => {
   calendarAPI = fullCalendar.value.getApi()
-
-  console.log(calendarAPI)
+  // console.log(calendarAPI)
 })
+
+watch(
+  () => props.loadingProp,
+  (v) => {
+    setLoading(v)
+    window._red('setou loader para' + v)
+  }
+)
 
 watch(
   () => props.events,
   (v) => {
     calendarAPI.addEventSource(v)
-    window._blue('addEventSource')
-    console.log(v)
-  },
-  { deep: true }
+    // window._blue('addEventSource')
+    // console.log(v)
+  }
 )
 
 const calendarOptions = ref({
@@ -126,27 +166,14 @@ const calendarOptions = ref({
   dayMaxEvents: false,
   // eventMaxStack:null,
   weekends: true,
-  height: 590,
+  height: 490,
 
   eventClick: handleClick,
 })
 
-const events = ref([
-  // {
-  //   title: 'event1',
-  //   start: '2023-02-01',
-  // },
-  // {
-  //   title: 'event2',
-  //   start: '2023-02-05',
-  //   end: '2023-02-07',
-  // },
-  // {
-  //   title: 'event3',
-  //   start: '2023-02-09T12:30:00',
-  //   allDay: false, // will make the time show
-  // },
-])
+const setLoading = (v) => (loading.value = v)
+
+defineExpose({ setLoading })
 </script>
 
 <style lang="sass">
@@ -154,36 +181,35 @@ const events = ref([
   .fc-theme-standard
     --fc-event-border-color: rgba(var(--neutral-100), 0.1)
 
-  .fc-header-toolbar
-    button
-      background: transparent !important
-      color: currentcolor !important
-      border-color: rgba(var(--neutral-100),0.1) !important
-      height: 32px !important
-      padding: 0 1rem !important
+  .fc-header-toolbar button
+    background: transparent !important
+    color: currentcolor !important
+    border-color: rgba(var(--neutral-100),0.1) !important
+    height: 32px !important
+    padding: 0 1rem !important
 
-      box-shadow: initial !important
-      &:hover
-        background: rgba(var(--neutral-10),1) !important
+    box-shadow: initial !important
+    &:hover
+      background: rgba(var(--neutral-10),1) !important
 
-      &:active
-        background: rgba(var(--neutral-20),1) !important
+    &:active
+      background: rgba(var(--neutral-20),1) !important
 
-      &.fc-button-active
-        background: rgba(var(--neutral-30),1) !important
-        border-color: rgba(var(--neutral-100),0.3) !important
+    &.fc-button-active
+      background: rgba(var(--neutral-30),1) !important
+      border-color: rgba(var(--neutral-100),0.3) !important
 
-      &.fc-next-button,
-      &.fc-prev-button
-        width: 32px !important
-        display: grid
-        place-items: center
-        padding: 0 !important
+    &.fc-next-button,
+    &.fc-prev-button
+      width: 32px !important
+      display: grid
+      place-items: center
+      padding: 0 !important
 
-        >span
-          margin: auto
-          display: block
-          &.before
+      >span
+        margin: auto
+        display: block
+        &.before
 
   .fc-toolbar-title:first-letter
     text-transform: capitalize

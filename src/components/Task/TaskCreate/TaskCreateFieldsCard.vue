@@ -214,7 +214,6 @@
         icon="event"
         @update:date="(v) => verifyEntregadesejada(v)"
       />
-      <button @click="limpar">Limpar</button>
     </div>
   </q-form>
 </template>
@@ -305,11 +304,11 @@ function verifyEntregadesejada(value) {
   console.log(inputDataDesejada.value.history.history.value.length)
   if (inputDataDesejada.value.history.history.value.length < 2) return
 
-  if (!model.value.data_inicial_previsto) {
-    inputDataDesejada.value.history.undo()
-    NotifyAlert('Preencha o campo Data de inicio desejada')
-    return
-  }
+  // if (!model.value.data_inicial_previsto) {
+  //   inputDataDesejada.value.history.undo()
+  //   NotifyAlert('Preencha o campo Data de inicio desejada')
+  //   return
+  // }
 
   const data1 = new Date(model.value.data_inicial_previsto)
   const data2 = new Date(value)
@@ -320,11 +319,6 @@ function verifyEntregadesejada(value) {
     NotifyAlert('A data de entrega deve ser maior que a de inicio')
     inputDataDesejada.value.history.undo()
   }
-}
-
-function limpar() {
-  model.value.data_inicial_previsto = null
-  console.log('limpo', model)
 }
 
 // Chamado
