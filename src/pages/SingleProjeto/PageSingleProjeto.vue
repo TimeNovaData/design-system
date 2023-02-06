@@ -313,7 +313,14 @@
                   </q-td>
 
                   <q-td key="data_prevista" :auto-width="false">
-                    <div class="text-paragraph-2 text-end">
+                    <div
+                      class="text-paragraph-2 text-end"
+                      :class="{
+                        'text-alert-error':
+                          props.row.data_final_previsto >
+                          props.row.entrega_data_desejada,
+                      }"
+                    >
                       {{ GLOBAL.FData(props.row.data_final_previsto) }}
                     </div>
                   </q-td>
