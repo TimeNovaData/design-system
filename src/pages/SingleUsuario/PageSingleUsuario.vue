@@ -723,7 +723,7 @@ const handleGetTasksConcluidas = async (userId) => {
 }
 
 // ==========================================================================================
-// FINALIZAR, DELETAR E RESTAURAR TASK ===============================================================
+// FINALIZAR, DELETAR E RESTAURAR TASK ======================================================
 
 async function handleTaskFinished(taskObj) {
   const today = Date.now()

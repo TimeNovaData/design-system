@@ -97,8 +97,18 @@
             >
             </q-icon>
             <div>
-              <p class="text-paragraph-2">{{ dataPrevista }}</p>
-              <p class="text-paragraph-3 text-neutral-70 dark:text-white/70">
+              <p
+                class="text-paragraph-2"
+                :class="{ '!text-alert-error': expectedDateLongerThanDesired }"
+              >
+                {{ dataPrevista }}
+              </p>
+              <p
+                class="text-paragraph-3 text-neutral-70 dark:text-white/70"
+                :class="{
+                  '!text-alert-error/80': expectedDateLongerThanDesired,
+                }"
+              >
                 {{ dataPrevistadaDia }}
               </p>
             </div>
@@ -225,6 +235,14 @@ const dataPrevista = computed(() => {
 
 const dataPrevistadaDia = computed(() => {
   return GLOBAL.FData(props.task.data_final_previsto, 'dddd')
+})
+
+const expectedDateLongerThanDesired = computed(() => {
+  const prevista = new Date(props.task.data_final_previsto)
+  const desejada = new Date(props.task.entrega_data_desejada)
+
+  if (!prevista || !desejada) return false
+  else return prevista > desejada
 })
 
 const handleView = (event, id) => {
