@@ -148,9 +148,8 @@ watch(
 watch(
   () => props.events,
   (v) => {
+    calendarAPI.removeAllEvents()
     calendarAPI.addEventSource(v)
-    // window._blue('addEventSource')
-    // console.log(v)
   }
 )
 

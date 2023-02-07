@@ -177,6 +177,7 @@
               icon="svguse:/icons.svg#icon_calendar"
               class="w-full text-neutral-70"
               size="md"
+              @click="reloadDataCalendar"
               >Calendário
             </OButton>
           </q-tab>
@@ -922,6 +923,16 @@ watch(
   },
   { deep: true }
 )
+
+async function reloadDataCalendar() {
+  setTimeout(async () => {
+    const formato = 'YYYY-MM-DD[T]HH:mm:ss' /* '2023-02-09T12:30:00' */
+    events.value = []
+    await nextTick()
+    events.value = GLOBAL.formatToCalendar(tasks.value.pendentes, formato)
+    calendarLoader.value = false
+  }, 300)
+}
 </script>
 
 <style lang="sass" scoped>
