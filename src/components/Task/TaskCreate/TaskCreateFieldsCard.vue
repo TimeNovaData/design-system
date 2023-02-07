@@ -488,11 +488,21 @@ emitter.on(`modal:tasktype:create`, (tasktype) => {
 // Criar, Editar e Deletar tipo_task ========================================================
 
 function handleAddTipoTask() {
-  emitter.emit('modal:tasktype:open', {})
+  const param = {
+    method: 'post',
+    obj: {},
+  }
+
+  emitter.emit('modal:tasktype:open', param)
 }
 
 function handleEditTipoTask() {
-  emitter.emit('modal:tasktype:open', model.value.tipo_task)
+  const param = {
+    method: 'patch',
+    obj: model.value.tipo_task,
+  }
+
+  emitter.emit('modal:tasktype:open', param)
 }
 
 function handleDeleteTaskType() {
