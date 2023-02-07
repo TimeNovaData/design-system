@@ -322,4 +322,8 @@ defineExpose({ dialogRef })
   .q-card
     border: 1px solid rgba(1, 7, 27, 0.1)
     box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.06)
+
+.editor-container
+  :deep(.q-panel)
+    max-height: 60vh
 </style>

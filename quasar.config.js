@@ -206,7 +206,7 @@ module.exports = configure(function (ctx) {
         // swSrc is required in InjectManifest mode.
         swSrc: 'sw.js',
         // ...other Workbox options...
-        exclude: [/\.map$/, /_redirects/], // this fixed it.
+        exclude: [/\.map$/], // this fixed it.
       },
     },
 

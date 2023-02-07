@@ -8,7 +8,8 @@
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
     "test": "echo \"No test specified\" && exit 0",
-    "dev": "yarn quasar dev"
+    "dev": "yarn quasar dev",
+    "vetur": "yarn vue-int --input src/components --output vetur --recursive"
   },
   "dependencies": {
     "@fullcalendar/core": "^6.1.1",
